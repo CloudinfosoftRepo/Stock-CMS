@@ -50,7 +50,7 @@ namespace Stock_CMS.Repository
         }
         public async Task<IEnumerable<UserDto>> GetUserByIds(int[] ids)
         {
-            return await GetMany(x => x.IsActive == true && ids.Contains(x.Id));
+            return await GetMany(x => ids.Contains(x.Id));
         }
         public async Task<UserDto> GetUserByEmail(string email)
         {
@@ -60,7 +60,7 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(criteria);
         }
-        public async Task<IEnumerable<UserDto>> GetUsersByIds(int[] ids)
+        public async Task<IEnumerable<UserDto>> GetUsersByIds(int?[] ids)
         {
             return await GetMany(x => ids.Contains(x.Id));
         }

@@ -1,7 +1,263 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Management</title>
+</head>
 
-<h1>Enquiry</h1>
+<body ng-controller="StockController">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <div class="text-center">
+                            <h1 class="page-title mb-0">Stock Management</h1>
+                        </div>
+
+                        <div class="row justify-content-between">
+                            <div class="col-5 col-md-3 mt-2 mt-md-0">
+                                <div class="search-input-wrapper">
+                                    <input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search" />
+                                </div>
+                            </div>
+                            <div class="col-2 ms-auto text-right" style="text-align: end;">
+                                <button class="btn btn-custom" style="background-color:#003980;color:white" ng-click="openStockModal()">Add New Stock</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Company Name</th>
+                                            <th>Customer</th>
+                                            <th>First Holder</th>
+                                            <th>Second Holder</th>
+                                            <th>Third Holder</th>
+                                            <th>Folio No</th>
+                                            <th>Claim Status</th>
+                                            <th>Quantity</th>
+                                            <th>Rate</th>
+                                            <th>Value</th>
+                                            <th>Brokerage</th>
+                                            <th>
+                                                Process to be follow
+                                            </th>
+                                            <th>Remarks</th>
+                                            <th>Processed</th>
+                                            <th>Active</th>
+                                            <th>Created At</th>
+                                            <th>Created By</th>
+                                            <th>Updated At</th>
+                                            <th>Updated By</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="stock in stocks | filter: searchQuery">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ stock.companyName }}</td>
+                                            <td>{{ stock.customerName }}</td>
+                                            <td>{{ stock.firstHolder }}</td>
+                                            <td>{{ stock.secondHolder }}</td>
+                                            <td>{{ stock.thirdHolder }}</td>
+                                            <td>{{ stock.folioNo }}</td>
+                                            <td>{{ stock.clamStatus }}</td>
+                                            <td>{{ stock.qty }}</td>
+                                            <td>{{ stock.rate }}</td>
+                                            <td>{{ stock.value }}</td>
+                                            <td>{{ stock.brokerage }}</td>
+                                            <td>{{ stock.ptbf }}</td>
+                                            <td>{{ stock.remarks }}</td>
+                                            <td>{{ stock.isProcessed ? 'Yes' : 'No' }}</td>
+                                            <td>{{ stock.isActive ? 'Yes' : 'No' }}</td>
+                                            <td>{{ stock.createdAt | date:'short' }}</td>
+                                            <td>{{ stock.createdByName }}</td>
+                                            <td>{{ stock.updatedAt | date:'short' }}</td>
+                                            <td>{{ stock.updatedByName }}</td>
+                                            <td>
+                                                <span class="btn-sm btn-custom" style="color:green;font-size:x-large" ng-click="openStockModal(stock)" data-tooltip="Edit Stock">
+                                                    <i class="bi bi-pencil"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Stock Modal -->
+    <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveStock()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Stock' : 'Add Stock' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="customerId">Customer</label>
+                            <select id="customerId" ng-model="currentStock.customerId" ng-options="customer.id as customer.customerName for customer in customers" class="form-control" required>
+                               
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName" ng-model="currentStock.companyName" class="form-control" placeholder="Company Name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="firstHolder">First Holder</label>
+                            <input type="text" id="firstHolder" ng-model="currentStock.firstHolder" class="form-control" placeholder="First Holder" />
+                        </div>
+                        <div class="form-group">
+                            <label for="secondHolder">Second Holder</label>
+                            <input type="text" id="secondHolder" ng-model="currentStock.secondHolder" class="form-control" placeholder="Second Holder" />
+                        </div>
+                        <div class="form-group">
+                            <label for="thirdHolder">Third Holder</label>
+                            <input type="text" id="thirdHolder" ng-model="currentStock.thirdHolder" class="form-control" placeholder="Third Holder" />
+                        </div>
+                        <div class="form-group">
+                            <label for="folioNo">Folio No</label>
+                            <input type="text" id="folioNo" ng-model="currentStock.folioNo" class="form-control" placeholder="Folio No" />
+                        </div>
+                        <div class="form-group">
+                            <label for="clamStatus">Claim Status</label>
+                            <input type="text" id="clamStatus" ng-model="currentStock.clamStatus" class="form-control" placeholder="Claim Status" />
+                        </div>
+                        <div class="form-group">
+                            <label for="qty">Quantity</label>
+                            <input type="number" id="qty" ng-model="currentStock.qty" class="form-control" placeholder="Quantity" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="rate">Rate</label>
+                            <input type="number" id="rate" ng-model="currentStock.rate" class="form-control" placeholder="Rate" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="value">Value</label>
+                            <input type="number" id="value" ng-model="currentStock.value" class="form-control" placeholder="Value" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="brokerage">Brokerage</label>
+                            <input type="number" id="brokerage" ng-model="currentStock.brokerage" class="form-control" placeholder="Brokerage" />
+                        </div>
+                        <div class="form-group">
+                            <label for="ptbf">
+                                Process to be follow
+                            </label>
+                            <textarea type="text" id="ptbf" ng-model="currentStock.ptbf" class="form-control" placeholder="PTBF" ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="remarks">Remarks</label>
+                            <textarea id="remarks" ng-model="currentStock.remarks" class="form-control" placeholder="Remarks"></textarea>
+                        </div>
+                        
+                      
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Stock' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', []).controller('StockController', function ($scope, $http) {
+            $scope.stocks = [];
+            $scope.customers = [];
+            $scope.currentStock = {};
+            $scope.isEditing = false;
+            var isProcessing = false;
+
+            showLoader();
+
+            // Load Stocks
+            $scope.loadStocks = function () {
+                $http.get('/Enquiry/GetStocks').then(function (response) {
+                    $scope.stocks = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+            };
+
+            // Load Customers
+            $scope.loadCustomers = function () {
+                $http.get('/Master/GetCustomers').then(function (response) {
+                    $scope.customers = response.data;
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                });
+            };
+
+            // Get Customer Name by ID
+            $scope.getCustomerName = function (customerId) {
+                const customer = $scope.customers.find(c => c.id === customerId);
+                return customer ? customer.customerName : 'Unknown';
+            };
+
+            // Open Modal
+            $scope.openStockModal = function (stock = null) {
+                $scope.isEditing = !!stock;
+                $scope.currentStock = stock ? angular.copy(stock) : {};
+                $('#stockModal').modal('show');
+            };
+
+            // Save Stock
+            $scope.saveStock = function () {
+                if (isProcessing) return;
+                isProcessing = true;
+                const url = $scope.isEditing ? `/Enquiry/UpdateStock/${$scope.currentStock.id}` : '/Enquiry/CreateStock';
+                $http.post(url, $scope.currentStock).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadStocks();
+                        $('#stockModal').modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue with the operation.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            };
+
+            // Initial Load
+            $scope.loadStocks();
+            $scope.loadCustomers();
+        });
+    </script>
+</body>
+</html>
+

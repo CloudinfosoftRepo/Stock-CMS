@@ -4,14 +4,18 @@ using Stock_CMS.Models;
 
 namespace Stock_CMS.AutoMapper
 {
-	public class stockMapper : Profile
+	public class emMapper : Profile
 	{
-		public stockMapper()
+		public emMapper()
 		{
             CreateMap<TblRole, RoleDto>().ReverseMap();
             CreateMap<TblUser, UserDto>().ReverseMap();
             CreateMap<TblCustomer, CustomerDto>().ReverseMap();
+			
+			CreateMap<TblStock, StockDto>()
+			    .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.CustomerName))
+				.ReverseMap();
 
-        }
+		}
     }
 }

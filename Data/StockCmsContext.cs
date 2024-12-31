@@ -20,12 +20,15 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
+    public virtual DbSet<TblStock> TblStocks { get; set; }
+
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblCustomer>(entity =>
         {
@@ -51,6 +54,47 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TblStock>(entity =>
+        {
+            entity.ToTable("Tbl_Stock");
+
+            entity.Property(e => e.Brokerage).HasColumnName("brokerage");
+            entity.Property(e => e.ClamStatus)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Clam_Status");
+            entity.Property(e => e.CompanyName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.CustomerId).HasColumnName("Customer_Id");
+            entity.Property(e => e.FirstHolder)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("First_Holder");
+            entity.Property(e => e.FolioNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Folio_No");
+            entity.Property(e => e.Ptbf)
+                .IsUnicode(false)
+                .HasColumnName("PTBF");
+            entity.Property(e => e.Remarks).IsUnicode(false);
+            entity.Property(e => e.SecondHolder)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Second_Holder");
+            entity.Property(e => e.ThirdHolder)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Third_Holder");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.TblStocks)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK_Tbl_Stock_Tbl_Stock");
         });
 
         modelBuilder.Entity<TblUser>(entity =>

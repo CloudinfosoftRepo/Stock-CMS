@@ -22,4 +22,6 @@ public partial class TblCustomer
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
+
+    public virtual ICollection<TblStock> TblStocks { get; set; } = new List<TblStock>();
 }

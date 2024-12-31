@@ -39,7 +39,7 @@ public static class ConfigureServices
         // Add AutoMapper
         var mapperConfig = new MapperConfiguration(mc =>
         {
-            mc.AddProfile(new stockMapper());
+            mc.AddProfile(new emMapper());
         });
 
         IMapper mapper = mapperConfig.CreateMapper();
@@ -57,5 +57,8 @@ public static class ConfigureServices
         services.AddTransient<ICustomerService, CustomerService>();
         services.AddTransient<ICustomerRepository, CustomerRepository>();
 
-    }
+		services.AddTransient<IStockService, StockService>();
+		services.AddTransient<IStockRepository, StockRepository>();
+
+	}
 }

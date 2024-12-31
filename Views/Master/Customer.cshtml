@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Management - ENPAY</title>
+    <title>Customer Management</title>
 </head>
 
 <body ng-controller="CustomerController">
@@ -38,6 +38,10 @@
                                             <th>Customer Name</th>
                                             <th>Mobile</th>
                                             <th>Address</th>
+                                             <th>Created At</th>
+                                            <th>Created By</th>
+                                            <th>Updated At</th>
+                                            <th>Updated By</th>
                                             <th>Edit</th>
                                         </tr>
                                     </thead>
@@ -47,6 +51,10 @@
                                             <td>{{ customer.customerName }}</td>
                                             <td>{{ customer.mobile }}</td>
                                             <td>{{ customer.address }}</td>
+                                            <td>{{ customer.createdAt | date:'short' }}</td>
+                                            <td>{{ customer.createdByName }}</td>
+                                            <td>{{ customer.updatedAt | date:'short' }}</td>
+                                            <td>{{ customer.updatedByName }}</td>
                                             <td>
                                                 <span class="btn-sm btn-custom" style="color:green;font-size:x-large" ng-click="openCustomerModal(customer)" data-tooltip="Edit Customer">
                                                     <i class="bi bi-pencil"></i>

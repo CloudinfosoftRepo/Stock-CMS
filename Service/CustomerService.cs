@@ -4,16 +4,19 @@ using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stock_CMS.Service
 {
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
+		private readonly IUserRepository _userRepository;
 
-        public CustomerService(ICustomerRepository customerRepository)
+		public CustomerService(ICustomerRepository customerRepository, IUserRepository userRepository)
         {
             _customerRepository = customerRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<long> AddCustomer(CustomerDto data)
@@ -75,8 +78,19 @@ namespace Stock_CMS.Service
         }
         public async Task<IEnumerable<CustomerDto>> GetCustomer()
         {
-            return await _customerRepository.GetCustomer();
-        }
+			var data = await _customerRepository.GetCustomer();
+
+			var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+			var users = await _userRepository.GetUsersByIds(ids);
+			var result = data.Select(x =>
+			{
+				x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+				x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+				return x;
+			});
+
+			return result;
+		}
 
     }
 }

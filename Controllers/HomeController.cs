@@ -77,13 +77,30 @@ namespace Stock_CMS.Controllers
 			}
 		}
 
-		//Login Page
-		public IActionResult Index()
-		{
-			return View();
-		}
+        //Login Page
+        public IActionResult Index()
+        {
+            try
+            {
+                var cookieValue = Request.Cookies["UserId"];
+                var userName = Request.Cookies["Username"].ToString();
+                var role = Request.Cookies["Role"].ToString();
 
-		public IActionResult ForgotPass()
+                if (cookieValue != null)
+                {  
+                    return RedirectToAction("Dashboard", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error(ex.InnerException.ToString());
+            }
+            return View();
+        }
+
+        public IActionResult ForgotPass()
 		{
 			return View();
 		}

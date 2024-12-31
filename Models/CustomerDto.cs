@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Stock_CMS.Entity;
 
@@ -22,4 +23,8 @@ public partial class CustomerDto
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
+	[NotMapped]
+	public string? CreatedByName { get; set; }
+	[NotMapped]
+	public string? UpdatedByName { get; set; }
 }

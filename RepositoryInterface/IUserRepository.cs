@@ -15,7 +15,7 @@ namespace Stock_CMS.RepositoryInterface
         Task<IEnumerable<UserDto>> GetUserByIds(int[] ids);
         Task<UserDto> GetUserByEmail(string email);
         Task<IEnumerable<UserDto>> GetUsers(Expression<Func<TblUser, bool>> criteria);
-        Task<IEnumerable<UserDto>> GetUsersByIds(int[] ids);
+        Task<IEnumerable<UserDto>> GetUsersByIds(int?[] ids);
 
     }
 }
