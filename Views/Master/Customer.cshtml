@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@* <!DOCTYPE html>
 <html lang="en" ng-app="Stock-CMS">
 <head>
     <meta charset="UTF-8">
@@ -94,6 +94,201 @@
                             <textarea id="address" ng-model="currentCustomer.address" class="form-control" placeholder="Address"></textarea>
                         </div>
                        
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Customer' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', []).controller('CustomerController', function ($scope, $http) {
+            $scope.customers = [];
+            $scope.currentCustomer = {};
+            $scope.isEditing = false;
+            var isProcessing = false;
+
+            showLoader();
+
+            // Load Customers
+            $scope.loadCustomers = function () {
+                $http.get('/Master/GetCustomers').then(function (response) {
+                    $scope.customers = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                    hideLoader();
+                });
+            };
+
+            // Open Modal
+            $scope.openCustomerModal = function (customer = null) {
+                $scope.isEditing = !!customer;
+                $scope.currentCustomer = customer ? angular.copy(customer) : {};
+                $('#customerModal').modal('show');
+            };
+
+            // Save Customer
+            $scope.saveCustomer = function () {
+                if (isProcessing) return;
+                isProcessing = true;
+                const url = $scope.isEditing ? '/Master/UpdateCustomer/' + $scope.currentCustomer.id : '/Master/CreateCustomer';
+                $http.post(url, $scope.currentCustomer).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                        $('#customerModal').modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            };
+
+            // Initial load
+            $scope.loadCustomers();
+        });
+    </script>
+</body>
+</html> *@
+
+
+
+<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management</title>
+</head>
+
+<body ng-controller="CustomerController">
+    <div class="app-wrapper">
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+            <div class="container-xl">
+                <div class="row g-3 mb-4 align-items-center justify-content-between">
+                    <div class="col-auto">
+                        <h1 class="app-page-title mb-0">Customer Management</h1>
+                    </div>
+                    <div class="col-auto">
+                        <div class="page-utilities">
+                            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                                <div class="col-auto">
+                                    <form class="table-search-form row gx-1 align-items-center">
+                                        <div class="col-auto">
+                                            <input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search">
+                                        </div>
+                                       @*  <div class="col-auto">
+                                            <button type="submit" class="btn app-btn-secondary">Search</button>
+                                        </div> *@
+                                    </form>
+                                </div><!--//col-->
+                                <div class="col-auto">
+                                    <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openCustomerModal()">Add New Customer</button>
+                                </div><!--//col-auto-->
+                            </div><!--//row-->
+                        </div><!--//page-utilities-->
+                    </div><!--//col-auto-->
+                </div><!--//row-->
+
+                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                    <div class="app-card-body">
+                        <div class="table-responsive">
+                            <table class="table app-table-hover mb-0 text-left">
+                                <thead>
+                                    <tr>
+                                        <th class="cell">#</th>
+                                        <th class="cell">Customer Name</th>
+                                        <th class="cell">Mobile</th>
+                                        <th class="cell">Address</th>
+                                        <th class="cell">Created At</th>
+                                        <th class="cell">Created By</th>
+                                        <th class="cell">Updated At</th>
+                                        <th class="cell">Updated By</th>
+                                        <th class="cell">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="customer in customers | filter: searchQuery">
+                                        <td class="cell">{{ $index + 1 }}</td>
+                                        <td class="cell">{{ customer.customerName }}</td>
+                                        <td class="cell">{{ customer.mobile }}</td>
+                                        <td class="cell">{{ customer.address }}</td>
+                                        <td class="cell">{{ customer.createdAt | date:'short' }}</td>
+                                        <td class="cell">{{ customer.createdByName }}</td>
+                                        <td class="cell">{{ customer.updatedAt | date:'short' }}</td>
+                                        <td class="cell">{{ customer.updatedByName }}</td>
+                                        <td class="cell">
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCustomerModal(customer)" data-tooltip="Edit Customer">
+                                                <i class="bi bi-pencil"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!--//table-responsive-->
+                    </div><!--//app-card-body-->
+                </div><!--//app-card-->
+            </div><!--//container-fluid-->
+        </div><!--//app-content-->
+
+
+    </div><!--//app-wrapper-->
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:65%" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveCustomer()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Customer' : 'Add Customer' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="customerName">Customer Name</label>
+                                    <input type="text" id="customerName" ng-model="currentCustomer.customerName" class="form-control" placeholder="Customer Name" required />
+                                </div>
+                            </div> 
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" id="mobile" ng-model="currentCustomer.mobile" class="form-control" placeholder="Mobile" />
+                                </div>
+                            </div> 
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <textarea id="address" ng-model="currentCustomer.address" class="form-control" placeholder="Address"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -7,7 +7,7 @@
 </head>
 
 <body ng-controller="StockController">
-    <div class="row">
+   @*  <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
@@ -95,11 +95,118 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 
+    <div class="app-wrapper">
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+            <div class="container-xl">
+                <!-- Stock Management Title and Utilities -->
+                <div class="row g-3 mb-4 align-items-center justify-content-between">
+                    <div class="col-auto">
+                        <h1 class="app-page-title mb-0">Stock Management</h1>
+                    </div>
+                    <div class="col-auto">
+                        <div class="page-utilities">
+                            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                                <!-- Search Bar -->
+                                <div class="col-auto">
+                                    <form class="table-search-form row gx-1 align-items-center">
+                                        <div class="col-auto">
+                                            <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
+                                        </div>
+                                    </form>
+                                </div><!--//col-->
+                                <!-- Add New Stock Button -->
+                                <div class="col-auto">
+                                    <button class="btn btn-custom" style="background-color:#003980;color:white" ng-click="openStockModal()">Add New Stock</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-custom"
+                                            style="background-color:#003980;color:white"
+                                            excel-export
+                                            table-id="tblstock"
+                                            file-name="Stock"
+                                            sheet-name="Sheet1"
+                                            file-type="xlsx">
+                                        Export to Excel
+                                    </button>
+                                </div>
+                               
+                            </div><!--//row-->
+                        </div><!--//table-utilities-->
+                    </div><!--//col-auto-->
+                </div><!--//row-->
+                <!-- Stock Table -->
+                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                    <div class="app-card-body">
+                        <div class="table-responsive">
+                            <table id="tblstock" class="table app-table-hover mb-0 text-left text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th class="cell">#</th>
+                                        <th class="cell">Company Name</th>
+                                        <th class="cell">Customer</th>
+                                        <th class="cell">First Holder</th>
+                                        <th class="cell">Second Holder</th>
+                                        <th class="cell">Third Holder</th>
+                                        <th class="cell">Folio No</th>
+                                        <th class="cell">Claim Status</th>
+                                        <th class="cell">Quantity</th>
+                                        <th class="cell">Rate</th>
+                                        <th class="cell">Value</th>
+                                        <th class="cell">Brokerage</th>
+                                        <th class="cell">Process to be Followed</th>
+                                        <th class="cell">Remarks</th>
+                                        <th class="cell">Processed</th>
+                                        <th class="cell">Active</th>
+                                        <th class="cell">Created At</th>
+                                        <th class="cell">Created By</th>
+                                        <th class="cell">Updated At</th>
+                                        <th class="cell">Updated By</th>
+                                        <th class="cell">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="stock in stocks | filter: searchQuery">
+                                        <td class="cell">{{ $index + 1 }}</td>
+                                        <td class="cell">{{ stock.companyName }}</td>
+                                        <td class="cell">{{ stock.customerName }}</td>
+                                        <td class="cell">{{ stock.firstHolder }}</td>
+                                        <td class="cell">{{ stock.secondHolder }}</td>
+                                        <td class="cell">{{ stock.thirdHolder }}</td>
+                                        <td class="cell">{{ stock.folioNo }}</td>
+                                        <td class="cell">{{ stock.clamStatus }}</td>
+                                        <td class="cell">{{ stock.qty }}</td>
+                                        <td class="cell">{{ stock.rate }}</td>
+                                        <td class="cell">{{ stock.value }}</td>
+                                        <td class="cell">{{ stock.brokerage }}</td>
+                                        <td class="cell">{{ stock.ptbf }}</td>
+                                        <td class="cell">{{ stock.remarks }}</td>
+                                        <td class="cell">{{ stock.isProcessed ? 'Yes' : 'No' }}</td>
+                                        <td class="cell">{{ stock.isActive ? 'Yes' : 'No' }}</td>
+                                        <td class="cell">{{ stock.createdAt | date:'short' }}</td>
+                                        <td class="cell">{{ stock.createdByName }}</td>
+                                        <td class="cell">{{ stock.updatedAt | date:'short' }}</td>
+                                        <td class="cell">{{ stock.updatedByName }}</td>
+                                        <td class="cell">
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openStockModal(stock)">
+                                                <i class="bi bi-pencil"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!--//table-responsive-->
+                    </div><!--//app-card-body-->
+                </div><!--//app-card-->
+               
+            </div><!--//container-xl-->
+        </div><!--//app-content-->
+
+    </div><!--//app-wrapper-->
     <!-- Add/Edit Stock Modal -->
     <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" style="max-width:75%" role="document">
             <div class="modal-content">
                 <form ng-submit="saveStock()">
                     <div class="modal-header">
@@ -107,62 +214,111 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="customerId">Customer</label>
-                            <select id="customerId" ng-model="currentStock.customerId" ng-options="customer.id as customer.customerName for customer in customers" class="form-control" required>
-                               
-                            </select>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="customerId">Customer</label>
+                                    <select id="customerId" ng-model="currentStock.customerId" ng-options="customer.id as customer.customerName for customer in customers" class="form-control" required>
+                                        <option value="" disabled>Select Customer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="companyName">Company Name</label>
+                                    <input type="text" id="companyName" ng-model="currentStock.companyName" class="form-control" placeholder="Company Name" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="firstHolder">First Holder</label>
+                                    <input type="text" id="firstHolder" ng-model="currentStock.firstHolder" class="form-control" placeholder="First Holder" />
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="form-group">
-                            <label for="companyName">Company Name</label>
-                            <input type="text" id="companyName" ng-model="currentStock.companyName" class="form-control" placeholder="Company Name" required />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="secondHolder">Second Holder</label>
+                                    <input type="text" id="secondHolder" ng-model="currentStock.secondHolder" class="form-control" placeholder="Second Holder" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="thirdHolder">Third Holder</label>
+                                    <input type="text" id="thirdHolder" ng-model="currentStock.thirdHolder" class="form-control" placeholder="Third Holder" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="folioNo">Folio No</label>
+                                    <input type="text" id="folioNo" ng-model="currentStock.folioNo" class="form-control" placeholder="Folio No" />
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="form-group">
-                            <label for="firstHolder">First Holder</label>
-                            <input type="text" id="firstHolder" ng-model="currentStock.firstHolder" class="form-control" placeholder="First Holder" />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="clamStatus">Claim Status</label>
+                                    <input type="text" id="clamStatus" ng-model="currentStock.clamStatus" class="form-control" placeholder="Claim Status" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="qty">Quantity</label>
+                                    <input type="number" id="qty" ng-model="currentStock.qty" class="form-control" placeholder="Quantity" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="rate">Rate</label>
+                                    <input type="number" id="rate" ng-model="currentStock.rate" class="form-control" placeholder="Rate" required />
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="form-group">
-                            <label for="secondHolder">Second Holder</label>
-                            <input type="text" id="secondHolder" ng-model="currentStock.secondHolder" class="form-control" placeholder="Second Holder" />
-                        </div>
-                        <div class="form-group">
-                            <label for="thirdHolder">Third Holder</label>
-                            <input type="text" id="thirdHolder" ng-model="currentStock.thirdHolder" class="form-control" placeholder="Third Holder" />
-                        </div>
-                        <div class="form-group">
-                            <label for="folioNo">Folio No</label>
-                            <input type="text" id="folioNo" ng-model="currentStock.folioNo" class="form-control" placeholder="Folio No" />
-                        </div>
-                        <div class="form-group">
-                            <label for="clamStatus">Claim Status</label>
-                            <input type="text" id="clamStatus" ng-model="currentStock.clamStatus" class="form-control" placeholder="Claim Status" />
-                        </div>
-                        <div class="form-group">
-                            <label for="qty">Quantity</label>
-                            <input type="number" id="qty" ng-model="currentStock.qty" class="form-control" placeholder="Quantity" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="rate">Rate</label>
-                            <input type="number" id="rate" ng-model="currentStock.rate" class="form-control" placeholder="Rate" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="value">Value</label>
-                            <input type="number" id="value" ng-model="currentStock.value" class="form-control" placeholder="Value" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="brokerage">Brokerage</label>
-                            <input type="number" id="brokerage" ng-model="currentStock.brokerage" class="form-control" placeholder="Brokerage" />
-                        </div>
-                        <div class="form-group">
-                            <label for="ptbf">
-                                Process to be follow
-                            </label>
-                            <textarea type="text" id="ptbf" ng-model="currentStock.ptbf" class="form-control" placeholder="PTBF" ></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="remarks">Remarks</label>
-                            <textarea id="remarks" ng-model="currentStock.remarks" class="form-control" placeholder="Remarks"></textarea>
-                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="value">Value</label>
+                                    <input type="number" id="value" ng-model="currentStock.value" class="form-control" placeholder="Value" required />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="brokerage">Brokerage</label>
+                                    <input type="number" id="brokerage" ng-model="currentStock.brokerage" class="form-control" placeholder="Brokerage" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="ptbf">
+                                        Process to be follow
+                                    </label>
+                                    <textarea type="text" id="ptbf" ng-model="currentStock.ptbf" class="form-control" placeholder="PTBF"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="remarks">Remarks</label>
+                                    <textarea id="remarks" ng-model="currentStock.remarks" class="form-control" placeholder="Remarks"></textarea>
+                                </div>
+                            </div>
+                     </div>
+                       
+                        
+                        
+                       
+                        
+                        
+                        
+                        
+                       
+                        
+                      
+                       
                         
                       
                     </div>
