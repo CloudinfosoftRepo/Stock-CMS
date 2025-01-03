@@ -92,5 +92,19 @@ namespace Stock_CMS.Service
 			return result;
 		}
 
+        public async Task<long> UpdateCustomerbyColumn(CustomerDto customer)
+        {
+            customer.IsClient = true;
+            List<CustomerDto> customerDtos = new List<CustomerDto>() { customer };
+			var result = await _customerRepository.UpdateCustomerbyColumn(customerDtos, ["IsClient", "UpdatedAt", "UpdatedBy"]);
+            if (result.Any())
+            {
+                return result.FirstOrDefault().Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

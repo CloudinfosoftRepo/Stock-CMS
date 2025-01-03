@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Stock_CMS.Common;
-using Stock_CMS.Data;
 using Stock_CMS.Entity;
 using Stock_CMS.RepositoryInterface;
 
 namespace Stock_CMS.Repository
 {
-    public class StockRepository : EfRepository<TblStock, StockDto>, IStockRepository
+	public class StockRepository : EfRepository<TblStock, StockDto>, IStockRepository
 	{
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;
@@ -19,6 +18,10 @@ namespace Stock_CMS.Repository
         public async Task<IEnumerable<StockDto>> GetStockById(long Id)
         {
             return await GetMany(x => x.Id == Id);
+        }  
+        public async Task<IEnumerable<StockDto>> GetStockByClientId(long Id)
+        {
+            return await GetMany(x => x.CustomerId == Id && x.IsActive == true);
         }
        
         public async Task<IEnumerable<StockDto>> GetStock()

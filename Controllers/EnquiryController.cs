@@ -21,11 +21,11 @@ namespace Stock_CMS.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> GetStocks()
+		public async Task<ActionResult> GetStocks(long id)
 		{
 			try
 			{
-				var Stocks = await _StockService.GetStock();
+				var Stocks = await _StockService.GetStockByClientId(id);
 				return Json(Stocks);
 			}
 			catch (Exception ex)

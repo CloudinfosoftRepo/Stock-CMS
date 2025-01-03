@@ -7,7 +7,6 @@ using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
-using Stock_CMS.Data;
 
 
 public static class ConfigureServices

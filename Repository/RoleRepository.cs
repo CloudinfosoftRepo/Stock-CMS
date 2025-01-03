@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Stock_CMS.Common;
-using Stock_CMS.Data;
 using Stock_CMS.Entity;
 using Stock_CMS.Models;
 using Stock_CMS.RepositoryInterface;
 
 namespace Stock_CMS.Repository
 {
-    public class RoleRepository : EfRepository<TblRole, RoleDto>, IRoleRepository
+	public class RoleRepository : EfRepository<TblRole, RoleDto>, IRoleRepository
     {
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;

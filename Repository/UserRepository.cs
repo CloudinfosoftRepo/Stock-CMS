@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
-using System.Collections.Generic;
 using Stock_CMS.Common;
 using Stock_CMS.Entity;
 using Stock_CMS.RepositoryInterface;
 using System.Linq.Expressions;
 using Stock_CMS.Models;
-using Stock_CMS.Data;
 
 namespace Stock_CMS.Repository
 {
-    public class UserRepository : EfRepository<TblUser, UserDto>, IUserRepository
+	public class UserRepository : EfRepository<TblUser, UserDto>, IUserRepository
     {
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;

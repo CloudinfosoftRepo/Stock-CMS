@@ -16,7 +16,7 @@ namespace Stock_CMS.Controllers
         }
         
         //Customer
-        public IActionResult Customer()
+        public IActionResult Client()
         {
             return View();
         }
@@ -54,9 +54,9 @@ namespace Stock_CMS.Controllers
 
                     var result = await _customerService.AddCustomer(customer);
                     customer.Id = result;
-                    string message = result == -1 ? "Customer already exists." :
-                     result == 0 ? "Failed to add customer." :
-                     $"Customer added successfully.";
+                    string message = result == -1 ? "Client already exists." :
+                     result == 0 ? "Failed to add Client." :
+                     "Client added successfully.";
                     bool success = result > 0;
                     return Json(new { success = success, message = message, customer });
                 }
@@ -84,9 +84,9 @@ namespace Stock_CMS.Controllers
                 customer.UpdatedBy = int.Parse(userId);
                 var result = await _customerService.UpdateCustomer(customer);
                 string message = result == -2 ? "No record Found." :
-                   result == -1 ? "customer already exists." :
-                   result == 0 ? "Failed to update customer." :
-                   "customer updated successfully.";
+                   result == -1 ? "Client already exists." :
+                   result == 0 ? "Failed to update Client." :
+				   "Client updated successfully.";
                 bool success = result > 0;
                 return Json(new { success = success, message = message });
             }
@@ -108,5 +108,33 @@ namespace Stock_CMS.Controllers
             return Json(new { success = true });
         }
 
-    }
+		[HttpPost]
+		public async Task<JsonResult> UpdateCustomerbyColumn([FromBody] CustomerDto customer)
+		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+			}
+
+			try
+			{
+				var userId = HttpContext.Request.Cookies["UserId"];
+
+				customer.UpdatedBy = int.Parse(userId);
+                customer.UpdatedAt = DateTime.Now;
+				var result = await _customerService.UpdateCustomerbyColumn(customer);
+                string message = result == -2 ? "No record Found." :
+                  result == -1 ? "Client already exists." :
+                  result == 0 ? "Failed to update Client." :
+                  "Client updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+	}
 }

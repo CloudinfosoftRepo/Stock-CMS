@@ -27,4 +27,6 @@ public partial class CustomerDto
 	public string? CreatedByName { get; set; }
 	[NotMapped]
 	public string? UpdatedByName { get; set; }
+
+	public bool IsClient { get; set; }
 }

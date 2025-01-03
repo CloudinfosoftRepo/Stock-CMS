@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Internal;
 using AutoMapper.QueryableExtensions;
 using EFCore.BulkExtensions;
 using Stock_CMS.Entity;
 using Microsoft.EntityFrameworkCore;
-using Stock_CMS.Common;
-using Stock_CMS.Data;
 
 namespace Stock_CMS.Common
 {
-    public class EfRepository<T, TModel> : IRepository<T, TModel>, IAsyncRepository<T, TModel>
+	public class EfRepository<T, TModel> : IRepository<T, TModel>, IAsyncRepository<T, TModel>
         where T : class
         where TModel : class
     {
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;
         private readonly int _bulkInsertorUpdateLimit = 1000;
+		//private readonly ILogger<EfRepository<T, TModel>>  _logger;
 
-        public EfRepository(StockCmsContext dbContext, IMapper mapper)
+
+		public EfRepository( StockCmsContext dbContext, IMapper mapper)
         {
+           
             _dbContext = dbContext;
             _mapper = mapper;
         }
@@ -88,7 +85,29 @@ namespace Stock_CMS.Common
                 return Enumerable.Empty<TModel>();
             }
         }
-        protected async Task<IEnumerable<TModel>> DeleteEntities(Func<T, bool> predicate)
+
+		protected async Task<IEnumerable<TModel>> UpdateEntitiesArray(IEnumerable<TModel> models, params string[] columnsToUpdate)
+		{
+			try
+			{
+				var entities = _mapper.Map<IEnumerable<TModel>, T[]>(models);
+				var bulkConfig = new BulkConfig
+				{
+					BatchSize = _bulkInsertorUpdateLimit,
+					PropertiesToInclude = columnsToUpdate.ToList() 
+				};
+				_dbContext.BulkUpdate(entities, bulkConfig);
+				await _dbContext.BulkSaveChangesAsync();
+				return _mapper.Map<T[], IEnumerable<TModel>>(entities);
+			}
+			catch (Exception ex)
+			{
+				//_logger.LogError(ex, "Error updating entities Array");
+				return Enumerable.Empty<TModel>();
+			}
+		}
+
+		protected async Task<IEnumerable<TModel>> DeleteEntities(Func<T, bool> predicate)
         {
             try
             {

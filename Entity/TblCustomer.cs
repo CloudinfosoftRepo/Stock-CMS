@@ -23,5 +23,7 @@ public partial class TblCustomer
 
     public int? UpdatedBy { get; set; }
 
+    public bool IsClient { get; set; }
+
     public virtual ICollection<TblStock> TblStocks { get; set; } = new List<TblStock>();
 }

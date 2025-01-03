@@ -14,6 +14,7 @@ namespace Stock_CMS.AutoMapper
 			
 			CreateMap<TblStock, StockDto>()
 			    .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.CustomerName))
+			    .ForMember(dest => dest.IsClient, opt => opt.MapFrom(src => src.Customer.IsClient))
 				.ReverseMap();
 
 		}

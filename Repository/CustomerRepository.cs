@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Stock_CMS.Common;
-using Stock_CMS.Data;
 using Stock_CMS.Entity;
 using Stock_CMS.RepositoryInterface;
 
 namespace Stock_CMS.Repository
 {
-    public class CustomerRepository : EfRepository<TblCustomer, CustomerDto>, ICustomerRepository
+	public class CustomerRepository : EfRepository<TblCustomer, CustomerDto>, ICustomerRepository
     {
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;
@@ -40,6 +39,11 @@ namespace Stock_CMS.Repository
         {
 
             return await UpdateEntities(data);
+        }
+
+        public async Task<IEnumerable<CustomerDto>> UpdateCustomerbyColumn(IEnumerable<CustomerDto> data, string[] columns)
+        {
+            return await UpdateEntitiesArray(data , columns);
         }
 
 

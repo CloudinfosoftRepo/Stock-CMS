@@ -51,7 +51,10 @@ public partial class StockDto
 	[NotMapped]
 	public string? CreatedByName { get; set; }
 	[NotMapped]
-	public string? UpdatedByName { get; set; }
+	public string? UpdatedByName { get; set; }	
+    
+    [NotMapped]
+	public bool IsClient { get; set; }
 	
 	
 

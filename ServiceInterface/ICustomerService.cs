@@ -9,6 +9,7 @@ namespace Stock_CMS.ServiceInterface
         Task<long> AddCustomer(CustomerDto data);
         Task<Int32> UpdateCustomer(CustomerDto data);
 
+        Task<long> UpdateCustomerbyColumn(CustomerDto customer);
 
-    }
+	}
 }

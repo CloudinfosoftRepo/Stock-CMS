@@ -1,4 +1,4 @@
-﻿<body ng-app="Stock-CMS">
+﻿@* <body ng-app="Stock-CMS">
 <h1>Dashboard</h1>
 </body>
 <script>
@@ -9,3 +9,26 @@
 
     });
 </script>
+ *@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<body ng-controller="dashboardCtrl">
+   
+</body>
+<script>
+
+    var app = angular.module('Stock-CMS', []);
+
+    app.controller('dashboardCtrl', function ($scope, $http, $window) {
+
+    });
+</script>
+</html>
+
