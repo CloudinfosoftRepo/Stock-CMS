@@ -103,14 +103,14 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div><!--//table-responsive-->
-                    </div><!--//app-card-body-->
-                </div><!--//app-card-->
+                        </div>
+                    </div>
+                </div>
                
-            </div><!--//container-xl-->
-        </div><!--//app-content-->
+            </div>
+        </div>
 
-    </div><!--//app-wrapper-->
+    </div>
     <!-- Add/Edit Stock Modal -->
     <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" style="max-width:75%" role="document">
@@ -275,6 +275,8 @@
                     if (isProcessing) return;
                     isProcessing = true;
                     $scope.currentStock.customerId = id;
+                    $scope.currentStock.customerId = $scope.isEditing ? $scope.currentStock.customerId : id
+
                     const url = $scope.isEditing ? `/Enquiry/UpdateStock/${$scope.currentStock.id}` : '/Enquiry/CreateStock';
                     $http.post(url, $scope.currentStock).then(function (response) {
                         if (response.data.success) {

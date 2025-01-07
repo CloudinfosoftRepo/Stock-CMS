@@ -17,6 +17,8 @@ namespace Stock_CMS.AutoMapper
 			    .ForMember(dest => dest.IsClient, opt => opt.MapFrom(src => src.Customer.IsClient))
 				.ReverseMap();
 
+			CreateMap<TblDoc, DocDto>().ReverseMap();
+
 		}
     }
 }

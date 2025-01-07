@@ -58,6 +58,9 @@ public static class ConfigureServices
 
 		services.AddTransient<IStockService, StockService>();
 		services.AddTransient<IStockRepository, StockRepository>();
+        
+        services.AddTransient<IDocService, DocService>();
+		services.AddTransient<IDocRepository, DocRepository>();
 
 	}
 }

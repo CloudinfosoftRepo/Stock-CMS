@@ -17,17 +17,18 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblCustomer> TblCustomers { get; set; }
 
+    public virtual DbSet<TblDoc> TblDocs { get; set; }
+
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
     public virtual DbSet<TblStock> TblStocks { get; set; }
 
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=HP\\SQLEXPRESS; database=Stock-CMS;trusted_connection=true; TrustServerCertificate=True");
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblCustomer>(entity =>
         {
@@ -42,6 +43,35 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<TblDoc>(entity =>
+        {
+            entity.ToTable("Tbl_Doc");
+
+            entity.Property(e => e.Aadhar)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.AadharUrl)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Pan)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("PAN");
+            entity.Property(e => e.Panurl)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("PANUrl");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.TblDocs)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK_Tbl_Doc_Tbl_Customer");
         });
 
         modelBuilder.Entity<TblRole>(entity =>

@@ -88,7 +88,8 @@ namespace Stock_CMS.Controllers
 
                 if (cookieValue != null)
                 {  
-                    return RedirectToAction("Dashboard", "Home");
+                    //return RedirectToAction("Dashboard", "Home");
+					return RedirectToAction("Client", "Master");
                 }
             }
             catch (Exception ex)

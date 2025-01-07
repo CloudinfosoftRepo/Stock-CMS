@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body ng-controller="DocController">
+    <div class="app-wrapper">
+        <h1 class="app-page-title mb-0">Document Management</h1>
+        <button class="btn btn-custom" style="background-color:#003980;color:white" ng-click="openDocModal()">Add New</button>
+        <h3 class="mt-5">Documents List</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Document Name</th>
+                    <th>Pan Number</th>
+                    <th>Aadhar Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="doc in docs">
+                    <td>{{ doc.name }}</td>
+                    <td>{{ doc.pan }}</td>
+                    <td>{{ doc.aadhar }}</td>
+                    <td>
+                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
+                            <i class="bi bi-pencil"></i>
+                        </span>
+                        <button hidden class="btn btn-danger" ng-click="deleteDoc(doc.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Modal for Add/Edit Document -->
+        <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-labelledby="docModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Doc' : 'Add Doc' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="saveDoc()">
+                           
+                            <div class="form-group">
+                                <label for="name">Document Name</label>
+                                <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="pan">Pan Number</label>
+                                <input type="text" id="pan" ng-model="currentDoc.pan" class="form-control" placeholder="Enter Pan Number" required />
+                                <label for="panFile">Pan File</label>
+                                <input type="file" id="panFile" class="form-control" file-model="currentDoc.panFile" ng-model="currentDoc.panFile" />
+                            </div>
+                            <div class="form-group">
+                                <label for="aadhar">Aadhar Number</label>
+                                <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
+                                <label for="aadharFile">Aadhar File</label>
+                                <input type="file" id="aadharFile" class="form-control" file-model="currentDoc.aadharFile" ng-model="currentDoc.aadharFile" />
+                            </div>
+                            
+                            <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    angular.module('Stock-CMS', [])
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                element.bind('change', function () {
+                    var file = element[0].files[0];
+                    scope.$apply(function () {
+                        ngModel.$setViewValue(file);
+                    });
+                });
+            }
+        };
+    }])
+    .controller('DocController', function ($scope, $http) {
+        $scope.currentDoc = {};
+        $scope.docs = [];
+        $scope.isEditing = false;
+        var isProcessing = false;
+
+         showLoader();
+
+             var path = window.location.pathname;
+            var segments = path.split('/');
+            var id = segments[segments.length - 1];
+
+         $scope.loadDocs = function () {
+                 if (id)
+                 {
+                    $http.get('/doc/getDocs/'+ id).then(function (response) {
+                    $scope.docs = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+                }
+            };
+
+        $scope.openDocModal = function (doc = null) {
+            $scope.isEditing = !!doc;
+            $scope.currentDoc = doc ? angular.copy(doc) : {};
+            $('#docModal').modal('show');
+        };
+
+        $scope.saveDoc = function () {
+           if (id) 
+                {
+                    if (isProcessing) return;
+                    isProcessing = true;
+            var formData = new FormData();
+            formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
+            formData.append('name', $scope.currentDoc.name);
+            formData.append('pan', $scope.currentDoc.pan);
+            formData.append('aadhar', $scope.currentDoc.aadhar);
+
+            if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
+            if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
+
+            var url = $scope.isEditing 
+                ? '/doc/update/' + $scope.currentDoc.id 
+                : '/doc/create';
+
+            $http.post(url, formData, {
+                headers: { 'Content-Type': undefined }
+            }).then(function (response) {
+                Swal.fire({
+                    title: response.data.success ? 'Success' : 'Error',
+                    text: response.data.success ? 'Operation successful!' : (response.data.message || 'An error occurred'),
+                    icon: response.data.success ? 'success' : 'error',
+                    confirmButtonText: 'OK'
+                });
+                $scope.loadDocs();
+                $('#docModal').modal('hide');
+            });
+                }
+        };
+
+        $scope.deleteDoc = function (docId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $http.delete('/doc/delete/' + docId).then(function (response) {
+                        Swal.fire({
+                            title: response.data.success ? 'Deleted!' : 'Error',
+                            text: response.data.success ? 'The document has been deleted.' : 'An error occurred.',
+                            icon: response.data.success ? 'success' : 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadData();
+                    });
+                }
+            });
+        };
+
+        $scope.loadDocs();
+    });
+</script>
+
+</body>
+</html>

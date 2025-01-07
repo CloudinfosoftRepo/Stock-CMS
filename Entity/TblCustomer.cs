@@ -25,5 +25,7 @@ public partial class TblCustomer
 
     public bool IsClient { get; set; }
 
+    public virtual ICollection<TblDoc> TblDocs { get; set; } = new List<TblDoc>();
+
     public virtual ICollection<TblStock> TblStocks { get; set; } = new List<TblStock>();
 }

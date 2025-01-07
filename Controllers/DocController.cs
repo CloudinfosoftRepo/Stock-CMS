@@ -1,32 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Stock_CMS.Entity;
+using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
 
 namespace Stock_CMS.Controllers
 {
-	public class EnquiryController : Controller
+	public class DocController : Controller
 	{
-		private readonly IStockService _StockService;
-		private readonly ILogger<EnquiryController> _logger;
+		private readonly IDocService _docService;
+		private readonly ILogger<MasterController> _logger;
 
-		public EnquiryController(ILogger<EnquiryController> logger, IStockService StockService)
+		public DocController(ILogger<MasterController> logger, IDocService DocService)
 		{
 			_logger = logger;
-			_StockService = StockService;
+			_docService = DocService;
 		}
-
-		public IActionResult Index()
+		public IActionResult Doc()
 		{
 			return View();
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> GetStocks(long id)
+	  public async Task<ActionResult> GetDocs(long id)
 		{
 			try
 			{
-				var Stocks = await _StockService.GetStockByClientId(id);
-				return Json(Stocks);
+				var Docs = await _docService.GetDocByClientId(id);
+				return Json(Docs);
 			}
 			catch (Exception ex)
 			{
@@ -38,9 +38,7 @@ namespace Stock_CMS.Controllers
 			}
 
 		}
-
-		[HttpPost]
-		public async Task<JsonResult> CreateStock([FromBody] StockDto Stock)
+		public async Task<IActionResult> create([FromForm] DocDto doc)
 		{
 			if (ModelState.IsValid)
 			{
@@ -48,17 +46,17 @@ namespace Stock_CMS.Controllers
 				{
 					var userId = HttpContext.Request.Cookies["UserId"];
 
-					Stock.IsActive = true;
-					Stock.CreatedAt = DateTime.Now;
-					Stock.CreatedBy = int.Parse(userId);
+					doc.IsActive = true;
+					doc.CreatedAt = DateTime.Now;
+					doc.CreatedBy = int.Parse(userId);
 
-					var result = await _StockService.AddStock(Stock);
-					Stock.Id = result;
-					string message = result == -1 ? "Stock already exists." :
-					 result == 0 ? "Failed to add Stock." :
-					 $"Stock added successfully.";
+					var result = await _docService.AddDoc(doc);
+					doc.Id = result;
+					string message = result == -1 ? "Doc already exists." :
+					 result == 0 ? "Failed to add Doc." :
+					 $"Doc added successfully.";
 					bool success = result > 0;
-					return Json(new { success = success, message = message, Stock });
+					return Json(new { success = success, message = message, doc });
 				}
 				catch (Exception ex)
 				{
@@ -68,9 +66,7 @@ namespace Stock_CMS.Controllers
 			}
 			return Json(new { success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors) });
 		}
-
-		[HttpPost]
-		public async Task<JsonResult> UpdateStock([FromBody] StockDto Stock)
+		public async Task<IActionResult> update([FromForm] DocDto doc)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -81,8 +77,8 @@ namespace Stock_CMS.Controllers
 			{
 				var userId = HttpContext.Request.Cookies["UserId"];
 
-				Stock.UpdatedBy = int.Parse(userId);
-				var result = await _StockService.UpdateStock(Stock);
+				doc.UpdatedBy = int.Parse(userId);
+				var result = await _docService.UpdateDoc(doc);
 				string message = result == -2 ? "No record Found." :
 				   result == -1 ? "Stock already exists." :
 				   result == 0 ? "Failed to update Stock." :
@@ -97,15 +93,5 @@ namespace Stock_CMS.Controllers
 			}
 		}
 
-		[HttpPost]
-		public async Task<JsonResult> DeleteStock(long id)
-		{
-			// var product = await _context.TblProducts.FindAsync(id);
-			//if (product == null) return Json(new { success = false });
-
-			// _context.TblProducts.Remove(product);
-			//await _context.SaveChangesAsync();
-			return Json(new { success = true });
-		}
 	}
 }
