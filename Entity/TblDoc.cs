@@ -13,7 +13,7 @@ public partial class TblDoc
 
     public string? Pan { get; set; }
 
-    public string? Panurl { get; set; }
+    public string? PanUrl { get; set; }
 
     public string? Aadhar { get; set; }
 

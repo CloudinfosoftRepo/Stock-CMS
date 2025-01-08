@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Features;
+using Stock_CMS.Common;
 using Stock_CMS.Entity;
 using Stock_CMS.Models;
 using Stock_CMS.Repository;
@@ -12,11 +13,13 @@ namespace Stock_CMS.Service
 	{
         private readonly IDocRepository _DocRepository;
 		private readonly IUserRepository _userRepository;
+        private readonly FileUpload _fileUpload;
 
-		public DocService(IDocRepository DocRepository, IUserRepository userRepository)
+		public DocService(IDocRepository DocRepository, IUserRepository userRepository, FileUpload fileUpload)
         {
             _DocRepository = DocRepository;
             _userRepository = userRepository;
+            _fileUpload = fileUpload;
         }
 
         public async Task<long> AddDoc(DocDto data)
@@ -26,6 +29,28 @@ namespace Stock_CMS.Service
             else
             {
                 List<DocDto> dataList = new List<DocDto> { data };
+
+
+                if (data!= null)
+                {
+
+					if (data.AadharFile != null)
+					{
+						var aadharUpload = _fileUpload.StoreFile("ClientAadhar", data.AadharFile);
+						if (aadharUpload.status == true)
+						{
+							data.AadharUrl = aadharUpload.message;
+						}
+					}
+					if (data.PanFile != null)
+					{
+						var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile);
+						if (panUpload.status == true)
+						{
+							data.PanUrl = panUpload.message;
+						}
+					}
+				}
                 var result = await _DocRepository.AddDoc(dataList);
                 if (result.Any())
                 {
@@ -57,9 +82,36 @@ namespace Stock_CMS.Service
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
 
-                }
 
-                List<DocDto> updateList = new List<DocDto> { data };
+
+                    if (data.AadharFile != null)
+                    {
+                        var aadharUpload = _fileUpload.StoreFile("ClientAadhar", data.AadharFile);
+                        if (aadharUpload.status == true)
+                        {
+                            data.AadharUrl = aadharUpload.message;
+                        }
+                    }
+                    else
+                    {
+                        data.AadharUrl = existingProduct.AadharUrl;
+                    }
+                    if (data.PanFile != null)
+                    {
+                        var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile);
+                        if (panUpload.status == true)
+                        {
+                            data.PanUrl = panUpload.message;
+                        }
+                    }
+					else
+					{
+						data.PanUrl = existingProduct.PanUrl;
+					}
+
+				}
+
+				List<DocDto> updateList = new List<DocDto> { data };
                 var result = await _DocRepository.UpdateDoc(updateList);
                 if (result.Any())
                 {

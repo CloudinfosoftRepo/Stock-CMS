@@ -80,9 +80,9 @@ namespace Stock_CMS.Controllers
 				doc.UpdatedBy = int.Parse(userId);
 				var result = await _docService.UpdateDoc(doc);
 				string message = result == -2 ? "No record Found." :
-				   result == -1 ? "Stock already exists." :
-				   result == 0 ? "Failed to update Stock." :
-				   "Stock updated successfully.";
+				   result == -1 ? "Doc already exists." :
+				   result == 0 ? "Failed to update Doc." :
+				   "Doc updated successfully.";
 				bool success = result > 0;
 				return Json(new { success = success, message = message });
 			}

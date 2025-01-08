@@ -7,6 +7,7 @@ using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
+using Stock_CMS.Common;
 
 
 public static class ConfigureServices
@@ -59,6 +60,8 @@ public static class ConfigureServices
 		services.AddTransient<IStockService, StockService>();
 		services.AddTransient<IStockRepository, StockRepository>();
         
+        services.AddTransient<FileUpload>();
+
         services.AddTransient<IDocService, DocService>();
 		services.AddTransient<IDocRepository, DocRepository>();
 

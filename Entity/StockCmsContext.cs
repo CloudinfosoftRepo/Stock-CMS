@@ -63,7 +63,7 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("PAN");
-            entity.Property(e => e.Panurl)
+            entity.Property(e => e.PanUrl)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");

@@ -45,7 +45,7 @@
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                     <div class="app-card-body">
                         <div class="table-responsive">
-                            <table class="table app-table-hover mb-0 text-left">
+                            <table class="table app-table-hover mb-0 text-left text-nowrap">
                                 <thead>
                                     <tr>
                                         <th class="cell">#</th>
@@ -57,7 +57,9 @@
                                         <th class="cell">Updated At</th>
                                         <th class="cell">Updated By</th>
                                         <th class="cell">Edit</th>
-                                        <th ng-hide="search" class="cell">Convert to Client</th>
+                                        <th ng-hide="search" class="cell">C2C</th>
+                                        @* <th ng-hide="search" class="cell">IsClient</th> *@
+                                        @* <th ng-hide="search" class="cell">Convert to Client</th> *@
                                         <th class="cell">Docs</th>
                                     </tr>
                                 </thead>
@@ -82,8 +84,13 @@
                                                 <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m12 0-.66.03 3.81 3.81 1.35-1.34c3.25 1.57 5.59 4.74 5.95 8.5h1.5c-.51-6.16-5.66-11-11.95-11m0 4c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5m-11.95 9c.51 6.16 5.66 11 11.95 11l.66-.03-3.81-3.81-1.35 1.34c-3.25-1.56-5.59-4.74-5.95-8.5zm11.95 0c-3.87 0-7 1.57-7 3.5v1.5h14v-1.5c0-1.93-3.13-3.5-7-3.5z" /></svg>
                                             </span>
                                         </td>
-                                       
-                                        <td class="cell text-center" ng-click="manageDocs(customer.id)">Docs</td>
+
+                                        <td class="cell">
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageDocs(customer.id)" data-tooltip="Docs">
+                                                <i class="bi bi-file-earmark-text"></i>
+                                            </span>
+                                        </td>
+                                       @*  <td class="cell text-center" ng-click="manageDocs(customer.id)">Docs</td> *@
                                     </tr>
                                 </tbody>
                             </table>

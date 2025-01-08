@@ -1,117 +1,115 @@
-﻿//using Azure.Core;
-//using Microsoft.Extensions.Configuration;
-//using ENPAY.ViewModel;
-//using System.IO;
-//using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace Stock_CMS.Common
-//{
+namespace Stock_CMS.Common
+{
 
-//    public class FileUpload
-//    {
-//        private readonly IConfiguration _configuration;
+    public class Upload
+    {
+        public bool? status;
+        public string? message;
+    }
+    public class FileUpload
+    {
+        private readonly IConfiguration _configuration;
 
-//        public FileUpload(IConfiguration configuration)
-//        {
-//            _configuration = configuration;
-//        }
+        public FileUpload(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
-//        public Upload StoreFile(string fileType, IFormFile? file)
-//        {
-//            var result = new Upload
-//            {
-//                status = false,
-//                message = "Error"
-//            };
-//            var directoryPath = _configuration.GetSection("UploadPath")?.GetValue<string>($"{fileType}Path");
-//            var directoryPath1 = _configuration.GetSection("UploadPath")?.GetValue<string>($"{fileType}Path1");
+        public Upload StoreFile(string fileType, IFormFile? file)
+        {
+            var result = new Upload
+            {
+                status = false,
+                message = "Error"
+            };
+            var directoryPath = _configuration.GetSection("UploadPath")?.GetValue<string>($"{fileType}Path");
+            
+            var path = _configuration.GetSection("UploadPath")?.GetValue<string>("DomainName");
 
-//            var path = _configuration.GetSection("UploadPath")?.GetValue<string>("DomainName");
+            try
+            {
+                if (directoryPath != null && file != null )
+                {
 
-//            try
-//            {
-//                if (directoryPath != null && file != null && directoryPath1 != null)
-//                {
-//                    //var up = StoreFileToPath(directoryPath, file);
+                    var up = StoreFileToPath(directoryPath, file);
 
-//                    var up1 = StoreFileToPath(directoryPath1, file);
+                    result = new Upload
+                    {
+                        status = true,
+                        message = (path + up).Replace("wwwroot\\", "/").Replace("\\", "/"),
+                    };
 
-//                    result = new Upload
-//                    {
-//                        status = true,
-//                        message = path + up1.Replace("..\\Pro\\wwwroot\\", "/").Replace("\\", "/"),
-//                    };
+                  
+                }
+                return result;
 
-//                    //result1 = new Upload
-//                    //{
-//                    //    status = true,
-//                    //    message = up.Replace()
-//                    //};
-//                }
-//                return result;
-
-//            }
-//            catch (Exception ex)
-//            {
-//                result = new Upload
-//                {
-//                    status = false,
-//                    message = ex.Message,
-//                };
-//                return result;
-//            }
-//        }
+            }
+            catch (Exception ex)
+            {
+                result = new Upload
+                {
+                    status = false,
+                    message = ex.Message,
+                };
+                return result;
+            }
+        }
 
 
-//        public string StoreFileToPath(string directoryPath, IFormFile? file)
-//        {
-//            var filePath = string.Empty;
+        public string StoreFileToPath(string directoryPath, IFormFile? file)
+        {
+            var filePath = string.Empty;
 
 
-//            try
-//            {
-//                if (directoryPath != null && file != null)
-//                {
-//                    if (!Directory.Exists(directoryPath))
-//                    {
-//                        Directory.CreateDirectory(directoryPath);
-//                    }
+            try
+            {
+                if (directoryPath != null && file != null)
+                {
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
 
-//                    filePath = Path.Combine(directoryPath, file.FileName);
+                    filePath = Path.Combine(directoryPath, file.FileName);
 
-//                    using (var stream = new FileStream(filePath, FileMode.Create))
-//                    {
-//                        file.CopyTo(stream);
-//                    }
-
-
-//                }
-//                return filePath;
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
 
 
-//            }
-//            catch (Exception ex)
-//            {
-//                return ex.Message;
-//            }
-//        }
-//        public bool DeleteFile(string filePath)
-//        {
-//            try
-//            {
-//                if (File.Exists(filePath))
-//                {
-//                    File.Delete(filePath);
-//                    return true;
-//                }
-//                return false;
-//            }
-//            catch (Exception ex)
-//            {
-//                // Log the exception
-//                return false;
-//            }
-//        }
-//    }
+                }
+                return filePath;
 
-//}
+
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        public bool DeleteFile(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return false;
+            }
+        }
+    }
+
+}
