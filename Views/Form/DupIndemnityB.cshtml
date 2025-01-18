@@ -1,0 +1,596 @@
+﻿<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Dup.-Indemnity-B.DOCX</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .p,
+        p {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+            margin: 0pt;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s4 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s6 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        .s7 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s8 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s9 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        .s10 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        .s11 {
+            color: #d0d1d4;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s12 {
+            color: #d0d1d4;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        .s13 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 8pt;
+            vertical-align: 4pt;
+        }
+
+        .s14 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        .s16 {
+            color: #a6a6a6;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        li {
+            display: block;
+        }
+
+        #l1 {
+            padding-left: 0pt;
+            counter-reset: c1 1;
+        }
+
+            #l1 > li > *:first-child:before {
+                counter-increment: c1;
+                content: counter(c1, decimal) ". ";
+                color: black;
+                font-family: Arial, sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+
+            #l1 > li:first-child > *:first-child:before {
+                counter-increment: c1 0;
+            }
+
+        table,
+        tbody {
+            vertical-align: top;
+            overflow: visible;
+        }
+        /* General table styles */
+        .myTable {
+            border-collapse: collapse;
+            margin-left: 17.5pt;
+        }
+
+            /* Cell styles */
+            .myTable td {
+                border: 1px solid #babdbf;
+                padding: 3pt;
+            }
+
+            /* Header row styles */
+            .myTable tr:first-child td {
+                font-weight: bold; /* Or use a class for header cells */
+            }
+
+            /* Column width adjustments */
+            .myTable td:nth-child(1) {
+                width: 104pt;
+            }
+
+            .myTable td:nth-child(2) {
+                width: 108pt;
+            }
+
+            .myTable td:nth-child(3) {
+                width: 99pt;
+            }
+
+            .myTable td:nth-child(4) {
+                width: 71pt;
+            }
+
+            .myTable td:nth-child(5) {
+                width: 95pt;
+            }
+
+            /* Text alignment and indentation */
+            .myTable p {
+                margin: 0;
+                text-align: left;
+            }
+
+            .myTable td:nth-child(3) p {
+                padding-right: 36pt;
+            }
+
+            /* Line height */
+            .myTable p {
+                line-height: 114%;
+            }
+
+        /* Classes for specific styles */
+        .s1 { /* For header text */
+            font-weight: bold;
+        }
+
+        .s8 { /* For special characters */
+            font-weight: bold;
+        }
+
+        .s9 { /* For row numbers */
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body style="padding-left: 15%;" ng-controller="FormController">
+    <div id="printForm">
+        <h1 style="
+        padding-top: 4pt;
+        /* padding-left: 222pt; */
+        text-indent: 0pt;
+        line-height: 200%;
+        text-align: center;
+      ">
+            Form-B
+        </h1>
+        <h1 style="
+      padding-top: 4pt;
+      /* padding-left: 222pt; */
+      text-indent: 0pt;
+      line-height: 200%;
+      text-align: center;
+    ">
+            INDEMNITY
+        </h1>
+        <h1 style="padding-left: 41pt; text-indent: 0pt; text-align: center">
+            [For issuance of duplicate securities]
+        </h1>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
+        <div class="textbox"
+             style="
+        border: 1pt solid #000000;
+        display: block;
+        min-height: 18pt;
+        /* width: 446pt; */
+      ">
+            <p class="s1" style="text-indent: 0pt; text-align:center">
+                Note:
+                <i>This indemnity is to be executed in the presence of a Public Notary </i>/ Gazetted Officer
+            </p>
+        </div>
+        <p style="padding-left: 48pt; text-indent: 0pt; text-align: left" />
+        <p style="
+        padding-top: 12pt;
+        padding-left: 48pt;
+        text-indent: 0pt;
+        text-align: justify;
+      ">
+            [To be submitted in non-judicial stamp paper of appropriate value]
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s3"
+           style="
+        padding-left: 48pt;
+        text-indent: 0pt;
+        line-height: 112%;
+        text-align: justify;
+      ">
+            I/We,
+            <span class="s4">Hema Patel </span>Son / daughter/spouse of<span class="s4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span>residing at<span class="s4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span><span class="s4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </span>,having Permanent Account No (s)<span class="s4">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </span><span class="s5"> </span>do hereby solemnly affirm and state on oath as follows.
+        </p>
+        <p class="s3"
+           style="
+        padding-top: 6pt;
+        padding-left: 48pt;
+        text-indent: 0pt;
+        text-align: justify;
+      ">
+
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <ol id="l1">
+            <li data-list-text="1.">
+                <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
+                    That I/we,
+                    <span class="s6">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. </span><span class="s7"> </span>am/are the sole/joint holder/s of the
+                    Securities in following folios. I/We request you to issue duplicate
+                    certificate(s) for securities, as detailed below in my/our name(s):
+                </p>
+                <p style="padding-top: 10pt; text-indent: 0pt; text-align: left">
+                    <br />
+                </p>
+                <table class="myTable">
+                    <tr>
+                        <td>
+                            <p class="s1">Name of the Company</p>
+                        </td>
+                        <td>
+                            <p class="s1">Certificate No.**</p>
+                        </td>
+                        <td>
+                            <p class="s1">Distinctive No.**</p>
+                        </td>
+                        <td>
+                            <p class="s1">Folio No. <span class="s8">**</span></p>
+                        </td>
+                        <td>
+                            <p class="s1">No. and Face value of</p>
+                            <p class="s1">securities held</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="s9">ABC Corporation</td>
+                        <td>12345</td>
+                        <td>67890</td>
+                        <td>FOL123456</td>
+                        <td>500 shares, Face Value: ₹10 each</td>
+                    </tr>
+                    <tr>
+                        <td class="s9">XYZ Enterprises</td>
+                        <td>23456</td>
+                        <td>78901</td>
+                        <td>FOL234567</td>
+                        <td>300 shares, Face Value: ₹20 each</td>
+                    </tr>
+                    <tr>
+                        <td class="s9">Global Tech Ltd.</td>
+                        <td>34567</td>
+                        <td>89012</td>
+                        <td>FOL345678</td>
+                        <td>200 shares, Face Value: ₹50 each</td>
+                    </tr>
+                    <tr>
+                        <td class="s9">Future Innovations</td>
+                        <td>45678</td>
+                        <td>90123</td>
+                        <td>FOL456789</td>
+                        <td>100 shares, Face Value: ₹100 each</td>
+                    </tr>
+                </table>
+
+                <p style="padding-top: 3pt; text-indent: 0pt; text-align: left">
+                    <br />
+                </p>
+                <p class="s10"
+                   style="
+            padding-left: 26pt;
+            text-indent: 0pt;
+            line-height: 109%;
+            text-align: left;
+          ">
+                    **In case of non-availability of Certificate Nos./Distinctive Nos./
+                    Folio nos., security holder shall obtain the same from RTA.
+                </p>
+                <p style="padding-top: 3pt; text-indent: 0pt; text-align: left">
+                    <br />
+                </p>
+            </li>
+            <li data-list-text="2.">
+                <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
+                    That the above securities were acquired by me/us for valuable
+                    consideration out of my/our own investment/funds against allotment in
+                    Public Issue/allotment in Right Issue or acquired from the
+                    market/through inheritance in the year(s)
+                </p>
+                <p style="padding-left: 48pt; text-indent: 0pt; text-align: left">
+                    ………….
+                </p>
+                <p style="padding-top: 7pt; text-indent: 0pt; text-align: left">
+                    <br />
+                </p>
+            </li>
+            <li data-list-text="3.">
+                <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
+                    I/We hereby jointly and severely agree and undertake to indemnify and
+                    keep indemnified, saved, defended, harmless, the aforesaid<u>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                    </u>
+                    <span class="p">
+                        (Name of the Company/RTA) and its successors and assigns for all time
+                        hereafter against all losses, costs, claims, actions, demands, risks,
+                        charges, expenses, damages, etc., whatsoever which you may suffer and/or
+                        incur by reason of your, at my/our request, issuing the said Duplicate
+                        Securities as herein above mentioned, to the undersigned.
+                    </span>
+                </p>
+            </li>
+        </ol>
+        <br>
+        <p style="
+        padding-top: 3pt;
+        padding-left: 48pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+            IN WITNESS WHEREOF the said 1) Mr. /Ms.<span class="s6">
+                Reva Patel
+            </span>
+        </p>
+        <p style="padding-top: 3pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s11"
+           style="padding-left: 48pt; text-indent: 0pt; text-align: left">
+            (Name and signature of the witness)
+            <span class="s12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </p>
+        <p style="padding-top: 3pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-left: 48pt; text-indent: 0pt; text-align: left">
+            And 2) Mr./Ms.
+            <span class="s6">Reva Patel </span>
+        </p>
+        <p style="padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s11"
+           style="padding-left: 48pt; text-indent: 0pt; text-align: left">
+            (Name and signature of the witness)
+            <span class="s12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </p>
+        <p style="text-indent: 0pt; text-align: left" />
+        <p style="padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s13"
+           style="padding-left: 48pt; text-indent: 100pt; text-align: left">
+            #<span class="p">, have hereunto set their respective hands and seals this day of </span><span class="s6">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span>
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s14" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+            <div style="display: flex; justify-content: space-between;">
+
+                <!-- Left tables -->
+                <div style="flex: 1;">
+                    <table border="0" cellspacing="20px" cellpadding="0">
+                        <tr>
+                            <td>Address of First holder / Applicant:</td>
+                        </tr>
+                        <tr>
+                            <td>Pin code <u>7845656</u></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Right table -->
+                <div style="flex: 1; text-align: left;">
+                    <table border="0" cellspacing="20px" cellpadding="0">
+                        <tr>
+                            <td>Signature of All holder(s) / Applicant(s)</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </p>
+
+        <p class="s14" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+            <div style="display: flex; justify-content: space-between;">
+
+                <!-- Left tables -->
+                <div style="flex: 1;">
+                    <table border="0" cellspacing="20px" cellpadding="0">
+                        <!-- <tr>
+                          <td>  FOR OFFICE USE ONLY</td>
+                        </tr>
+                        <tr>
+                          <td>Signature checked by: </td>
+                        </tr> -->
+                    </table>
+                </div>
+
+                <!-- Right table -->
+                <div style="flex: 1; text-align: left;">
+                    <table border="0" cellspacing="20px" cellpadding="0">
+                        <tr>
+                            <td>  FOR OFFICE USE ONLY</td>
+                        </tr>
+                        <tr>
+                            <td>Signature checked by: </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </p>
+
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="
+        /* padding-left: 47pt;
+        text-indent: 166pt;*/
+        line-height: 40pt;
+        text-align: center;
+      ">
+            <u>Signed before me</u>
+        </p>
+        at:
+        <span class="s6">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</span>
+        <br />
+        on:
+        <span class="s6">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+        </span>
+        <p style="padding-top: 13pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s16"
+           style="padding-left: 48pt; text-indent: 0pt; text-align: left">
+            Signature of Notary / JMFC
+        </p>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s16"
+           style="padding-left: 47pt; text-indent: 0pt; text-align: left">
+            Official stamp &amp; seal of the Notary Magistrate/ Notary &amp; Regn.
+            No.:
+        </p>
+    </div>
+    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+</body>
+<script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+        $scope.customers = [];
+
+        var isProcessing = false;
+
+        // showLoader();
+
+        // Load Customers
+        $scope.loadCustomers = function () {
+            $http.get('/Master/GetCustomers').then(function (response) {
+                $scope.customers = response.data[0];
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+        };
+
+        $scope.loadDocs = function () {
+            if (true) {
+                $http.get('/doc/getDocs/' + 1).then(function (response) {
+                    $scope.docs = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }
+        };
+
+        //Function
+        $scope.printDiv = function (divId) {
+            var css = '<style type="text/css">*{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.p,p{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:11pt}.s5{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s6{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s7{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s8{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s9{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s10{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s11{color:#d0d1d4;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s12{color:#d0d1d4;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s13{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt}.s14{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s16{color:#a6a6a6;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,decimal)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}table,tbody{vertical-align:top;overflow:visible}.myTable{border-collapse:collapse;margin-left:17.5pt}.myTable td{border:1px solid #babdbf;padding:3pt}.myTable tr:first-child td{font-weight:bold}.myTable td:nth-child(1){width:104pt}.myTable td:nth-child(2){width:108pt}.myTable td:nth-child(3){width:99pt}.myTable td:nth-child(4){width:71pt}.myTable td:nth-child(5){width:95pt}.myTable p{margin:0;text-align:left}.myTable td:nth-child(3) p{padding-right:36pt}.myTable p{line-height:114%}.s1{font-weight:bold}.s8{font-weight:bold}.s9{font-weight:bold}</style>';
+            var innerContents = document.getElementById(divId).innerHTML;
+            var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+            popupWinindow.document.open();
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">'+ css +'</ head > <body onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.close();
+        };
+        //Initialize
+        $scope.loadCustomers();
+        $scope.loadDocs();
+    });
+</script>
+</html>

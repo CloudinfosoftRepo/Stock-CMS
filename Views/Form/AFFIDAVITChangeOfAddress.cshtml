@@ -1,0 +1,342 @@
+﻿<html lang="en" ng-app="Stock-CMS">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Affidavit for Change of Address</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        .p,
+        p {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+            margin: 0pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 8pt;
+            vertical-align: 4pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        h1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        .s4 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        li {
+            display: block;
+        }
+
+        #l1 {
+            padding-left: 0pt;
+            counter-reset: c1 1;
+        }
+
+            #l1 > li > *:first-child:before {
+                counter-increment: c1;
+                content: counter(c1, decimal) ". ";
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+
+            #l1 > li:first-child > *:first-child:before {
+                counter-increment: c1 0;
+            }
+    </style>
+</head>
+<body style="padding-left: 10%;" ng-controller="FormController">
+    <div id="printForm">
+    <p style="
+        padding-top: 1pt;
+        padding-left: 77pt;
+        text-indent: 0pt;
+        text-align: center;
+      ">
+        To be executed on Non-Judicial Stamp Paper and attested from 1<span class="s1">st</span>
+        Class Magistrate/Notary Public
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p class="s2"
+       style="padding-left: 77pt; text-indent: 0pt; text-align: center">
+        AFFIDAVIT FOR CHANGE OF ADDRESS
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="
+        padding-left: 5pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: justify;
+      ">
+            I, Mr./Mrs/Miss <u><b>{{customers.customerName}} </b></u>Son of /
+        Daughter of Mr. <u><b>{{RATILALSHAH}},</b></u><b> </b>residing at present residing at (Address with pin code, Dist.,
+        State) <u>{{ANANDANVAN}}</u>
+            <u>{{customers.address}}}</u>
+    </p>
+    <p style="
+        padding-top: 7pt;
+        padding-left: 5pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        do hereby solemnly declare and affirm as follows:
+    </p>
+    <ol id="l1">
+        <li data-list-text="1.">
+            <p style="
+            padding-top: 9pt;
+            padding-left: 41pt;
+            text-indent: -18pt;
+            text-align: left;
+          ">
+                That my PAN Number is <u><b>{{docs.pan}}</b></u>
+            </p>
+        </li>
+        <li data-list-text="2.">
+            <p style="
+            padding-top: 1pt;
+            padding-left: 41pt;
+            text-indent: -18pt;
+            line-height: 108%;
+            text-align: justify;
+          ">
+                That I was previously residing at
+                    <u>{{customers.address}}</u>
+                (Old Address with pin code,
+                Dist., State).
+            </p>
+        </li>
+        <li data-list-text="3.">
+            <p style="
+            padding-left: 41pt;
+            text-indent: -18pt;
+            line-height: 108%;
+            text-align: justify;
+          ">
+                That Now I have shifted to <u>{{GUJARAT}}</u> (Current State) and residing
+                at <u><b>{{1/A}}</b></u><b> </b><u>
+                    <b>
+                       {{customers.address}}
+                    </b>
+                </u>
+            </p>
+            <p class="s2"
+               style="
+            padding-left: 41pt;
+            text-indent: 0pt;
+            line-height: 15pt;
+            text-align: justify;
+          ">
+                <u>{{390020}}</u>
+                <span class="p">(Current Address with pin code, P.S, Dist., State).</span>
+            </p>
+        </li>
+        <li data-list-text="4.">
+            <p style="
+            padding-top: 1pt;
+            padding-left: 41pt;
+            text-indent: -18pt;
+            text-align: left;
+          ">
+                That I am swearing this Affidavit to proof my present residential
+                address which is
+            </p>
+            <h1 style="
+            padding-top: 1pt;
+            padding-left: 41pt;
+            text-indent: 0pt;
+            text-align: justify;
+          ">
+                1/A, NANDANVAN SOCIETY PART-1, NEAR AKOTA STADIUM, VADODRA, GUJARAT,
+            </h1>
+            <p class="s2"
+               style="
+            padding-top: 1pt;
+            padding-left: 41pt;
+            text-indent: 0pt;
+            text-align: justify;
+          ">
+                <u>{{390020}}</u>
+                <span class="p">(Current Address with pin code, P.S, Dist., State).</span>
+            </p>
+        </li>
+        <li data-list-text="5.">
+            <p style="
+            padding-top: 1pt;
+            padding-left: 41pt;
+            text-indent: -18pt;
+            line-height: 108%;
+            text-align: justify;
+          ">
+                That I Shall be liable for any consequences in case of any loss to
+                Trident Limited due to this declaration and I hereby unconditionally
+                and irrevocably submit to the exclusive jurisdiction of the Competent
+                Court / forum in Barnala, Punjab with regard to any question to or
+                matter arising out of these presents and/or any other document that
+                may be executed by me/us in pursuance hereby or arising here from.
+            </p>
+        </li>
+    </ol>
+    <p style="
+        padding-top: 7pt;
+        padding-left: 5pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: left;
+      ">
+        This declaration is hereby executed and submitted to TRIDENT LIMITED to
+        accomplish the change of address.
+    </p>
+    <p style="
+        padding-top: 7pt;
+        padding-left: 5pt;
+        text-indent: 0pt;
+        line-height: 163%;
+        text-align: left;
+      ">
+        I hereby state that whatever is stated hereinabove is true to the best of
+        my knowledge. Solemnly affirmed at <u>VADODARA</u> on this
+        <span class="s4">{{21-02-2025}}</span>day of
+            <span class="s4">{{21-02-2025}} </span>20<span class="s4">{{25}}</span>
+    </p>
+    <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: right">(Deponent)</p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 5pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        VERIFICATION
+    </p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 5pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: left;
+      ">
+        Verified on this day
+        <span class="s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>at
+        <span class="s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>that the contents of the affidavit are true and correct, nothing material
+        has been concealed and no part of it is false.
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: right">(Deponent)</p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 5pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Signed before me on this day
+        <span class="s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>at
+        <span class="s4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="
+        padding-left: 149pt;
+        text-indent: 108pt;
+        line-height: 163%;
+        text-align: left;
+      ">
+        X<span class="s4">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </span><span class="s5"> </span>Signature of Notary with Official Seal of Notary
+        &amp; Regn. No.
+    </p>
+    </div>
+    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+</body>
+<script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+        $scope.customers = [];
+
+        var isProcessing = false;
+
+        // showLoader();
+
+        // Load Customers
+        $scope.loadCustomers = function () {
+            $http.get('/Master/GetCustomers').then(function (response) {
+                $scope.customers = response.data[0];
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+        };
+
+        $scope.loadDocs = function () {
+            if (true) {
+                $http.get('/doc/getDocs/' + 1).then(function (response) {
+                    $scope.docs = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }
+        };
+
+        //Function
+        $scope.printDiv = function (divId) {
+            var innerContents = document.getElementById(divId).innerHTML;
+            var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+            popupWinindow.document.open();
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"><style type="text/css">*{margin:0;padding:0;text-indent:0;} .p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0;} .s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt;} .s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;} h1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt;} .s4{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt;} .s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;} li{display:block;} #l1{padding-left:0pt;counter-reset:c1 1;} #l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,decimal)". ";color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;} #l1>li:first-child>*:first-child:before{counter-increment:c1 0;}</style></head > <body onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.close();
+        };
+        //Initialize
+        $scope.loadCustomers();
+        $scope.loadDocs();
+    });
+</script>
+</html>

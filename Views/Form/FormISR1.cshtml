@@ -1,0 +1,1249 @@
+﻿<html lang="en" ng-app="Stock-CMS">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>42d5c2f2-87f6-4108-95bc-448f50ce7f49</title>
+        <meta name="author" content="Manjesh Roy S" />
+        <style type="text/css">
+            * {
+                margin: 0;
+                padding: 0;
+                text-indent: 0;
+            }
+            h1 {
+                color: black;
+                font-family: Arial, sans-serif;
+                font-style: normal;
+                font-weight: bold;
+                text-decoration: none;
+                font-size: 18pt;
+            }
+            .p,
+            p {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+                margin: 0pt;
+            }
+            .s1 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 10pt;
+            }
+            h2 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: bold;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            .s2 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 10pt;
+            }
+            .s5 {
+                color: black;
+                font-family: Wingdings;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 14pt;
+            }
+            .s6 {
+                color: black;
+                font-family: "Times New Roman", serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 14pt;
+            }
+            .s7 {
+                color: black;
+                font-family: Cambria, serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 20pt;
+            }
+            .s8 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            .s9 {
+                color: black;
+                font-family: Wingdings;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            .s10 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: normal;
+                font-weight: bold;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            .s11 {
+                color: black;
+                font-family: "Times New Roman", serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            .s14 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: italic;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 11pt;
+            }
+            .s15 {
+                color: black;
+                font-family: Calibri, sans-serif;
+                font-style: italic;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            .s17 {
+                color: black;
+                font-family: "Bookshelf Symbol 7";
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            li {
+                display: block;
+            }
+            #l1 {
+                padding-left: 0pt;
+                counter-reset: c1 1;
+            }
+            #l1 > li > *:first-child:before {
+                counter-increment: c1;
+                content: counter(c1, upper-latin) ". ";
+                color: black;
+                font-family: Arial, sans-serif;
+                font-style: normal;
+                font-weight: bold;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+            #l1 > li:first-child > *:first-child:before {
+                counter-increment: c1 0;
+            }
+            li {
+                display: block;
+            }
+            #l2 {
+                padding-left: 0pt;
+            }
+            #l2 > li > *:first-child:before {
+                content: "◻ ";
+                color: black;
+                font-family: Cambria, serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 20pt;
+            }
+            table,
+            tbody {
+                vertical-align: top;
+                overflow: visible;
+            }
+            .form-table {
+                margin: 0 56px; /* Centers the table horizontally */
+  border-collapse: collapse;
+}
+
+.form-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  vertical-align: top;
+}
+
+.form-table tr td:first-child {
+  width: 40%; /* You can adjust this percentage as needed */
+}
+
+
+
+
+        </style>
+    </head>
+<body style="padding-left: 8%;" ng-controller="FormController">
+    <div id="printForm">
+        <h1 style="padding-top: 3pt; padding-left: 41pt; text-indent: 0pt; text-align: center;">Form ISR – 1</h1>
+       
+        <p style="padding-top: 1pt; padding-left: 41pt; text-indent: 0pt; line-height: 100%; text-align: center;">
+            (
+            <span class="s1">
+                see SEBI circular No. SEBI/HO/MIRSD/MIRSD_RTAMB/P/CIR/2021/655 dated November 03, 2021 on Common and Simplified Norms for processing investor’s service request by RTAs and norms for furnishing PAN, KYC details and
+                Nomination)
+            </span>
+        </p>
+        <p style="text-indent: 0pt; text-align: left;"><br /></p>
+        <h2 style="padding-left: 41pt; text-indent: 0pt; text-align: center;">REQUEST FOR REGISTERING PAN, KYC DETAILS OR CHANGES / UPDATION THEREOF</h2>
+        <p class="s2" style="padding-top: 1pt; padding-left: 41pt; text-indent: 0pt; text-align: center;">[For Securities (Shares / Debentures / Bonds, etc.) of listed companies held in physical form]</p>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left;"><br /></p>
+        <p class="s2" style="text-indent: 0pt; text-align: right;">
+            <b>Date:</b><u><b> 25/05/2024</b></u>
+        </p>
+        <ol id="l1">
+            <li data-list-text="A.">
+                <p style="padding-top: 12pt; padding-left: 71pt; text-indent: -28pt; text-align: left;">I / We request you to Register / Change / Update the following (Tick <span class="s5"></span><span class="s6"> </span>relevant box)</p>
+                <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                <table style="border-collapse: collapse; margin-left: 48.674pt;" cellspacing="0">
+                    <tr style="height: 25pt;">
+                        <td
+                            style="
+                                width: 170pt;
+                                border-top-style: dotted;
+                                border-top-width: 1pt;
+                                border-left-style: dotted;
+                                border-left-width: 1pt;
+                                border-bottom-style: dotted;
+                                border-bottom-width: 1pt;
+                                border-right-style: dotted;
+                                border-right-width: 1pt;
+                            "
+                        >
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">PAN</span></p>
+                        </td>
+                        <td
+                            style="
+                                width: 156pt;
+                                border-top-style: dotted;
+                                border-top-width: 1pt;
+                                border-left-style: dotted;
+                                border-left-width: 1pt;
+                                border-bottom-style: dotted;
+                                border-bottom-width: 1pt;
+                                border-right-style: dotted;
+                                border-right-width: 1pt;
+                            "
+                        >
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Bank details</span></p>
+                        </td>
+                        <td
+                            style="
+                                width: 170pt;
+                                border-top-style: dotted;
+                                border-top-width: 1pt;
+                                border-left-style: dotted;
+                                border-left-width: 1pt;
+                                border-bottom-style: dotted;
+                                border-bottom-width: 1pt;
+                                border-right-style: dotted;
+                                border-right-width: 1pt;
+                            "
+                        >
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Signature</span></p>
+                        </td>
+                    </tr>
+                    <tr style="height: 26pt;">
+                        <td
+                            style="
+                                width: 170pt;
+                                border-top-style: dotted;
+                                border-top-width: 1pt;
+                                border-left-style: dotted;
+                                border-left-width: 1pt;
+                                border-bottom-style: dotted;
+                                border-bottom-width: 1pt;
+                                border-right-style: dotted;
+                                border-right-width: 1pt;
+                            "
+                        >
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Mobile number</span></p>
+                        </td>
+                        <td
+                            style="
+                                width: 156pt;
+                                border-top-style: dotted;
+                                border-top-width: 1pt;
+                                border-left-style: dotted;
+                                border-left-width: 1pt;
+                                border-bottom-style: dotted;
+                                border-bottom-width: 1pt;
+                                border-right-style: dotted;
+                                border-right-width: 1pt;
+                            "
+                        >
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">E-mail ID</span></p>
+                        </td>
+                        <td
+                            style="
+                                width: 170pt;
+                                border-top-style: dotted;
+                                border-top-width: 1pt;
+                                border-left-style: dotted;
+                                border-left-width: 1pt;
+                                border-bottom-style: dotted;
+                                border-bottom-width: 1pt;
+                                border-right-style: dotted;
+                                border-right-width: 1pt;
+                            "
+                        >
+                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Address</span></p>
+                        </td>
+                    </tr>
+                </table>
+                <p style="text-indent: 0pt; text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="B.">
+                <h2 style="padding-left: 71pt; text-indent: -28pt; line-height: 12pt; text-align: left;">Security Details:</h2>
+                
+                <table class="form-table">
+                    <tr>
+                      <td class="label">Name of the Issuer Company</td>
+                      <td colspan="5">DRHTDBDR THSRE</td>
+                      <td class="label">Folio No.:REH6815</td>
+                    </tr>
+                    <tr>
+                      <td class="label">Name(s) of the Security holder(s)<br><span class="small">(as per the Certificate(s))</span></td>
+                      <td colspan="8">
+                            <ol class="holder-list" style="padding-left: 0rem;">
+                          <li>1. REHATREG</li>
+                          <li>2. REAGREG</li>
+                          <li>3. RGERAGER</li>
+                        </ol>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="label">Number & Face value of securities</td>
+                      <td colspan="8">TSHTRFDHT RGRES</td>
+                    </tr>
+                    <tr>
+                      <td class="label">Distinctive number of securities<span class="small">(Optional)</span></td>
+                      <td class="label" colspan="4">From <br>JHDFNXF</td>
+                      
+                      <td class="label" colspan="3">To<br> THST TSHT</td>
+                      
+                    </tr>
+                  </table>
+                <p style="text-indent: 0pt; text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="C.">
+                <p style="padding-left: 71pt; text-indent: -28pt; text-align: left;"><b>I / We are submitting documents as per Table below </b>(tick <span class="s5"></span>as relevant, refer to the instructions):</p>
+                
+            </li>
+        </ol>
+        <table style="border-collapse: collapse; margin-left: 43.274pt;" cellspacing="0">
+            <tr style="height: 44pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s10" style="padding-left: 5pt; padding-right: 4pt; text-indent: 0pt; text-align: center;">Document / Information</p>
+                    <p class="s10" style="text-indent: 0pt; line-height: 14pt; text-align: center;">/ Details</p>
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s10" style="text-indent: 0pt; line-height: 15pt; text-align: center;">Instruction / Remark</p>
+                </td>
+            </tr>
+            <tr style="height: 15pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="text-indent: 0pt; line-height: 14pt; text-align: center;">1</p>
+                </td>
+                <td
+                    style="
+                        width: 485pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                    colspan="3"
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">PAN of (all) the (joint) holder(s)</p>
+                </td>
+            </tr>
+            <tr style="height: 103pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">PAN</p>
+                    <p class="s8" style="padding-top: 14pt; padding-left: 5pt; padding-right: 11pt; text-indent: 0pt; text-align: left;">Whether it is Valid (linked to Aadhaar):</p>
+                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;"><span class="s11"> </span><span class="s8">Yes </span><span class="s8">No</span></p>
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">PAN shall be valid only if it is linked to Aadhaar by March 31, 2022*</p>
+                    <p class="s8" style="padding-left: 5pt; padding-right: 2pt; text-indent: 0pt; text-align: left;">For Exemptions / Clarifications on PAN, please refer to Objection Memo in page 4</p>
+                </td>
+            </tr>
+            <tr style="height: 55pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="text-indent: 0pt; line-height: 15pt; text-align: center;">2</p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; padding-right: 24pt; text-indent: 0pt; text-align: left;">Demat Account Number</p>
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">Also provide Client Master List (<b>CML</b>) of your Demat Account, provided by the Depository Participant.</p>
+                </td>
+            </tr>
+        </table>
+        <p style="text-indent: 0pt; text-align: left;"><br /></p>
+        <table style="border-collapse: collapse; margin-left: 43.274pt;" cellspacing="0">
+            <tr style="height: 268pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="text-indent: 0pt; line-height: 15pt; text-align: center;">3</p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; padding-right: 4pt; text-indent: 0pt; text-align: justify;">Proof of Address of the first holder</p>
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Any one of the documents, only if there is change in the address;</p>
+                    <ul id="l2">
+                        <li data-list-text="◻"><p class="s8" style="padding-left: 17pt; text-indent: -17pt; line-height: 23pt; text-align: left;">Client Master List (<b>CML</b>) of your Demat Account, provided by DP.</p></li>
+                        <li data-list-text="◻">
+                            <p class="s8" style="padding-top: 1pt; padding-right: 5pt; text-indent: 0pt; line-height: 113%; text-align: left;">
+                                Valid Passport/ Registered Lease or Sale Agreement of Residence / Driving License / Flat Maintenance bill.
+                            </p>
+                        </li>
+                        <li data-list-text="◻">
+                            <p class="s8" style="padding-left: 19pt; text-indent: -18pt; line-height: 10pt; text-align: justify;">Utility bills like Telephone Bill (only land line), Electricity bill or Gas bill - Not more than 3 months old.</p>
+                            
+                        </li>
+                        <li data-list-text="◻">
+                            <p class="s8" style="padding-left: 28px; text-indent: -19pt; line-height: 10pt; text-align: left;">Identity card / document with address, issued by any of the following:</p>
+                            <p class="s8" style="padding-top: 3pt; padding-left: 14pt; padding-right: 5pt; text-indent: 0pt; text-align: justify;">
+                                Central/State Government and its Departments, Statutory / Regulatory Authorities, Public Sector Undertakings, Scheduled Commercial Banks, Public Financial Institutions.
+                            </p>
+                        </li>
+                        <li data-list-text="◻">
+                            <p class="s8" style="padding-left: 19pt; text-indent: -17pt; line-height: 12pt; text-align: left;">For FII / sub account, Power of Attorney given by FII / sub-account to the Custodians (which are duly notarized and / or apostilled or consularised) that gives the registered address should be taken.</p>
+                            
+                        </li>
+                        <li data-list-text="◻"><p class="s8" style="padding-left: 20PT; text-indent: -17pt; line-height: 22pt; text-align: left;">The proof of address in the name of the spouse</p></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr style="height: 103pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="text-indent: 0pt; line-height: 15pt; text-align: center;">4</p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Bank details</p>
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; padding-right: 99pt; text-indent: 0pt; text-align: left;">
+                        Account Number:
+                        <u>
+                            611658645468551
+                        </u><br>
+                        Bank Name:
+                        <u>
+                            Rupay Bank Kota
+                        </u><br>
+                        Branch Name:
+                        <u>
+                            Kota Branch
+                        </u><br>
+                        IFS Code:
+                        <u>
+                            KOT1463
+                        </u>
+                    </p>
+                    <p class="s8" style="padding-left: 143pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Provide the following:</p>
+                    <p class="s8" style="padding-left: 5pt; text-indent: 2pt; line-height: 15pt; text-align: left;">
+                        <u>original cancelled cheque</u> with name of security holder printed on it <i>or </i><u>Bank</u> <u>Passbook</u> <i>or </i><u>Bank Statement attested by the Bank</u> #
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 30pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="text-indent: 0pt; line-height: 15pt; text-align: center;">5</p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">E-mail address</p>
+                    
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-top: 14pt; padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">
+                        <u> tart@123.com
+                        </u>
+                        #
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 30pt;">
+                <td
+                    style="
+                        width: 17pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="text-indent: 0pt; line-height: 15pt; text-align: center;">6</p>
+                </td>
+                <td
+                    style="
+                        width: 20pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 71pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Mobile</p>
+                </td>
+                <td
+                    style="
+                        width: 394pt;
+                        border-top-style: solid;
+                        border-top-width: 1pt;
+                        border-left-style: solid;
+                        border-left-width: 1pt;
+                        border-bottom-style: solid;
+                        border-bottom-width: 1pt;
+                        border-right-style: solid;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s8" style="padding-top: 14pt; padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">
+                        <u>
+                            486554656156651
+                        </u>
+                        #
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <p class="s14" style="padding-left: 43pt; text-indent: 0pt; text-align: left;">* or any date as may be specified by the CBDT (DP: Depository Participant)</p>
+        <p class="s15" style="padding-top: 1pt; padding-left: 43pt; text-indent: 0pt; text-align: left;"># In case it is not provided, the details available in the CML will be updated in the folio</p>
+        <p style="text-indent: 0pt; text-align: left;"><br /></p>
+        <h2 style="padding-left: 35pt; text-indent: 0pt; text-align: justify;">Authorization<span class="p">: I / We authorise you (RTA) to update the above PAN and KYC details in my / our folio (s)<u>468559WEF</u> , <u>FWEFE511632 </u> ,(<i>use Separate Annexure if extra space is required</i>) in which I / We are the holder(s) (strike off what is not applicable).</span></h2>
+        
+        <h2 style="padding-bottom: 1pt; padding-left: 43pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Declaration: <span class="p">All the above facts stated are true and correct.</span></h2>
+        <table style="border-collapse: collapse; margin-left: 6.05pt;" cellspacing="0">
+            <tr style="height: 15pt;">
+                <td
+                    style="
+                        width: 114pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 185pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s10" style="text-indent: 0pt; line-height: 14pt; text-align: center;">Holder 1</p>
+                </td>
+                <td
+                    style="
+                        width: 163pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s10" style="text-indent: 0pt; line-height: 14pt; text-align: center;">Holder 2</p>
+                </td>
+                <td
+                    style="
+                        width: 93pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s10" style="padding-left: 24pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Holder 3</p>
+                </td>
+            </tr>
+            <tr style="height: 45pt;">
+                <td
+                    style="
+                        width: 114pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s11" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">Signature</p>
+                </td>
+                <td
+                    style="
+                        width: 185pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                </td>
+                <td
+                    style="
+                        width: 163pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 93pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+            </tr>
+            <tr style="height: 21pt;">
+                <td
+                    style="
+                        width: 114pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s11" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Name</p>
+                </td>
+                <td
+                    style="
+                        width: 185pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                </td>
+                <td
+                    style="
+                        width: 163pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 93pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+            </tr>
+            <tr style="height: 56pt;">
+                <td
+                    style="
+                        width: 114pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s11" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Full address</p>
+                </td>
+                <td
+                    style="
+                        width: 185pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                </td>
+                <td
+                    style="
+                        width: 163pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 93pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+            </tr>
+            <tr style="height: 14pt;">
+                <td
+                    style="
+                        width: 114pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p class="s11" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">PIN</p>
+                </td>
+                <td
+                    style="
+                        width: 185pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 163pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+                <td
+                    style="
+                        width: 93pt;
+                        border-top-style: dotted;
+                        border-top-width: 1pt;
+                        border-left-style: dotted;
+                        border-left-width: 1pt;
+                        border-bottom-style: dotted;
+                        border-bottom-width: 1pt;
+                        border-right-style: dotted;
+                        border-right-width: 1pt;
+                    "
+                >
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                </td>
+            </tr>
+        </table>
+        </div>
+    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    </body>
+        <script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+        $scope.customers = [];
+
+        var isProcessing = false;
+
+        // showLoader();
+
+        // Load Customers
+        $scope.loadCustomers = function () {
+            $http.get('/Master/GetCustomers').then(function (response) {
+                $scope.customers = response.data[0];
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+        };
+
+        $scope.loadDocs = function () {
+            if (true) {
+                $http.get('/doc/getDocs/' + 1).then(function (response) {
+                    $scope.docs = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }
+        };
+
+        //Function
+        $scope.printDiv = function (divId) {
+                var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s5{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s6{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s7{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s9{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s10{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:11pt}.s15{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s17{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}li{display:block}#l2{padding-left:0pt}#l2>li>*:first-child:before{content:"◻ ";color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}table,tbody{vertical-align:top;overflow:visible}.form-table{margin:0 56px;border-collapse:collapse}.form-table td{border:1px solid #000;padding:8px;vertical-align:top}.form-table tr td:first-child{width:40%}</style>';
+            var innerContents = document.getElementById(divId).innerHTML;
+            var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+            popupWinindow.document.open();
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 10%;"onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.close();
+        };
+        //Initialize
+        $scope.loadCustomers();
+        $scope.loadDocs();
+    });
+</script>
+</html>

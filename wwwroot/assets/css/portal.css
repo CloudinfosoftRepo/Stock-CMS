@@ -14226,7 +14226,7 @@ button.close:focus {
         }
 
 .app-card-doc .app-doc-title {
-    font-size: .875rem
+    font-size: 12px
 }
 
     .app-card-doc .app-doc-title a {
@@ -14234,7 +14234,7 @@ button.close:focus {
     }
 
     .app-card-doc .app-doc-title.truncate {
-        max-width: calc(100% - 30px);
+        max-width: calc(100% - 15px);
         display: inline-block;
         overflow: hidden;
         text-overflow: ellipsis;

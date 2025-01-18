@@ -1,13 +1,27 @@
 ﻿<!DOCTYPE html>
 <html lang="en" ng-app="Stock-CMS">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Management</title>
 </head>
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #fff; /* Ensures that the header has a solid background */
+        z-index: 1; /* Makes sure the header stays on top of the content */
+    }
 
+    .table-responsive {
+        max-height: 500px; /* Set a fixed height to make the table scrollable */
+        overflow-y: auto;
+    }
+
+</style>
 <body ng-controller="StockController">
-    <div class="app-wrapper">
+    
         <div class="app-content pt-3 p-md-3 p-lg-4">
             <div class="container-xl">
                 <div class="row g-3 mb-4 align-items-center justify-content-between">
@@ -42,7 +56,7 @@
                     <div class="app-card-body">
                         <div class="table-responsive">
                             <table id="tblstock" class="table app-table-hover mb-0 text-left text-nowrap">
-                                <thead>
+                                <thead class="sticky-header">
                                     <tr>
                                         <th class="cell">#</th>
                                         <th class="cell">Company Name</th>
@@ -65,7 +79,7 @@
                                         <th class="cell">Updated At</th>
                                         <th class="cell">Updated By</th>
                                         <th class="cell">Edit</th>
-                                        <th class="cell">Doc Upload</th>
+                                        @* <th class="cell">Doc Upload</th> *@
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,11 +109,11 @@
                                                 <i class="bi bi-pencil"></i>
                                             </span>
                                         </td> 
-                                        <td class="cell">
+                                        @* <td class="cell">
                                             <span ng-hide="!stock.isClient" class="btn-sm app-btn" style="color:green;font-size:large">
                                                 <i class="bi bi-upload"></i>
                                             </span>
-                                        </td>
+                                        </td> *@
                                     </tr>
                                 </tbody>
                             </table>
@@ -110,7 +124,6 @@
             </div>
         </div>
 
-    </div>
     <!-- Add/Edit Stock Modal -->
     <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" style="max-width:75%" role="document">
