@@ -19,6 +19,8 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblDoc> TblDocs { get; set; }
 
+    public virtual DbSet<TblGenratedForm> TblGenratedForms { get; set; }
+
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
     public virtual DbSet<TblStock> TblStocks { get; set; }
@@ -26,7 +28,7 @@ public partial class StockCmsContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+ => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,7 +65,7 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("PAN");
-            entity.Property(e => e.PanUrl)
+            entity.Property(e => e.Panurl)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
@@ -72,6 +74,26 @@ public partial class StockCmsContext : DbContext
             entity.HasOne(d => d.Customer).WithMany(p => p.TblDocs)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Tbl_Doc_Tbl_Customer");
+        });
+
+        modelBuilder.Entity<TblGenratedForm>(entity =>
+        {
+            entity.ToTable("Tbl_Genrated_Forms");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.FormName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.JsonString).IsUnicode(false);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Url)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Stock).WithMany(p => p.TblGenratedForms)
+                .HasForeignKey(d => d.StockId)
+                .HasConstraintName("FK_Tbl_Genrated_Forms_Tbl_Stock");
         });
 
         modelBuilder.Entity<TblRole>(entity =>

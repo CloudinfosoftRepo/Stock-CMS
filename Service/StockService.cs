@@ -11,12 +11,13 @@ namespace Stock_CMS.Service
     {
         private readonly IStockRepository _StockRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ICustomerRepository _customerRepository;
        
-
-        public StockService(IStockRepository StockRepository,IUserRepository userRepository)
+        public StockService(IStockRepository StockRepository,IUserRepository userRepository,ICustomerRepository customerRepository)
         {
             _StockRepository = StockRepository;
             _userRepository = userRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<long> AddStock(StockDto data)
@@ -47,17 +48,12 @@ namespace Stock_CMS.Service
             //    return -1;
             //}
 
-            if (isExist.Any())
-            {
-                var existingProduct = isExist.FirstOrDefault();
-                if (existingProduct != null)
-                {
-                    data.CreatedBy = existingProduct.CreatedBy;
-                    data.CreatedAt = existingProduct.CreatedAt;
+            if (isExist.Id > 0)
+            {  
+                    data.CreatedBy = isExist.CreatedBy;
+                    data.CreatedAt = isExist.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
-
-                }
 
                 List<StockDto> updateList = new List<StockDto> { data };
                 var result = await _StockRepository.UpdateStock(updateList);
@@ -90,5 +86,13 @@ namespace Stock_CMS.Service
 			return result;
         }
 
-    }
+		public async Task<StockDto> GetStockById(long id)
+		{  
+			var result = await _StockRepository.GetStockById(id);
+			var customer = await _customerRepository.GetCustomerById(result.CustomerId.Value);
+            result.Customer = customer;
+			return result;
+		}
+
+	}
 }

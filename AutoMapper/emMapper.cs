@@ -18,6 +18,7 @@ namespace Stock_CMS.AutoMapper
 				.ReverseMap();
 
 			CreateMap<TblDoc, DocDto>().ReverseMap();
+			CreateMap<TblGenratedForm, GenratedFormDto>().ReverseMap();
 
 		}
     }

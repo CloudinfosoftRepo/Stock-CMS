@@ -3,21 +3,17 @@ using System.Collections.Generic;
 
 namespace Stock_CMS.Entity;
 
-public partial class TblDoc
+public partial class TblGenratedForm
 {
     public long Id { get; set; }
 
-    public long? CustomerId { get; set; }
+    public string? FormName { get; set; }
 
-    public string? Name { get; set; }
+    public long? StockId { get; set; }
 
-    public string? Pan { get; set; }
+    public string? Url { get; set; }
 
-    public string? Panurl { get; set; }
-
-    public string? Aadhar { get; set; }
-
-    public string? AadharUrl { get; set; }
+    public string? JsonString { get; set; }
 
     public bool? IsActive { get; set; }
 
@@ -29,5 +25,5 @@ public partial class TblDoc
 
     public int? UpdatedBy { get; set; }
 
-    public virtual TblCustomer? Customer { get; set; }
+    public virtual TblStock? Stock { get; set; }
 }

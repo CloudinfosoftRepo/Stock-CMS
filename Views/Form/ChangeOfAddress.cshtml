@@ -1,149 +1,176 @@
-﻿<html lang="en" ng-app="Stock-CMS">
+﻿<html lang="en" ng-app="GenratedForm-CMS">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AFFIDAVIT - change of address</title>
     <style type="text/css">
         * {
-          margin: 0;
-          padding: 0;
-          text-indent: 0;
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
         }
+
         p {
-          color: black;
-          font-family: Calibri, sans-serif;
-          font-style: normal;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: 12pt;
-          margin: 0pt;
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+            margin: 0pt;
         }
+
         h2 {
-          color: black;
-          font-family: Calibri, sans-serif;
-          font-style: normal;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: 11pt;
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
         }
+
         .s1 {
-          color: black;
-          font-family: Calibri, sans-serif;
-          font-style: normal;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: 12pt;
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
         }
+
         .s2 {
-          color: black;
-          font-family: Calibri, sans-serif;
-          font-style: normal;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: 12pt;
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
         }
+
         .s3 {
-          color: black;
-          font-family: Cambria, serif;
-          font-style: normal;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: 12pt;
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
         }
+
         .s4 {
-          color: black;
-          font-family: Cambria, serif;
-          font-style: normal;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: 11pt;
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
         }
+
         .s5 {
-          color: black;
-          font-family: Calibri, sans-serif;
-          font-style: normal;
-          font-weight: normal;
-          text-decoration: none;
-          font-size: 12pt;
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
         }
+
         table,
         tbody {
-          vertical-align: top;
-          overflow: visible;
+            vertical-align: top;
+            overflow: visible;
         }
     </style>
 </head>
 <body style="padding-left: 10%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea id="address" ng-model="data.newAddress"
+                                  class="form-control" style="height: 100px; width: 100%;" placeholder="New Address" rows="5" cols="5" required></textarea>
+                    </div>
+                </div>
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <hr />
     <div id="printForm">
-    <p style="padding-top: 1pt; text-indent: 0pt; text-align: center">
-        AFFIDAVIT (FOR CHANGE OF ADDRESS)
-    </p>
-    <p style="padding-top: 12pt; text-indent: 0pt; text-align: center">
-        (TO BE EXECUTED ON NON JUDICIAL STAMP PAPER FOR Rs. 50/-)
-    </p>
-    <h2 style="
+        <p style="padding-top: 1pt; text-indent: 0pt; text-align: center">
+            AFFIDAVIT (FOR CHANGE OF ADDRESS)
+        </p>
+        <p style="padding-top: 12pt; text-indent: 0pt; text-align: center">
+            (TO BE EXECUTED ON NON JUDICIAL STAMP PAPER FOR Rs. 50/-)
+        </p>
+        <h2 style="
         padding-top: 12pt;
         padding-left: 12pt;
         text-indent: 0pt;
         text-align: left;
       ">
-        TO,
-    </h2>
-    <h2 style="
+            TO,
+        </h2>
+        <h2 style="
         padding-top: 12pt;
         padding-left: 12pt;
         text-indent: 0pt;
         text-align: left;
       ">
-        Unit: <span class="s1">The Phoenix Mills Ltd</span>
-    </h2>
-    <h2 style="
+            Unit: <span class="s1">{{data.companyName}}</span>
+        </h2>
+        <h2 style="
         padding-top: 12pt;
         padding-left: 12pt;
         text-indent: 0pt;
         text-align: left;
       ">
-        DEAR SIR,
-    </h2>
-    <p style="
+            DEAR SIR,
+        </h2>
+        <p style="
         padding-top: 12pt;
         padding-left: 12pt;
         text-indent: 0pt;
         line-height: 114%;
         text-align: left;
       ">
-        I/We hereby request you to please update my/our change in address in your
-        records for the Registered
-    </p>
-    <p style="
+            I/We hereby request you to please update my/our change in address in your
+            records for the Registered
+        </p>
+        <p style="
         padding-top: 10pt;
         padding-left: 12pt;
         text-indent: 0pt;
         text-align: left;
       ">
-        Folio No.
-        <u>
-            PX007709
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </u>
-    </p>
-    <p style="
+            Folio No.
+            <u>
+                {{data.folioNo}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+        </p>
+        <p style="
         padding-top: 12pt;
         padding-left: 12pt;
         text-indent: 0pt;
         text-align: left;
       ">
-        Tel/ Mobile no:
+            Tel/ Mobile no:
             <u>
-                {{customers.mobile}}
-@*             9428171249
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
-        </u>
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <table style="border-collapse: collapse; margin-left: 6.5pt"
-           cellspacing="0">
-        <tr style="height: 14pt">
-            <td style="
+                {{data.mobile}}
+
+            </u>
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <table style="border-collapse: collapse; margin-left: 6.5pt"
+               cellspacing="0">
+            <tr style="height: 14pt">
+                <td style="
             width: 231pt;
             border-top-style: solid;
             border-top-width: 1pt;
@@ -154,17 +181,17 @@
             border-right-style: solid;
             border-right-width: 1pt;
           ">
-                <p class="s2"
-                   style="
+                    <p class="s2"
+                       style="
               padding-left: 1pt;
               text-indent: 0pt;
               line-height: 13pt;
               text-align: center;
             ">
-                    Old Address
-                </p>
-            </td>
-            <td style="
+                        Old Address
+                    </p>
+                </td>
+                <td style="
             width: 231pt;
             border-top-style: solid;
             border-top-width: 1pt;
@@ -175,38 +202,18 @@
             border-right-style: solid;
             border-right-width: 1pt;
           ">
-                <p class="s2"
-                   style="
+                    <p class="s2"
+                       style="
               padding-left: 1pt;
               text-indent: 0pt;
               line-height: 13pt;
               text-align: center;
             ">
-                    New Address
-                </p>
-            </td>
-        </tr>
-        <tr style="height: 16pt">
-            <td style="
-            width: 231pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-border-bottom-width: 1pt;
-            border-left-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          ">
-                <p class="s2"
-                   style="
-              padding-left: 5pt;
-              text-indent: 0pt;
-              line-height: 14pt;
-              text-align: left;
-            ">
-                        {{customers.address}}
-                </p>
-            </td>
+                        New Address
+                    </p>
+                </td>
+            </tr>
+            <tr style="height: 16pt">
                 <td style="
             width: 231pt;
             border-top-style: solid;
@@ -224,61 +231,168 @@ border-bottom-width: 1pt;
               line-height: 14pt;
               text-align: left;
             ">
-                        {{customers.address}}
+                        {{data.address}}
                     </p>
                 </td>
-        </tr>
+                <td style="
+            width: 231pt;
+            border-top-style: solid;
+            border-top-width: 1pt;
+            border-left-style: solid;
+border-bottom-width: 1pt;
+            border-left-width: 1pt;
+            border-right-style: solid;
+            border-right-width: 1pt;
+          ">
+                    <p class="s2"
+                       style="
+              padding-left: 5pt;
+              text-indent: 0pt;
+              line-height: 14pt;
+              text-align: left;
+            ">
+                        {{data.newAddress}}
+                    </p>
+                </td>
+            </tr>
 
-        
-    </table>
-    <p style="padding-top: 12pt; text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-        Yours faithfully
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-        <u>(SHIRISH SAKHARAM DIGHE</u>) (ASHOK S DIGHE)
-    </p>
-    <p style="
+
+        </table>
+        <p style="padding-top: 12pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
+            Yours faithfully
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
+            {{data.holders}}
+        </p>
+        <p style="
         padding-top: 2pt;
         padding-left: 12pt;
         text-indent: 0pt;
         line-height: 183%;
         text-align: left;
       ">
-        Signature of the First and Jt. Holder(s)
-    </p>
-    <p class="s5"
-       style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-        As per specimen Registered)Executed before me
-        <u>&nbsp;..........................................................................</u>
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p class="s5" style="text-indent: 0pt; text-align: center">
-        (Should be attested by Notary)
-    </p>
+            Signature of the First and Jt. Holder(s)
+        </p>
+        <p class="s5"
+           style="padding-left: 12pt; text-indent: 0pt; text-align: left">
+            As per specimen Registered)Executed before me
+            <u>&nbsp;..........................................................................</u>
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s5" style="text-indent: 0pt; text-align: center">
+            (Should be attested by Notary)
+        </p>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
 </body>
 
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
-        $scope.customers = [];
-
-        var isProcessing = false;
+    angular.module('GenratedForm-CMS', []).controller('FormController', function ($scope, $http) {
+            $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
+            var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
+
         $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+             if(id){
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                       let holders = [
+                        result.firstHolder || '',
+                        result.secondHolder || '',
+                        result.thirdHolder || ''
+                    ].filter(holder => holder.trim() !== '');
+                $scope.data = {
+                   companyName : result.companyName,
+                   mobile : result.customer.mobile,
+                   folioNo : result.folioNo,
+                   address : result.customer.address,
+                   newAddress : '',
+                   holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+                };
+
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                   companyName : obj.companyName,
+                   mobile : obj.mobile,
+                   folioNo : obj.folioNo,
+                   address : obj.address,
+                   newAddress : obj.newAddress,
+                   holders : obj.holders
+                };
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
         };
+
+
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'ChangeOfAddress',
+                 GenratedFormId : id,
+                 url : `/Form/ChangeOfAddress?id2=${id}`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
 
         //Function
         $scope.printDiv = function (divId) {

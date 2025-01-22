@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Stock_CMS.Entity;
+namespace Stock_CMS.Models;
 
 public partial class DocDto
 {

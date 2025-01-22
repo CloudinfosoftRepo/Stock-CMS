@@ -47,17 +47,15 @@ namespace Stock_CMS.Service
                 return -1;
             }
 
-            if (isExist.Any())
+            if (isExist.Id > 0)
             {
-                var existingProduct = isExist.FirstOrDefault();
-                if (existingProduct != null)
-                {
-                    data.CreatedBy = existingProduct.CreatedBy;
-                    data.CreatedAt = existingProduct.CreatedAt;
+               
+                    data.CreatedBy = isExist.CreatedBy;
+                    data.CreatedAt = isExist.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
 
-                }
+               
 
                 List<CustomerDto> updateList = new List<CustomerDto> { data };
                 var result = await _customerRepository.UpdateCustomer(updateList);

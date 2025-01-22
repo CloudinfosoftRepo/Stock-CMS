@@ -46,4 +46,6 @@ public partial class TblStock
     public int? UpdatedBy { get; set; }
 
     public virtual TblCustomer? Customer { get; set; }
+
+    public virtual ICollection<TblGenratedForm> TblGenratedForms { get; set; } = new List<TblGenratedForm>();
 }

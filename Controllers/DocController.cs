@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Stock_CMS.Entity;
+using Stock_CMS.Models;
 using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
 

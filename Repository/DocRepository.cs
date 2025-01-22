@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Stock_CMS.Common;
 using Stock_CMS.Entity;
+using Stock_CMS.Models;
 using Stock_CMS.RepositoryInterface;
 
 namespace Stock_CMS.Repository

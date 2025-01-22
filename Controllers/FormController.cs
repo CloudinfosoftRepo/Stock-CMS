@@ -1,18 +1,82 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Stock_CMS.Models;
+using Stock_CMS.Service;
+using Stock_CMS.ServiceInterface;
 
 namespace Stock_CMS.Controllers
 {
     public class FormController : Controller
     {
-        public IActionResult Form()
+
+		private readonly ILogger<EnquiryController> _logger;
+		private readonly IGenratedFormService _genratedFormService;
+
+		public FormController(ILogger<EnquiryController> logger, IGenratedFormService genratedFormService)
+		{
+			_logger = logger;
+			_genratedFormService = genratedFormService;
+		}
+
+		public IActionResult Form()
         {
             return View();
-        } 
-        public IActionResult ChangeOfAddress()
+        }
+		[HttpPost]
+		public async Task<JsonResult> GenrateForm([FromBody] GenratedFormDto data)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					var userId = HttpContext.Request.Cookies["UserId"];
+
+					data.IsActive = true;
+					data.CreatedAt = DateTime.Now;
+					data.CreatedBy = int.Parse(userId);
+
+					var result = await _genratedFormService.GenrateForm(data);
+					data.Id = result;
+					string message = result == -1 ? "Form already exists." :
+					 result == 0 ? "Failed to add Form Data." :
+					 $"Form data added successfully.";
+					bool success = result > 0;
+					return Json(new { success = success, message = message, data });
+				}
+				catch (Exception ex)
+				{
+					_logger.LogError(ex, "Error during add");
+					return Json(new { success = false, message = ex.Message });
+				}
+			}
+			return Json(new { success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors) });
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> GetGenratedFormById(long id)
+		{
+			try
+			{
+				var result = await _genratedFormService.GetGenratedFormById(id);
+				return Json(result);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error during fetch");
+				return StatusCode(500, new
+				{
+					Message = ex.Message
+				});
+			}
+
+		}
+
+		public IActionResult ChangeOfAddress()
         {
             return View();
-        }  
-        public IActionResult AFFIDAVITChangeOfAddress()
+        }
+		
+
+		public IActionResult AFFIDAVITChangeOfAddress()
         {
             return View();
         }        

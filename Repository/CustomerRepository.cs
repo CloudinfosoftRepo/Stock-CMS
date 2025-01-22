@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Stock_CMS.Common;
 using Stock_CMS.Entity;
+using Stock_CMS.Models;
 using Stock_CMS.RepositoryInterface;
 
 namespace Stock_CMS.Repository
@@ -15,9 +16,9 @@ namespace Stock_CMS.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CustomerDto>> GetCustomerById(long Id)
+        public async Task<CustomerDto> GetCustomerById(long Id)
         {
-            return await GetMany(x => x.Id == Id);
+            return await GetOne(x => x.Id == Id);
         }
         public async Task<IEnumerable<CustomerDto>> GetCustomerByName(string customerName)
         {

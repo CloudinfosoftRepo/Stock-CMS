@@ -1,4 +1,5 @@
 ﻿using Stock_CMS.Entity;
+using Stock_CMS.Models;
 
 namespace Stock_CMS.RepositoryInterface
 {

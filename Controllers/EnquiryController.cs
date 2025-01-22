@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Stock_CMS.Entity;
+using Stock_CMS.Models;
 using Stock_CMS.ServiceInterface;
 
 namespace Stock_CMS.Controllers
@@ -26,6 +27,24 @@ namespace Stock_CMS.Controllers
 			try
 			{
 				var Stocks = await _StockService.GetStockByClientId(id);
+				return Json(Stocks);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error during fetch");
+				return StatusCode(500, new
+				{
+					Message = ex.Message
+				});
+			}
+
+		}
+		[HttpGet]
+		public async Task<ActionResult> GetStocksById(long id)
+		{
+			try
+			{
+				var Stocks = await _StockService.GetStockById(id);
 				return Json(Stocks);
 			}
 			catch (Exception ex)

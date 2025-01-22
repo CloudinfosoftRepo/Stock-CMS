@@ -65,5 +65,8 @@ public static class ConfigureServices
         services.AddTransient<IDocService, DocService>();
 		services.AddTransient<IDocRepository, DocRepository>();
 
+		services.AddTransient<IGenratedFormService, GenratedFormService>();
+		services.AddTransient<IGenratedFormRepository, GenratedFormRepository>();
+
 	}
 }

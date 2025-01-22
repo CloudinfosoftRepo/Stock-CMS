@@ -10,5 +10,7 @@ namespace Stock_CMS.ServiceInterface
         Task<Int32> UpdateStock(StockDto data);
 
         Task<IEnumerable<StockDto>> GetStockByClientId(long clientid);
-    }
+        Task<StockDto> GetStockById(long id);
+
+	}
 }
