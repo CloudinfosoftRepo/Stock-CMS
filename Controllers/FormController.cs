@@ -10,11 +10,13 @@ namespace Stock_CMS.Controllers
 
 		private readonly ILogger<EnquiryController> _logger;
 		private readonly IGenratedFormService _genratedFormService;
+		private readonly IFormService _formService;
 
-		public FormController(ILogger<EnquiryController> logger, IGenratedFormService genratedFormService)
+		public FormController(ILogger<EnquiryController> logger, IGenratedFormService genratedFormService,IFormService formService)
 		{
 			_logger = logger;
 			_genratedFormService = genratedFormService;
+			_formService = formService;
 		}
 
 		public IActionResult Form()
@@ -70,7 +72,45 @@ namespace Stock_CMS.Controllers
 
 		}
 
-		public IActionResult ChangeOfAddress()
+        [HttpGet]
+        public async Task<ActionResult> GetFormList()
+        {
+            try
+            {
+                var result = await _formService.GetFormList();
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetGenratedFormByStockId(long id)
+        {
+            try
+            {
+                var result = await _genratedFormService.GetGenratedFormByStockId(id);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+
+        public IActionResult ChangeOfAddress()
         {
             return View();
         }
@@ -157,6 +197,10 @@ namespace Stock_CMS.Controllers
             return View();
         }
         public IActionResult NameChangeAfterMrg()
+        {
+            return View();
+        }
+        public IActionResult GenerateForm()
         {
             return View();
         }

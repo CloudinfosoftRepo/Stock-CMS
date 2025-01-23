@@ -11,6 +11,6 @@ namespace Stock_CMS.RepositoryInterface
         Task<IEnumerable<GenratedFormDto>> GenrateForm(IEnumerable<GenratedFormDto> data);
         Task<IEnumerable<GenratedFormDto>> UpdateGenratedForm(IEnumerable<GenratedFormDto> data);
 
-
+        Task<IEnumerable<GenratedFormDto>> GetGenratedFormByStockId(long Id);
     }
 }

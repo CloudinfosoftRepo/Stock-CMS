@@ -64,7 +64,28 @@
         }
     </style>
 </head>
-<body style="padding-left: 10%;" ng-controller="FormController">
+<body style="padding-left: 10%;" ng-controller="FormsController">
+     <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label for="dpid" class="form-label">DP Id</label>
+                        <input type="text" ng-model="data.dpid" class="form-control search-orders" placeholder="DP Id">
+                    </div>
+                    <div class="form-group mb-3"> 
+                         <label for="clientid" class="form-label">Client Id</label>
+                        <input type="text" ng-model="data.clientid" class="form-control search-orders" placeholder="Client Id">
+                    </div>
+                </div>
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <p style="padding-top: 2pt; text-indent: 0pt; text-align: center">
         AFFIDAVIT
@@ -78,7 +99,7 @@
         text-indent: 0pt;
         text-align: justify;
       ">
-            <span class="p">I, {{customers.customerName}} s/o </span><span class="s1" style="background-color: #ff0">Shri </span><span class="p">{{}} aged {{21}} years, correspondence address</span> {{customers.address}}<span style="color: #000">
+            <span class="p">I, {{data.customerName}} s/o </span><span class="s1" style="background-color: #ff0">Shri </span><span class="p">{{data.sonof}} aged {{data.age}} years, correspondence address</span> {{data.address}}<span style="color: #000">
                 , solemnly affirm and declare in favour of the Company M/s Chambal
                 Fertilisers and Chemical Limited.
             </span>
@@ -102,9 +123,9 @@
             line-height: 108%;
             text-align: justify;
           ">
-                    I {{customers.customerName}}, am the sole shareholder of equity shares in Chambal
+                    I {{data.customerName}}, am the sole shareholder of equity shares in Chambal
                 Fertilisers and Chemicals Limited under Folio no. (if shares hold in
-                physical folio) / DPID &amp; Client Id {{1}} (if shares hold
+                physical folio) / DPID &amp; Client Id {{data.dpid}}, {{data.clientid}} (if shares hold
                 in demat account).
             </p>
             <p style="padding-top: 1pt; text-indent: 0pt; text-align: left">
@@ -119,7 +140,7 @@
             text-align: justify;
           ">
                 That I am residing at the above address have changed my addresses in
-                past {{5}} years, I was having following address , as my old address :
+                    past {{data.yearssinceaddresschange}} years, I was having following address , as my old address :
             </p>
             <p style="padding-top: 1pt; text-indent: 0pt; text-align: left">
                 <br />
@@ -130,10 +151,10 @@
             line-height: 108%;
             text-align: left;
           ">
-                    Address in Client Master List : {{customers.address}} <br />
-                    Address in Aadhaar Card : {{customers.address}}<br />
-                    Address in Voter id : {{customers.address}}<br />
-                    Address in Records of the Company{{customers.address}}
+                    Address in Client Master List : {{data.address}} <br />
+                    Address in Aadhaar Card : {{data.address}}<br />
+                    Address in Voter id : {{data.address}}<br />
+                    Address in Records of the Company{{data.address}}
             </p>
             <p style="
             padding-left: 41pt;
@@ -217,7 +238,7 @@
         text-align: left;
       ">
         Solemnly declared and affirmed on identification at New Delhi on this
-        {{}} day of 2023
+        {{data.day}}, {{data.month}} day of 2023
     </p>
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 406pt; text-indent: 0pt; text-align: left">
@@ -228,23 +249,27 @@
 </body>
 
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
-        $scope.customers = [];
-
+    angular.module('Stock-CMS', []).controller('FormsController', function ($scope, $http) {
+        // $scope.customers = [];
+         $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
-                hideLoader();
-            }, function (error) {
-                console.error('Error loading customers:', error);
-                hideLoader();
-            });
-        };
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
 
         $scope.loadDocs = function () {
             if (true) {
@@ -257,6 +282,108 @@
                 });
             }
         };
+
+                // Load Customers
+
+        $scope.loadCustomers = function () {
+            
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                $scope.data = {
+                   customerName : result.customer.customerName,
+                   age : 21,
+                   sonof: 'fathersname',
+                   yearssinceaddresschange: 2,
+                   folioNo : result.folioNo,
+                   address : result.customer.address,
+                   dpid: '',
+                   clientid: '',
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()]
+                };
+
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    age:obj.aage,
+                    sonof:obj.sonof,
+                    yearssinceaddresschange:obj.yearssinceaddresschange,
+                    folioNo:obj.folioNo,
+                    address:obj.address,
+                    dpid:obj.dpid,
+                    clientid:obj.clientid,
+                    day:obj.day,
+                    month:obj.month,
+                };
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+        };
+
+
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'AFFIDAVIT 003 COA',
+                 StockId : id,
+                 url : `/Form/AFFIDAVIT003COA?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
         //Function
         $scope.printDiv = function (divId) {
             var innerContents = document.getElementById(divId).innerHTML;

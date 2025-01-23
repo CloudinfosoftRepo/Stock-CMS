@@ -9,5 +9,7 @@ namespace Stock_CMS.ServiceInterface
         Task<Int32> UpdateGenratedForm(GenratedFormDto data);
         Task<GenratedFormDto> GetGenratedFormById(long id);
 
-	}
+        Task<IEnumerable<GenratedFormDto>> GetGenratedFormByStockId(long id);
+
+    }
 }

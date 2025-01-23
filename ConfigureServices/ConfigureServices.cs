@@ -68,5 +68,8 @@ public static class ConfigureServices
 		services.AddTransient<IGenratedFormService, GenratedFormService>();
 		services.AddTransient<IGenratedFormRepository, GenratedFormRepository>();
 
+		services.AddTransient<IFormService, FormService>();
+		services.AddTransient<IFormRepository, FormRepository>();
+
 	}
 }

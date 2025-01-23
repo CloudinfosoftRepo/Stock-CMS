@@ -19,6 +19,8 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblDoc> TblDocs { get; set; }
 
+    public virtual DbSet<TblForm> TblForms { get; set; }
+
     public virtual DbSet<TblGenratedForm> TblGenratedForms { get; set; }
 
     public virtual DbSet<TblRole> TblRoles { get; set; }
@@ -27,10 +29,10 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
  => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TblCustomer>(entity =>
         {
@@ -74,6 +76,20 @@ public partial class StockCmsContext : DbContext
             entity.HasOne(d => d.Customer).WithMany(p => p.TblDocs)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Tbl_Doc_Tbl_Customer");
+        });
+
+        modelBuilder.Entity<TblForm>(entity =>
+        {
+            entity.ToTable("Tbl_Form");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.FormName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Url)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("URL");
         });
 
         modelBuilder.Entity<TblGenratedForm>(entity =>

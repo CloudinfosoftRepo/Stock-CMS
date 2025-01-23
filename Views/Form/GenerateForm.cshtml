@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Form</title>
+</head>
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #fff; /* Ensures that the header has a solid background */
+        z-index: 1; /* Makes sure the header stays on top of the content */
+    }
+
+    .table-responsive {
+        max-height: 500px; /* Set a fixed height to make the table scrollable */
+        overflow-y: auto;
+    }
+
+    .top-border{
+        border-top: 2px solid black;
+    }
+
+    .display-flex {
+        display: flex;
+    }
+</style>
+<body ng-controller="GenerateFormController">
+
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-6">
+                    @* <a asp-controller="Enquiry" asp-action="Index" class="btn btn-custom me-3"> *@
+                    @*     <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i> *@
+                    @* </a> *@
+                    <h1 class="app-page-title mb-0">Generate Forms</h1>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                    <div class="d-flex gap-2">
+                        <form class="table-search-form row gx-1 align-items-center mb-0">
+                            <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
+                        </form>
+                        @* <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openStockModal()">Generate form</button> *@
+                        @* <button class="btn btn-custom" *@
+                        @*         style="background-color:#003980;color:white" *@
+                        @*         excel-export *@
+                        @*         table-id="tblstock" *@
+                        @*         file-name="Stock" *@
+                        @*         sheet-name="Sheet1" *@
+                        @*         file-type="xlsx"> *@
+                        @*     Export *@
+                        @* </button> *@
+                    </div>
+                </div>
+            </div>
+
+            <div class="justify-content-center display-flex">
+                <select class="form-select w-auto" ng-options="f.id as f.formName for f in formlist" ng-model="seletedform">
+                    <option selected disabled value="">Select Form</option>
+                </select>
+                <button class="btn btn-custom" style="background-color:#003980;color:white; margin-left:15px;" ng-click="gotoform(seletedform)">Generate form</button>
+            </div>
+            <hr class="top-border"/>
+            <div class="row g-4">
+                <div class="col-6 col-md-4 col-xl-4 col-xxl-3" ng-repeat="forms in generatedforms | filter: searchQuery">
+                    <div class="app-card app-card-doc shadow-sm h-100">
+                        <div class="app-card-thumb-holder p-3">
+                            <span class="icon-holder">
+                                <i class="fas fa-file-alt text-file"></i>
+                            </span>
+                            @* <span class="badge bg-success">NEW</span> *@
+                            <a class="app-card-link-mask" ng-click="navtogenerateform(forms.url,forms.id)"></a>
+                        </div>
+                        <div class="app-card-body p-3 has-card-actions">
+
+                            <h4 class="app-doc-title truncate mb-0">
+                                <a ng-click="navtogenerateform(forms.url,forms.id)">{{forms.formName}}</a>
+                            </h4>
+
+                        </div><!--//app-card-body-->
+
+                    </div><!--//app-card-->
+                </div><!--//col-->
+            </div><!--//row-->
+
+        </div>
+    </div>
+
+
+    <script>
+        angular.module('Stock-CMS', []).controller('GenerateFormController', function ($scope, $http) {
+            $scope.generatedforms = [];
+            $scope.formlist = [];
+
+            showLoader();
+
+             var path = window.location.pathname;
+            var segments = path.split('/');
+            var id = segments[segments.length - 1];
+
+            // Load Generated Form List
+            $scope.loadforms = function () {
+                 if (id)
+                 {
+                    $http.get('/Form/GetGenratedFormByStockId/'+ id).then(function (response) {
+                    $scope.generatedforms = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading generated forms:', error);
+                    hideLoader();
+                });
+                 }
+
+            };
+
+            // Load Form List
+            $scope.loadallforms = function () {
+                $http.get('/Form/GetFormList').then(function (response) {
+                    $scope.formlist = response.data;
+                }, function (error) {
+                    console.error('Error loading form list:', error);
+                });
+            };
+
+            // Get Customer Name by ID
+            $scope.gotoform = function (fid) {
+                const form = $scope.formlist.find(c => c.id === fid);
+                 window.open(form.url + id, '_self');
+            };
+
+            $scope.navtogenerateform = function (url,id) {
+                window.open(url+id, '_self');
+            };
+
+            // Initial Load
+            $scope.loadforms();
+
+            $scope.loadallforms();
+        });
+    </script>
+</body>
+</html>
+

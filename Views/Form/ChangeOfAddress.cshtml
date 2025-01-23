@@ -1,4 +1,4 @@
-﻿<html lang="en" ng-app="GenratedForm-CMS">
+﻿<html lang="en" ng-app="Stock-CMS">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AFFIDAVIT - change of address</title>
@@ -289,7 +289,7 @@ border-bottom-width: 1pt;
 </body>
 
 <script>
-    angular.module('GenratedForm-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
             $scope.data = undefined;
             $scope.hDiv = true;
             var params = new URLSearchParams(window.location.search);
@@ -348,16 +348,14 @@ border-bottom-width: 1pt;
             }
         };
 
-
-
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'ChangeOfAddress',
-                 GenratedFormId : id,
-                 url : `/Form/ChangeOfAddress?id2=${id}`,
+                 StockId : id,
+                 url : `/Form/ChangeOfAddress?id2=`,
                  jsonString : jsonString,
                  IsActive : true
              }

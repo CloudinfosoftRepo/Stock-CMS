@@ -79,5 +79,11 @@ namespace Stock_CMS.Service
 			return result;
 		}
 
-	}
+        public async Task<IEnumerable<GenratedFormDto>> GetGenratedFormByStockId(long id)
+        {
+            var result = await _GenratedFormRepository.GetGenratedFormByStockId(id);
+            return result;
+        }
+
+    }
 }
