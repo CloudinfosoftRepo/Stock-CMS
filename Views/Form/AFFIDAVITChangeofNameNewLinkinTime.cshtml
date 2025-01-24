@@ -134,6 +134,37 @@
         }
 </style>
 <body style="padding-left: 10%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-8"> *@
+                <div class="form-group mb-3">
+                    <label for="seletedid" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="newName" class="form-label">Old Name</label>
+                        <input type="text" ng-model="data.newName" class="form-control search-orders" placeholder="Old Name">
+                    </div>
+                <div class="form-group mb-3 col-md-3">
+                        <label for="namechagedate" class="form-label">Name Change Date</label>
+                        <input type="date" ng-model="data.namechagedate" class="form-control search-orders" placeholder="Name Change Date">
+                    </div>
+                <div class="form-group mb-3 col-md-3">
+                        <label for="place" class="form-label">Place</label>
+                        <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
+                    </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <h1 style="
         padding-top: 2pt;
@@ -150,8 +181,9 @@
         line-height: 150%;
         text-align: left;
       ">
-        I, <u><b>KAMLESH C PANCHAL</b></u><b> </b>son/daughter/spouse of <u><b>C M PANCHAL</b></u><b> </b>aged <u><b>56</b></u>, residing at <u><b>26/A, PANCHAL</b></u><b> </b><u>
-            <b>NAGAR, BEHIND KRISHNA PARK, AJWA ROAD, VADODARA, GUJARAT, 390019,</b>
+        I, <u><b>{{data.customerName}}</b></u><b> </b>son/daughter/spouse of <u><b>{{data.sonof}}</b></u><b> </b>aged <u><b>{{data.age}}</b></u>, residing at <u>
+            <b>{{data.address}}</b></u><b> </b><u>
+            @* <b>NAGAR, BEHIND KRISHNA PARK, AJWA ROAD, VADODARA, GUJARAT, 390019,</b> *@
         </u><b> </b>do hereby solemnly
     </p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
@@ -161,7 +193,7 @@
     <ol id="l1">
         <li data-list-text="1.">
             <p style="padding-left: 40pt; text-indent: -17pt; text-align: left">
-                That my name earlier was <u><b>KAMLESH CHANDRAKANT PANCHAL</b></u>
+                    That my name earlier was <u><b>{{data.newName}}</b></u>
             </p>
         </li>
         <li data-list-text="2.">
@@ -171,14 +203,14 @@
             text-indent: -17pt;
             text-align: left;
           ">
-                That I have changed my name as <u><b>KAMLESH C PANCHAL</b></u><b> </b>on/from (date of change of name).
+                    That I have changed my name as <u><b>{{data.customerName}}</b></u><b> </b>on/from {{data.namechagedate | date:'dd-MM-yyyy'}}(date of change of name).
             </p>
             <p style="text-indent: 0pt; text-align: left"><br /></p>
         </li>
         <li data-list-text="3.">
             <p style="padding-left: 40pt; text-indent: -17pt; text-align: left">
                 At present all the records have my new name
-                <u><b>KAMLESH C PANCHAL</b></u>
+                    <u><b>{{data.customerName}}</b></u>
             </p>
             <p style="text-indent: 0pt; text-align: left"><br /></p>
         </li>
@@ -196,9 +228,10 @@
             line-height: 200%;
             text-align: left;
           ">
-                <span class="p">I state that </span><u><b>KAMLESH CHANDRAKANT PANCHAL</b></u>
-                <span class="p">(earlier name) and the </span><u>KAMLESH C</u>
-                <u>PANCHAL</u>
+                    <span class="p">I state that </span><u><b>{{data.newName}}</b></u>
+                <span class="p">(earlier name) and the </span>
+                    <u>{{data.customerName}}</u>
+                @* <u>PANCHAL</u> *@
                 <span class="p">
                     (present name) is the name of one and the same person and that is
                     myself.
@@ -225,18 +258,26 @@
       ">
         I hereby state that whatever is stated herein above are true to the best
         of my knowledge. Solemnly affirmed at
-        <span class="s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>)
+        @* <span class="s2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>) *@
+        <span class="s2">{{data.place}} </span>)
     </p>
     <p style="padding-left: 23pt; text-indent: 0pt; text-align: left">
         On this
+        @* <span class="s2 "> *@
+        @*     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+        @* </span> *@
         <span class="s2 ">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{data.day}}
         </span>
 
         day of
+        @* <span class="s2 "> *@
+        @*     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+        @* </span>  *@
         <span class="s2 ">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </span>20 )
+           {{data.month}}
+        </span>
+            {{data.year}} )
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 257pt; text-indent: 0pt; text-align: left">
@@ -260,33 +301,159 @@
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+         $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // Load Customers
+         $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                     $scope.docs = response.data;
+                    var doc = response.data[sid - 1];
+                    var Age = $scope.calculateAge(doc.dob);
+                $scope.data = {
+                   customerName : doc.name,
+                   newName: '',
+                   age : Age,
+                   sonof: 'fathersname',
+                   address : doc.addressAsPerAadhar,
+                   namechagedate: '',
+                   place:'',
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+                };
+
+                hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    newName: obj.newName,
+                    age:obj.age,
+                    sonof:obj.sonof,
+                    address:obj.address,
+                    namechagedate: obj.namechagedate,
+                    place: obj.place,
+                    day:obj.day,
+                    month:obj.month,
+                    year: obj.year,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'AFFIDAVIT Change of NameNew LinkinTime',
+                 StockId : id,
+                 url : `/Form/AFFIDAVITChangeofNameNewLinkinTime?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers(null);
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
         //Function
         $scope.printDiv = function (divId) {
             var innerContents = document.getElementById(divId).innerHTML;
@@ -296,8 +463,8 @@
             popupWinindow.document.close();
         };
         //Initialize
-        $scope.loadCustomers();
-        $scope.loadDocs();
+        $scope.loadCustomers(null);
+        // $scope.loadDocs();
     });
 </script>
 

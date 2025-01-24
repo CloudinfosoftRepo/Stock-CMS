@@ -17,7 +17,8 @@ namespace Stock_CMS.Service
         public async Task<IEnumerable<FormDto>> GetFormList()
         {
             var forms = await _formRepository.GetForms();
-            return forms;
+            var result = forms.OrderBy(x => x.Sequence).ToList();
+            return result;
         }
     }
 }

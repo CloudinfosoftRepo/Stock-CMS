@@ -72,9 +72,13 @@ img {
                                     <tr>
                                         <th class="cell"> Name</th>
                                         <th class="cell">Pan Number</th>
+                                        <th class="cell">Name As Per PAN</th>
                                         <th class="cell">Pan </th>
                                         <th class="cell">Aadhar Number</th>
+                                        <th class="cell">Name As Per Aadhar</th>
+                                        <th class="cell">Address As Per Aadhar</th>
                                         <th class="cell">Aadhar </th>
+                                        <th class="cell">Date Of Birth </th>
                                         <th class="cell">Edit</th>
                                         @* <th class="cell">Delete</th> *@
                                     </tr>
@@ -83,17 +87,21 @@ img {
                                     <tr ng-repeat="doc in docs | filter: searchQuery" ">
                                         <td class="cell">{{ doc.name }}</td>
                                         <td class="cell">{{ doc.pan }}</td>
+                                    <td class="cell">{{ doc.nameAsPerPan }}</td>
                                         <td class="cell">
                                             <div class="img-container">
                                                 <img alt="" src="{{doc.panUrl}}" width="35px" height="35px">
                                             </div>
                                         </td>
                                         <td class="cell">{{ doc.aadhar }}</td>
+                                    <td class="cell">{{ doc.nameAsPerAadhar }}</td>
+                                    <td class="cell">{{ doc.addressAsPerAadhar }}</td>
                                         <td class="cell">
                                             <div class="img-container">
                                                 <img alt="" src="{{doc.aadharUrl}}" width="35px" height="35px">
                                             </div>
                                         </td>
+                                    <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                         <td class="cell">
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
                                                 <i class="bi bi-pencil"></i>
@@ -123,7 +131,7 @@ img {
 
         <!-- Add/Edit Stock Modal -->
         <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-xl"  role="document">
+            <div class="modal-dialog modal-xl"  role="document">
                 <div class="modal-content">
                     <form ng-submit="saveDoc()">
                         <div class="modal-header">
@@ -132,12 +140,18 @@ img {
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="name">Document Name</label>
                                         <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
                                     </div>
                                 </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control" required />
+                                </div>
+                            </div>
                             </div>
 
                             <div class="row">
@@ -147,6 +161,12 @@ img {
                                         <input type="text" id="pan" ng-model="currentDoc.pan" class="form-control" placeholder="Enter Pan Number" required />
                                     </div>
                                 </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nameAsPerPan">Name As Per Pan</label>
+                                    <input type="text" id="nameAsPerPan" ng-model="currentDoc.nameAsPerPan" class="form-control" placeholder="Enter Name As Per Pan" required />
+                                </div>
+                            </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="panFile">Pan File</label>
@@ -162,6 +182,19 @@ img {
                                         <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
                                     </div>
                                 </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nameAsPerAadhar">Name As Per Aadhar</label>
+                                    <input type="text" id="nameAsPerAadhar" ng-model="currentDoc.nameAsPerAadhar" class="form-control" placeholder="Enter Name As Per Aadhar" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="addressAsPerAadhar">Address As Per Aadhar</label>
+                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar"></textarea>
+
+                                </div>
+                            </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="aadharFile">Aadhar File</label>
@@ -224,6 +257,7 @@ img {
         $scope.openDocModal = function (doc = null) {
             $scope.isEditing = !!doc;
             $scope.currentDoc = doc ? angular.copy(doc) : {};
+            $scope.currentDoc.dob = new Date(doc.dob)
             $('#docModal').modal('show');
         };
 
@@ -237,7 +271,12 @@ img {
             formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
             formData.append('name', $scope.currentDoc.name);
             formData.append('pan', $scope.currentDoc.pan);
+                    formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan);
             formData.append('aadhar', $scope.currentDoc.aadhar);
+                    formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar);
+                    formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar);
+           formData.append('dob', $scope.currentDoc.dob.toISOString().split('T')[0]);  
+
 
             if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
             if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
@@ -255,6 +294,7 @@ img {
                     icon: response.data.success ? 'success' : 'error',
                     confirmButtonText: 'OK'
                 });
+                      isProcessing = false;
                 $scope.loadDocs();
                 $('#docModal').modal('hide');
             });

@@ -71,7 +71,7 @@
                                         <th class="cell">Updated By</th>
                                         <th class="cell">Edit</th>
                                         <th ng-hide="search" class="cell">C2C</th>
-                                        <th class="cell">Docs</th>
+                                    <th class="cell">Docs</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,8 +96,8 @@
                                             </span>
                                         </td>
 
-                                        <td class="cell">
-                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageDocs(customer.id)" data-tooltip="Docs">
+                                    <td  class="cell">
+                                        <span class="btn-sm app-btn" ng-hide="!customer.isClient" style="color:green;font-size:large" ng-click="manageDocs(customer.id)" data-tooltip="Docs">
                                                 <i class="bi bi-file-earmark-text"></i>
                                             </span>
                                         </td>
@@ -113,7 +113,7 @@
 
     <!-- Add/Edit Customer Modal -->
     <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" style="max-width:65%" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <form ng-submit="saveCustomer()">
                     <div class="modal-header">

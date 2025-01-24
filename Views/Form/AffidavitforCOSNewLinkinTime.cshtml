@@ -154,6 +154,41 @@
     </style>
   </head>
 <body style="padding-left: 15%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-4"> *@
+                    <div class="form-group mb-3"> 
+                        <label for="seletedId" class="form-label">select customer</label> 
+                        <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)"> 
+                             <option selected disabled value="">Select customer</option>
+                         </select>
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="place" class="form-label">Place</label>
+                        <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
+                    </div>
+                <div class="form-group mb-3  col-md-3">
+                        <label for="certificatenos" class="form-label">Certificate Nos</label>
+                        <input type="text" ng-model="data.certificatenos" class="form-control search-orders" placeholder="Certificate Nos">
+                    </div>
+                <div class="form-group mb-3  col-md-3">
+                        <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
+                        <input type="text" ng-model="data.distinctiveNosStart" class="form-control search-orders" placeholder="Distinctive Nos Start">
+                    </div>
+                <div class="form-group mb-3  col-md-3">
+                        <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
+                        <input type="text" ng-model="data.distinctiveNosEnd" class="form-control search-orders" placeholder="Distinctive Nos End">
+                    </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <h1 style="padding-top: 3pt; text-indent: 0pt; text-align: center">
       FORMAT OF AFFIDAVIT/DECLARATION FOR CHANGE OF SIGNATURE
@@ -174,11 +209,13 @@
     <p class="s2" style="text-indent: 0pt; text-align: center">AFFIDAVIT</p>
     <p style="padding-top: 6pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-      I, <span class="s3">HEMA M SHAH</span>, son/daughter/spouse of
-      <span class="s3">J M PARIKH </span>aged 65, an Indian Inhabitant / NRI
+            I, <span class="s3">{{data.customerName}}</span>, son/daughter/spouse of
+      <span class="s3">{{data.sonof}} </span>aged {{data.age}}, an Indian Inhabitant / NRI
       presently residing at
-      <span class="s3"
-        >20, NANDIDHAM SOCIETY, NEAR SAINATH PARK, VASNA ROAD, VADODARA GUJARAT, 390007</span
+      <span class="s3">
+        @* 20, NANDIDHAM SOCIETY, NEAR SAINATH PARK, VASNA ROAD, VADODARA GUJARAT, 390007 *@
+                {{data.address}}
+        </span
       ><span class="p">do hereby solemnly affirm and declare as under:</span>
     </p>
     <br>
@@ -186,14 +223,15 @@
       <li data-list-text="1.">
         <p style="padding-left: 41pt; text-indent: -36pt; text-align: justify">
           That I, Shri/Smt.
-          <span class="h2">HEMA M SHAH &amp; MAHESH SHAH</span>, am holding
-          <b>20 </b>equity shares solely / jointly in
+                    <span class="h2">{{data.customerName}} &amp; {{data.holders}}</span>, am holding
+          <b>{{data.qty}} </b>equity shares solely / jointly in
         </p>
         <p
           class="s4"
           style="padding-left: 5pt; text-indent: 0pt; text-align: left"
         >
-          Ambuja Cements Ltd <span class="p">as mentioned below ;</span>
+          @* Ambuja Cements Ltd *@
+                    {{data.officename}}<span class="p">as mentioned below ;</span>
         </p>
         <table class="bordered-table ">
           <thead class="text-nowrap">
@@ -206,10 +244,10 @@
           </thead>
           <tbody>
             <tr>
-              <td>0031857</td>
-              <td>00046197</td>
-              <td>001513577262 – 001513577281</td>
-              <td>20</td>
+                            <td>{{data.folioNo}}</td>
+                            <td>{{data.certificatenos}}</td>
+                            <td>{{data.distinctiveNosStart}} – {{data.distinctiveNosEnd}}</td>
+                            <td>{{data.qty}}</td>
             </tr>
           </tbody>
         </table>
@@ -274,8 +312,9 @@
     >
       I hereby state that whatever is stated herein above are true to the best
       of my knowledge. Solemnly affirmed at
-      <u
-        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <u>
+          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+                {{data.place}}
       </u>
       ) (Photograph of Applicant)
     </p>
@@ -288,8 +327,14 @@
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-      On this <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u>day of
-      <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u>20
+      On this <u>
+          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@
+          {{data.day}}
+          </u>day of
+      <u>
+          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@
+          {{data.month}}
+          </u>{{data.year}}
       <u>(New Signature of the Applicant</u>) (<u
         >Old Signature of the Applicant)</u
       >
@@ -334,33 +379,178 @@
   <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+        $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+
+                // Load Customers
+
+        $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                 let holders = [
+                        result.firstHolder || '',
+                        result.secondHolder || '',
+                        result.thirdHolder || ''
+                    ].filter(holder => holder.trim() !== '');
+                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = response.data[sid - 1];
+                    var Age = $scope.calculateAge(docs.dob);
+
+
+                $scope.data = {
+                   customerName : result.customer.customerName,
+                   age : Age,
+                   sonof: 'fathersname',
+                   folioNo : result.folioNo,
+                   address : result.customer.address,
+                   qty: result.qty,
+                   officename : result.companyName,
+                   certificatenos:'',
+                   distinctiveNosStart: '',
+                   distinctiveNosEnd:'',
+                   place: '',
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+               holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+                };
+
+                hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    age:obj.age,
+                    sonof:obj.sonof,
+                    folioNo:obj.folioNo,
+                    address:obj.address,
+                    qty: obj.qty,
+                    officename: obj.officename,
+                    certificatenos: obj.certificatenos,
+                    distinctiveNosStart: obj.distinctiveNosStart,
+                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    place: obj.place,
+                    day:obj.day,
+                    month:obj.month,
+                    year: obj.year,
+                    holders: obj.holders,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Affidavit for COS New LinkinTime',
+                 StockId : id,
+                 url : `/Form/AffidavitforCOSNewLinkinTime?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -372,7 +562,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

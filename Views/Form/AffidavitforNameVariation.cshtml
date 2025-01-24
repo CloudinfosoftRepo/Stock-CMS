@@ -82,6 +82,33 @@
     </style>
 </head>
 <body style="padding-left: 15%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-4"> *@
+                <div class="form-group mb-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="fullname" class="form-label">Full Name</label>
+                    <input type="text" ng-model="data.fullname" class="form-control search-orders" placeholder="Full Name">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <p style="
         padding-top: 1pt;
@@ -101,10 +128,13 @@
         line-height: 108%;
         text-align: justify;
       ">
-        <span class="s3">I, </span><u><b>PRATIMABEN RANJITKUMAR SHAH, </b></u>Son/Daughter of
-        <u><b>RATILAL SHAH,</b></u><b> </b>aged 70 years, residing at
-        <u>1/A, NANDANVAN SOCIETY PART-1, NEAR AKOTA STADIUM, VADODRA, GUJARAT,</u>
-        <u>390020,</u>
+            <span class="s3">I, </span><u><b>{{data.customerName}}, </b></u>Son/Daughter of
+        <u><b>{{data.sonof}},</b></u><b> </b>aged {{data.age}} years, residing at
+        <u>
+            @* 1/A, NANDANVAN SOCIETY PART-1, NEAR AKOTA STADIUM, VADODRA, GUJARAT, *@
+            {{data.address}}
+            </u>
+        @* <u>390020,</u> *@
     </p>
     <p style="
         padding-top: 7pt;
@@ -132,7 +162,7 @@
             text-indent: -18pt;
             text-align: left;
           ">
-                The correct name of <u><b>PRATMA R SHAH</b></u><b> </b>is <u><b>PRATIMABEN RANJITKUMAR SHAH</b></u>
+                    The correct name of <u><b>{{data.customerName}}</b></u><b> </b>is <u><b>{{data.fullname}}</b></u>
             </p>
         </li>
         <li data-list-text="3.">
@@ -144,7 +174,7 @@
             line-height: 108%;
             text-align: left;
           ">
-                <span class="p">I confirm and declare that </span><u>‘PRATMA R SHAH’</u> <span class="p">and </span><u>‘PRATIMABEN RANJITKUMAR</u> <u>SHAH’,</u>
+                    <span class="p">I confirm and declare that </span><u>‘{{data.customerName}}’</u> <span class="p">and </span><u>‘{{data.fullname}}’</u> @* <u>SHAH’,</u> *@
                 <span class="p">is name of one and same person.</span>
             </p>
         </li>
@@ -198,8 +228,14 @@
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
         I sign this affidavit on this
-        <span class="s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="s6"> </span>day of
-        <span class="s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>, 20 <span class="s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="s6"> </span>at
+        <span class="s5">
+            @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@{{data.day}}
+            </span><span class="s6"> </span>day of
+        <span class="s5">
+            @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@{{data.month}}
+            </span>, <span class="s5">
+                @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@{{data.year}}
+                </span><span class="s6"> </span>at
     </p>
     <p style="
         padding-top: 1pt;
@@ -208,7 +244,8 @@
         text-align: left;
       ">
         <span class="s5">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+            {{data.place}}
         </span>.
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
@@ -227,33 +264,160 @@
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+        $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+          // Load Customers
+
+        $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = response.data[sid - 1];
+                    var Age = $scope.calculateAge(docs.dob);
+
+
+                $scope.data = {
+                   customerName : result.customer.customerName,
+                   age : Age,
+                   sonof: 'fathersname',
+                   fullname : '',
+                   address : result.customer.address,
+                   place: '',
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+                };
+
+                hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    age:obj.age,
+                    sonof:obj.sonof,
+                    fullname:obj.fullname,
+                    address:obj.address,
+                    place: obj.place,
+                    day:obj.day,
+                    month:obj.month,
+                    year: obj.year,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Affidavit for Name Variation',
+                 StockId : id,
+                 url : `/Form/AffidavitforNameVariation?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -265,7 +429,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

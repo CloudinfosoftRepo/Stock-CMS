@@ -14,7 +14,7 @@ public partial class DocDto
 
     public string? Pan { get; set; }
 
-    public string? PanUrl { get; set; }
+    public string? Panurl { get; set; }
 
     public string? Aadhar { get; set; }
 
@@ -29,7 +29,15 @@ public partial class DocDto
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
-	[NotMapped]
+
+    public string? NameAsPerPan { get; set; }
+
+    public string? NameAsPerAadhar { get; set; }
+
+    public string? AddressAsPerAadhar { get; set; }
+
+    public DateTime? Dob { get; set; }
+    [NotMapped]
 	public IFormFile? PanFile { get; set; }
 	[NotMapped]
 	public IFormFile? AadharFile { get; set; }

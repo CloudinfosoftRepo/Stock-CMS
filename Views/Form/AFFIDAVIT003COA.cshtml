@@ -70,6 +70,12 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group mb-3">
+                        <label for="seletedId" class="form-label">select customer</label>
+                        <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                            <option selected disabled value="">Select customer</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="dpid" class="form-label">DP Id</label>
                         <input type="text" ng-model="data.dpid" class="form-control search-orders" placeholder="DP Id">
                     </div>
@@ -124,7 +130,7 @@
             text-align: justify;
           ">
                     I {{data.customerName}}, am the sole shareholder of equity shares in Chambal
-                Fertilisers and Chemicals Limited under Folio no. (if shares hold in
+                    Fertilisers and Chemicals Limited under Folio no.{{data.folioNo}} (if shares hold in
                 physical folio) / DPID &amp; Client Id {{data.dpid}}, {{data.clientid}} (if shares hold
                 in demat account).
             </p>
@@ -152,7 +158,7 @@
             text-align: left;
           ">
                     Address in Client Master List : {{data.address}} <br />
-                    Address in Aadhaar Card : {{data.address}}<br />
+                    Address in Aadhaar Card : {{data.aadharaddress}}<br />
                     Address in Voter id : {{data.address}}<br />
                     Address in Records of the Company{{data.address}}
             </p>
@@ -238,7 +244,7 @@
         text-align: left;
       ">
         Solemnly declared and affirmed on identification at New Delhi on this
-        {{data.day}}, {{data.month}} day of 2023
+        {{data.day}}, {{data.month}} day of {{data.year}}
     </p>
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 406pt; text-indent: 0pt; text-align: left">
@@ -271,21 +277,21 @@
         //     });
         // };
 
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
-            }
-        };
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
                 // Load Customers
 
-        $scope.loadCustomers = function () {
+        $scope.loadCustomers = function (sid) {
             
              if(id){
                  var currentDate = new Date();
@@ -293,20 +299,32 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
+                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = response.data[sid - 1];
+                    var Age = $scope.calculateAge(docs.dob);
+                    
+
                 $scope.data = {
-                   customerName : result.customer.customerName,
-                   age : 21,
+                   customerName : docs.name,
+                   age : Age,
                    sonof: 'fathersname',
                    yearssinceaddresschange: 2,
                    folioNo : result.folioNo,
-                   address : result.customer.address,
+                   address : doc.addressAsPerAadhar,
+                   aadharaddress: docs.addressAsPerAadhar,
                    dpid: '',
                    clientid: '',
                    day: currentDate.getDate(),
-                   month: monthsOfYear[currentDate.getMonth()]
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear()
                 };
 
                 hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
@@ -320,15 +338,17 @@
                 var obj = JSON.parse(result.jsonString);
                 $scope.data = {
                     customerName: obj.customerName,
-                    age:obj.aage,
+                    age:obj.age,
                     sonof:obj.sonof,
                     yearssinceaddresschange:obj.yearssinceaddresschange,
                     folioNo:obj.folioNo,
                     address:obj.address,
+                    aadharaddress: obj.aadharaddress,
                     dpid:obj.dpid,
                     clientid:obj.clientid,
                     day:obj.day,
                     month:obj.month,
+                    year: obj.year
                 };
                 hideLoader();
             }, function (error) {
@@ -338,7 +358,21 @@
             }
         };
 
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
 
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
 
         //Genrate Form
          $scope.genrateForm = function () {
@@ -393,8 +427,8 @@
             popupWinindow.document.close();
         };
         //Initialize
-        $scope.loadCustomers();
-        $scope.loadDocs();
+        $scope.loadCustomers(null);
+        // $scope.loadDocs();
     });
 </script>
 

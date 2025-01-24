@@ -47,7 +47,7 @@ namespace Stock_CMS.Service
 						var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile);
 						if (panUpload.status == true)
 						{
-							data.PanUrl = panUpload.message;
+							data.Panurl = panUpload.message;
 						}
 					}
 				}
@@ -101,12 +101,12 @@ namespace Stock_CMS.Service
                         var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile);
                         if (panUpload.status == true)
                         {
-                            data.PanUrl = panUpload.message;
+                            data.Panurl = panUpload.message;
                         }
                     }
 					else
 					{
-						data.PanUrl = existingProduct.PanUrl;
+						data.Panurl = existingProduct.Panurl;
 					}
 
 				}

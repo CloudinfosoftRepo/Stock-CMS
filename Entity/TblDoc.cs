@@ -29,5 +29,13 @@ public partial class TblDoc
 
     public int? UpdatedBy { get; set; }
 
+    public string? NameAsPerPan { get; set; }
+
+    public string? NameAsPerAadhar { get; set; }
+
+    public string? AddressAsPerAadhar { get; set; }
+
+    public DateTime? Dob { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
 }

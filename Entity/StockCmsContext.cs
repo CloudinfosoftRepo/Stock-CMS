@@ -30,7 +30,8 @@ public partial class StockCmsContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
- => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -59,10 +60,21 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.AadharUrl)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.AddressAsPerAadhar).IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Dob)
+                .HasColumnType("datetime")
+                .HasColumnName("DOB");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.NameAsPerAadhar)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.NameAsPerPan)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("NameAsPerPAN");
             entity.Property(e => e.Pan)
                 .HasMaxLength(50)
                 .IsUnicode(false)

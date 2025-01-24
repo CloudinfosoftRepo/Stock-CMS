@@ -199,14 +199,56 @@
 </head>
 
 <body style="padding-left: 10%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-12"> *@
+                <div class="form-group mb-3">
+                    <label for="seletedid" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="dpid" class="form-label">DP Id</label>
+                        <input type="text" ng-model="data.dpid" class="form-control search-orders" placeholder="DP Id">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="clientid" class="form-label">Client Id</label>
+                        <input type="text" ng-model="data.clientid" class="form-control search-orders" placeholder="Client Id">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="lfno" class="form-label">LF No</label>
+                        <input type="text" ng-model="data.lfno" class="form-control search-orders" placeholder="LF No">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="accountno" class="form-label">Account No</label>
+                        <input type="text" ng-model="data.accountno" class="form-control search-orders" placeholder="Account No">
+                    </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bankname" class="form-label">Bank Name</label>
+                    <input type="text" ng-model="data.bankname" class="form-control search-orders" placeholder="Bank Name">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="branch" class="form-label">Branch</label>
+                    <input type="text" ng-model="data.branch" class="form-control search-orders" placeholder="Branch">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <h1 style="text-indent: 0pt; text-align: center">Affidavit</h1>
     <p style="padding-top: 5pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-        I, <span class="s1">HARIKRISHNA PRABHULAL THAKKAR </span>son/daughter of
-            <span class="s1">PRABHULAL GOVINDJI THAKKAR</span>, aged 65 years, having PAN {{docs.pan}} <span class="s1"> </span>and Aadhar no
-            <u>{{docs.aadhar}}</u>presently residing at presently residing at PANCHAYAT GHAR PASE, TAJ SINEMA PASE, BODELI, DHOKALIYA, VADODARA, GUJARAT
-            – 391135<span class="p">.</span>
+            I, <span class="s1">{{data.customerName}} </span>son/daughter of
+            <span class="s1">{{data.sonof}}</span>, aged {{data.age}} years, having PAN {{data.pan}} <span class="s1"> </span>and Aadhar no
+            <u>{{data.aadhar}}</u> presently residing at presently residing at {{data.address}}<span class="p">.</span>
     </p>
 
     <p style="
@@ -222,13 +264,14 @@
         <li data-list-text="1.">
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: justify">
                 That the following Equity Shares are registered in (name)
-                <span class="s2">HARIKRISHNA</span><span class="s1"> </span><span class="s2">PRABHULAL THAKKER </span>jointly with (name)
-                <span class="s2">KANAIYALAL PRABHULAL THAKKER</span><span class="s1"> </span>under LF No <u>{{}} </u>in the books of
-                <span class="s2">BOROSIL RENEWABLES LIMITED</span><span class="s1"> </span>having its Registered Office at
+                    <span class="s2">{{data.customerName}}</span><span class="s1"> </span>
+                    @* <span class="s2">PRABHULAL THAKKER </span> *@
+                    jointly with (name)
+                    <span class="s2">{{data.holders}}</span><span class="s1"> </span>under LF No <u>{{data.lfno}} </u>in the books of
+                    <span class="s2">{{data.officename}}</span><span class="s1"> </span>having its Registered Office at
                 <span class="s2">
-                    1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex,
-                    Bandra (East),
-                </span><span class="s1"> </span><span class="s2">Mumbai, Maharashtra, 400051</span><span class="s4">.</span>
+                        {{data.officeaddress}}
+                @* </span><span class="s1"> </span><span class="s2">Mumbai, Maharashtra, 400051</span><span class="s4">.</span> *@
             </p>
         </li>
         <li data-list-text="2.">
@@ -239,8 +282,8 @@
             text-align: left;
           ">
                 That in my PAN Card having no
-                    <span class="s1">{{docs.pan}}</span>my name has been recorded |
-                mentioned as <span class="s1">HARIKRISHNA PRABHULAL THAKKAR</span>.
+                    <span class="s1">{{data.pan}}</span> my name has been recorded |
+                    mentioned as <span class="s1">{{data.nameonpan}}</span>.
             </p>
             <p style="padding-top: 11pt; text-indent: 0pt; text-align: left">
                 <br />
@@ -248,9 +291,9 @@
         </li>
         <li data-list-text="3.">
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: left">
-                    That in my Aadhar card having no ..<u>{{docs.aadhar}}</u> my name has
+                    That in my Aadhar card having no. <u>{{data.aadhar}}</u> my name has
                 been recorded | mentioned as
-                <span class="s1">HARIKRISHNA PRABHULAL THAKKAR</span>.
+                    <span class="s1">{{data.nameonaadhar}}</span>.
             </p>
             <p style="padding-top: 11pt; text-indent: 0pt; text-align: left">
                 <br />
@@ -263,7 +306,7 @@
             line-height: 14pt;
             text-align: justify;
           ">
-                    That in my Demat account having DP ID {{}} and CL ID _<span class="s5"> </span>my name has been recorded | mentioned as
+                    That in my Demat account having DP ID {{data.dpid}} and CL ID <span class="s5"> {{data.clientid}}</span> my name has been recorded | mentioned as {{data.customerName}}
             </p>
           
             <p style="padding-top: 12pt; text-indent: 0pt; text-align: left">
@@ -272,10 +315,10 @@
         </li>
         <li data-list-text="5.">
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: left">
-                That in my bank account having no <u>{{}}</u>with
-                <span class="s1">BANK OF BARODA</span>,
-                <span class="s1">BODELI </span>Branch, my name has been recorded |
-                mentioned as <span class="s1">HARIKRISHNA PRABHULAL THAKKAR</span>.
+                That in my bank account having no <u>{{data.accountno}}</u> with
+                    <span class="s1">{{data.bankname}}</span>,
+                    <span class="s1">{{data.branch}} </span>Branch, my name has been recorded |
+                    mentioned as <span class="s1">{{data.customerName}}</span>.
             </p>
             <p style="text-indent: 0pt; text-align: left"><br /></p>
         </li>
@@ -283,8 +326,8 @@
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: justify">
                 That
                 <span class="s1">
-                    HARIKRISHNA PRABHULAL THAKKAR, and HARIKRISHNA PRABHULAL THAKKAR,
-                        HARIKRISHNA PRABHULAL THAKKAR, HARIKRISHNA PRABHULAL THAKKAR as mentioned above in Sr no 2 to 5 is one and the same person
+                        {{data.customerName}}, and {{data.nameonaadhar}},
+                        {{data.nameonpan}}, {{data.customerName}} as mentioned above in Sr no 2 to 5 is one and the same person
                 </span>
             </p>
            
@@ -319,8 +362,8 @@
     </p>
     <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-        Solemnly affirmed at Ahmedabad, this {{}} day of<span class="s5"> </span>,
-        2023
+            Solemnly affirmed at Ahmedabad, this {{data.day}} day of <span class="s5">{{data.month}} </span>,
+        {{data.year}}
     </p>
     <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
 
@@ -340,33 +383,184 @@
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+        $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // Load Customers
+         $scope.loadCustomers = function (sid) {
+             if(id){
+                 var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                let holders = [
+                        result.firstHolder || '',
+                        result.secondHolder || '',
+                        result.thirdHolder || ''
+                    ].filter(holder => holder.trim() !== '');
+                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                     $scope.docs = response.data;
+                    var doc = response.data[sid - 1];
+                    var Age = $scope.calculateAge(doc.dob);
+                $scope.data = {
+                   customerName : doc.name,
+                   age : Age,
+                   sonof: 'fathersname',
+                   pan: doc.pan,
+                   aadhar: doc.aadhar,
+                   address : doc.addressAsPerAadhar,
+                   officename : result.companyName,
+                   officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   nameonpan: doc.nameAsPerPan,
+                   nameonaadhar: doc.nameAsPerAadhar,
+                   bankname: '',
+                   branch: '',
+                   lfno: '',
+                   dpid: '',
+                   clientid: '',
+                   accountno:'',
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+                    holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+                };
+
+                hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    age:obj.aage,
+                    sonof:obj.sonof,
+                    pan:obj.pan,
+                    aadhar:obj.aadhar,
+                    address:obj.address,
+                    officename: obj.officename,
+                    officeaddress: obj.officeaddress,
+                    nameonpan: obj.nameonpan,
+                    bankname: obj.bankname,
+                    branch: obj.branch,
+                    nameonaadhar: obj.nameonaadhar,
+                    lfno: obj.lfno,
+                    dpid:obj.dpid,
+                    clientid:obj.clientid,
+                    accountno: obj.accountno,
+                    day:obj.day,
+                    month:obj.month,
+                    year:obj.year,
+                    holders: obj.holders,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Affidavit ApplicantName Correction',
+                 StockId : id,
+                 url : `/Form/AffidavitApplicantNameCorrection?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
         //Function
         $scope.printDiv = function (divId) {
             var innerContents = document.getElementById(divId).innerHTML;
@@ -376,8 +570,8 @@
             popupWinindow.document.close();
         };
         //Initialize
-        $scope.loadCustomers();
-        $scope.loadDocs();
+        $scope.loadCustomers(null);
+        // $scope.loadDocs();
     });
 </script>
 

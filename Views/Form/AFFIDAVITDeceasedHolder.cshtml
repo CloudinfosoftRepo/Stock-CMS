@@ -73,6 +73,58 @@
     </style>
 </head>
 <body style="padding-left: 15%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-4"> *@
+                <div class="form-group mb-3">
+                    <label for="seletedid" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="place" class="form-label">Place</label>
+                        <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
+                    </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="placeofdeath" class="form-label">Place of Demise</label>
+                    <input type="text" ng-model="data.placeofdeath" class="form-control search-orders" placeholder="Place of Demise">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="deceasedholdername" class="form-label">Deceased Holder's Name</label>
+                    <input type="text" ng-model="data.deceasedholdername" class="form-control search-orders" placeholder="Deceased Holder's Name">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="magistrateornotaryname" class="form-label"> Name of Magistrate/ Notary </label>
+                    <input type="text" ng-model="data.magistrateornotaryname" class="form-control search-orders" placeholder="Name of Magistrate/ Notary">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="magistrateornotaryaddress" class="form-label"> Address of Magistrate/ Notary </label>
+                    <textarea id="magistrateornotaryaddress" ng-model="data.magistrateornotaryaddress" class="form-control" placeholder="Address of Magistrate/ Notary"></textarea>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="registrationNo" class="form-label"> Registration No </label>
+                    <input type="text" ng-model="data.registrationNo" class="form-control search-orders" placeholder="Registration No">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bookNo" class="form-label"> Book No </label>
+                    <input type="text" ng-model="data.bookNo" class="form-control search-orders" placeholder="Book No">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="serialNo" class="form-label"> Serial No </label>
+                    <input type="text" ng-model="data.serialNo" class="form-control search-orders" placeholder="Serial No">
+                </div>
+                
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <h1 style="
         padding-top: 3pt;
@@ -101,11 +153,11 @@
         line-height: 108%;
         text-align: justify;
       ">
-            I <u>{{customers.customerName}}</u> (name of legal heir), son/daughter in
-            law /wife of <u>{{customers.customerName}}</u> (name of deceased holder as
-        appearing on the share certificate), aged about <u>{{67}}</u> years, and
+            I <u>{{data.customerName}}</u> (name of legal heir), son/daughter in
+            law /wife of <u>{{data.sonof}}</u> (name of deceased holder as
+        appearing on the share certificate), aged about <u>{{data.age}}</u> years, and
         residing at
-            <u>{{customers.address}}</u>, do hereby solemnly affirm and declare as under:
+            <u>{{data.address}}</u>, do hereby solemnly affirm and declare as under:
     </p>
    
     <ol id="l1">
@@ -117,7 +169,7 @@
             line-height: 108%;
             text-align: justify;
           ">
-                I am the son/daughter in law /wife of <u>{{JAYABENZAVERI}}</u> (name of
+                    I am the son/daughter in law /wife of <u>{{data.sonof}}</u> (name of
                 deceased holder as appearing on the share certificate) and I am fully
                 aware of the facts and circumstances.
             </p>
@@ -130,11 +182,12 @@
             text-align: justify;
           ">
                 In the records of
-                    <u>{{DEEPAKFERTILISERSPETROCHEMICALSCORPORATIONLTD}}</u> (name of the Company), the name of the first/joint holder recorded is
-                    <u>{{JAYABENZAVERI}}</u> (as appearing on the share certificate). In the
-                    death certificate issued by the Corporation of <u>{{VADODARA}}</u> (name
-                    of city/place) the name has been recorded as <u>{{JAYA}}</u>
-                    <u>{{HANSKUMARZAVERI}}</u> (as appearing on the death certificate).
+                    <u>{{data.officename}}</u> (name of the Company), the name of the first/joint holder recorded is
+                    <u>{{data.sonof}}</u> (as appearing on the share certificate). In the
+                    death certificate issued by the Corporation of <u>{{data.placeofdeath}}</u> (name
+                    of city/place) the name has been recorded as 
+                    @* <u>{{JAYA}}</u> *@
+                    <u>{{data.deceasedholdername}}</u> (as appearing on the death certificate).
             </p>
 @*             <p style="
             padding-top: 1pt;
@@ -153,8 +206,8 @@
             line-height: 108%;
             text-align: justify;
           ">
-                I state that <u>{{JAYABENZAVERI}}</u> (as appearing on the share
-                certificate) was also known as <u>{{JAYAHANSKUMARZAVERI}}</u> (name as
+                    I state that <u>{{data.sonof}}</u> (as appearing on the share
+                    certificate) was also known as <u>{{data.deceasedholdername}}</u> (name as
                 appearing on the death certificate) and that both names belong to one
                 and the same person.
             </p>
@@ -197,9 +250,9 @@
         text-align: justify;
       ">
         Solemnly declared and affirmed on Identification at
-        <span class="s4">25/06/2024 </span>on this
-            <span class="s4">28/06/2024  </span>day of<span class="s4"> 5 </span>, 20<span class="s4">
-                25
+        <span class="s4">{{data.place}}</span> on this
+            <span class="s4">{{data.day}}  </span>day of<span class="s4"> {{data.month}}</span>, <span class="s4">
+                {{data.year}}
             </span>
     </p>
 
@@ -224,12 +277,14 @@
         line-height: 108%;
         text-align: left;
       ">
+            {{data.magistrateornotaryname}}<br />
+            {{data.magistrateornotaryaddress}}<br />
         [Name and full address of Magistrate/ Notary]
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
         Registration No.
-            <span class="s4">{{RegistrationNo}}</span>
+            <span class="s4">{{data.registrationNo}}</span>
     </p>
     <p style="
         padding-top: 1pt;
@@ -238,8 +293,8 @@
         text-align: left;
       ">
         Notary Register at Book No.
-            <span class="s4">{{BookNo152}} </span>Serial No.
-            <span class="s4">{{SerialNo145}}</span>
+            <span class="s4">{{data.bookNo}} </span>Serial No.
+            <span class="s4">{{data.serialNo}}</span>
     </p>
     <p style="padding-left:10%;padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
     <div class="row" style="display: flex;">
@@ -267,33 +322,172 @@
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+        $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+
+        // Load Customers
+         $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+                var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+                $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                     $scope.docs = response.data;
+                    var doc = response.data[sid - 1];
+                    var Age = $scope.calculateAge(doc.dob);
+                    $scope.data = {
+                       customerName : doc.name,
+                       age : Age,
+                       sonof: 'fathersname',
+                       deceasedholdername: '',
+                       address : doc.addressAsPerAadhar,
+                       officename : result.companyName,
+                       placeofdeath: '',
+                       place:'',
+                       day: currentDate.getDate(),
+                       month: monthsOfYear[currentDate.getMonth()],
+                       year: currentDate.getFullYear(),
+                       magistrateornotaryname: '',
+                       magistrateornotaryaddress: '',
+                       registrationNo:'',
+                       bookNo:'',
+                       serialNo:'',
+                    };
+
+                    hideLoader();
+                 }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    age:obj.age,
+                    sonof:obj.sonof,
+                    deceasedholdername: obj.deceasedholdername,
+                    address:obj.address,
+                    officename: obj.officename,
+                    placeofdeath: obj.placeofdeath,
+                    place: obj.place,
+                    day:obj.day,
+                    month:obj.month,
+                    year: obj.year,
+                    magistrateornotaryname: obj.magistrateornotaryname,
+                    magistrateornotaryaddress: obj.magistrateornotaryaddress,
+                    registrationNo: obj.registrationNo,
+                    bookNo: obj.bookNo,
+                    serialNo: obj.serialNo,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+        $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'AFFIDAVIT Deceased Holder',
+                 StockId : id,
+                 url : `/Form/AFFIDAVITDeceasedHolder?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -304,8 +498,8 @@
             popupWinindow.document.close();
         };
         //Initialize
-        $scope.loadCustomers();
-        $scope.loadDocs();
+        $scope.loadCustomers(null);
+        // $scope.loadDocs();
     });
 </script>
 </html>
