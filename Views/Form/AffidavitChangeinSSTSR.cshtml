@@ -1,0 +1,2284 @@
+﻿<html lang="en" ng-app="Stock-CMS">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Affidavit-Change in SS TSR</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        text-indent: 0;
+      }
+      .s1 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 12pt;
+      }
+      h1 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 12pt;
+      }
+      .s2 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 11pt;
+      }
+      h2 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 11pt;
+      }
+      .p,
+      p {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 12pt;
+        margin: 0pt;
+      }
+      .s4 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 10pt;
+      }
+      .h3 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 10pt;
+      }
+      .s5 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 10pt;
+      }
+      .s6 {
+        color: black;
+        font-family: Arial, sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 10pt;
+      }
+      .s7 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 10pt;
+      }
+      .s8 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 12pt;
+      }
+      .s9 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 12pt;
+      }
+      .s10 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 12pt;
+      }
+      .s11 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: italic;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 12pt;
+      }
+      .s13 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 10pt;
+      }
+      .s14 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: underline;
+        font-size: 10pt;
+      }
+      .s15 {
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 11pt;
+      }
+      li {
+        display: block;
+      }
+      #l1 {
+        padding-left: 0pt;
+        counter-reset: c1 1;
+      }
+      #l1 > li > *:first-child:before {
+        counter-increment: c1;
+        content: counter(c1, lower-roman) ". ";
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 11pt;
+      }
+      #l1 > li:first-child > *:first-child:before {
+        counter-increment: c1 0;
+      }
+      li {
+        display: block;
+      }
+      #l2 {
+        padding-left: 0pt;
+        counter-reset: d1 1;
+      }
+      #l2 > li > *:first-child:before {
+        counter-increment: d1;
+        content: counter(d1, lower-roman) ". ";
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 11pt;
+      }
+      #l2 > li:first-child > *:first-child:before {
+        counter-increment: d1 0;
+      }
+      li {
+        display: block;
+      }
+      #l3 {
+        padding-left: 0pt;
+        counter-reset: e1 1;
+      }
+      #l3 > li > *:first-child:before {
+        counter-increment: e1;
+        content: counter(e1, decimal) ". ";
+        color: black;
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: none;
+        font-size: 12pt;
+      }
+      #l3 > li:first-child > *:first-child:before {
+        counter-increment: e1 0;
+      }
+      table,
+      tbody {
+        vertical-align: top;
+        overflow: visible;
+      }
+    </style>
+  </head>
+<body style="padding-left: 5%;" ng-controller="FormController">
+    <div id="printForm">
+    <h1
+      style="
+        padding-top: 3pt;
+        padding-left: 14pt;
+        text-indent: 0pt;
+        text-align: left;
+      "
+    >
+      <u
+        >Affidavit (For Change of Signature / Non-availability of
+        signature/Inability to sign due to</u
+      >
+      <u
+        >old age and health problems/ Difference in Name) for cases where the
+        shares have been</u
+      >
+    </h1>
+
+    <h1 style="padding-left: 14pt; text-indent: 0pt; text-align: left">
+      <u
+        >transferred to IEPF Demat Account.Kindly read the instructions enlisted
+        below carefully</u
+      >
+      <u>before executing this Affidavit</u>
+    </h1>
+    <p
+      class="s2"
+      style="
+        padding-top: 11pt;
+        padding-left: 15pt;
+        text-indent: 0pt;
+        text-align: left;
+      "
+    >
+      Important Instructions for filling the Affidavit
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <ol id="l1" style="border: 1px solid black; padding: 5px;">
+      <li data-list-text="i.">
+        <h2 style="padding-left: 52pt; text-indent: -16pt; text-align: justify">
+          Before signing, kindly get the Affidavit franked with an amount of
+          Rs.100/- or affix Special Adhesive Stamps of Rs.100/- or reproduce the
+          text on Non-Judicial Stamp Paper of Rs.100/-.
+        </h2>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="ii.">
+        <h2 style="padding-left: 52pt; text-indent: -18pt; text-align: justify">
+          The Non-Judicial Stamp Paper must be purchased in the name of the
+          account holder. The date of execution of Affidavit should be within
+          six months from the date of purchase.
+        </h2>
+      </li>
+      <li data-list-text="iii.">
+        <h2
+          style="
+            padding-top: 12pt;
+            padding-left: 52pt;
+            text-indent: -25pt;
+            text-align: justify;
+          "
+        >
+          In case, the address of the accoun tholder is different from that
+          recorded with the Company, kindly submit proof of old i.e. address as
+          recorded with the Company and new address as mentioned under Point No.
+          2. If you wish to record your new address against the below folio,
+          please forward to us <u>a separate request letter</u>, duly signed by
+          the account holders, as per their signatures on this Affidavit.
+        </h2>
+      </li>
+      <li data-list-text="iv.">
+        <h2
+          style="
+            padding-top: 12pt;
+            padding-left: 52pt;
+            text-indent: -20pt;
+            text-align: justify;
+          "
+        >
+          In case there is a difference in signature due to old age and health
+          problems, kindly fill the details as mentioned under Point No. 6. In
+          such cases, kindly submit the original medical certificate issued by a
+          registered medical practitioner (registration number of the medical
+          practitioner should be mentioned on the original medical certificate)
+          giving the reasons for such inability.
+        </h2>
+      </li>
+      <li data-list-text="v.">
+        <h2 style="padding-left: 52pt; text-indent: -16pt; text-align: justify">
+          In case there is a minor difference in the names of the account
+          holders on the supporting documents with the one recorded with the
+          Company, kindly fill the details mentioned under Point No. 8. In case
+          of major difference in the names of the accoun tholders, kindly
+          furnish copy of Government Gazette Notification, duly attested by a
+          Notary Public / First Class Magistrate.In case of name change on
+          account of marriage, kindly submit a copy of Marriage Certificate
+          issued by Registrar of Marriages, duly attested by a Notary Public /
+          First Class Magistrate.
+        </h2>
+      </li>
+      <li data-list-text="vi.">
+        <h2
+          style="
+            padding-top: 12pt;
+            padding-left: 52pt;
+            text-indent: -20pt;
+            text-align: justify;
+          "
+        >
+          Kindly enclose a request letter for re-issue of unclaimed dividends
+          which have not been transferred to IEPF Authority.
+        </h2>
+      </li>
+    </ol>
+    <p
+    class="s2"
+    style="
+      padding-top: 11pt;
+      padding-left: 15pt;
+      text-indent: 0pt;
+      text-align: left;
+    "
+  >
+    Important Instructions for attesting the Affidavit
+  </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <ol id="l2">
+      <li data-list-text="i.">
+        <h1 style="padding-left: 50pt; text-indent: -13pt; text-align: justify">
+          The date of execution of Affidavit should be same as the date of
+          attestation by the Notary Public / First Class Magistrate.
+        </h1>
+      </li>
+      <li data-list-text="ii.">
+        <h1
+          style="
+            padding-top: 13pt;
+            padding-left: 50pt;
+            text-indent: -13pt;
+            text-align: justify;"
+
+        >
+          The Affidavit should be signed and affirmed by all the account holders
+          in the presence of the above Authorities. Each page of the Affidavit
+          should be signed by the account holders and should bear the seal of
+          the Notary Public /First Class Magistrate.
+        </h1>
+      </li>
+      <li data-list-text="iii.">
+        <h1
+          style="
+            padding-top: 13pt;
+            padding-left: 50pt;
+            text-indent: -13pt;
+            text-align: left;
+          "
+        >
+          Full Address of the Notary Public / First Class Magistrate should be
+          mentioned. Court fee /Notarial stamps, as applicable, should be
+          affixed on the Affidavit.
+        </h1>
+      </li>
+      <li data-list-text="iv.">
+        <h1
+          style="
+            padding-top: 13pt;
+            padding-left: 50pt;
+            text-indent: -13pt;
+            text-align: left;
+          "
+        >
+          Notary Book No. and Serial No. should be specifically stated on the
+          Affidavit.
+        </h1>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="v.">
+        <h1 style="padding-left: 50pt; text-indent: -13pt; text-align: left">
+          Changes/Alterations/Overwriting made in the Affidavit should be
+          authenticated by the same Notary Public /First Class Magistrate, under
+          their official seal.
+        </h1>
+      </li>
+    </ol>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+
+    <p
+      style="
+        padding-left: 22pt;
+        text-indent: 0pt;
+        line-height: 1pt;
+        text-align: left;
+      "
+    />
+    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify">
+      I/We 1 <u>JAGDISH NARENDRAGIRI GOSAI</u> S/d/o<u> NARENDRAGIRI GOSAI</u>
+      aged 65 <u>rgsrgdgtndbdbr </u>.2<u>
+        EVSV VEWV FSD </u
+      >S/d/o<u>
+        EVSE SFCVRS  </u
+      >aged<u> VEDE ES</u>
+      <u> FBES ERGS </u>3<u>
+        VES EVSDGRS </u
+      >S/d/o<u>VESVERVRF  </u> aged<u>
+      VSEGRHBDFBDRB </u
+      >. 4<u>
+        ESGTH THR HRT
+      </u>
+      S/d/o<u>
+        NTBVRS BRSVRS </u
+      >aged<u>
+      BHKJ NJKJBBK  </u
+      >.
+      Residing at
+      B-205, KARMBHUMI APPARTMENT, BHUMIPARK SOCIETY, SHAPAR,      BEHIND DENA BANK, RAJKOT, GUJARAT, 360024 solemnly affirm and declare in
+      favour of <span class="s4">TATA CHEMICALS LTD</span
+      ><span class="h3"> </span>(<b>Name of the Company) </b>whose securities
+      were held by the holders prior to transfer to IEPF Demat Account),
+      <b>Registered Office: </b><span class="s5">TATA CHEMICALS LTD, </span
+      ><span class="s6"
+        >Bombay House, 24 Homi Mody Street, Fort, Mumbai, Maharashtra, 400001 </span
+      ><b>( </b
+      ><span class="s7"
+        >Name and full address of the Registered Office of the Company is
+        printed on all certificate[s], warrant[s] and annual report[s], issued
+        by the Company) </span
+      ><span class="s8">is situated at </span
+      ><span class="s7"
+        >Bombay House, 24 Homi Mody Street, Fort, Mumbai, Maharashtra,
+        400001</span
+      >
+    </p>
+<br>
+    <ol id="l3">
+      <li data-list-text="1.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          That I/We weree the sole/joint holders of <u>428</u> number of shares/
+          debentures/ bonds (<b
+            >mention the details of TOTAL number of securities prior to transfer
+            of shares to the IEPF Demat Account as provided by IEPF Rules</b
+          >) in <span class="h3">TATA CHEMICALS LTD </span>(<b
+            >Name of Company) </b
+          >whose securities were held by the holders as detailed below:
+        </p>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left">
+          <br />
+        </p>
+        <table
+          style="border-collapse: collapse; margin-left: 32.5pt"
+          cellspacing="0"
+        >
+          <tr style="height: 68pt">
+            <td
+              style="
+                width: 85pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s9"
+                style="
+                  padding-left: 2pt;
+                  text-indent: 0pt;
+                  line-height: 14pt;
+                  text-align: center;
+                "
+              >
+                Folio No.
+              </p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s9"
+                style="padding-left: 9pt; text-indent: 9pt; text-align: left"
+              >
+                No. of Shares / Debentures/Bonds
+              </p>
+            </td>
+            <td
+              style="
+                width: 67pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s9"
+                style="
+                  padding-left: 8pt;
+                  padding-right: 6pt;
+                  text-indent: 0pt;
+                  text-align: center;
+                "
+              >
+                Certificat e No.
+              </p>
+              <p
+                class="s9"
+                style="
+                  padding-left: 8pt;
+                  padding-right: 6pt;
+                  text-indent: 0pt;
+                  text-align: center;
+                "
+              >
+                (if
+              </p>
+              <p
+                class="s9"
+                style="
+                  padding-left: 8pt;
+                  padding-right: 6pt;
+                  text-indent: 0pt;
+                  text-align: center;
+                "
+              >
+                available
+              </p>
+              <p
+                class="s9"
+                style="
+                  padding-left: 8pt;
+                  padding-right: 6pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                )
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s9"
+                style="
+                  padding-left: 5pt;
+                  padding-right: 4pt;
+                  text-indent: 0pt;
+                  text-align: left;
+                "
+              >
+                Distinctive Nos. From
+              </p>
+              <p
+                class="s9"
+                style="padding-left: 11pt; text-indent: 0pt; text-align: left"
+              >
+                (if available)
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s9"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 14pt;
+                  text-align: center;
+                "
+              >
+                Distinctive Nos.
+              </p>
+              <p
+                class="s9"
+                style="
+                  padding-top: 1pt;
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  text-align: center;
+                "
+              >
+                To
+              </p>
+              <p
+                class="s9"
+                style="padding-left: 1pt; text-indent: 0pt; text-align: center"
+              >
+                (if available)
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 15pt">
+            <td
+              style="
+                width: 85pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 2pt;
+                  text-indent: 0pt;
+                  line-height: 13pt;
+                  text-align: center;
+                "
+              >
+                C1S0040674
+              </p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 13pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 67pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+              rowspan="16"
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 13pt;
+                  text-align: center;
+                "
+              >
+                82955517
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-top-style: solid;
+                border-top-width: 1pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 13pt;
+                  text-align: center;
+                "
+              >
+                82955541
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955542
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955566
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955567
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955591
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955592
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955616
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955617
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955641
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                9
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955642
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                82955650
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555517
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555541
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555542
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555566
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555567
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555591
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555592
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555616
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                25
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555617
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555641
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                9
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555642
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                102555650
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                50
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686198
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686247
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                50
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686248
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686297
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                50
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686298
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686347
+              </p>
+            </td>
+          </tr>
+          <tr style="height: 13pt">
+            <td
+              style="
+                width: 85pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </td>
+            <td
+              style="
+                width: 113pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                10
+              </p>
+            </td>
+            <td
+              style="
+                width: 86pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686348
+              </p>
+            </td>
+            <td
+              style="
+                width: 99pt;
+                border-left-style: solid;
+                border-left-width: 1pt;
+                border-bottom-style: solid;
+                border-bottom-width: 1pt;
+                border-right-style: solid;
+                border-right-width: 1pt;
+              "
+            >
+              <p
+                class="s10"
+                style="
+                  padding-left: 1pt;
+                  text-indent: 0pt;
+                  line-height: 12pt;
+                  text-align: center;
+                "
+              >
+                150686357
+              </p>
+            </td>
+          </tr>
+        </table>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="2.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          That I/We am/are residing at the above address and have not changed
+          my/our address from the one recorded with the Company for the past 3
+          years.
+        </p>
+        <p
+          class="s11"
+          style="
+            padding-top: 13pt;
+            padding-left: 32pt;
+            text-indent: 0pt;
+            text-align: justify;
+          "
+        >
+          [Kindly furnish copy of proof of old (in case of change) and new
+          address viz. Valid Passport/ Aadhaar Card/ Voters Identity Card/
+          Electricity bill/ Telephone (only land line) bill / Latest Updated
+          Bank Account Statement / Passbook [which is not more than 3 months
+          old], duly attested by a Notary Public / Bank Manager / First Class
+          Magistrate. Attestation by Notary Public/ First Class Magistrate
+          should mention their name, full address, registration number and affix
+          their seal, Notarial / Court Fee stamps, as applicable. Attestation by
+          Bank Manager should bear the name, full address and official stamp of
+          the bank. The original counterfoil of dividend / interest warrant will
+          be accepted as old address proof. The address proof should be legible
+          and in the name of the registered accountholder<b>(mandatory)</b>].
+        </p>
+      </li>
+      <li data-list-text="3.">
+        <p
+          style="
+            padding-top: 13pt;
+            padding-left: 32pt;
+            text-indent: -18pt;
+            text-align: justify;
+          "
+        >
+          That the above shares were acquired by me/us out of my/our own
+          investment/ funds against allotment in Public Issue/ allotment in
+          Right Issue or acquired from the market in the year(s)
+        </p>
+        <p style="padding-left: 32pt; text-indent: 0pt; text-align: justify">
+          <u>
+            BRSBR YRTHRRYHT STRHRRHT </u
+          >.
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="4.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          That my/our signature(s) might have changed/ altered by passing of
+          time and therefore I/We request the Company to treat my/our
+          signature(s) as per the records maintained with the Company as
+          cancelled.
+        </p>
+      </li>
+      <li data-list-text="5.">
+        <p
+          style="
+            padding-top: 13pt;
+            padding-left: 32pt;
+            text-indent: -18pt;
+            text-align: justify;
+          "
+        >
+          That my/our specimen signature(s) given below be taken on record in
+          respect of the abovementioned folio.
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="6.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          Due to old age and health problems, I now find it difficult to sign as
+          per my signature recorded with the Company. Dr.<u>
+            ESEF TGRFER  </u
+          >of<u>
+            VSWEVSV TEGRTR        </u>
+          has issued a medical certificate in my favour giving the reasons for
+          my inability to sign the relevant documents (<u
+            >Strike out if not applicable</u
+          >)
+        </p>
+
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="7.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          I/We hereby affirm that I/We shall not hold the Company or its Agents
+          in anyway responsible for any consequences that might occur directly
+          or indirectly on account of the Company or its Agents acting on my /
+          our request herein stated by replacing the signature(s) in the
+          Company’s records and for the consequential acts/deeds by the
+          Company/its Agent.
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="8.">
+        <p
+          class="s13"
+          style="padding-left: 32pt; text-indent: -18pt; text-align: justify"
+        >
+          <span class="p">That</span>,
+          <u>SHANTAGAURI GOSAI &amp; VINODGIRI GOSAI</u>
+          <span class="p">(name as recorded with the Company</span>  against the above folio) and
+          <span class="s14"
+            >SHANTABEN&nbsp; NARENDRAGIRI&nbsp; GOSAI&nbsp; &amp;&nbsp;
+            VINODGIRI</span
+          ><span class="s13"> </span
+          ><span class="s15"
+            >(name as supporting documents-Death Certificate) is one and the
+            same person.</span
+          >  I /We hereby affirm that I / We shall not hold the Company or its
+          agents anyway responsible for any consequences that might occur
+          directly or indirectly on account of the Company or its Agents acting
+          on my / our request herein and for the consequential acts/deeds by the
+          Co./its agent. (<u>Strike out if not applicable</u>)
+        </p>
+        <p style="padding-left: 32pt; text-indent: 0pt; text-align: left">
+
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="9.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          That I/we enclose legible self-attested copies of my/our Valid
+          Passport / PAN Card bearing No. <u>ABWPG5493Q</u> as proof of identity
+          (mandatory).
+        </p>
+      </li>
+      <li data-list-text="10.">
+        <p
+          style="
+            padding-top: 3pt;
+            padding-left: 32pt;
+            text-indent: -18pt;
+            text-align: justify;
+          "
+        >
+          I/We request you to release the unclaimed dividends which have not
+          been transferred to IEPF Authority for which, the request letter is
+          enclosed.
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+      </li>
+      <li data-list-text="11.">
+        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+          This Affidavit is executed in favour of the Company/its Agent on
+          my/our own volition and is in the format as required by the
+          Company/its Agent forwarded to me/us vide its letter No.  <u>
+        INIFRV BFDJNFDB</u
+      >dated<u>
+        JBKRFDJ BDFKJJNK</u
+      >
+        </p>
+      </li>
+    </ol>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p class="s1" style="text-indent: 0pt; text-align: center">Verification</p>
+    <p
+      style="
+        padding-top: 13pt;
+        padding-left: 14pt;
+        text-indent: 0pt;
+        text-align: justify;
+      "
+    >
+      I/We solemnly affirm that the statements contained in the above paragraphs
+      are true to the best of my/our knowledge, information and belief and that
+      nothing material has been concealed from being disclosed.
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify">
+      Solemnly declared and affirmed on Identification at<u>
+        BRD NTTG </u
+      >on this<u> 20 </u>day of<u> 12 </u>2023.
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+
+    <h1 style="padding-left: 17pt; text-indent: 0pt; text-align: justify">
+      (Photographs of all accountholders)
+    </h1>
+    <p style="padding-top: 8pt; text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left" />
+    <p
+      style="
+        padding-left: 14pt;
+        text-indent: 0pt;
+        line-height: 214%;
+        text-align: justify;
+      "
+    >
+      Specimen signature of JAGDISH NARENDRAGIRI GOSAI 1. <br>
+      Specimen signature of<u
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </u>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  2.
+    </p>
+    <p
+      style="
+        padding-left: 14pt;
+        text-indent: 0pt;
+        line-height: 12pt;
+        text-align: justify;
+      "
+    >
+      Specimen signature of
+      <u
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </u>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   3.
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify">
+      Specimen signature of
+      <u
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </u>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   4.
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p
+      style="
+        padding-top: 4pt;
+        padding-left: 14pt;
+        text-indent: 0pt;
+        text-align: left;
+      "
+    >
+      Tel. No of the holder.: Email id of the holder:
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+    <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+    <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+
+    <p
+      style="
+        padding-left: 20pt;
+        text-indent: 0pt;
+        line-height: 1pt;
+        text-align: left;
+      "
+    />
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p
+      style="
+        padding-left: 20pt;
+        text-indent: 0pt;
+        line-height: 1pt;
+        text-align: left;
+      "
+    />
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: right;padding-right: 120px;">Deponents</p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="padding-left: 14pt; text-indent: 0pt; text-align: right">
+      [Signature of First Class Magistrate/Notary Public]
+    </p>
+    <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
+    <p
+      style="
+        padding-left: 20pt;
+        text-indent: 0pt;
+        line-height: 1pt;
+        text-align: left;
+      "
+    />
+    <p style="padding-left: 8pt; text-indent: 0pt; text-align: left">
+      [Name and full address of
+    </p>
+    <p style="padding-left: 5pt; text-indent: 6pt; text-align: left">
+      First Class Magistrate/ Notary Public]
+      <br> 
+      Registration No.<u>jvjbjhvgnkmlk bhbjbhj</u>
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <h1 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+      Notary Register at Book No.<u>
+        &ncvcse </u
+      >Serial No.<u>
+        tre feewdfc</u
+      >
+    </h1>
+    <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
+    <div
+    class="textbox"
+    style="
+      border: 1pt solid #000000;
+      display: inline-block;
+      min-height: 84pt;
+      width: 299pt;
+      vertical-align: top;
+      margin-right: 10px;
+    "
+  >
+    <p
+      class="s10"
+      style="padding-left: 5pt; text-indent: 0pt; text-align: left"
+    >
+      Official Seal of First Class Magistrate / Notary Public
+    </p>
+  </div>
+
+  <div
+    class="textbox"
+    style="
+      border: 1pt solid #000000;
+      display: inline-block;
+      min-height: 84pt;
+      width: 198pt;
+      vertical-align: top;
+    "
+  >
+    <p
+      class="s10"
+      style="padding-left: 4pt; text-indent: 0pt; text-align: left"
+    >
+      Court Fee / Notarial Stamps
+    </p>
+  </div>
+
+    <p style="padding-left: 5pt; text-indent: 0pt; text-align: left" />
+    </div>
+    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+  </body>
+<script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+        $scope.customers = [];
+
+        var isProcessing = false;
+
+        // showLoader();
+
+        // Load Customers
+        $scope.loadCustomers = function () {
+            $http.get('/Master/GetCustomers').then(function (response) {
+                $scope.customers = response.data[0];
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+        };
+
+        $scope.loadDocs = function () {
+            if (true) {
+                $http.get('/doc/getDocs/' + 1).then(function (response) {
+                    $scope.docs = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }
+        };
+
+        //Function
+        $scope.printDiv = function (divId) {
+                    var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0;}.s1{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt;}h1{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;}.s2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt;}h2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt;}.s4{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:10pt;}.h3{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt;}.s6{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s7{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s8{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s9{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;}.s10{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s11{color:black;font-family:"Times New Roman",serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt;}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s14{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:10pt;}.s15{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,lower-roman)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}li{display:block;}#l2{padding-left:0pt;counter-reset:d1 1;}#l2>li>*:first-child:before{counter-increment:d1;content:counter(d1,lower-roman)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}#l2>li:first-child>*:first-child:before{counter-increment:d1 0;}li{display:block;}#l3{padding-left:0pt;counter-reset:e1 1;}#l3>li>*:first-child:before{counter-increment:e1;content:counter(e1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}#l3>li:first-child>*:first-child:before{counter-increment:e1 0;}table,tbody{vertical-align:top;overflow:visible;}</style>';
+            var innerContents = document.getElementById(divId).innerHTML;
+            var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+            popupWinindow.document.open();
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 5%;"onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.close();
+        };
+        //Initialize
+        $scope.loadCustomers();
+        $scope.loadDocs();
+    });
+</script>
+</html>

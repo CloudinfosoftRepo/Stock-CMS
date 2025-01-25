@@ -1,0 +1,383 @@
+﻿<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sureity form RIL</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        p {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+            margin: 0pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        h2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        table,
+        tbody {
+            vertical-align: top;
+            overflow: visible;
+        }
+
+        .table {
+            border-collapse: collapse;
+            margin-left: 5.5pt;
+        }
+
+            .table td {
+                border: 1pt solid black;
+                padding: 0 5pt;
+            }
+
+                .table td p {
+                    text-indent: 0pt;
+                    margin: 0;
+                }
+
+            .table .s3 {
+                line-height: 12pt;
+            }
+
+            .table .text-left {
+                text-align: left;
+            }
+
+            .table .text-center {
+                text-align: center;
+            }
+    </style>
+</head>
+<body style="padding: 0 8% 0 8%;" ng-controller="FormController">
+    <div id="printForm">
+    <h1 style="
+        padding-top: 3pt;
+        padding-left: 6pt;
+        text-indent: 0pt;
+        text-align: center;
+      ">
+        Security Affidavit by Sureties
+    </h1>
+    <p class="s1"
+       style="
+        padding-top: 5pt;
+        padding-left: 6pt;
+        text-indent: 0pt;
+        text-align: center;
+      ">
+        (To be executed on a non-judicial stamp paper of Rs.100/-, duly notarized)
+    </p>
+    <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
+    <p style="
+        padding-left: 10pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: left;
+      ">
+        WHEREAS <span class="s2">
+            Rabdomdatan
+        </span>has / have applied to the Company for the issue of duplicate Share
+        Certificate(s) in lieu of the original share certificate bearing No(s).
+        and distinctive No(s). under the folio No. (as mentioned below),
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <table class="table">
+        <tr style="height: 14pt">
+            <td rowspan="2" style="width: 90pt;">
+                <p class="s3 text-left" style="padding-top: 8pt; padding-left: 24pt;">Folio No.</p>
+            </td>
+            <td colspan="2" style="width: 189pt;">
+                <p class="s3 text-left" style="padding-left: 54pt;">Distinctive no.(s).</p>
+            </td>
+            <td rowspan="2" style="width: 103pt;">
+                <p class="s3 text-left" style="padding-top: 8pt; padding-left: 12pt;">Certificate No(s).</p>
+            </td>
+            <td rowspan="2" style="width: 87pt;">
+                <p class="s3 text-left" style="padding-top: 8pt; padding-left: 14pt;">No of Shares</p>
+            </td>
+        </tr>
+        <tr style="height: 15pt">
+            <td style="width: 94pt;">
+                <p class="s3 text-center" style="padding-top: 1pt;">From</p>
+            </td>
+            <td style="width: 95pt;">
+                <p class="s3 text-center" style="padding-top: 1pt; padding-left: 2pt;">TO</p>
+            </td>
+        </tr>
+
+        <!-- Repeat the following rows for content -->
+        <tr style="height: 14pt">
+            <td><p>41355</p></td>
+            <td><p>123</p></td>
+            <td><p>434</p></td>
+            <td><p>TYJ34</p></td>
+            <td><p>ESFVR3</p></td>
+        </tr>
+
+        <tr style="height: 14pt">
+            <td><p>41356</p></td>
+            <td><p>1234</p></td>
+            <td><p>543</p></td>
+            <td><p>4CD22</p></td>
+            <td><p>SFR43</p></td>
+        </tr>
+
+        <tr style="height: 14pt">
+            <td><p>41354</p></td>
+            <td><p>234</p></td>
+            <td><p>234</p></td>
+            <td><p>V4F42</p></td>
+            <td><p>RVS43</p></td>
+        </tr>
+
+        <tr style="height: 14pt">
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+        </tr>
+
+        <tr style="height: 14pt">
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+            <td><p>&nbsp;</p></td>
+        </tr>
+
+    </table>
+    <!-- <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p> -->
+    <p style="padding-left: 10pt; text-indent: 0pt; text-align: justify;line-height: 1.5;">
+        BY THIS BOND Shri <span class="s2">BJSNVJ53JUEVS VUSHNEV43WBJSDV VSUHDV </span>r/o <span class="s2">
+            TRANDE TRWGJ434
+        </span>hereinafter referred to as the “SURETY-1” acknowledges himself to be bound to <span class="s2">
+            OIOVES VSEDS78
+        </span>equity an amount equivalent to the value of shares of the Company as prevailing at the time
+        of invoking the security bond. BY THIS BOND Shri r/o <span class="s2">TEENA PATEL </span>hereinafter referred to as the “SURETY-2” acknowledges himself to be
+        bound to <b>RELIANCE INDUSTRIES LTD (RIL</b>) hereinafter referred to as the Company to an amount equivalent to the value of shares of the Company as prevailing at the time of invoking the security bond.
+    </p>
+    <p style="
+        padding-top: 6pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        line-height: 23pt;
+        text-align: justify;
+      ">
+
+    </p>
+    <p style="
+        padding-top: 1pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: justify;
+      ">
+
+    </p>
+    <p style="
+        padding-top: 7pt;
+        padding-left: 12pt;
+        text-indent: 0pt;
+        text-align: justify;
+      ">
+        NOW THIS DEED WITNESSETH-
+    </p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        line-height: 1.5;
+        text-align: justify;
+      ">
+        In consideration of the Company issuing such duplicate Share
+        Certificate(s), the Surety and his respective heirs, executors and
+        administrators do hereby covenant with the Company, its successors and
+        assigns that Surety and his/her heirs, executors and administrators
+        respectively will at all times and from time to time save, defend and keep
+        harmless and indemnified the Company, its successors and assigns and the
+        Directors thereof and their respective heirs, executors, and
+        administrators and each of their estates and effects from and against all
+        actions, causes, suits, proceedings, accounts, claims and demands
+        whatsoever on account of the said shares or any of them or the loss or non
+        – production of the Certificates thereof on the part of any person or
+        persons whomsoever and against all damages, costs, charges, and expenses
+        and sums of money incurred in respect thereof or otherwise in relation to
+        the premises.And the condition of the Bond is that it will be void if the <span lass="s2">TRCJH15 </span>(shareholder) pays the said amount to the Company within the time
+        stipulated by the Company and failing which this Bond will remain in full
+        force and effect.
+    </p>
+    <p style="
+        padding-top: 7pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: justify;
+      ">
+
+    </p>
+
+    <h2 style="
+        padding-top: 1pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        line-height: 108%;
+        text-align: left;
+      ">
+        Signed and delivered by the within named Surety along with the copy of
+        self attested Pan and Aadhaar.
+    </h2>
+    <p style="
+        padding-top: 7pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Surety 1 : TREK
+    </p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Name : TREK
+    </p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Address: TREK,TREK
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">
+        Surety 2: TREK
+    </p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Name : TREK
+    </p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Address: TREK,TREK
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">Date :21/07/2121</p>
+    <p style="
+        padding-top: 9pt;
+        padding-left: 10pt;
+        text-indent: 0pt;
+        text-align: left;
+      ">
+        Place : TREK
+    </p>
+    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    </div>
+    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+</body>
+<script>
+            angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+                $scope.customers = [];
+
+                var isProcessing = false;
+
+                // showLoader();
+
+                // Load Customers
+                $scope.loadCustomers = function () {
+                    $http.get('/Master/GetCustomers').then(function (response) {
+                        $scope.customers = response.data[0];
+                        hideLoader();
+                    }, function (error) {
+                        console.error('Error loading customers:', error);
+                        hideLoader();
+                    });
+                };
+
+                $scope.loadDocs = function () {
+                    if (true) {
+                        $http.get('/doc/getDocs/' + 1).then(function (response) {
+                            $scope.docs = response.data;
+                            hideLoader();
+                        }, function (error) {
+                            console.error('Error loading Docs:', error);
+                            hideLoader();
+                        });
+                    }
+                };
+
+                //Function
+                $scope.printDiv = function (divId) {
+                        var css ='<style type="text/css">* { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 14pt; } .s1 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } p { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt; } .s2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt; } .s3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } h2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } table, tbody { vertical-align: top; overflow: visible; } .table { border-collapse: collapse; margin-left: 5.5pt; } .table td { border: 1pt solid black; padding: 0 5pt; } .table td p { text-indent: 0pt; margin: 0; } .table .s3 { line-height: 12pt; } .table .text-left { text-align: left; } .table .text-center { text-align: center; }</style>';
+                    var innerContents = document.getElementById(divId).innerHTML;
+                    var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+                    popupWinindow.document.open();
+                    popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 0 8% 0 8% ;"onload="window.print()">' + innerContents + '</html>');
+                    popupWinindow.document.close();
+                };
+                //Initialize
+                $scope.loadCustomers();
+                $scope.loadDocs();
+            });
+</script>
+</html>

@@ -200,6 +200,66 @@ namespace Stock_CMS.Controllers
         {
             return View();
         }
+        public IActionResult AffidavitChangeinSSTSR()
+        {
+            return View();
+        }
+        public IActionResult ReqLetterDupProcess()
+        {
+            return View();
+        }
+        public IActionResult ReqLetterExchange()
+        {
+            return View();
+        }
+        public IActionResult ReqLetterIEPFEntitlement()
+        {
+            return View();
+        }
+        public IActionResult ReqLetterTransmission()
+        {
+            return View();
+        }
+        public IActionResult Revalidationreddiv()
+        {
+            return View();
+        }
+        public IActionResult SelfDeclarationMinorNameDifference()
+        {
+            return View();
+        }
+        public IActionResult SelfDeclarationSignatureChange()
+        {
+            return View();
+        }
+        public IActionResult SuretyAffidavit()
+        {
+            return View();
+        }
+        public IActionResult SuretyFormRIL()
+        {
+            return View();
+        }
+        public IActionResult TransmissionAnnexureC()
+        {
+            return View();
+        }
+        public IActionResult TransmissionAnnexureD()
+        {
+            return View();
+        }
+        public IActionResult TransmissionAnnexureE()
+        {
+            return View();
+        }
+        public IActionResult TransmissionAnnexureF()
+        {
+            return View();
+        }
+        public IActionResult TransmissionReqLetter()
+        {
+            return View();
+        }
         public IActionResult GenerateForm()
         {
             return View();

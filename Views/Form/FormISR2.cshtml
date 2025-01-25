@@ -85,6 +85,70 @@
         </style>
     </head>
 <body style="padding-left: 8%;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="form-group mb-3"> *@
+                @*     <label for="seletedid" class="form-label">select customer</label> *@
+                @*     <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedid" ng-change="loadCustomers(seletedid)"> *@
+                @*         <option selected disabled value="">Select customer</option> *@
+                @*     </select> *@
+                @* </div> *@
+                @* <div class="col-md-4"> *@
+                <div class="form-group mb-3 col-md-3">
+                    <label for="branch" class="form-label">Branch</label>
+                    <input type="text" ng-model="data.branch" class="form-control search-orders" placeholder="Branch">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bankaddress" class="form-label">Bank Address</label>
+                    <textarea id="address" ng-model="data.bankaddress"
+                              class="form-control" style="height: 100px; width: 100%;" placeholder="Bank Address" rows="5" cols="5" required></textarea>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bankphone" class="form-label">Bank Phone</label>
+                    <input type="text" ng-model="data.bankphone" class="form-control search-orders" placeholder="Bank Phone">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bankemail" class="form-label">Bank Email</label>
+                    <input type="email" ng-model="data.bankemail" class="form-control search-orders" placeholder="Bank Email">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="accountno" class="form-label">Account No</label>
+                    <input type="text" ng-model="data.accountno" class="form-control search-orders" placeholder="Account No">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="accountopeningdate" class="form-label">Account Opening Date</label>
+                    <input type="date" ng-model="data.accountopeningdate" class="form-control search-orders" placeholder="Account Opening Date">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="email" class="form-label">Customer Email</label>
+                    <input type="email" ng-model="data.email" class="form-control search-orders" placeholder="Customer Email">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Document Submition">
+                </div>  
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bankmanagername" class="form-label">Bank manager's Name</label>
+                    <input type="text" ng-model="data.bankmanagername" class="form-control search-orders" placeholder="Bank manager's Name">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="empcode" class="form-label">Employee Code</label>
+                    <input type="text" ng-model="data.empcode" class="form-control search-orders" placeholder="Employee Code">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="bankmanageremail" class="form-label">Bank Manager's Email</label>
+                    <input type="email" ng-model="data.bankmanageremail" class="form-control search-orders" placeholder="Bank Manager's Email">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
         <h1 style="padding-top: 3pt; padding-left: 1pt; text-indent: 0pt; text-align: center;">Form ISR – 2</h1>
         <p style="padding-left: 1pt; text-indent: 0pt; line-height: 114%; text-align: center;">
@@ -124,7 +188,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">Bob Bank ,Vadodara</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.branch}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -194,7 +258,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;"><br>Addressvr,43 addresss<br> 5618594569851648 <br>tasvc@23.com</p>
+                    <p style="text-indent: 0pt; text-align: left;"><br>{{data.bankaddress}}<br> {{data.bankphone}} <br>{{data.bankemail}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -262,7 +326,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">4859648585496</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.accountno}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -330,7 +394,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">21/07/2002</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.accountopeningdate | date: 'dd/MM/yyyy'}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -398,11 +462,11 @@
                     "
                     colspan="2"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">1) Rema Patel</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">1) {{data.customerName}}</p>
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">2) Tema Patel</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">2) {{data.holders}}</p>
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">3) Hema Patel</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">3) </p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -550,7 +614,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">R-1 Ranking Socirty,Arena</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.address}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -584,7 +648,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">876454456542</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.mobile}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -618,7 +682,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">rsr@13.co</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.email}}</p>
                 </td>
             </tr>
             <tr style="height: 20pt;">
@@ -752,7 +816,7 @@
                     "
                     colspan="2"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Place: Baroda</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Place: {{data.place}}</p>
                 </td>
                 <td
                     style="
@@ -768,7 +832,7 @@
                     "
                     colspan="4"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Name of the Bank Manager:Yema Table</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Name of the Bank Manager:{{data.bankmanagername}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -802,7 +866,7 @@
                     "
                     colspan="4"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Employee Code: 14EMP</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Employee Code: {{data.empcode}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -820,7 +884,7 @@
                     "
                     colspan="2"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Date: 21/02/25</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Date: {{data.date | date:'dd/MM/yyyy'}}</p>
                 </td>
                 <td
                     style="
@@ -836,7 +900,7 @@
                     "
                     colspan="4"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">E-mail address: tar@12.com</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">E-mail address: {{data.bankmanageremail}}</p>
                 </td>
             </tr>
         </table>
@@ -846,33 +910,178 @@
     <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+         $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+
+        $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                let holders = [
+                        result.firstHolder || '',
+                        result.secondHolder || '',
+                        result.thirdHolder || ''
+                    ].filter(holder => holder.trim() !== '');
+                 // $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                 //    $scope.doc = response.data;
+                 //    var docs = response.data[sid - 1];
+                 //    var Age = $scope.calculateAge(docs.dob);
+
+
+                $scope.data = {
+                    branch: '',
+                    bankaddress: '',
+                    bankphone: '',
+                    bankemail: '',
+                    accountno:'',
+                    accountopeningdate: '',
+                   customerName : result.customer.customerName,
+                   address : result.customer.address,
+                   mobile: result.customer.mobile,
+                   holders : holders.length > 0 ? `${holders.join(') (')}` : '',
+                   email: '',
+                   place: '',
+                   date: new Date(),
+                   bankmanagername: '',
+                   empcode: '',
+                   bankmanageremail: '',
+                };
+
+                hideLoader();
+                // }, function (error) {
+                //     console.error('Error loading Docs:', error);
+                //     hideLoader();
+                // });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    branch: obj.branch,
+                    bankaddress: obj.bankaddress,
+                    bankphone: obj.bankphone,
+                    bankemail: obj.bankemail,
+                    accountno: obj.accountno,
+                    accountopeningdate: new Date(obj.accountopeningdate),
+                    customerName: obj.customerName,
+                    address:obj.address,
+                    mobile: obj.mobile,
+                   holders: obj.holders,
+                   email: obj.email,
+                   place: obj.place,
+                   date: new Date(obj.date),
+                   bankmanagername: obj.bankmanagername,
+                   empcode: obj.empcode,
+                   bankmanageremail: obj.bankmanageremail,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+     $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Form ISR 2',
+                 StockId : id,
+                 url : `/Form/FormISR2?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -885,7 +1094,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>
