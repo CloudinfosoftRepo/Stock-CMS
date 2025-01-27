@@ -4,6 +4,7 @@ using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stock_CMS.Service
 {
@@ -72,8 +73,23 @@ namespace Stock_CMS.Service
             }
 
         }
-      
-		public async Task<GenratedFormDto> GetGenratedFormById(long id)
+
+        public async Task<long> UpdateFormbyColumn(GenratedFormDto data)
+        {
+            data.IsActive = false;
+            List<GenratedFormDto> formDtos = new List<GenratedFormDto>() { data };
+            var result = await _GenratedFormRepository.UpdateFormbyColumn(formDtos, ["IsActive", "UpdatedAt", "UpdatedBy"]);
+            if (result.Any())
+            {
+                return result.FirstOrDefault().Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public async Task<GenratedFormDto> GetGenratedFormById(long id)
 		{  
 			var result = await _GenratedFormRepository.GetGenratedFormById(id);
 			return result;

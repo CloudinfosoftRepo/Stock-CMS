@@ -26,6 +26,10 @@
     .display-flex {
         display: flex;
     }
+
+    .cursor-pointer{
+        cursor: pointer;
+    }
 </style>
 <body ng-controller="GenerateFormController">
 
@@ -73,7 +77,7 @@
                             <span class="icon-holder">
                                 <i class="fas fa-file-alt text-file"></i>
                             </span>
-                            @* <span class="badge bg-success">NEW</span> *@
+                            <span class="badge bg-danger z-3 cursor-pointer" ng-click="deleteform(forms)"><i class="bi bi-trash"></i></span>
                             <a class="app-card-link-mask" ng-click="navtogenerateform(forms.url,forms.id)"></a>
                         </div>
                         <div class="app-card-body p-3 has-card-actions">
@@ -126,6 +130,30 @@
                     console.error('Error loading form list:', error);
                 });
             };
+
+             $scope.deleteform = function (body) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                   const url = '/Form/UpdateFormbyColumn';
+                    $http.post(url,body).then(function (response) {
+                        Swal.fire({
+                            title: response.data.success ? 'Deleted!' : 'Error',
+                            text: response.data.success ? 'The document has been deleted.' : 'An error occurred.',
+                            icon: response.data.success ? 'success' : 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadforms();
+                    });
+                }
+            });
+        };
 
             // Get Customer Name by ID
             $scope.gotoform = function (fid) {

@@ -257,7 +257,7 @@ img {
         $scope.openDocModal = function (doc = null) {
             $scope.isEditing = !!doc;
             $scope.currentDoc = doc ? angular.copy(doc) : {};
-            $scope.currentDoc.dob = new Date(doc.dob)
+                $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
             $('#docModal').modal('show');
         };
 

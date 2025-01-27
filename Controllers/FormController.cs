@@ -2,6 +2,7 @@
 using Stock_CMS.Models;
 using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stock_CMS.Controllers
 {
@@ -108,6 +109,34 @@ namespace Stock_CMS.Controllers
                 });
             }
 
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateFormbyColumn([FromBody] GenratedFormDto form)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                form.UpdatedBy = int.Parse(userId);
+                form.UpdatedAt = DateTime.Now;
+                var result = await _genratedFormService.UpdateFormbyColumn(form);
+                string message = result == -1 ? "No record Found." :
+                  result == 0 ? "Failed to delete Form." :
+                  "Form deleted successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during delete");
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         public IActionResult ChangeOfAddress()

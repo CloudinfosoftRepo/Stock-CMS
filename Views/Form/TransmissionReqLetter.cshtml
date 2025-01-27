@@ -93,17 +93,51 @@
   }
     </style>
   </head>
-<body style="padding-left: 10%;" ng-controller="FormController">
+<body style="padding-left: 10%; padding-top: 5%" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-4"> *@
+                <div class="form-group mb-3">
+                    <label for="seletedid" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="certificate" class="form-label">Certificate</label>
+                    <input type="text" ng-model="data.certificate" class="form-control search-orders" placeholder="Certificate">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="certificate" class="form-label">Distinctive</label>
+                    <input type="text" ng-model="data.distinctive" class="form-control search-orders" placeholder="Distinctive">
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="deceasedDate" class="form-label">Deceased Date</label>
+                    <input type="date" ng-model="data.deceasedDate" class="form-control search-orders" placeholder="Deceased Date">
+                </div>
+
+
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div id="printForm">
     <p style="padding-left: 5pt; text-align: left; margin: 0;font-size: 16px;">
-      <b>NARESH B SHARMA</b>
+      <b>{{data.customerName}}</b>
     </p>
     <p style="padding: 0 352px 0 5pt; text-align: left; margin: 0;font-size: 16px;">
-      A 5 ATAMARAJ SOCIETY, NEAR MEHSANA NAGAR, VADODARA, GUJARAT-390002
+            {{data.address}}
     </p>
 
     <p style="padding-left: 5pt; text-align: left; margin: 0;font-size: 16px;">
-      M. No. 9428171249
+      M. No. {{data.mobile}}
     </p>
     <hr style="width: 100%; height: 2px; background-color: black;">
 
@@ -119,8 +153,8 @@
       "
     >
       Date:<span class="s3">
-      21/02/2002</span
-      >
+                {{data.date | date:'dd/MM/yyyy'}}
+            </span>
     </p>
     <p
       class="s2"
@@ -134,10 +168,10 @@
       To,
     </p>
     <p style="padding-left: 5pt; text-align: left; margin: 0;">
-      KFin Technologies Pvt. Ltd,
+            {{data.officename}},
     </p>
     <p style="padding: 0 352px 0 5pt; text-align: left; margin: 0;">
-      Karvy Selenium Tower B, Plot No. 31 &amp; 32, Gachibowli Financial District, Serilingampally, Hyderabad, Telangana, 50003200
+            {{data.officeaddress}}
     </p>
 
     
@@ -154,7 +188,7 @@
         text-align: left;
       "
     >
-      Unit: <b>Reliance Industries Ltd</b>
+            Unit: <b>{{data.officename}}</b>
     </p>
     <p
       class="s4"
@@ -165,7 +199,7 @@
         text-align: left;
       "
     >
-      Folio No.: <b>052710</b>
+            Folio No.: <b>{{data.folioNo}}</b>
     </p>
     <p
       style="
@@ -179,12 +213,8 @@
       I/We, the undersigned, being the Executor(s) of the
       Will/Administrator(s)/Successor(s) /legal heirs of the Equity shares of
       Late Mr/Mrs/Miss
-      <span class="s3"
-        >EXTRCYVB TRCVYGBH </span
-      >(deceased holder) died on
-      <span class="s3"
-        >CVG VGHB GVBHJ </span
-      >at hereby request you to register me/us as Member(s) of the Company in
+      <span class="s3">{{data.sonof}} </span>(deceased holder) died on
+      <span class="s3">{{data.deceasedDate | date:'dd/MM/yyyy'}} </span>at hereby request you to register me/us as Member(s) of the Company in
       respect of the Shares of the Company, now standing in the name of the said
       deceased holder in the Register of Members of the Company.
     </p>
@@ -218,28 +248,28 @@
       </tr>
       <!-- Empty Rows Repeated (we'll keep only 1 and reduce redundancy) -->
       <tr style="height: 20pt">
-        <td class="table-cell">BSD</td>
-        <td class="table-cell">BDSBD</td>
-        <td class="table-cell">FDFC12</td>
-        <td class="table-cell">B5F2CXB</td>
+                <td class="table-cell">{{data.folioNo}}</td>
+                <td class="table-cell">{{data.certificate}}</td>
+                <td class="table-cell">{{data.qty}}</td>
+                <td class="table-cell">{{data.distinctive}}</td>
       </tr>
       <tr style="height: 20pt">
-        <td class="table-cell">BSD</td>
-        <td class="table-cell">BDSBD</td>
-        <td class="table-cell">FDFC12</td>
-        <td class="table-cell">B5F2CXB</td>
+                <td class="table-cell">{{data.folioNo}}</td>
+                <td class="table-cell">{{data.certificate}}</td>
+                <td class="table-cell">{{data.qty}}</td>
+                <td class="table-cell">{{data.distinctive}}</td>
       </tr>
       <tr style="height: 20pt">
-        <td class="table-cell">BSD</td>
-        <td class="table-cell">BDSBD</td>
-        <td class="table-cell">FDFC12</td>
-        <td class="table-cell">B5F2CXB</td>
+                <td class="table-cell">{{data.folioNo}}</td>
+                <td class="table-cell">{{data.certificate}}</td>
+                <td class="table-cell">{{data.qty}}</td>
+                <td class="table-cell">{{data.distinctive}}</td>
       </tr>
       <tr style="height: 20pt">
-        <td class="table-cell">BSD</td>
-        <td class="table-cell">BDSBD</td>
-        <td class="table-cell">FDFC12</td>
-        <td class="table-cell">B5F2CXB</td>
+                <td class="table-cell">{{data.folioNo}}</td>
+                <td class="table-cell">{{data.certificate}}</td>
+                <td class="table-cell">{{data.qty}}</td>
+                <td class="table-cell">{{data.distinctive}}</td>
       </tr>
       <!-- Repeat this pattern for remaining rows -->
     </table>
@@ -264,7 +294,7 @@
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <h2 style="padding-left: 41pt; text-indent: 0pt; text-align: left">
-      NARESH B SHARMA
+            {{data.customerName}}
     </h2>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -272,33 +302,146 @@
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
         $scope.customers = [];
-
+         $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+         $scope.loadCustomers = function (sid) {
+             if(id){
+                 var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                     $scope.docs = response.data;
+                    var doc = response.data[sid - 1];
+                $scope.data = {
+                   customerName : doc.name,
+                   qty:result.qty,
+                   sonof: 'fathersname',
+                   folioNo : result.folioNo,
+                   mobile: result.customer.mobile,
+                   address : doc.addressAsPerAadhar,
+                   officename : result.companyName,
+                   officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   date:new Date(),
+                   distinctive:'',
+                   certificate:'',
+                   deceasedDate:'',
+
+                };
+
+                hideLoader();
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    folioNo : obj.folioNo,
+                    qty : obj.qty,
+                    address:obj.address,
+                    mobile: obj.mobile,
+                    officename: obj.officename,
+                    officeaddress: obj.officeaddress,
+                    clientid:obj.clientid,
+                    date:new Date(obj.date),
+                    distinctive:obj.distinctive,
+                   certificate:obj.certificate,
+                   deceasedDate:obj.deceasedDate,
+                };
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Transmission Req Letter',
+                 StockId : id,
+                 url : `/Form/TransmissionReqLetter?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -311,7 +454,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

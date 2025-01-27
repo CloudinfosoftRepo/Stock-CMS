@@ -34,6 +34,11 @@ namespace Stock_CMS.Repository
             return await UpdateEntities(data);
         }
 
+        public async Task<IEnumerable<GenratedFormDto>> UpdateFormbyColumn(IEnumerable<GenratedFormDto> data, string[] columns)
+        {
+            return await UpdateEntitiesArray(data, columns);
+        }
+
         public async Task<IEnumerable<GenratedFormDto>> GetGenratedFormByStockId(long Id)
         {
             return await GetMany(x => x.StockId == Id && x.IsActive == true);

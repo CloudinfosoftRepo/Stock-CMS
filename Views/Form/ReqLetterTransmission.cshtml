@@ -153,13 +153,38 @@
       }
     </style>
   </head>
-<body style="padding: 0 8% 0 8% ;" ng-controller="FormController">
+<body style="padding: 5% 8% 0 8% ;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                <div class="form-group mb-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="deceasedname" class="form-label">Name of Deceased</label>
+                        <input type="text" ng-model="data.deceasedname" class="form-control search-orders" placeholder="Name of Deceased">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="dateofdemise" class="form-label">Date Of Demise</label>
+                        <input type="date" ng-model="data.dateofdemise" class="form-control search-orders" placeholder="Date Of Demise">
+                    </div>
+                </div>
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <h1 style="padding-top: 3pt; text-indent: 0pt; text-align: center">
-      MANAVKUMAR PARIKH
+            {{data.customerName}}
     </h1>
     <h2 style="padding:0 150pt 0 150pt; text-indent: 0pt; text-align: center">
-      00, GEETA NAGAR SOCIETY, NEAR BHAGAT VADI, BODELI, DHOKALIYA, VADODARA, GUJARAT391135
+      @* 00, GEETA NAGAR SOCIETY, NEAR BHAGAT VADI, BODELI, DHOKALIYA, VADODARA, GUJARAT391135 *@ {{data.address}}
     </h2>
 
     <p
@@ -171,7 +196,7 @@
         text-align: center;
       "
     >
-      M. No. 94281 71249
+      M. No.  {{data.mobile}}
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p
@@ -188,7 +213,7 @@
         TO
       </p>
       <p style="padding-top: 1pt; padding-left: 5pt; text-indent: 0pt; text-align: right;">
-        Date:21/07/2014
+        Date:{{data.today | date:'dd/MM/yyyy'}}
       </p>
     </div>
     <p
@@ -200,10 +225,10 @@
         text-align: left;
       "
     >
-      KFin Technologies Ltd,
+            @* KFin Technologies Ltd, *@ {{data.officename}}
     </p>
     <p class="s5" style="padding: 0 340px 0 5px; text-indent: 0pt; text-align: left">
-      Karvy Selenium Tower B, Plot 31-32, Gachibowli, Financial District, Nanakramguda, Hyderabad, Telangana, 500032
+            @* Karvy Selenium Tower B, Plot 31-32, Gachibowli, Financial District, Nanakramguda, Hyderabad, Telangana, 500032 *@ {{data.officeaddress}}
     </p>
 
     <h3
@@ -215,10 +240,10 @@
       text-decoration:none;
     "
   >
-    (Unit: <span class="h2">RELIANCE INDUSTRIES LIMITED</span>)
+            (Unit: <span class="h2">{{data.officename}}</span>)
   </h3>
   <h3 style="padding-left: 5pt; text-indent: 0pt; text-align: left;text-decoration:none;">
-    (Folio No: <span class="h2">0051516</span>)
+            (Folio No: <span class="h2">{{data.folioNo}}</span>)
   </h3>
 
     <h3 style="padding-top: 12pt; text-indent: 0pt; text-align: center">
@@ -244,11 +269,10 @@
       "
     >
       With reference to the above captioned subject and as discussed with your
-      undersigned, I, <span class="s8">MANAVKUMAR PARIKH </span>would like to
+            undersigned, I, <span class="s8">{{data.customerName}} </span>would like to
       bring into your kind attention that I am the legal heir of the deceased
-      share holder <span class="s9">VIJAY SOMALAL PARIKH</span
-      ><span class="h2"> </span>who expired on
-      <span class="h2">27-07-2016</span>
+            share holder <span class="s9">{{data.deceasedname}}</span><span class="h2"> </span>who expired on
+            <span class="h2">{{data.dateofdemise | date:'dd-MM-yyyy'}}</span>
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <table
@@ -345,7 +369,7 @@
               text-align: left;
             "
           >
-            VIJAY SOMALAL PARIKH
+                        {{data.deceasedname}}
           </p>
         </td>
         <td
@@ -365,7 +389,7 @@
             class="s12"
             style="text-indent: 0pt; line-height: 13pt; text-align: center"
           >
-            0051516
+                        {{data.folioNo}}
           </p>
         </td>
         <td
@@ -381,7 +405,7 @@
             border-right-width: 1pt;
           "
         >
-          <p class="s13" style="text-indent: 0pt; text-align: center">42</p>
+          <p class="s13" style="text-indent: 0pt; text-align: center">{{data.qty}}</p>
         </td>
       </tr>
     </table>
@@ -404,7 +428,7 @@
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <h2 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      MANAVKUMAR PARIKH
+            @* MANAVKUMAR PARIKH *@ {{data.customerName}}
     </h2>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -412,33 +436,158 @@
 <script>
         angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
             $scope.customers = [];
-
+             $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
             var isProcessing = false;
 
             // showLoader();
 
-            // Load Customers
-            $scope.loadCustomers = function () {
-                $http.get('/Master/GetCustomers').then(function (response) {
-                    $scope.customers = response.data[0];
-                    hideLoader();
+             // Load Customers
+        $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = response.data[sid - 1];
+
+                $scope.data = {
+                   customerName : docs.name,
+                   today: new Date(),
+                   folioNo : result.folioNo,
+                   qty : result.qty,
+                   address : result.customer.address,
+                   mobile: result.customer.mobile,
+                   officename : result.companyName,
+                   officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
+                   deceasedname:'',
+                   dateofdemise:'',
+                };
+
+                hideLoader();
                 }, function (error) {
-                    console.error('Error loading customers:', error);
+                    console.error('Error loading Docs:', error);
                     hideLoader();
                 });
-            };
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
 
-            $scope.loadDocs = function () {
-                if (true) {
-                    $http.get('/doc/getDocs/' + 1).then(function (response) {
-                        $scope.docs = response.data;
-                        hideLoader();
-                    }, function (error) {
-                        console.error('Error loading Docs:', error);
-                        hideLoader();
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    today: obj.today,
+                    folioNo : obj.folioNo,
+                    mobile: obj.mobile,
+                    qty:obj.qty,
+                    address:obj.address,
+                   officename: obj.officename,
+                   officeaddress: obj.officeaddress,
+                   deceasedname: obj.deceasedname,
+                   dateofdemise: new Date(obj.dateofdemise),
+                };
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+        };
+
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Req Letter Transmission',
+                 StockId : id,
+                 url : `/Form/ReqLetterTransmission?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
                     });
-                }
-            };
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+            // Load Customers
+            // $scope.loadCustomers = function () {
+            //     $http.get('/Master/GetCustomers').then(function (response) {
+            //         $scope.customers = response.data[0];
+            //         hideLoader();
+            //     }, function (error) {
+            //         console.error('Error loading customers:', error);
+            //         hideLoader();
+            //     });
+            // };
+
+            // $scope.loadDocs = function () {
+            //     if (true) {
+            //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+            //             $scope.docs = response.data;
+            //             hideLoader();
+            //         }, function (error) {
+            //             console.error('Error loading Docs:', error);
+            //             hideLoader();
+            //         });
+            //     }
+            // };
 
             //Function
             $scope.printDiv = function (divId) {
@@ -451,7 +600,7 @@
             };
             //Initialize
             $scope.loadCustomers();
-            $scope.loadDocs();
+            // $scope.loadDocs();
         });
 </script>
 </html>

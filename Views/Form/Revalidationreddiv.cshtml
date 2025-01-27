@@ -88,7 +88,66 @@
       }
     </style>
   </head>
-<body style="padding: 0 8% 0 8% ;" ng-controller="FormController">
+<body style="padding: 5% 8% 0 8% ;" ng-controller="FormController">
+    <div ng-if="hDiv">
+        <form name="gForm" ng-submit="genrateForm()">
+            <div class="row">
+                @* <div class="col-md-4"> *@
+                <div class="form-group mb-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="warrentno" class="form-label">Warrent No</label>
+                        <input type="text" ng-model="data.warrentno" class="form-control search-orders" placeholder="Warrent No">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="dateofwarrent" class="form-label">Date Of Warrent</label>
+                        <input type="date" ng-model="data.dateofwarrent" class="form-control search-orders" placeholder="Date Of Warrent">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="text" ng-model="data.amount" class="form-control search-orders" placeholder="Amount">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="bankname" class="form-label">Bank Name</label>
+                        <input type="text" ng-model="data.bankname" class="form-control search-orders" placeholder="Bank Name">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="branch" class="form-label">Branch</label>
+                        <input type="text" ng-model="data.branch" class="form-control search-orders" placeholder="Branch">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="accounttype" class="form-label">Account Type</label>
+                        <input type="text" ng-model="data.accounttype" class="form-control search-orders" placeholder="Account Type">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="accountno" class="form-label">Account No</label>
+                        <input type="text" ng-model="data.accountno" class="form-control search-orders" placeholder="Account No">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="bankcity" class="form-label">Bank City</label>
+                        <input type="text" ng-model="data.bankcity" class="form-control search-orders" placeholder="Bank City">
+                    </div>
+                     <div class="form-group mb-3 col-md-3">
+                        <label for="micrcode" class="form-label">MICRCode(9Digit)</label>
+                        <input type="text" ng-model="data.micrcode" class="form-control search-orders" placeholder="MICRCode(9Digit)">
+                    </div>
+                    <div class="form-group mb-3 col-md-3">
+                        <label for="ifsccode" class="form-label">IFSCCode(11Digit)</label>
+                        <input type="text" ng-model="data.ifsccode" class="form-control search-orders" placeholder="IFSCCode(11Digit)">
+                    </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="printForm">
     <br>
     <br>
@@ -100,11 +159,11 @@
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">To</p>
     <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      KFin Technologies Ltd,
+            @* KFin Technologies Ltd, *@ {{data.officename}}
     </p>
     <p class="s2" style="padding: 0 360px 0 5px;; text-indent: 0pt; text-align: left">
-      Karvy Selenium Tower B, Plot No.31 &amp; 32, Gachibowli, Financial
-      District, Nanakramguda, Serilingampally, Hyderabad, Telangana, 500032
+      @* Karvy Selenium Tower B, Plot No.31 &amp; 32, Gachibowli, Financial *@
+            @* District, Nanakramguda, Serilingampally, Hyderabad, Telangana, 500032 *@{{data.officeaddress}}
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p
@@ -115,9 +174,7 @@
         text-align: left;
       "
     >
-      Sub:Revalidation of Redemption/Dividend Warrant Ref: Folio No(s):<b
-        >HUN040</b
-      >
+            Sub:Revalidation of Redemption/Dividend Warrant Ref:{{data.warrentno}} Folio No(s):<b>{{data.folioNo}}</b>
     </p>
     <p
       style="
@@ -138,10 +195,11 @@
         text-align: justify;
       "
     >
-      I am unable to deposit then closed redemption/dividend warrantno.<u
-        ><b>1301642</b></u
-      >_ dated <u><b>1st DECEMBER 2022 </b></u>for Rs.<u><b>8540</b></u
-      >, issued by you, as the bank account mentioned on the warrant is closed /
+      I am unable to deposit then closed redemption/dividend warrantno.<u><b>{{data.warrentno}}</b></u>_ dated <u>
+                <b>
+                    {{ data.dateofwarrent | date: 'dd MMMM, yyyy'}}
+                </b>
+            </u>for Rs.<u><b>{{data.amount}}</b></u>, issued by you, as the bank account mentioned on the warrant is closed /
       incorrect.
       Hence I request you to update my New Bankdetails in your records,as mentioned below:
     </p>
@@ -244,7 +302,7 @@
               text-align: left;
             "
           >
-            STATE BANK OF INDIA
+                        @* STATE BANK OF INDIA *@ {{data.bankname}}
           </p>
         </td>
       </tr>
@@ -296,7 +354,7 @@
               text-align: left;
             "
           >
-            ALKAPURI BARODA
+                        @* ALKAPURI BARODA *@ {{data.branch}}
           </p>
         </td>
       </tr>
@@ -348,7 +406,7 @@
               text-align: left;
             "
           >
-            SAVING, 31*********
+                        @* SAVING, 31********* *@ {{data.accounttype}}, {{data.accountno}}
           </p>
         </td>
       </tr>
@@ -400,7 +458,7 @@
               text-align: left;
             "
           >
-            VADODARA, 390007
+                        @* VADODARA, 390007 *@ {{data.bankcity}}
           </p>
         </td>
       </tr>
@@ -452,7 +510,7 @@
               text-align: left;
             "
           >
-            390002014
+                        {{data.micrcode}}
           </p>
         </td>
       </tr>
@@ -504,7 +562,7 @@
               text-align: left;
             "
           >
-            SBIN0003321
+                        {{data.ifsccode}}
           </p>
         </td>
       </tr>
@@ -524,9 +582,7 @@
         text-align: left;
       "
     >
-      Kindly arrange for the new redemption/dividend warrant of amount Rs.<u
-        ><b>8540 </b></u
-      >in my favor, with the above mentioned accountnumber to my registered address.
+      Kindly arrange for the new redemption/dividend warrant of amount Rs.<u><b>{{data.amount}} </b></u>in my favor, with the above mentioned accountnumber to my registered address.
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left" />
@@ -549,9 +605,7 @@
       text-align: left;
     "
   >
-      HolderName:<b
-      >Mishra Satish </b
-    ></span>
+      HolderName:<b>{{data.customerName}} </b></span>
   </p>
     <p
     style="
@@ -564,7 +618,7 @@
   </p>
     <p style="padding-top: 5pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      Date:<span class="s8"> 21/07/2019</span>
+      Date:<span class="s8"> {{data.today | date:'dd/MM/yyyy'}}</span>
     </p>
      </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -572,33 +626,182 @@
   <script>
         angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
             $scope.customers = [];
-
+             $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
             var isProcessing = false;
 
             // showLoader();
 
-            // Load Customers
-            $scope.loadCustomers = function () {
-                $http.get('/Master/GetCustomers').then(function (response) {
-                    $scope.customers = response.data[0];
-                    hideLoader();
+            $scope.nameofmonth = function(id){
+                var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                return monthsOfYear[id];
+            }
+
+             // Load Customers
+        $scope.loadCustomers = function (sid) {
+
+             if(id){
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = response.data[sid - 1];
+
+                $scope.data = {
+                   customerName : docs.name,
+                   today: new Date(),
+                   folioNo : result.folioNo,
+                   qty : result.qty,
+                   address : result.customer.address,
+                   mobile: result.customer.mobile,
+                   officename : result.companyName,
+                   officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
+                   warrentno:'',
+                   dateofwarrent:'',
+                   amount:'',
+                   bankname:'',
+                   branch: '',
+                   accountno: '',
+                   accounttype: '',
+                   bankcity:'',
+                   micrcode: '',
+                   ifsccode: '',
+                };
+
+             
+                hideLoader();
                 }, function (error) {
-                    console.error('Error loading customers:', error);
+                    console.error('Error loading Docs:', error);
                     hideLoader();
                 });
-            };
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
 
-            $scope.loadDocs = function () {
-                if (true) {
-                    $http.get('/doc/getDocs/' + 1).then(function (response) {
-                        $scope.docs = response.data;
-                        hideLoader();
-                    }, function (error) {
-                        console.error('Error loading Docs:', error);
-                        hideLoader();
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    today: obj.today,
+                    folioNo : obj.folioNo,
+                    mobile: obj.mobile,
+                    qty:obj.qty,
+                    address:obj.address,
+                   officename: obj.officename,
+                   officeaddress: obj.officeaddress,
+                   warrentno: obj.warrentno,
+                   dateofwarrent: new Date(obj.dateofwarrent),
+                   amount: obj.amount,
+                   bankname: obj.bankname,
+                   branch: obj.branch,
+                   accountno: obj.accountno,
+                   accounttype: obj.accounttype,
+                   bankcity: obj.bankcity,
+                   micrcode: obj.micrcode,
+                   ifsccode: obj.ifsccode,
+                };
+
+                   
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+        };
+
+          $scope.calculateAge = function(dob) {
+      if (!dob) {
+        return '';
+      }
+      var birthDate = new Date(dob);
+      var currentDate = new Date();
+      var age = currentDate.getFullYear() - birthDate.getFullYear();
+      var m = currentDate.getMonth() - birthDate.getMonth();
+
+      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
+      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Revalidation red div',
+                 StockId : id,
+                 url : `/Form/Revalidationreddiv?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadCustomers();
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
                     });
-                }
-            };
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+            // Load Customers
+            // $scope.loadCustomers = function () {
+            //     $http.get('/Master/GetCustomers').then(function (response) {
+            //         $scope.customers = response.data[0];
+            //         hideLoader();
+            //     }, function (error) {
+            //         console.error('Error loading customers:', error);
+            //         hideLoader();
+            //     });
+            // };
+
+            // $scope.loadDocs = function () {
+            //     if (true) {
+            //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+            //             $scope.docs = response.data;
+            //             hideLoader();
+            //         }, function (error) {
+            //             console.error('Error loading Docs:', error);
+            //             hideLoader();
+            //         });
+            //     }
+            // };
 
             //Function
             $scope.printDiv = function (divId) {
@@ -611,7 +814,7 @@
             };
             //Initialize
             $scope.loadCustomers();
-            $scope.loadDocs();
+            // $scope.loadDocs();
         });
 </script>
 </html>
