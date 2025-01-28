@@ -82,6 +82,10 @@ img {
                                         <th class="cell">Mobile</th>
                                     <th class="cell">Relationship</th>
                                     <th class="cell">RelativesName</th>
+                                    <th class="cell">Created At</th>
+                                    <th class="cell">Created By</th>
+                                    <th class="cell">Updated At</th>
+                                    <th class="cell">Updated By</th>
                                         <th class="cell">Edit</th>
                                         @* <th class="cell">Delete</th> *@
                                     </tr>
@@ -108,6 +112,10 @@ img {
                                     <td class="cell">{{ doc.mobile }}</td>
                                     <td class="cell">{{ doc.relationship }}</td>
                                     <td class="cell">{{ doc.relativesName }}</td>
+                                    <td class="cell">{{ doc.createdAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.createdByName }}</td>
+                                    <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.updatedByName }}</td>
                                         <td class="cell">
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
                                                 <i class="bi bi-pencil"></i>
