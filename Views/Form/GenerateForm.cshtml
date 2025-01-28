@@ -81,12 +81,12 @@
                                 <i class="fas fa-file-alt text-file"></i>
                             </span>
                             <span class="badge bg-danger z-3 cursor-pointer" ng-click="deleteform(forms)"><i class="bi bi-trash"></i></span>
-                            <a class="app-card-link-mask" ng-click="navtogenerateform(forms.url,forms.id)"></a>
+                            <a class="app-card-link-mask" ng-click="navtogenerateform(forms.url,forms.id)" title="{{forms.createdByName}}"></a>
                         </div>
                         <div class="app-card-body p-3 has-card-actions">
 
                             <h4 class="app-doc-title truncate mb-0">
-                                <a ng-click="navtogenerateform(forms.url,forms.id)">{{forms.formName}}</a>
+                                <a ng-click="navtogenerateform(forms.url,forms.id)" title="{{forms.createdByName}}">{{forms.formName}}</a>
                             </h4>
 
                         </div><!--//app-card-body-->

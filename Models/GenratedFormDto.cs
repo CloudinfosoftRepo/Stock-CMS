@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Stock_CMS.Models;
 
@@ -26,4 +27,9 @@ public partial class GenratedFormDto
     public int? UpdatedBy { get; set; }
 
     public string? ClientName { get; set; }
+
+    [NotMapped]
+    public string? CreatedByName { get; set; }
+    [NotMapped]
+    public string? UpdatedByName { get; set; }
 }

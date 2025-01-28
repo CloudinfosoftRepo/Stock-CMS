@@ -97,7 +97,17 @@ namespace Stock_CMS.Service
 
         public async Task<IEnumerable<GenratedFormDto>> GetGenratedFormByStockId(long id)
         {
-            var result = await _GenratedFormRepository.GetGenratedFormByStockId(id);
+            var data = await _GenratedFormRepository.GetGenratedFormByStockId(id);
+
+            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var users = await _userRepository.GetUsersByIds(ids);
+            var result = data.Select(x =>
+            {
+                x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+                x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+                return x;
+            });
+
             return result;
         }
 
