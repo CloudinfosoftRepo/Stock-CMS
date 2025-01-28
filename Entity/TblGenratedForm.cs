@@ -25,5 +25,7 @@ public partial class TblGenratedForm
 
     public int? UpdatedBy { get; set; }
 
+    public string? ClientName { get; set; }
+
     public virtual TblStock? Stock { get; set; }
 }

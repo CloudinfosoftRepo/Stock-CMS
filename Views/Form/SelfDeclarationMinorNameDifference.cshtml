@@ -262,12 +262,11 @@ font-size:medium;
                     ].filter(holder => holder.trim() !== '');
             $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                  $scope.docs = response.data;
-                var doc = response.data[sid - 1];
+                var doc = $scope.docs.find(x => x.id === sid);
             $scope.data = {
                customerName : doc.name,
                qty:result.qty,
                folioNo : result.folioNo,
-               mobile: result.customer.mobile,
                address : doc.addressAsPerAadhar,
                officename : result.companyName,
                officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
@@ -297,7 +296,6 @@ font-size:medium;
                 folioNo : obj.folioNo,
                 qty : obj.qty,
                 address:obj.address,
-                mobile: obj.mobile,
                 officename: obj.officename,
                 officeaddress: obj.officeaddress,
                 clientid:obj.clientid,
@@ -323,6 +321,7 @@ font-size:medium;
              StockId : id,
              url : `/Form/SelfDeclarationMinorNameDifference?id2=`,
              jsonString : jsonString,
+             ClientName: $scope.data.customerName,
              IsActive : true
          }
 
@@ -335,7 +334,9 @@ font-size:medium;
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
-                    $scope.loadCustomers();
+                    // $scope.loadCustomers();
+                                            window.open(response.data.data.url + response.data.data.id,'_self')
+
                 } else {
                     Swal.fire({
                         title: 'Error!',

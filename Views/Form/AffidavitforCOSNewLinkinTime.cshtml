@@ -168,7 +168,7 @@
                         <label for="place" class="form-label">Place</label>
                         <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
                     </div>
-                ccccccc
+                
                 @* </div> *@
                 <div class="text-center m-2 col-md-4">
                     <button type="submit" class="btn" style="background-color:#003980; color:white;">
@@ -198,7 +198,7 @@
     <p class="s2" style="text-indent: 0pt; text-align: center">AFFIDAVIT</p>
     <p style="padding-top: 6pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-            I, <span class="s3">{{data.customerName}}</span>, son/daughter/spouse of
+            I, <span class="s3">{{data.customerName}}</span>, {{data.relationship}}
       <span class="s3">{{data.sonof}} </span>aged {{data.age}}, an Indian Inhabitant / NRI
       presently residing at
       <span class="s3">
@@ -395,16 +395,17 @@
                     ].filter(holder => holder.trim() !== '');
                  $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
                     $scope.doc = response.data;
-                    var docs = response.data[sid - 1];
+                    var docs = $scope.doc.find(x => x.id === sid);
                     var Age = $scope.calculateAge(docs.dob);
 
 
                 $scope.data = {
-                   customerName : result.customer.customerName,
+                   customerName : docs.name,
                    age : Age,
-                   sonof: 'fathersname',
+                   relationship: docs.relationship,
+                   sonof: docs.relativesName,
                    folioNo : result.folioNo,
-                   address : result.customer.address,
+                   address : result.addressAsPerAadhar,
                    qty: result.qty,
                    officename : result.companyName,
                    certificatenos:'',
@@ -436,6 +437,7 @@
                 $scope.data = {
                     customerName: obj.customerName,
                     age:obj.age,
+                    relationship: obj.relationship,
                     sonof:obj.sonof,
                     folioNo:obj.folioNo,
                     address:obj.address,
@@ -483,6 +485,7 @@
                  StockId : id,
                  url : `/Form/AffidavitforCOSNewLinkinTime?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -495,7 +498,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

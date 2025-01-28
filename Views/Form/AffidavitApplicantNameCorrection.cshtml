@@ -246,7 +246,7 @@
     <h1 style="text-indent: 0pt; text-align: center">Affidavit</h1>
     <p style="padding-top: 5pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-            I, <span class="s1">{{data.customerName}} </span>son/daughter of
+            I, <span class="s1">{{data.customerName}} </span>{{data.relationship}}
             <span class="s1">{{data.sonof}}</span>, aged {{data.age}} years, having PAN {{data.pan}} <span class="s1"> </span>and Aadhar no
             <u>{{data.aadhar}}</u> presently residing at presently residing at {{data.address}}<span class="p">.</span>
     </p>
@@ -419,12 +419,13 @@
                     ].filter(holder => holder.trim() !== '');
                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                      $scope.docs = response.data;
-                    var doc = response.data[sid - 1];
+                    var doc = $scope.docs.find(x => x.id === sid)
                     var Age = $scope.calculateAge(doc.dob);
                 $scope.data = {
                    customerName : doc.name,
                    age : Age,
-                   sonof: 'fathersname',
+                   relationship: doc.relationship,
+                   sonof: doc.relativesName,
                    pan: doc.pan,
                    aadhar: doc.aadhar,
                    address : doc.addressAsPerAadhar,
@@ -463,6 +464,7 @@
                 $scope.data = {
                     customerName: obj.customerName,
                     age:obj.age,
+                    relationship: obj.relationship,
                     sonof:obj.sonof,
                     pan:obj.pan,
                     aadhar:obj.aadhar,
@@ -515,7 +517,9 @@
                  StockId : id,
                  url : `/Form/AffidavitApplicantNameCorrection?id2=`,
                  jsonString : jsonString,
-                 IsActive : true
+                 IsActive : true,
+                 ClientName: $scope.data.customerName,
+
              }
 
              const url = '/Form/GenrateForm';
@@ -527,7 +531,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

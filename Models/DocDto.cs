@@ -37,6 +37,12 @@ public partial class DocDto
     public string? AddressAsPerAadhar { get; set; }
 
     public DateTime? Dob { get; set; }
+
+    public string? Mobile { get; set; }
+
+    public string? Relationship { get; set; }
+
+    public string? RelativesName { get; set; }
     [NotMapped]
 	public IFormFile? PanFile { get; set; }
 	[NotMapped]

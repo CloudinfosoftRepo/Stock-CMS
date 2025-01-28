@@ -104,8 +104,8 @@
                     </select>
                 </div>
                 <div class="form-group mb-3 col-md-3">
-                    <label for="newaddress" class="form-label"> New Address </label>
-                    <textarea id="newaddress" ng-model="data.newaddress" class="form-control" placeholder="New Address"></textarea>
+                    <label for="newaddress" class="form-label"> Old Address </label>
+                    <textarea id="newaddress" ng-model="data.newaddress" class="form-control" placeholder="Old Address"></textarea>
                 </div>
                 <div class="form-group mb-3 col-md-3">
                     <label for="state" class="form-label">State</label>
@@ -166,8 +166,7 @@
         line-height: 108%;
         text-align: justify;
       ">
-            I, Mr./Mrs/Miss <u><b>{{data.customerName}} </b></u>Son of /
-        Daughter of Mr. <u><b>{{data.sonof}},</b></u><b> </b> residing at present residing at (Address with pin code, Dist.,
+            I, Mr./Mrs/Miss <u><b>{{data.customerName}} </b></u>{{data.relationship}} Mr. <u><b>{{data.sonof}},</b></u><b> </b> residing at present residing at (Address with pin code, Dist.,
         State) <u>{{ANANDANVAN}}</u>
             <u>{{data.address}}</u>
     </p>
@@ -199,7 +198,7 @@
             text-align: justify;
           ">
                 That I was previously residing at
-                    <u>{{data.address}}</u>
+                    <u>{{data.newaddress}}</u>
                 (Old Address with pin code,
                 Dist., State).
             </p>
@@ -215,7 +214,7 @@
                 @* at <u><b>{{1/A}}</b></u><b> </b> *@
                 <u>
                     <b>
-                       {{data.newaddress}}
+                       {{data.address}}
                     </b>
                 </u>
             </p>
@@ -246,7 +245,7 @@
             text-indent: 0pt;
             text-align: justify;
           ">
-                    {{data.newaddress}}
+                    {{data.address}}
             </h1>
             <p class="s2"
                style="
@@ -383,11 +382,12 @@
                 var result = response.data;
                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                      $scope.docs = response.data;
-                    var doc = response.data[sid - 1];
+                    var doc = $scope.docs.find(x => x.id === sid);
                     $scope.data = {
                        customerName : doc.name,
                        pan: doc.pan,
-                       sonof: 'fathersname',
+                       relationship: doc.relationship,
+                       sonof: doc.relativesName,
                        address : doc.addressAsPerAadhar,
                        state: '',
                        newaddress:'',
@@ -422,6 +422,7 @@
                 $scope.data = {
                     customerName: obj.customerName,
                     pan: obj.pan,
+                    relationship: obj.relationship,
                     sonof:obj.sonof,
                     address:obj.address,
                     state: obj.state,
@@ -454,7 +455,9 @@
                  StockId : id,
                  url : `/Form/AFFIDAVITChangeOfAddress?id2=`,
                  jsonString : jsonString,
-                 IsActive : true
+                 IsActive : true,
+                 ClientName: $scope.data.customerName,
+
              }
 
              const url = '/Form/GenrateForm';
@@ -466,7 +469,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers(null);
+                        // $scope.loadCustomers(null);
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

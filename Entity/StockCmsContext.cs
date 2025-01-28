@@ -30,8 +30,7 @@ public partial class StockCmsContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
-
+=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,6 +64,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.Dob)
                 .HasColumnType("datetime")
                 .HasColumnName("DOB");
+            entity.Property(e => e.Mobile)
+                .HasMaxLength(20)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -83,6 +85,12 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.Relationship)
+                .HasMaxLength(40)
+                .IsUnicode(false);
+            entity.Property(e => e.RelativesName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.TblDocs)
@@ -108,6 +116,9 @@ public partial class StockCmsContext : DbContext
         {
             entity.ToTable("Tbl_Genrated_Forms");
 
+            entity.Property(e => e.ClientName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.FormName)
                 .HasMaxLength(50)

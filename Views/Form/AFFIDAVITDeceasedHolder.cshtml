@@ -153,8 +153,7 @@
         line-height: 108%;
         text-align: justify;
       ">
-            I <u>{{data.customerName}}</u> (name of legal heir), son/daughter in
-            law /wife of <u>{{data.sonof}}</u> (name of deceased holder as
+            I <u>{{data.customerName}}</u> (name of legal heir),{{data.relationship}} <u>{{data.sonof}}</u> (name of deceased holder as
         appearing on the share certificate), aged about <u>{{data.age}}</u> years, and
         residing at
             <u>{{data.address}}</u>, do hereby solemnly affirm and declare as under:
@@ -346,6 +345,7 @@
         // Load Customers
          $scope.loadCustomers = function (sid) {
 
+
              if(id){
                  var currentDate = new Date();
                 var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -354,12 +354,13 @@
                 var result = response.data;
                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                      $scope.docs = response.data;
-                    var doc = response.data[sid - 1];
+                    var doc = $scope.docs.find(x => x.id === sid);
                     var Age = $scope.calculateAge(doc.dob);
                     $scope.data = {
                        customerName : doc.name,
                        age : Age,
-                       sonof: 'fathersname',
+                       relationship: doc.relationship,
+                       sonof: doc.relativesName,
                        deceasedholdername: '',
                        address : doc.addressAsPerAadhar,
                        officename : result.companyName,
@@ -394,6 +395,7 @@
                 $scope.data = {
                     customerName: obj.customerName,
                     age:obj.age,
+                    relationship: obj.relationship,
                     sonof:obj.sonof,
                     deceasedholdername: obj.deceasedholdername,
                     address:obj.address,
@@ -442,6 +444,7 @@
                  StockId : id,
                  url : `/Form/AFFIDAVITDeceasedHolder?id2=`,
                  jsonString : jsonString,
+                                  ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -454,7 +457,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

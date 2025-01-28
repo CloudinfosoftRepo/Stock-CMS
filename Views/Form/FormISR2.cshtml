@@ -88,12 +88,12 @@
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
-                @* <div class="form-group mb-3"> *@
-                @*     <label for="seletedid" class="form-label">select customer</label> *@
-                @*     <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedid" ng-change="loadCustomers(seletedid)"> *@
-                @*         <option selected disabled value="">Select customer</option> *@
-                @*     </select> *@
-                @* </div> *@
+                <div class="form-group mb-3">
+                    <label for="seletedid" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
                 @* <div class="col-md-4"> *@
                 <div class="form-group mb-3 col-md-3">
                     <label for="branch" class="form-label">Branch</label>
@@ -933,10 +933,10 @@
                         result.secondHolder || '',
                         result.thirdHolder || ''
                     ].filter(holder => holder.trim() !== '');
-                 // $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
-                 //    $scope.doc = response.data;
-                 //    var docs = response.data[sid - 1];
-                 //    var Age = $scope.calculateAge(docs.dob);
+                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = $scope.doc.find(x => x.id === sid);
+                    var Age = $scope.calculateAge(docs.dob);
 
 
                 $scope.data = {
@@ -946,9 +946,9 @@
                     bankemail: '',
                     accountno:'',
                     accountopeningdate: '',
-                   customerName : result.customer.customerName,
-                   address : result.customer.address,
-                   mobile: result.customer.mobile,
+                   customerName : docs.name,
+                   address : docs.addressAsPerAadhar,
+                   mobile: docs.mobile,
                    holders : holders.length > 0 ? `${holders.join(') (')}` : '',
                    email: '',
                    place: '',
@@ -959,10 +959,10 @@
                 };
 
                 hideLoader();
-                // }, function (error) {
-                //     console.error('Error loading Docs:', error);
-                //     hideLoader();
-                // });
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
@@ -1025,6 +1025,7 @@
                  StockId : id,
                  url : `/Form/FormISR2?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -1037,7 +1038,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

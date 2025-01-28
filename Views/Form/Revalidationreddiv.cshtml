@@ -650,15 +650,13 @@
                 var result = response.data;
                  $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
                     $scope.doc = response.data;
-                    var docs = response.data[sid - 1];
+                    var docs = $scope.doc.find(x => x.id === sid);
 
                 $scope.data = {
                    customerName : docs.name,
                    today: new Date(),
                    folioNo : result.folioNo,
                    qty : result.qty,
-                   address : result.customer.address,
-                   mobile: result.customer.mobile,
                    officename : result.companyName,
                    officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
                    warrentno:'',
@@ -694,9 +692,7 @@
                     customerName: obj.customerName,
                     today: obj.today,
                     folioNo : obj.folioNo,
-                    mobile: obj.mobile,
                     qty:obj.qty,
-                    address:obj.address,
                    officename: obj.officename,
                    officeaddress: obj.officeaddress,
                    warrentno: obj.warrentno,
@@ -745,6 +741,7 @@
                  StockId : id,
                  url : `/Form/Revalidationreddiv?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -757,7 +754,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

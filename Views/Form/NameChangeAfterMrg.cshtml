@@ -125,8 +125,8 @@
                     </select>
                 </div>
                 <div class="form-group mb-3 col-md-3">
-                    <label for="newName" class="form-label">New Name</label>
-                    <input type="text" ng-model="data.newName" class="form-control search-orders" placeholder="New Name">
+                    <label for="newName" class="form-label">Old Name</label>
+                    <input type="text" ng-model="data.newName" class="form-control search-orders" placeholder="Old Name">
                 </div>
 
 
@@ -148,8 +148,8 @@
         text-align: right;
       "
     >
-     {{data.newName}}
-    </h1>
+            {{data.customerName}}
+        </h1>
     <p
       class="s1"
       style="
@@ -234,10 +234,10 @@
       Kindly find below the details of my name change:
     </p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      Old name: <b>{{data.customerName}}</b>
+            Old name: <b>{{data.newName }}</b>
     </p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      New name: <b>{{data.newName}}</b>
+            New name: <b>{{data.customerName}}</b>
     </p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
       Further, kindly find below my shareholding details in the company:
@@ -399,7 +399,7 @@
         text-align: left;
       "
     >
-      {{data.newName}}
+            {{data.customerName}}
     </h2>
      </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -426,12 +426,12 @@
                 var result = response.data;
                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                      $scope.docs = response.data;
-                    var doc = response.data[sid - 1];
+                    var doc = $scope.docs.find(x => x.id === sid);
                 $scope.data = {
                    customerName : doc.name,
                    qty:result.qty,
                    folioNo : result.folioNo,
-                   mobile: result.customer.mobile,
+                   mobile: doc.mobile,
                    address : doc.addressAsPerAadhar,
                    officename : result.companyName,
                    officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
@@ -484,6 +484,7 @@
                  StockId : id,
                  url : `/Form/NameChangeAfterMrg?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -496,7 +497,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

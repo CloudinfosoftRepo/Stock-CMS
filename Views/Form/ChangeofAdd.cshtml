@@ -323,19 +323,18 @@ border-bottom-width: 1pt;
                     ].filter(holder => holder.trim() !== '');
                  $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
                     $scope.doc = response.data;
-                    var docs = response.data[sid - 1];
+                    var docs = $scope.doc.find(x => x.id === sid);
                     var Age = $scope.calculateAge(docs.dob);
 
 
                 $scope.data = {
-                   customerName : result.customer.customerName,
+                   customerName : docs.name,
                    today: new Date(),
                    age : Age,
                    folioNo : result.folioNo,
-                   sonof: 'fathersname',
                    newaddress : '',
-                   address : result.customer.address,
-                   mobile: result.customer.mobile,
+                   address : docs.addressAsPerAadhar,
+                   mobile: docs.mobile,
                    officename : result.companyName,
                    officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
                                        holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
@@ -363,7 +362,6 @@ border-bottom-width: 1pt;
                     today: obj.today,
                     age:obj.age,
                     folioNo : obj.folioNo,
-                    sonof:obj.sonof,
                     newaddress:obj.newaddress,
                     address:obj.address,
                    officename: obj.officename,
@@ -403,6 +401,7 @@ border-bottom-width: 1pt;
                  StockId : id,
                  url : `/Form/ChangeofAdd?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -415,7 +414,9 @@ border-bottom-width: 1pt;
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

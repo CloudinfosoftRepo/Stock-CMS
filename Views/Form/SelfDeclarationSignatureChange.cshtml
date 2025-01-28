@@ -312,13 +312,12 @@
             var result = response.data;
             $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                  $scope.docs = response.data;
-                var doc = response.data[sid - 1];
+                var doc = $scope.docs.find(x => x.id === sid);
             $scope.data = {
                customerName : doc.name,
                qty:result.qty,
-               sonof: 'fathersname',
                folioNo : result.folioNo,
-               mobile: result.customer.mobile,
+               mobile: doc.mobile,
                address : doc.addressAsPerAadhar,
                officename : result.companyName,
                officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
@@ -370,6 +369,7 @@
              StockId : id,
              url : `/Form/SelfDeclarationSignatureChange?id2=`,
              jsonString : jsonString,
+             ClientName: $scope.data.customerName,
              IsActive : true
          }
 
@@ -382,7 +382,9 @@
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
-                    $scope.loadCustomers();
+                    // $scope.loadCustomers();
+                                            window.open(response.data.data.url + response.data.data.id,'_self')
+
                 } else {
                     Swal.fire({
                         title: 'Error!',

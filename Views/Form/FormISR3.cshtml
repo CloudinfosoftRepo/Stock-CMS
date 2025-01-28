@@ -78,12 +78,12 @@
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
                 @* <div class="col-md-12"> *@
-                @* <div class="form-group mb-3"> *@
-                @*     <label for="seletedid" class="form-label">select customer</label> *@
-                @*     <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)"> *@
-                @*         <option selected disabled value="">Select customer</option> *@
-                @*     </select> *@
-                @* </div> *@
+                <div class="form-group mb-3">
+                    <label for="seletedid" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
                 <div class="form-group mb-3 col-md-3">
                     <label for="natureofsecurity" class="form-label">Nature Of Security</label>
                     <input type="text" ng-model="data.natureofsecurity" class="form-control search-orders" placeholder="Nature Of Security">
@@ -409,14 +409,14 @@
                         result.secondHolder || '',
                         result.thirdHolder || ''
                     ].filter(holder => holder.trim() !== '');
-                // $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
-                //      $scope.docs = response.data;
-                //     var doc = response.data[sid - 1];
-                //     var Age = $scope.calculateAge(doc.dob);
+                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                     $scope.docs = response.data;
+                    var doc = $scope.docs.find(x => x.id === sid);
+                    var Age = $scope.calculateAge(doc.dob);
                 $scope.data = {
-                        customerName : result.customer.customerName,
+                        customerName : doc.name,
                         officename : result.companyName,
-                       address : result.customer.address,
+                       address : doc.addressAsPerAadhar,
                    natureofsecurity: '',
                     certificatenos:'',
                    distinctiveNosStart: '',
@@ -430,10 +430,10 @@
                 };
 
                 hideLoader();
-                // }, function (error) {
-                //     console.error('Error loading Docs:', error);
-                //     hideLoader();
-                // });
+                }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                });
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
@@ -493,6 +493,7 @@
                  StockId : id,
                  url : `/Form/FormISR3?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -505,7 +506,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

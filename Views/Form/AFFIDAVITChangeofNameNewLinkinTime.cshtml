@@ -181,7 +181,7 @@
         line-height: 150%;
         text-align: left;
       ">
-        I, <u><b>{{data.customerName}}</b></u><b> </b>son/daughter/spouse of <u><b>{{data.sonof}}</b></u><b> </b>aged <u><b>{{data.age}}</b></u>, residing at <u>
+            I, <u><b>{{data.customerName}}</b></u><b> </b>{{data.relationship}} <u><b>{{data.sonof}}</b></u><b> </b>aged <u><b>{{data.age}}</b></u>, residing at <u>
             <b>{{data.address}}</b></u><b> </b><u>
             @* <b>NAGAR, BEHIND KRISHNA PARK, AJWA ROAD, VADODARA, GUJARAT, 390019,</b> *@
         </u><b> </b>do hereby solemnly
@@ -332,13 +332,14 @@
                 var result = response.data;
                  $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                      $scope.docs = response.data;
-                    var doc = response.data[sid - 1];
+                    var doc = $scope.docs.find(x => x.id === sid);
                     var Age = $scope.calculateAge(doc.dob);
                 $scope.data = {
                    customerName : doc.name,
                    newName: '',
                    age : Age,
-                   sonof: 'fathersname',
+                   relationship: doc.relationship,
+                   sonof: doc.relativesName,
                    address : doc.addressAsPerAadhar,
                    namechagedate: '',
                    place:'',
@@ -367,6 +368,7 @@
                     customerName: obj.customerName,
                     newName: obj.newName,
                     age:obj.age,
+                    relationship: obj.relationship,
                     sonof:obj.sonof,
                     address:obj.address,
                     namechagedate: obj.namechagedate,
@@ -392,6 +394,7 @@
                  StockId : id,
                  url : `/Form/AFFIDAVITChangeofNameNewLinkinTime?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -404,7 +407,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers(null);
+                        // $scope.loadCustomers(null);
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

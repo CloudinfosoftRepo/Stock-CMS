@@ -24,4 +24,6 @@ public partial class GenratedFormDto
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
+
+    public string? ClientName { get; set; }
 }

@@ -84,6 +84,12 @@
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
+                <div class="form-group mb-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label for="address" class="form-label">Address</label>
@@ -264,7 +270,7 @@ border-bottom-width: 1pt;
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-            {{data.holders}}
+            {{data.customerName}}
         </p>
         <p style="
         padding-top: 2pt;
@@ -301,7 +307,7 @@ border-bottom-width: 1pt;
 
         // Load Customers
 
-        $scope.loadCustomers = function () {
+        $scope.loadCustomers = function (sid) {
              if(id){
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
@@ -311,16 +317,24 @@ border-bottom-width: 1pt;
                         result.secondHolder || '',
                         result.thirdHolder || ''
                     ].filter(holder => holder.trim() !== '');
+                       $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = $scope.doc.find(x => x.id === sid);
                 $scope.data = {
                    companyName : result.companyName,
-                   mobile : result.customer.mobile,
+                   customerName: docs.name,
+                   mobile : docs.mobile,
                    folioNo : result.folioNo,
-                   address : result.customer.address,
+                   address : docs.addressAsPerAadhar,
                    newAddress : '',
-                   holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+                   holders : holders.length > 0 ? `${holders.join(') (')}` : ''
                 };
 
                 hideLoader();
+                    }, function (error) {
+                        console.error('Error loading Docs:', error);
+                        hideLoader();
+                    });
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
@@ -334,6 +348,7 @@ border-bottom-width: 1pt;
                 var obj = JSON.parse(result.jsonString);
                 $scope.data = {
                    companyName : obj.companyName,
+                   customerName: obj.customerName,
                    mobile : obj.mobile,
                    folioNo : obj.folioNo,
                    address : obj.address,
@@ -357,7 +372,8 @@ border-bottom-width: 1pt;
                  StockId : id,
                  url : `/Form/ChangeOfAddress?id2=`,
                  jsonString : jsonString,
-                 IsActive : true
+                 IsActive : true,
+                 ClientName: $scope.data.customerName,
              }
 
              const url = '/Form/GenrateForm';
@@ -369,7 +385,9 @@ border-bottom-width: 1pt;
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

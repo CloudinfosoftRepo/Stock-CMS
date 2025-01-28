@@ -175,8 +175,8 @@
                     <input type="email" ng-model="data.email" class="form-control search-orders" placeholder="E Mail">
                 </div>
                 <div class="form-group mb-3  col-md-3">
-                    <label for="relationship" class="form-label">Relationship</label>
-                    <input type="text" ng-model="data.relationship" class="form-control search-orders" placeholder="Relationship">
+                    <label for="relation" class="form-label">Relationship</label>
+                    <input type="text" ng-model="data.relation" class="form-control search-orders" placeholder="Relationship">
                 </div>
                 <div class="form-group mb-3  col-md-3">
                     <label for="witnessname" class="form-label">Witness's Name</label>
@@ -576,7 +576,7 @@
                 text-align: left;
               "
             >
-              Father’s/Mother’s/Spouse’s name: {{data.sonof}}
+                            @* Father’s/Mother’s/Spouse’s name *@{{data.relationship}}: {{data.sonof}}
             </p>
           </li>
           <li data-list-text="(d)">
@@ -638,7 +638,7 @@
           class="s5"
           style="padding-left: 28pt; text-indent: -23pt; text-align: left"
         >
-                    Relationship with the security holder: {{data.relationship}}
+                    Relationship with the security holder: {{data.relation}}
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
       </li>
@@ -734,18 +734,19 @@
                     ].filter(holder => holder.trim() !== '');
                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
                      $scope.docs = response.data;
-                    var doc = response.data[sid - 1];
+                    var doc = $scope.docs.find(x => x.id === sid);
                     var year = new Date(doc.dob).getFullYear();
                     var month = new Date(doc.dob).getMonth();
                     var day = new Date(doc.dob).getDate();
                 $scope.data = {
-                        customerName : result.customer.customerName,
+                        customerName : doc.name,
                         officename : result.companyName,
-                       address : result.customer.address,
+                       address : doc.addressAsPerAadhar,
                        dob: doc.dob,
-                       sonof: 'father \'s Name',
+                       sonof: doc.relativesName,
+                       relationship: doc.relationship,
                        email: '',
-                       relationship:'',
+                       relation:'',
                    natureofsecurity: '',
                     certificatenos:'',
                    distinctiveNosStart: '',
@@ -785,6 +786,7 @@
                     qty: obj.qty,
                     dob: new Date(obj.dob),
                     sonof: obj.sonof,
+                    relationship: obj.relationship,
                     email: obj.email,
                     relationship: obj.relationship,
                     certificatenos: obj.certificatenos,
@@ -832,6 +834,7 @@
                  StockId : id,
                  url : `/Form/FormISR13?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -844,7 +847,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',

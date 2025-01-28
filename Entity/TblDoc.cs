@@ -37,5 +37,11 @@ public partial class TblDoc
 
     public DateTime? Dob { get; set; }
 
+    public string? Mobile { get; set; }
+
+    public string? Relationship { get; set; }
+
+    public string? RelativesName { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
 }

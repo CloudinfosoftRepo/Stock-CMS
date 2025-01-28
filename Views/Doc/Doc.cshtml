@@ -19,17 +19,17 @@
 img {
     width: 35px;
     height: 35px;
-    transition: all 0.3s ease; /* Smooth transition */
+    /* transition: all 0.3s ease; /* Smooth transition */ */
 }
 
-.cell:hover img {
-    width: 100px;
-    height: 100px;
-    position: absolute; /* To take the image outside of the table cell */
-    z-index: 10; /* Ensure it appears above other elements */
-    top: -50px; /* Adjusts the image's position outside of the table row */
-    left: -50px; /* Adjusts the image's position outside of the table column */
-}
+/* .cell:hover img { */
+/*     width: 100px; */
+/*     height: 100px; */
+/*     position: absolute; /* To take the image outside of the table cell */ */
+/*     z-index: 10; /* Ensure it appears above other elements */ */
+/*     top: -50px; /* Adjusts the image's position outside of the table row */ */
+/*     left: -50px; /* Adjusts the image's position outside of the table column */ */
+/* } */
 
 </style>
 <body ng-controller="DocController">
@@ -79,6 +79,9 @@ img {
                                         <th class="cell">Address As Per Aadhar</th>
                                         <th class="cell">Aadhar </th>
                                         <th class="cell">Date Of Birth </th>
+                                        <th class="cell">Mobile</th>
+                                    <th class="cell">Relationship</th>
+                                    <th class="cell">RelativesName</th>
                                         <th class="cell">Edit</th>
                                         @* <th class="cell">Delete</th> *@
                                     </tr>
@@ -89,19 +92,22 @@ img {
                                         <td class="cell">{{ doc.pan }}</td>
                                     <td class="cell">{{ doc.nameAsPerPan }}</td>
                                         <td class="cell">
-                                            <div class="img-container">
-                                                <img alt="" src="{{doc.panUrl}}" width="35px" height="35px">
+                                            <div class="">
+                                                <img alt="" src="{{doc.panurl}}" width="35px" height="35px">
                                             </div>
                                         </td>
                                         <td class="cell">{{ doc.aadhar }}</td>
                                     <td class="cell">{{ doc.nameAsPerAadhar }}</td>
                                     <td class="cell">{{ doc.addressAsPerAadhar }}</td>
                                         <td class="cell">
-                                            <div class="img-container">
+                                            <div class="">
                                                 <img alt="" src="{{doc.aadharUrl}}" width="35px" height="35px">
                                             </div>
                                         </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.mobile }}</td>
+                                    <td class="cell">{{ doc.relationship }}</td>
+                                    <td class="cell">{{ doc.relativesName }}</td>
                                         <td class="cell">
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
                                                 <i class="bi bi-pencil"></i>
@@ -150,6 +156,26 @@ img {
                                 <div class="form-group">
                                     <label for="dob">Date of Birth</label>
                                     <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control" required />
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" id="mobile" ng-model="currentDoc.mobile" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="relationship">Relationship</label>
+                                    <input type="text" id="relationship" ng-model="currentDoc.relationship" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="relativesName">RelativesName</label>
+                                    <input type="text" id="relativesName" ng-model="currentDoc.relativesName" class="form-control" required />
                                 </div>
                             </div>
                             </div>
@@ -262,6 +288,10 @@ img {
         };
 
         $scope.saveDoc = function () {
+                       if (!$scope.currentDoc.mobile || !/^\d{10}$/.test($scope.currentDoc.mobile)) {
+                            alert("Please enter a valid 10-digit mobile number.");
+                            return;
+                        }
            if (id) 
                 {
                     if (isProcessing) return;
@@ -270,6 +300,9 @@ img {
             formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
             formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
             formData.append('name', $scope.currentDoc.name);
+                    formData.append('mobile', $scope.currentDoc.mobile);
+                            formData.append('relationship', $scope.currentDoc.relationship);
+                                        formData.append('relativesName', $scope.currentDoc.relativesName);
             formData.append('pan', $scope.currentDoc.pan);
                     formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan);
             formData.append('aadhar', $scope.currentDoc.aadhar);

@@ -128,7 +128,7 @@
         line-height: 108%;
         text-align: justify;
       ">
-            <span class="s3">I, </span><u><b>{{data.customerName}}, </b></u>Son/Daughter of
+            <span class="s3">I, </span><u><b>{{data.customerName}}, </b></u>{{data.relationship}}
         <u><b>{{data.sonof}},</b></u><b> </b>aged {{data.age}} years, residing at
         <u>
             @* 1/A, NANDANVAN SOCIETY PART-1, NEAR AKOTA STADIUM, VADODRA, GUJARAT, *@
@@ -285,16 +285,17 @@
                 var result = response.data;
                  $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
                     $scope.doc = response.data;
-                    var docs = response.data[sid - 1];
+                    var docs = $scope.doc.find(x => x.id === sid);
                     var Age = $scope.calculateAge(docs.dob);
 
 
                 $scope.data = {
-                   customerName : result.customer.customerName,
+                   customerName : docs.name,
                    age : Age,
-                   sonof: 'fathersname',
+                   relationship: docs.relationship,
+                   sonof: docs.relativesName,
                    fullname : '',
-                   address : result.customer.address,
+                   address : docs.addressAsPerAadhar,
                    place: '',
                    day: currentDate.getDate(),
                    month: monthsOfYear[currentDate.getMonth()],
@@ -320,6 +321,7 @@
                 $scope.data = {
                     customerName: obj.customerName,
                     age:obj.age,
+                    relationship: obj.relationship,
                     sonof:obj.sonof,
                     fullname:obj.fullname,
                     address:obj.address,
@@ -361,6 +363,7 @@
                  StockId : id,
                  url : `/Form/AffidavitforNameVariation?id2=`,
                  jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
                  IsActive : true
              }
 
@@ -373,7 +376,9 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadCustomers();
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
                     } else {
                         Swal.fire({
                             title: 'Error!',
