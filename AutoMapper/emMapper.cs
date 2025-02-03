@@ -20,7 +20,15 @@ namespace Stock_CMS.AutoMapper
 			CreateMap<TblDoc, DocDto>().ReverseMap();
 			CreateMap<TblGenratedForm, GenratedFormDto>().ReverseMap();
 			CreateMap<TblForm, FormDto>().ReverseMap();
+			CreateMap<TblBank, BankDto>().ReverseMap();
+			CreateMap<TblLegalHeir, LegalHeirDto>().ReverseMap();
+            CreateMap<TblHolderDoc, HolderDocsDto>().ReverseMap();
+            CreateMap<TblRta, RtaDto>().ReverseMap();
+            CreateMap<TblCompany, CompanyDto>()
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Rta.RtaName))
+                .ForMember(dest => dest.CompanyAddress, opt => opt.MapFrom(src => src.Rta.RtaAddress))
+                .ReverseMap();
 
-		}
+        }
     }
 }

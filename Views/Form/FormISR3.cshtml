@@ -1,7 +1,7 @@
 ﻿<html lang="en" ng-app="Stock-CMS">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>eb74196d-7b88-4b18-9b22-66a846dc519a</title>
+    <title>Form-ISR-3</title>
         <meta name="author" content="A" />
         <style type="text/css">
             * {
@@ -74,6 +74,17 @@
         </style>
     </head>
     <body style="padding-left: 8%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Form-ISR-3</h3>
+        </div>
+    </div>
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -387,7 +398,7 @@
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
     </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
         $scope.data = undefined;
             $scope.hDiv = true;
@@ -414,19 +425,19 @@
                     var doc = $scope.docs.find(x => x.id === sid);
                     var Age = $scope.calculateAge(doc.dob);
                 $scope.data = {
-                        customerName : doc.name,
-                        officename : result.companyName,
-                       address : doc.addressAsPerAadhar,
-                   natureofsecurity: '',
+                    customerName : doc.name,
+                    officename : result.companyName,
+                    address : doc.addressAsPerAadhar,
+                    natureofsecurity: 'Equity',
                     certificatenos:'',
-                   distinctiveNosStart: '',
-                   distinctiveNosEnd:'',
-                   qty: result.qty,
-                   folioNo : result.folioNo,
-                   officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                    distinctiveNosStart: '',
+                    distinctiveNosEnd:'',
+                    qty: result.qty,
+                    folioNo : result.folioNo,
+                    officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
                     holders : holders.length > 0 ? `${holders.join(') (')}` : '',
-                    witnessname: '',
-                    witnessaddress: '',
+                    witnessname: 'Shreyash Chhagani',
+                    witnessaddress: 'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
                 };
 
                 hideLoader();
@@ -460,6 +471,9 @@
                     witnessname: obj.witnessname,
                     witnessaddress: obj.witnessaddress,
                 };
+                                id = result.stockId;
+
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
@@ -467,6 +481,17 @@
             });
             }
         };
+
+                        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
 
           $scope.calculateAge = function(dob) {
       if (!dob) {
@@ -530,6 +555,10 @@
             //console.log(dataString);
             }
          }
+
+             $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
 
         // Load Customers
         // $scope.loadCustomers = function () {

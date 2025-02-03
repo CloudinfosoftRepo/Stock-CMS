@@ -20,7 +20,7 @@ namespace Stock_CMS.Common
             _configuration = configuration;
         }
 
-        public Upload StoreFile(string fileType, IFormFile? file)
+        public Upload StoreFile(string fileType, IFormFile? file, string? docName)
         {
             var result = new Upload
             {
@@ -29,19 +29,19 @@ namespace Stock_CMS.Common
             };
             var directoryPath = _configuration.GetSection("UploadPath")?.GetValue<string>($"{fileType}Path");
             
-            var path = _configuration.GetSection("UploadPath")?.GetValue<string>("DomainName");
+     
 
             try
             {
                 if (directoryPath != null && file != null )
                 {
 
-                    var up = StoreFileToPath(directoryPath, file);
+                    var up = StoreFileToPath(directoryPath, file, docName);
 
                     result = new Upload
                     {
                         status = true,
-                        message = (path + up).Replace("wwwroot\\", "/").Replace("\\", "/"),
+                        message = up.Replace("wwwroot\\", "/").Replace("\\", "/"),
                     };
 
                   
@@ -61,7 +61,7 @@ namespace Stock_CMS.Common
         }
 
 
-        public string StoreFileToPath(string directoryPath, IFormFile? file)
+        public string StoreFileToPath(string directoryPath, IFormFile? file, string docName)
         {
             var filePath = string.Empty;
 
@@ -75,7 +75,8 @@ namespace Stock_CMS.Common
                         Directory.CreateDirectory(directoryPath);
                     }
 
-                    filePath = Path.Combine(directoryPath, file.FileName);
+                    var filename = $"{DateTime.Now.Ticks}_{docName}.{Path.GetExtension(file.FileName)}";
+                    filePath = Path.Combine(directoryPath, filename);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {

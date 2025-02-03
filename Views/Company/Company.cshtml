@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Management</title>
+</head>
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 1;
+    }
+
+    .table-responsive {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+</style>
+<body ng-controller="CompanyController">
+
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+                <div class="d-flex align-items-center col-md-6">
+                    <h1 class="app-page-title mb-0">Company Management</h1>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="page-utilities">
+                        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                            <div class="col-auto">
+                                <form class="table-search-form row gx-1 align-items-center">
+                                    <div class="col-auto">
+                                        <input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openCompanyModal()">Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table id="tblcompany" class="table app-table-hover mb-0 text-left text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="cell">Company Name</th>
+                                    <th class="cell">Company Address</th>
+                                    <th class="cell">Company PinCode</th>
+                                    <th class="cell">Rta Name</th>
+                                    <th class="cell">Rta Address</th>
+                                    <th class="cell">Created At</th>
+                                    <th class="cell">Created By</th>
+                                    <th class="cell">Updated At</th>
+                                    <th class="cell">Updated By</th>
+                                    <th class="cell">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="company in customers | filter: searchQuery">
+                                    <td class="cell">{{ company.companyName }}</td>
+                                    <td class="cell">{{ company.companyAddress }}</td>
+                                    <td class="cell">{{ company.companyPinCode }}</td>
+                                    <td class="cell">{{ company.rtaName }}</td>
+                                    <td class="cell">{{ company.rtaAddress }}</td>
+                                    <td class="cell">{{ company.createdAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ company.createdByName }}</td>
+                                    <td class="cell">{{ company.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ company.updatedByName }}</td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCompanyModal(company)">
+                                            <i class="bi bi-pencil"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveCompany()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Company' : 'Add Company' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                        
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="companyName">Company Name</label>
+                                    <input type="text" id="companyName" ng-model="currentCompany.companyName" class="form-control" placeholder="Company Name" required />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="companyAddress">Company Address</label>
+                                    <textarea id="companyAddress" ng-model="currentCompany.companyAddress" class="form-control" placeholder="Company Address"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="companyPinCode">Company PinCode</label>
+                                    <input type="text" id="companyPinCode" ng-model="currentCompany.companyPinCode" class="form-control" placeholder="PinCode" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rtaid">Select RTA</label>
+                                    <select id="rtaid" class="form-select" ng-model="currentCompany.rtaid"  ng-options="rta.id as rta.rtaName for rta in rtas" required>
+                                        <option value="" disabled selected>Select RTA</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Company' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', []).controller('CompanyController', function ($scope, $http) {
+            $scope.customers = [];
+            $scope.rtas = [];
+            $scope.currentCompany = {};
+            $scope.isEditing = false;
+            var isProcessing = false;
+
+            // Load Customers and RTAs
+            $scope.loadCompany = function () {
+                $http.get('/Company/GetCompany').then(function (response) {
+                    $scope.customers = response.data;
+                }, function (error) {
+                    console.error('Error loading company:', error);
+                });
+            };
+
+            // Load RTA data for dropdown
+            $scope.loadRta = function () {
+                $http.get('/Company/GetRta').then(function (response) {
+                    $scope.rtas = response.data;
+                }, function (error) {
+                    console.error('Error loading RTA data:', error);
+                });
+            };
+
+            // Open Modal
+            $scope.openCompanyModal = function (company = null) {
+                $scope.isEditing = !!company;
+                $scope.currentCompany = company ? angular.copy(company) : {};
+                $scope.loadRta(); // Ensure RTAs are loaded when the modal opens
+                $('#companyModal').modal('show');
+            };
+
+                        // Get Customer Name by ID
+            $scope.getRtaName = function (rtaId) {
+                const company = $scope.customers.find(c => c.id === rtaId);
+                return company ? company.rtaName : 'Unknown';
+            };
+
+            // Save Company
+            $scope.saveCompany = function () {
+            if (isProcessing) return;
+            isProcessing = true;
+            console.log($scope.currentCompany); // Debugging the company object
+            const url = $scope.isEditing ? '/Company/UpdateCompany/' + $scope.currentCompany.id : '/Company/CreateCompany';
+            $http.post(url, $scope.currentCompany).then(function (response) {
+                if (response.data.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.data.message || 'Operation successful!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.loadCompany();
+                    $('#companyModal').modal('hide');
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.data.message || 'There was an issue adding the company.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+                isProcessing = false;
+            }, function (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                isProcessing = false;
+            });
+        };
+
+
+            
+            // Save Company
+            // $scope.saveCompany = function () {
+            //     if (isProcessing) return;
+            //     isProcessing = true;
+            //     const url = $scope.isEditing ? '/Company/UpdateCompany/' + $scope.currentCompany.id : '/Company/CreateCompany';
+            //     $http.post(url, $scope.currentCompany).then(function (response) {
+            //         if (response.data.success) {
+            //             Swal.fire({
+            //                 title: 'Success',
+            //                 text: response.data.message || 'Operation successful!',
+            //                 icon: 'success',
+            //                 confirmButtonText: 'OK'
+            //             });
+            //             $scope.loadCompany();
+            //             $('#companyModal').modal('hide');
+            //         } else {
+            //             Swal.fire({
+            //                 title: 'Error!',
+            //                 text: response.data.message || 'There was an issue adding the company.',
+            //                 icon: 'error',
+            //                 confirmButtonText: 'Try Again'
+            //             });
+            //         }
+            //         isProcessing = false;
+            //     }, function (error) {
+            //         Swal.fire({
+            //             title: 'Error',
+            //             text: 'An error occurred.',
+            //             icon: 'error',
+            //             confirmButtonText: 'OK'
+            //         });
+            //         isProcessing = false;
+            //     });
+            // };
+
+            // Initial load
+            $scope.loadCompany();
+        });
+    </script>
+</body>
+</html>

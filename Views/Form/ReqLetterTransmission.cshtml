@@ -154,6 +154,17 @@
     </style>
   </head>
 <body style="padding: 5% 8% 0 8% ;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Req Letter - Transmission</h3>
+        </div>
+    </div>
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -162,14 +173,6 @@
                     <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
                         <option selected disabled value="">Select customer</option>
                     </select>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="deceasedname" class="form-label">Name of Deceased</label>
-                        <input type="text" ng-model="data.deceasedname" class="form-control search-orders" placeholder="Name of Deceased">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="dateofdemise" class="form-label">Date Of Demise</label>
-                        <input type="date" ng-model="data.dateofdemise" class="form-control search-orders" placeholder="Date Of Demise">
-                    </div>
                 </div>
                 <div class="text-center m-2 col-md-4">
                     <button type="submit" class="btn" style="background-color:#003980; color:white;">
@@ -434,7 +437,7 @@
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
   </body>
 <script>
-        angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+        angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
             $scope.customers = [];
              $scope.hDiv = true;
             var params = new URLSearchParams(window.location.search);
@@ -466,8 +469,8 @@
                    mobile: docs.mobile,
                    officename : result.companyName,
                    officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
-                   deceasedname:'',
-                   dateofdemise:'',
+                   deceasedname:docs.nameAsPerDeathCerti,
+                   dateofdemise: new Date(docs.dateOfDeath),
                 };
 
                 hideLoader();
@@ -498,6 +501,9 @@
                    deceasedname: obj.deceasedname,
                    dateofdemise: new Date(obj.dateofdemise),
                 };
+                                id = result.stockId;
+
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
@@ -505,6 +511,20 @@
             });
             }
         };
+
+            $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+                        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
 
           $scope.calculateAge = function(dob) {
       if (!dob) {

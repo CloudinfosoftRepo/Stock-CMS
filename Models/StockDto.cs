@@ -22,6 +22,8 @@ public partial class StockDto
 
     public string? ClamStatus { get; set; }
 
+    public string? ActualQty { get; set; }
+
     public double? Qty { get; set; }
 
     public double? Rate { get; set; }
@@ -45,6 +47,9 @@ public partial class StockDto
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
+
+    public string? StockJson { get; set; }
+
 
     [NotMapped]
 	public string? CustomerName { get; set; }

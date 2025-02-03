@@ -75,9 +75,10 @@ namespace Stock_CMS.Service
         public async Task<IEnumerable<StockDto>> GetStockByClientId(long  clientid)
         {
             var data = await _StockRepository.GetStockByClientId(clientid);
-            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x=> x.UpdatedBy)).Distinct().ToArray();
+
+            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
             var users = await _userRepository.GetUsersByIds(ids);
-			var result = data.Select(x =>
+            var result = data.Select(x =>
 			{
 				x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
 				x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;

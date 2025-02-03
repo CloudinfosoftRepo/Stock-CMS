@@ -21,6 +21,8 @@ public partial class TblStock
 
     public string? ClamStatus { get; set; }
 
+    public string? ActualQty { get; set; }
+
     public double? Qty { get; set; }
 
     public double? Rate { get; set; }
@@ -44,6 +46,8 @@ public partial class TblStock
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
+
+    public string? StockJson { get; set; }
 
     public virtual TblCustomer? Customer { get; set; }
 

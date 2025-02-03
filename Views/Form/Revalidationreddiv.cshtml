@@ -89,6 +89,17 @@
     </style>
   </head>
 <body style="padding: 5% 8% 0 8% ;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Revalidation-red-div</h3>
+        </div>
+    </div>
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -110,34 +121,6 @@
                     <div class="form-group mb-3 col-md-3">
                         <label for="amount" class="form-label">Amount</label>
                         <input type="text" ng-model="data.amount" class="form-control search-orders" placeholder="Amount">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="bankname" class="form-label">Bank Name</label>
-                        <input type="text" ng-model="data.bankname" class="form-control search-orders" placeholder="Bank Name">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="branch" class="form-label">Branch</label>
-                        <input type="text" ng-model="data.branch" class="form-control search-orders" placeholder="Branch">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="accounttype" class="form-label">Account Type</label>
-                        <input type="text" ng-model="data.accounttype" class="form-control search-orders" placeholder="Account Type">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="accountno" class="form-label">Account No</label>
-                        <input type="text" ng-model="data.accountno" class="form-control search-orders" placeholder="Account No">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="bankcity" class="form-label">Bank City</label>
-                        <input type="text" ng-model="data.bankcity" class="form-control search-orders" placeholder="Bank City">
-                    </div>
-                     <div class="form-group mb-3 col-md-3">
-                        <label for="micrcode" class="form-label">MICRCode(9Digit)</label>
-                        <input type="text" ng-model="data.micrcode" class="form-control search-orders" placeholder="MICRCode(9Digit)">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="ifsccode" class="form-label">IFSCCode(11Digit)</label>
-                        <input type="text" ng-model="data.ifsccode" class="form-control search-orders" placeholder="IFSCCode(11Digit)">
                     </div>
                 @* </div> *@
                 <div class="text-center m-2 col-md-4">
@@ -624,7 +607,7 @@
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
   </body>
   <script>
-        angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+        angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
             $scope.customers = [];
              $scope.hDiv = true;
             var params = new URLSearchParams(window.location.search);
@@ -651,7 +634,8 @@
                  $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-
+                      $http.get('/doc/GetBank/'+ docs.id).then(function (response) {
+         var bank = response.data[0];
                 $scope.data = {
                    customerName : docs.name,
                    today: new Date(),
@@ -662,17 +646,21 @@
                    warrentno:'',
                    dateofwarrent:'',
                    amount:'',
-                   bankname:'',
-                   branch: '',
-                   accountno: '',
-                   accounttype: '',
-                   bankcity:'',
-                   micrcode: '',
-                   ifsccode: '',
+                   bankname:bank.bankName,
+                   branch: bank.branch,
+                   accountno: bank.accountNo,
+                   accounttype: bank.accountType,
+                   bankcity:bank.postalAddress,
+                   micrcode: bank.micrcode,
+                   ifsccode: bank.ifsccode,
                 };
 
              
                 hideLoader();
+                                    }, function (error) {
+        console.error('Error loading Bank Deatails:', error);
+        hideLoader();
+    });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -706,8 +694,9 @@
                    micrcode: obj.micrcode,
                    ifsccode: obj.ifsccode,
                 };
+                                id = result.stockId;
 
-                   
+                   checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
@@ -715,6 +704,17 @@
             });
             }
         };
+
+                        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
 
           $scope.calculateAge = function(dob) {
       if (!dob) {
@@ -730,6 +730,10 @@
         age--;
       }
       return age;
+    };
+
+        $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
     };
 
         //Genrate Form

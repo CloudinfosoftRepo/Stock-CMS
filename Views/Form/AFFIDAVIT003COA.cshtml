@@ -65,6 +65,18 @@
     </style>
 </head>
 <body style="padding-left: 10%;" ng-controller="FormsController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>AFFIDAVIT (003) COA New</h3>
+        </div>
+    </div>
+
      <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -74,14 +86,6 @@
                         <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
                             <option selected disabled value="">Select customer</option>
                         </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="dpid" class="form-label">DP Id</label>
-                        <input type="text" ng-model="data.dpid" class="form-control search-orders" placeholder="DP Id">
-                    </div>
-                    <div class="form-group mb-3"> 
-                         <label for="clientid" class="form-label">Client Id</label>
-                        <input type="text" ng-model="data.clientid" class="form-control search-orders" placeholder="Client Id">
                     </div>
                 </div>
                 <div class="text-center m-2 col-md-4">
@@ -159,7 +163,7 @@
           ">
                     Address in Client Master List : {{data.address}} <br />
                     Address in Aadhaar Card : {{data.aadharaddress}}<br />
-                    Address in Voter id : {{data.address}}<br />
+                    Address in Voter id : {{data.voteraddress}}<br />
                     Address in Records of the Company{{data.address}}
             </p>
             <p style="
@@ -244,7 +248,7 @@
         text-align: left;
       ">
         Solemnly declared and affirmed on identification at New Delhi on this
-        {{data.day}}, {{data.month}} day of {{data.year}}
+           <u> &emsp;&emsp;</u>, {{data.month}} day of {{data.year}}
     </p>
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 406pt; text-indent: 0pt; text-align: left">
@@ -255,7 +259,7 @@
 </body>
 
 <script>
-    angular.module('Stock-CMS', []).controller('FormsController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormsController', function ($scope, $http, $timeout) {
         // $scope.customers = [];
          $scope.data = undefined;
             $scope.hDiv = true;
@@ -314,8 +318,9 @@
                    folioNo : result.folioNo,
                    address : docs.addressAsPerAadhar,
                    aadharaddress: docs.addressAsPerAadhar,
-                   dpid: '',
-                   clientid: '',
+                   voteraddress: docs.addressAsPerVoterId,
+                   dpid: docs.dpid,
+                   clientid: docs.clientId,
                    day: currentDate.getDate(),
                    month: monthsOfYear[currentDate.getMonth()],
                    year: currentDate.getFullYear()
@@ -352,13 +357,28 @@
                     month:obj.month,
                     year: obj.year
                 };
+                id = result.stockId;
+               checkData();
                 hideLoader();
+                    
+
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
             }
         };
+
+                function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
 
           $scope.calculateAge = function(dob) {
       if (!dob) {
@@ -421,6 +441,10 @@
             //console.log(dataString);
             }
          }
+
+    $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
 
         //Function
         $scope.printDiv = function (divId) {

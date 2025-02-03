@@ -22,11 +22,11 @@ namespace Stock_CMS.Repository
         }  
         public async Task<IEnumerable<DocDto>> GetdocByClientId(long Id)
         {
-            return await GetMany(x => x.CustomerId == Id);
+            return await GetMany(x => x.CustomerId == Id && x.IsActive == true);
         } 
         public async Task<IEnumerable<DocDto>> GetDocByInfo(DocDto data)
         {
-            return await GetMany(x => x.Id == data.Id && x.Name == data.Name);
+            return await GetMany(x => x.Id == data.Id && x.Name == data.Name && x.IsActive == true);
         }
 
 
@@ -44,7 +44,6 @@ namespace Stock_CMS.Repository
         }
         public async Task<IEnumerable<DocDto>> UpdateDoc(IEnumerable<DocDto> data)
         {
-
             return await UpdateEntities(data);
         }
 

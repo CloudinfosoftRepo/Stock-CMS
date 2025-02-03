@@ -36,7 +36,7 @@ namespace Stock_CMS.Service
 
 					if (data.AadharFile != null)
 					{
-						var aadharUpload = _fileUpload.StoreFile("ClientAadhar", data.AadharFile);
+						var aadharUpload = _fileUpload.StoreFile("ClientAadhar", data.AadharFile,"Adhar");
 						if (aadharUpload.status == true)
 						{
 							data.AadharUrl = aadharUpload.message;
@@ -44,13 +44,29 @@ namespace Stock_CMS.Service
 					}
 					if (data.PanFile != null)
 					{
-						var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile);
+						var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile,"Pan");
 						if (panUpload.status == true)
 						{
 							data.Panurl = panUpload.message;
 						}
 					}
-				}
+                    if (data.DeathcertiFile != null)
+                    {
+                        var DeathcertiUpload = _fileUpload.StoreFile("ClientDeathcerti", data.DeathcertiFile,"Death Certi");
+                        if (DeathcertiUpload.status == true)
+                        {
+                            data.DeathCertiUrl = DeathcertiUpload.message;
+                        }
+                    }
+                    if (data.VoterFile != null)
+                    {
+                        var voterUpload = _fileUpload.StoreFile("ClientVoter", data.VoterFile,"Voter");
+                        if (voterUpload.status == true)
+                        {
+                            data.VoterIdUrl = voterUpload.message;
+                        }
+                    }
+                }
                 var result = await _DocRepository.AddDoc(dataList);
                 if (result.Any())
                 {
@@ -81,12 +97,13 @@ namespace Stock_CMS.Service
                     data.CreatedAt = existingProduct.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
+                    data.IsActive = existingProduct.IsActive;
 
 
 
                     if (data.AadharFile != null)
                     {
-                        var aadharUpload = _fileUpload.StoreFile("ClientAadhar", data.AadharFile);
+                        var aadharUpload = _fileUpload.StoreFile("ClientAadhar", data.AadharFile, "Adhar");
                         if (aadharUpload.status == true)
                         {
                             data.AadharUrl = aadharUpload.message;
@@ -98,18 +115,41 @@ namespace Stock_CMS.Service
                     }
                     if (data.PanFile != null)
                     {
-                        var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile);
+                        var panUpload = _fileUpload.StoreFile("ClientPan", data.PanFile,"Pan");
                         if (panUpload.status == true)
                         {
                             data.Panurl = panUpload.message;
                         }
                     }
-					else
+                    else
 					{
 						data.Panurl = existingProduct.Panurl;
 					}
-
-				}
+                    if (data.DeathcertiFile != null)
+                    {
+                        var deathcertiUpload = _fileUpload.StoreFile("ClientDeathCerti", data.DeathcertiFile, "Death Certi");
+                        if (deathcertiUpload.status == true)
+                        {
+                            data.DeathCertiUrl = deathcertiUpload.message;
+                        }
+                    }
+                    else
+                    {
+                        data.DeathCertiUrl = existingProduct.DeathCertiUrl;
+                    }
+                    if (data.VoterFile != null)
+                    {
+                        var voterIdUpload = _fileUpload.StoreFile("ClientVoter", data.VoterFile, "Voter");
+                        if (voterIdUpload.status == true)
+                        {
+                            data.VoterIdUrl = voterIdUpload.message;
+                        }
+                    }
+                    else
+                    {
+                        data.VoterIdUrl = existingProduct.VoterIdUrl;
+                    }
+                }
 
 				List<DocDto> updateList = new List<DocDto> { data };
                 var result = await _DocRepository.UpdateDoc(updateList);

@@ -154,6 +154,17 @@
     </style>
   </head>
 <body style="padding-left: 15%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Affidavit for COS New LinkinTime</h3>
+        </div>
+    </div>
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -168,7 +179,18 @@
                         <label for="place" class="form-label">Place</label>
                         <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
                     </div>
-                
+                <div class="form-group mb-3  col-md-3">
+                    <label for="certificatenos" class="form-label">Certificate Nos</label>
+                    <input type="text" ng-model="data.certificatenos" class="form-control search-orders" placeholder="Certificate Nos">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
+                    <input type="text" ng-model="data.distinctiveNosStart" class="form-control search-orders" placeholder="Distinctive Nos Start">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
+                    <input type="text" ng-model="data.distinctiveNosEnd" class="form-control search-orders" placeholder="Distinctive Nos End">
+                </div>
                 @* </div> *@
                 <div class="text-center m-2 col-md-4">
                     <button type="submit" class="btn" style="background-color:#003980; color:white;">
@@ -317,8 +339,8 @@
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
       On this <u>
-          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@
-          {{data.day}}
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+          @* {{data.day}} *@
           </u>day of
       <u>
           @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@
@@ -366,7 +388,7 @@
         <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
   </body>
   <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
         $scope.data = undefined;
             $scope.hDiv = true;
@@ -411,7 +433,7 @@
                    certificatenos:'',
                    distinctiveNosStart: '',
                    distinctiveNosEnd:'',
-                   place: '',
+                   place: 'Vadodara',
                    day: currentDate.getDate(),
                    month: monthsOfYear[currentDate.getMonth()],
                    year: currentDate.getFullYear(),
@@ -452,6 +474,8 @@
                     year: obj.year,
                     holders: obj.holders,
                 };
+                      id = result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
@@ -460,6 +484,20 @@
             }
         };
 
+                        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+        $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
           $scope.calculateAge = function(dob) {
       if (!dob) {
         return '';

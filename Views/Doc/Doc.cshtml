@@ -4,370 +4,732 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Management</title>
-   
+
 </head>
 <style>
     .cell {
-    position: relative; /* Ensures the hover effect is managed correctly */
-}
+        position: relative; /* Ensures the hover effect is managed correctly */
+    }
 
-.img-container {
-    position: relative;
-    display: inline-block;
-}
+    .img-container {
+        position: relative;
+        display: inline-block;
+    }
 
-img {
-    width: 35px;
-    height: 35px;
-    /* transition: all 0.3s ease; /* Smooth transition */ */
-}
+    img {
+        width: 35px;
+        height: 35px;
+        /* transition: all 0.3s ease; /* Smooth transition */ */
+    }
 
-/* .cell:hover img { */
-/*     width: 100px; */
-/*     height: 100px; */
-/*     position: absolute; /* To take the image outside of the table cell */ */
-/*     z-index: 10; /* Ensure it appears above other elements */ */
-/*     top: -50px; /* Adjusts the image's position outside of the table row */ */
-/*     left: -50px; /* Adjusts the image's position outside of the table column */ */
-/* } */
+    .hr-border {
+        border-top: 2px solid black;
+    }
+
+    .iframe-container {
+        position: relative;
+        width: 100%; /* Make the container take up 100% of the available width */
+        height: 0;
+        padding-bottom: 56.25%; /* Aspect ratio of 16:9 (for example) */
+        overflow: hidden;
+    }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+    /* .cell:hover img { */
+    /*     width: 100px; */
+    /*     height: 100px; */
+    /*     position: absolute; /* To take the image outside of the table cell */ */
+    /*     z-index: 10; /* Ensure it appears above other elements */ */
+    /*     top: -50px; /* Adjusts the image's position outside of the table row */ */
+    /*     left: -50px; /* Adjusts the image's position outside of the table column */ */
+    /* } */
 
 </style>
 <body ng-controller="DocController">
-   
-        <div class="app-content pt-3 p-md-3 p-lg-4">
-            <div class="container-xl">
-                <div class="row g-3 mb-4 align-items-center justify-content-between">
-                    <!-- Left Side: Back Button and Title -->
-                    <div class="d-flex align-items-center col-md-6">
-                        <a asp-controller="Master" asp-action="Client" class="btn btn-custom me-3">
-                            <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
-                        </a>
-                        <h1 class="app-page-title mb-0">Document Management</h1>
-                    </div>
 
-                    <div class="col-md-6 d-flex justify-content-end align-items-center">
-                        <div class="d-flex gap-2">
-                            <form class="table-search-form row gx-1 align-items-center mb-0">
-                                <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
-                            </form>
-                            <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add New</button>
-                            <button class="btn btn-custom"
-                                    style="background-color:#003980;color:white"
-                                    excel-export
-                                    table-id="tbldoc"
-                                    file-name="Doc"
-                                    sheet-name="Sheet1"
-                                    file-type="xlsx">
-                                Export
-                            </button>
-                        </div>
-                    </div>
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-6">
+                    <a asp-controller="Master" asp-action="Client" class="btn btn-custom me-3">
+                        <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
+                    </a>
+                    <h1 class="app-page-title mb-0">Document Management</h1>
                 </div>
 
-                <div class="app-card app-card-orders-table shadow-sm mb-5">
-                    <div class="app-card-body">
-                        <div class="table-responsive">
-                            <table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th class="cell"> Name</th>
-                                        <th class="cell">Pan Number</th>
-                                        <th class="cell">Name As Per PAN</th>
-                                        <th class="cell">Pan </th>
-                                        <th class="cell">Aadhar Number</th>
-                                        <th class="cell">Name As Per Aadhar</th>
-                                        <th class="cell">Address As Per Aadhar</th>
-                                        <th class="cell">Aadhar </th>
-                                        <th class="cell">Date Of Birth </th>
-                                        <th class="cell">Mobile</th>
+                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                    <div class="d-flex gap-2">
+                        <form class="table-search-form row gx-1 align-items-center mb-0">
+                            <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
+                        </form>
+                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add New</button>
+                        <button class="btn btn-custom"
+                                style="background-color:#003980;color:white"
+                                excel-export
+                                table-id="tbldoc"
+                                file-name="Doc"
+                                sheet-name="Sheet1"
+                                file-type="xlsx">
+                            Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="cell"> Name</th>
+                                    <th class="cell">Pan Number</th>
+                                    <th class="cell">Name As Per PAN</th>
+                                    <th class="cell">Pan </th>
+                                    <th class="cell">Aadhar Number</th>
+                                    <th class="cell">Name As Per Aadhar</th>
+                                    <th class="cell">Address As Per Aadhar</th>
+                                    <th class="cell">Aadhar </th>
+                                    <th class="cell">Date Of Birth </th>
+                                    <th class="cell">Mobile</th>
                                     <th class="cell">Relationship</th>
                                     <th class="cell">RelativesName</th>
+                                    <th class="cell">Email</th>
+                                    <th class="cell">Death Certificate</th>
+                                    <th class="cell">Name As Per DeathCerti</th>
+                                    <th class="cell">Date Of Death</th>
+                                    <th class="cell">Place Of Death</th>
+                                    <th class="cell">Voter Id</th>
+                                    <th class="cell">Name As Per VoterId</th>
+                                    <th class="cell">Address As Per VoterId</th>
+                                    <th class="cell">DPId</th>
+                                    <th class="cell">ClientId</th>
+
                                     <th class="cell">Created At</th>
                                     <th class="cell">Created By</th>
                                     <th class="cell">Updated At</th>
                                     <th class="cell">Updated By</th>
-                                        <th class="cell">Edit</th>
-                                        @* <th class="cell">Delete</th> *@
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="doc in docs | filter: searchQuery" ">
-                                        <td class="cell">{{ doc.name }}</td>
-                                        <td class="cell">{{ doc.pan }}</td>
+
+                                    <th class="cell">Legal Heir/Claiment Details</th>
+                                    <th class="cell">Bank Details</th>
+                                    <th class="cell">Edit</th>
+                                    <th class="cell">HolderDocs</th>
+
+                                    @* <th class="cell">Delete</th> *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="doc in docs | filter: searchQuery" ">
+                                    <td class="cell">{{ doc.name }}</td>
+                                    <td class="cell">{{ doc.pan }}</td>
                                     <td class="cell">{{ doc.nameAsPerPan }}</td>
-                                        <td class="cell">
-                                            <div class="">
-                                                <img alt="" src="{{doc.panurl}}" width="35px" height="35px">
-                                            </div>
-                                        </td>
-                                        <td class="cell">{{ doc.aadhar }}</td>
+                                    <td class="cell">
+                                        <div class="">
+                                            <img alt="" src="{{doc.panurl}}" width="35px" height="35px">
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ doc.aadhar }}</td>
                                     <td class="cell">{{ doc.nameAsPerAadhar }}</td>
                                     <td class="cell">{{ doc.addressAsPerAadhar }}</td>
-                                        <td class="cell">
-                                            <div class="">
-                                                <img alt="" src="{{doc.aadharUrl}}" width="35px" height="35px">
-                                            </div>
-                                        </td>
+                                    <td class="cell">
+                                        <div class="">
+                                            <img src="{{doc.aadharUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.aadharUrl)">
+                                        </div>
+                                    </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
                                     <td class="cell">{{ doc.relationship }}</td>
                                     <td class="cell">{{ doc.relativesName }}</td>
+                                    <td class="cell">{{ doc.email }}</td>
+                                    <td class="cell">
+                                        <div class="">
+                                            <img alt="" src="{{doc.deathCertiUrl}}" width="35px" height="35px">
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ doc.nameAsPerDeathCerti }}</td>
+                                    <td class="cell">{{ doc.dateOfDeath | date: 'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.placeOfDeath }}</td>
+                                    <td class="cell">
+                                        <div class="">
+                                            <img alt="" src="{{doc.voterIdUrl}}" width="35px" height="35px">
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ doc.nameAsPerVoterId }}</td>
+                                    <td class="cell">{{ doc.addressAsPerVoterId }}</td>
+                                    <td class="cell">{{ doc.dpid }}</td>
+                                    <td class="cell">{{ doc.clientId }}</td>
+
                                     <td class="cell">{{ doc.createdAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.createdByName }}</td>
                                     <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.updatedByName }}</td>
-                                        <td class="cell">
-                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
-                                                <i class="bi bi-pencil"></i>
-                                            </span>
-                                        </td>
-                                     @*    <td class="cell">
+                                    <td class="cell text-center">
+                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="navtolegalheit(doc.id)">
+                                            <i class="bi bi-person-add"></i>
+                                        </span>
+                                    </td>
+                                    <td class="cell text-center">
+                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)">
+                                            <i class="bi bi-bank"></i>
+                                        </span>
+                                    </td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
+                                            <i class="bi bi-pencil"></i>
+                                        </span>
+                                    </td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" data-tooltip="Docs">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </span>
+                                    </td>
+                                @*    <td class="cell">
                                             <span hidden ng-click="deleteDoc(doc.id)" class="btn-sm app-btn" style="color:green;font-size:large">
                                                 <i class="bi bi-trash"></i>
                                             </span>
                                         </td> *@
-@* 
+                                @* 
                                         <td>
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
                                             <button hidden class="btn btn-danger" ng-click="deleteDoc(doc.id)">Delete</button>
                                         </td> *@
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
+        </div>
+    </div>
+
+    <!-- Preview Model-->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="iframe-container">
+                    <iframe src="{{imgUrl}}" frameborder="0"></iframe>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Add/Edit Stock Modal -->
-        <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-xl"  role="document">
-                <div class="modal-content">
-                    <form ng-submit="saveDoc()">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ isEditing ? 'Edit Doc' : 'Add Doc' }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="name">Document Name</label>
-                                        <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
-                                    </div>
+
+    <!-- Add/Edit Stock Modal -->
+    <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveDoc()" class="modal-dialog-scrollable" style="overflow-y: auto">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Doc' : 'Add Doc' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body modal-dialog-scrollable">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Document Name</label>
+                                    <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
                                 </div>
-                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="dob">Date of Birth</label>
                                     <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control" required />
                                 </div>
                             </div>
-                            </div>
-                            <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="mobile">Mobile</label>
                                     <input type="text" id="mobile" ng-model="currentDoc.mobile" class="form-control" required />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="relationship">Relationship</label>
                                     <input type="text" id="relationship" ng-model="currentDoc.relationship" class="form-control" required />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="relativesName">RelativesName</label>
                                     <input type="text" id="relativesName" ng-model="currentDoc.relativesName" class="form-control" required />
                                 </div>
                             </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="pan">Pan Number</label>
-                                        <input type="text" id="pan" ng-model="currentDoc.pan" class="form-control" placeholder="Enter Pan Number" required />
-                                    </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" ng-model="currentDoc.email" class="form-control" required />
                                 </div>
-                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dpid">DP Id</label>
+                                    <input type="text" id="dpid" ng-model="currentDoc.dpid" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="clientId">Client Id</label>
+                                    <input type="text" id="clientId" ng-model="currentDoc.clientId" class="form-control" required />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <h6>PAN Details </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pan">Pan Number</label>
+                                    <input type="text" id="pan" ng-model="currentDoc.pan" class="form-control" placeholder="Enter Pan Number" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="nameAsPerPan">Name As Per Pan</label>
                                     <input type="text" id="nameAsPerPan" ng-model="currentDoc.nameAsPerPan" class="form-control" placeholder="Enter Name As Per Pan" required />
                                 </div>
                             </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="panFile">Pan File</label>
-                                        <input type="file" id="panFile" class="form-control" file-model="currentDoc.panFile" ng-model="currentDoc.panFile" />
-                                    </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="panFile">Pan File</label>
+                                    <input type="file" id="panFile" class="form-control" file-model="currentDoc.panFile" ng-model="currentDoc.panFile" />
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="aadhar">Aadhar Number</label>
-                                        <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
-                                    </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <h6>VoterId Details </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerVoterId">Name As Per VoterId</label>
+                                    <input type="text" id="nameAsPerVoterId" ng-model="currentDoc.nameAsPerVoterId" class="form-control" placeholder="Enter Name As Per VoterId" required />
                                 </div>
-                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addressAsPerVoterId">Address As Per VoterId</label>
+                                    <textarea id="addressAsPerVoterId" ng-model="currentDoc.addressAsPerVoterId" class="form-control" placeholder="Address As Per VoterId"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="panFile">Pan File</label>
+                                    <input type="file" id="panFile" class="form-control" file-model="currentDoc.voterFile" ng-model="currentDoc.voterFile" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <h6>
+                                Aadhar Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="aadhar">Aadhar Number</label>
+                                    <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="nameAsPerAadhar">Name As Per Aadhar</label>
                                     <input type="text" id="nameAsPerAadhar" ng-model="currentDoc.nameAsPerAadhar" class="form-control" placeholder="Enter Name As Per Aadhar" required />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="addressAsPerAadhar">Address As Per Aadhar</label>
                                     <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar"></textarea>
 
                                 </div>
                             </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="aadharFile">Aadhar File</label>
-                                        <input type="file" id="aadharFile" class="form-control" file-model="currentDoc.aadharFile" ng-model="currentDoc.aadharFile" />
-                                    </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="aadharFile">Aadhar File</label>
+                                    <input type="file" id="aadharFile" class="form-control" file-model="currentDoc.aadharFile" ng-model="currentDoc.aadharFile" />
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center m-2">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                        <br />
+                        <div class="row">
+
+                            <h6>
+                                Death Certificate Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerDeathCerti">Name As Per Death Certi</label>
+                                    <input type="text" id="nameAsPerDeathCerti" ng-model="currentDoc.nameAsPerDeathCerti" class="form-control" placeholder="Enter Name As Per Death Certi" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="placeOfDeath">Place Of Death</label>
+                                    <input type="text" id="placeOfDeath" ng-model="currentDoc.placeOfDeath" class="form-control" placeholder="Enter Place Of Death" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dateOfDeath">Date of Demise</label>
+                                    <input type="date" id="dateOfDeath" ng-model="currentDoc.dateOfDeath" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="deathcertiFile">Death Certificate File</label>
+                                    <input type="file" id="deathcertiFile" class="form-control" file-model="currentDoc.deathcertiFile" ng-model="currentDoc.deathcertiFile" />
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
+    <!-- Add/Edit Bank Modal -->
+    <div class="modal fade" id="bankModal" tabindex="-2" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveBank()" class="modal-dialog-scrollable" style="overflow-y: auto">
+                    <div class="modal-header">
+                                @* <h5 class="modal-title">{{ isEditingBank ? 'Edit Bank' : 'Add Bank' }}</h5> *@
+                        <h5 class="modal-title">Bank Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body modal-dialog-scrollable">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankName">Bank Name</label>
+                                    <input type="text" id="bankName" ng-model="currentBank.bankName" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="branch">Branch</label>
+                                    <input type="text" id="branch" ng-model="currentBank.branch" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="postalAddress">Bank Address</label>
+                                    <textarea id="postalAddress" ng-model="currentBank.postalAddress" class="form-control" placeholder="Bank Address"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="phoneNo">Bank Phone</label>
+                                    <input type="text" id="phoneNo" ng-model="currentBank.phoneNo" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankEmail">Bank Email</label>
+                                    <input type="email" id="bankEmail" ng-model="currentBank.bankEmail" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="accountNo">Account No</label>
+                                    <input type="text" id="accountNo" ng-model="currentBank.accountNo" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="accountType">Account Type</label>
+                                    <input type="text" id="accountType" ng-model="currentBank.accountType" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="accountOpeningDate">Account Opening Date</label>
+                                    <input type="date" id="accountOpeningDate" ng-model="currentBank.accountOpeningDate" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankManagerName">Bank Manager Name</label>
+                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="employeeCode">Employee Code</label>
+                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankMangerEmail">Bank Manger's Email</label>
+                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ifsccode">IFSC Code</label>
+                                    <input type="text" id="ifsccode" ng-model="currentBank.ifsccode" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="micrcode">MICR Code</label>
+                                    <input type="text" id="micrcode" ng-model="currentBank.micrcode" class="form-control" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<script>
-    angular.module('Stock-CMS', [])
-    .directive('fileModel', ['$parse', function ($parse) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, ngModel) {
-                element.bind('change', function () {
-                    var file = element[0].files[0];
-                    scope.$apply(function () {
-                        ngModel.$setViewValue(file);
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                @* <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditingBank ? 'Update' : 'Save' }}</button> *@
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', [])
+        .directive('fileModel', ['$parse', function ($parse) {
+            return {
+                restrict: 'A',
+                require: 'ngModel',
+                link: function (scope, element, attrs, ngModel) {
+                    element.bind('change', function () {
+                        var file = element[0].files[0];
+                        scope.$apply(function () {
+                            ngModel.$setViewValue(file);
+                        });
                     });
+                }
+            };
+        }])
+        .controller('DocController', function ($scope, $http) {
+            $scope.currentDoc = {};
+            $scope.docs = [];
+            $scope.bank = [];
+            $scope.currentBank = {};
+            $scope.docid2 = undefined;
+            $scope.isEditing = false;
+            $scope.isEditingBank = false;
+            var isProcessing = false;
+
+             showLoader();
+
+                 var path = window.location.pathname;
+                var segments = path.split('/');
+                var id = segments[segments.length - 1];
+
+             $scope.loadDocs = function () {
+                     if (id)
+                     {
+                        $http.get('/doc/getDocs/'+ id).then(function (response) {
+                        $scope.docs = response.data;
+                        hideLoader();
+                    }, function (error) {
+                        console.error('Error loading Docs:', error);
+                        hideLoader();
+                    });
+                    }
+                };
+
+            $scope.openDocModal = function (doc = null) {
+                $scope.isEditing = !!doc;
+                $scope.currentDoc = doc ? angular.copy(doc) : {};
+                $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
+                $scope.currentDoc.dateOfDeath = doc ?  new Date(doc.dateOfDeath) : {}
+                $('#docModal').modal('show');
+            };
+
+            $scope.saveDoc = function () {
+                           // if (!$scope.currentDoc.mobile || !/^\d{10}$/.test($scope.currentDoc.mobile)) {
+                           //      alert("Please enter a valid 10-digit mobile number.");
+                           //      return;
+                           //  }
+               if (id)
+                    {
+                        if (isProcessing) return;
+                        isProcessing = true;
+                var formData = new FormData();
+                    formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
+                    formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
+                    formData.append('name', $scope.currentDoc.name);
+                    formData.append('mobile', $scope.currentDoc.mobile);
+                    formData.append('relationship', $scope.currentDoc.relationship);
+                    formData.append('relativesName', $scope.currentDoc.relativesName);
+                    formData.append('pan', $scope.currentDoc.pan);
+                    formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan);
+                    formData.append('aadhar', $scope.currentDoc.aadhar);
+                    formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar);
+                    formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar);
+                    formData.append('dob', $scope.currentDoc.dob.toISOString().split('T')[0]);
+                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath.toISOString().split('T')[0]);
+                    formData.append('nameAsPerDeathCerti', $scope.currentDoc.nameAsPerDeathCerti);
+                    formData.append('placeOfDeath', $scope.currentDoc.placeOfDeath);
+                    formData.append('clientId', $scope.currentDoc.clientId);
+                    formData.append('dpid', $scope.currentDoc.dpid);
+                    formData.append('nameAsPerVoterId', $scope.currentDoc.nameAsPerVoterId);
+                    formData.append('addressAsPerVoterId', $scope.currentDoc.addressAsPerVoterId);
+                    formData.append('email', $scope.currentDoc.email);
+
+
+                if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
+                if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
+                if ($scope.currentDoc.deathcertiFile) formData.append('deathcertiFile', $scope.currentDoc.deathcertiFile);
+                if ($scope.currentDoc.voterFile) formData.append('voterFile', $scope.currentDoc.voterFile);
+
+                var url = $scope.isEditing
+                    ? '/doc/update/' + $scope.currentDoc.id
+                    : '/doc/create';
+
+                $http.post(url, formData, {
+                    headers: { 'Content-Type': undefined }
+                }).then(function (response) {
+                    Swal.fire({
+                        title: response.data.success ? 'Success' : 'Error',
+                        text: response.data.success ? 'Operation successful!' : (response.data.message || 'An error occurred'),
+                        icon: response.data.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                          isProcessing = false;
+                    $scope.loadDocs();
+                    $('#docModal').modal('hide');
                 });
-            }
-        };
-    }])
-    .controller('DocController', function ($scope, $http) {
-        $scope.currentDoc = {};
-        $scope.docs = [];
-        $scope.isEditing = false;
-        var isProcessing = false;
+                    }
+            };
 
-         showLoader();
+            $scope.deleteDoc = function (docId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $http.delete('/doc/delete/' + docId).then(function (response) {
+                            Swal.fire({
+                                title: response.data.success ? 'Deleted!' : 'Error',
+                                text: response.data.success ? 'The document has been deleted.' : 'An error occurred.',
+                                icon: response.data.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.loadData();
+                        });
+                    }
+                });
+            };
 
-             var path = window.location.pathname;
-            var segments = path.split('/');
-            var id = segments[segments.length - 1];
+           $scope.navtolegalheit = function (id) {
+                window.open('/LegalHeir/LegalHeir/' + id, '_self');
+            };
 
-         $scope.loadDocs = function () {
-                 if (id)
-                 {
-                    $http.get('/doc/getDocs/'+ id).then(function (response) {
-                    $scope.docs = response.data;
+
+            $scope.openBankModal = function (did) {
+                
+                $scope.docid2 = did;
+                $scope.loadBank(did);
+                $('#bankModal').modal('show');
+            };
+
+            $scope.loadBank = function (docid) {
+                    if (id)
+                    {
+                    $http.get('/doc/GetBank/'+ docid).then(function (response) {
+                        $scope.currentBank = response.data[0];
+                        $scope.currentBank.accountOpeningDate = $scope.currentBank ?  new Date($scope.currentBank.accountOpeningDate) : {}
                     hideLoader();
                 }, function (error) {
-                    console.error('Error loading Docs:', error);
+                    console.error('Error loading Bank Deatails:', error);
                     hideLoader();
                 });
                 }
             };
 
-        $scope.openDocModal = function (doc = null) {
-            $scope.isEditing = !!doc;
-            $scope.currentDoc = doc ? angular.copy(doc) : {};
-                $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
-            $('#docModal').modal('show');
-        };
-
-        $scope.saveDoc = function () {
-                       if (!$scope.currentDoc.mobile || !/^\d{10}$/.test($scope.currentDoc.mobile)) {
-                            alert("Please enter a valid 10-digit mobile number.");
-                            return;
-                        }
-           if (id) 
+           
+                $scope.saveBank = function () {
+                if (id)
                 {
                     if (isProcessing) return;
                     isProcessing = true;
-            var formData = new FormData();
-            formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
-            formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
-            formData.append('name', $scope.currentDoc.name);
-                    formData.append('mobile', $scope.currentDoc.mobile);
-                            formData.append('relationship', $scope.currentDoc.relationship);
-                                        formData.append('relativesName', $scope.currentDoc.relativesName);
-            formData.append('pan', $scope.currentDoc.pan);
-                    formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan);
-            formData.append('aadhar', $scope.currentDoc.aadhar);
-                    formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar);
-                    formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar);
-           formData.append('dob', $scope.currentDoc.dob.toISOString().split('T')[0]);  
+                    $scope.currentBank.clientId = $scope.docid2;
+                    $scope.currentBank.accountOpeningDate = $scope.currentBank.accountOpeningDate.toISOString().split('T')[0]
 
-
-            if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
-            if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
-
-            var url = $scope.isEditing 
-                ? '/doc/update/' + $scope.currentDoc.id 
-                : '/doc/create';
-
-            $http.post(url, formData, {
-                headers: { 'Content-Type': undefined }
-            }).then(function (response) {
-                Swal.fire({
-                    title: response.data.success ? 'Success' : 'Error',
-                    text: response.data.success ? 'Operation successful!' : (response.data.message || 'An error occurred'),
-                    icon: response.data.success ? 'success' : 'error',
-                    confirmButtonText: 'OK'
-                });
-                      isProcessing = false;
-                $scope.loadDocs();
-                $('#docModal').modal('hide');
-            });
-                }
-        };
-
-        $scope.deleteDoc = function (docId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, keep it'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $http.delete('/doc/delete/' + docId).then(function (response) {
+                        const url = $scope.currentBank.id ? `/doc/updateBank/${$scope.currentBank.id}` : '/doc/createBank';
+                    $http.post(url, $scope.currentBank).then(function (response) {
+                        if (response.data.success) {
+                                Swal.fire({
+                                title: response.data.success ? 'Success' : 'Error',
+                                text: response.data.success ? 'Operation successful!' : (response.data.message || 'An error occurred'),
+                                icon: response.data.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                                    isProcessing = false;
+                                $scope.loadDocs();
+                                    $('#bankModal').modal('hide');
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.data.message || 'There was an issue with the operation.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                                isProcessing = false;
+                        }
+                        isProcessing = false;
+                    }, function (error) {
                         Swal.fire({
-                            title: response.data.success ? 'Deleted!' : 'Error',
-                            text: response.data.success ? 'The document has been deleted.' : 'An error occurred.',
-                            icon: response.data.success ? 'success' : 'error',
+                            title: 'Error',
+                            text: 'An error occurred.',
+                            icon: 'error',
                             confirmButtonText: 'OK'
                         });
-                        $scope.loadData();
+                        isProcessing = false;
                     });
                 }
-            });
-        };
 
-        $scope.loadDocs();
-    });
-</script>
+            };
+
+               $scope.openimageModal = function (url) {
+                    $scope.imgUrl = url;
+                    $('#imageModal').modal('show');
+               };
+
+            $scope.manageHolderDoc = function (id) {
+                window.open('/Doc/HolderDoc/' + id, '_self');
+            };
+
+
+            //initalization
+
+             $scope.loadDocs();
+
+        });
+    </script>
 
 </body>
 </html>

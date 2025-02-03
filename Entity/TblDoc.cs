@@ -43,5 +43,27 @@ public partial class TblDoc
 
     public string? RelativesName { get; set; }
 
+    public string? Email { get; set; }
+
+    public string? DeathCertiUrl { get; set; }
+
+    public string? NameAsPerDeathCerti { get; set; }
+
+    public DateTime? DateOfDeath { get; set; }
+
+    public string? PlaceOfDeath { get; set; }
+
+    public string? VoterIdUrl { get; set; }
+
+    public string? NameAsPerVoterId { get; set; }
+
+    public string? AddressAsPerVoterId { get; set; }
+
+    public string? Dpid { get; set; }
+
+    public string? ClientId { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
+
+    public virtual ICollection<TblHolderDoc> TblHolderDocs { get; set; } = new List<TblHolderDoc>();
 }

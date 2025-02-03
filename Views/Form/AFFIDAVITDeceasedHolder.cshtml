@@ -73,6 +73,17 @@
     </style>
 </head>
 <body style="padding-left: 15%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>AFFIDAVIT Deceased holder</h3>
+        </div>
+    </div>
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -87,35 +98,6 @@
                         <label for="place" class="form-label">Place</label>
                         <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
                     </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="placeofdeath" class="form-label">Place of Demise</label>
-                    <input type="text" ng-model="data.placeofdeath" class="form-control search-orders" placeholder="Place of Demise">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="deceasedholdername" class="form-label">Deceased Holder's Name</label>
-                    <input type="text" ng-model="data.deceasedholdername" class="form-control search-orders" placeholder="Deceased Holder's Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="magistrateornotaryname" class="form-label"> Name of Magistrate/ Notary </label>
-                    <input type="text" ng-model="data.magistrateornotaryname" class="form-control search-orders" placeholder="Name of Magistrate/ Notary">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="magistrateornotaryaddress" class="form-label"> Address of Magistrate/ Notary </label>
-                    <textarea id="magistrateornotaryaddress" ng-model="data.magistrateornotaryaddress" class="form-control" placeholder="Address of Magistrate/ Notary"></textarea>
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="registrationNo" class="form-label"> Registration No </label>
-                    <input type="text" ng-model="data.registrationNo" class="form-control search-orders" placeholder="Registration No">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="bookNo" class="form-label"> Book No </label>
-                    <input type="text" ng-model="data.bookNo" class="form-control search-orders" placeholder="Book No">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="serialNo" class="form-label"> Serial No </label>
-                    <input type="text" ng-model="data.serialNo" class="form-control search-orders" placeholder="Serial No">
-                </div>
-                
                 @* </div> *@
                 <div class="text-center m-2 col-md-4">
                     <button type="submit" class="btn" style="background-color:#003980; color:white;">
@@ -250,7 +232,7 @@
       ">
         Solemnly declared and affirmed on Identification at
         <span class="s4">{{data.place}}</span> on this
-            <span class="s4">{{data.day}}  </span>day of<span class="s4"> {{data.month}}</span>, <span class="s4">
+            <span class="s4">@* {{data.day}} *@<u>&emsp; &emsp;</u>  </span>day of<span class="s4"> {{data.month}}</span>, <span class="s4">
                 {{data.year}}
             </span>
     </p>
@@ -276,14 +258,14 @@
         line-height: 108%;
         text-align: left;
       ">
-            {{data.magistrateornotaryname}}<br />
-            {{data.magistrateornotaryaddress}}<br />
+            <br />
+            <br />
         [Name and full address of Magistrate/ Notary]
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
         Registration No.
-            <span class="s4">{{data.registrationNo}}</span>
+            <span class="s4"></span>
     </p>
     <p style="
         padding-top: 1pt;
@@ -292,8 +274,8 @@
         text-align: left;
       ">
         Notary Register at Book No.
-            <span class="s4">{{data.bookNo}} </span>Serial No.
-            <span class="s4">{{data.serialNo}}</span>
+            <span class="s4"> </span>Serial No.
+            <span class="s4"></span>
     </p>
     <p style="padding-left:10%;padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
     <div class="row" style="display: flex;">
@@ -319,7 +301,7 @@
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
 </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
         $scope.data = undefined;
             $scope.hDiv = true;
@@ -361,19 +343,15 @@
                        age : Age,
                        relationship: doc.relationship,
                        sonof: doc.relativesName,
-                       deceasedholdername: '',
+                       deceasedholdername: doc.nameAsPerDeathCerti,
                        address : doc.addressAsPerAadhar,
                        officename : result.companyName,
-                       placeofdeath: '',
-                       place:'',
+                       placeofdeath: doc.placeOfDeath,
+                       place:'Vadodara',
                        day: currentDate.getDate(),
                        month: monthsOfYear[currentDate.getMonth()],
                        year: currentDate.getFullYear(),
-                       magistrateornotaryname: '',
-                       magistrateornotaryaddress: '',
-                       registrationNo:'',
-                       bookNo:'',
-                       serialNo:'',
+                       
                     };
 
                     hideLoader();
@@ -405,12 +383,10 @@
                     day:obj.day,
                     month:obj.month,
                     year: obj.year,
-                    magistrateornotaryname: obj.magistrateornotaryname,
-                    magistrateornotaryaddress: obj.magistrateornotaryaddress,
-                    registrationNo: obj.registrationNo,
-                    bookNo: obj.bookNo,
-                    serialNo: obj.serialNo,
+                   
                 };
+                      id = result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
@@ -418,6 +394,17 @@
             });
             }
         };
+
+                        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
 
         $scope.calculateAge = function(dob) {
       if (!dob) {
@@ -433,6 +420,10 @@
         age--;
       }
       return age;
+    };
+
+        $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
     };
 
         //Genrate Form

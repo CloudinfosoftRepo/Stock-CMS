@@ -70,6 +70,21 @@ public static class ConfigureServices
 
 		services.AddTransient<IFormService, FormService>();
 		services.AddTransient<IFormRepository, FormRepository>();
+        
+        services.AddTransient<IBankService, BankService>();
+		services.AddTransient<IBankRepository, BankRepository>();
 
-	}
+        services.AddTransient<ILegalHeirService, LegalHeirService>();
+        services.AddTransient<ILegalHeirRepository, LegalHeirRepository>();
+
+        services.AddTransient<IHolderDocService, HolderDocService>();
+        services.AddTransient<IHolderDocRepository, HolderDocRepository>();
+
+        services.AddTransient<IRtaService, RtaService>();
+        services.AddTransient<IRtaRepository, RtaRepository>();
+
+        services.AddTransient<ICompanyService, CompanyService>();
+        services.AddTransient<ICompanyRepository, CompanyRepository>();
+
+    }
 }

@@ -66,8 +66,9 @@
                                         <th class="cell">Third Holder</th>
                                         <th class="cell">Folio No</th>
                                         <th class="cell">Claim Status</th>
-                                        <th class="cell">Quantity</th>
-                                        <th class="cell">Rate</th>
+                                        <th class="cell">Actual Quantity</th>
+                                        <th class="cell">Current Quantity</th>
+                                    <th class="cell">Current Rate</th>
                                         <th class="cell">Value</th>
                                         <th class="cell">Brokerage</th>
                                         <th class="cell">Process to be Followed</th>
@@ -93,8 +94,9 @@
                                         <td class="cell">{{ stock.thirdHolder }}</td>
                                         <td class="cell">{{ stock.folioNo }}</td>
                                         <td class="cell">{{ stock.clamStatus }}</td>
-                                        <td class="cell">{{ stock.qty }}</td>
-                                        <td class="cell">{{ stock.rate }}</td>
+                                    <td class="cell">{{ stock.actualQty }}</td>
+                                    <td class="cell">{{ stock.qty }}</td>
+                                    <td class="cell">{{ stock.rate }}</td>
                                         <td class="cell">{{ stock.value }}</td>
                                         <td class="cell">{{ stock.brokerage }}</td>
                                         <td class="cell">{{ stock.ptbf }}</td>
@@ -182,7 +184,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="actualQty">Actual Quantity</label>
+                                    <input type="number" id="actualQty" ng-model="currentStock.actualQty" class="form-control" placeholder="Actual Quantity"  />
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="qty">Quantity</label>

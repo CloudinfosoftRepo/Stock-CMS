@@ -199,6 +199,17 @@
 </head>
 
 <body style="padding-left: 10%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Affidavit Applicant Name Correction</h3>
+        </div>
+    </div>
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
@@ -208,30 +219,6 @@
                     <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
                         <option selected disabled value="">Select customer</option>
                     </select>
-                </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="dpid" class="form-label">DP Id</label>
-                        <input type="text" ng-model="data.dpid" class="form-control search-orders" placeholder="DP Id">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="clientid" class="form-label">Client Id</label>
-                        <input type="text" ng-model="data.clientid" class="form-control search-orders" placeholder="Client Id">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="lfno" class="form-label">LF No</label>
-                        <input type="text" ng-model="data.lfno" class="form-control search-orders" placeholder="LF No">
-                    </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="accountno" class="form-label">Account No</label>
-                        <input type="text" ng-model="data.accountno" class="form-control search-orders" placeholder="Account No">
-                    </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="bankname" class="form-label">Bank Name</label>
-                    <input type="text" ng-model="data.bankname" class="form-control search-orders" placeholder="Bank Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="branch" class="form-label">Branch</label>
-                    <input type="text" ng-model="data.branch" class="form-control search-orders" placeholder="Branch">
                 </div>
                 @* </div> *@
                 <div class="text-center m-2 col-md-4">
@@ -362,7 +349,7 @@
     </p>
     <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-            Solemnly affirmed at Ahmedabad, this {{data.day}} day of <span class="s5">{{data.month}} </span>,
+            Solemnly affirmed at Ahmedabad, this @* {{data.day}} *@<u> &emsp; &emsp;</u> day of <span class="s5">{{data.month}} </span>,
         {{data.year}}
     </p>
     <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
@@ -381,7 +368,7 @@
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
 </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
         $scope.data = undefined;
             $scope.hDiv = true;
@@ -421,6 +408,8 @@
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid)
                     var Age = $scope.calculateAge(doc.dob);
+                     $http.get('/doc/GetBank/'+ doc.id).then(function (response) {
+                        var bank = response.data[0];
                 $scope.data = {
                    customerName : doc.name,
                    age : Age,
@@ -433,12 +422,12 @@
                    officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
                    nameonpan: doc.nameAsPerPan,
                    nameonaadhar: doc.nameAsPerAadhar,
-                   bankname: '',
-                   branch: '',
-                   lfno: '',
-                   dpid: '',
-                   clientid: '',
-                   accountno:'',
+                   bankname: bank.bankName,
+                   branch: bank.branch,
+                   lfno: doc.folioNo,
+                   dpid: doc.dpid,
+                   clientid: doc.clientId,
+                   accountno:bank.accountNo,
                    day: currentDate.getDate(),
                    month: monthsOfYear[currentDate.getMonth()],
                    year: currentDate.getFullYear(),
@@ -446,6 +435,10 @@
                 };
 
                 hideLoader();
+                 }, function (error) {
+                    console.error('Error loading Bank Deatails:', error);
+                    hideLoader();
+                });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -484,6 +477,8 @@
                     year:obj.year,
                     holders: obj.holders,
                 };
+                id= result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
@@ -491,6 +486,17 @@
             });
             }
         };
+
+        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
 
           $scope.calculateAge = function(dob) {
       if (!dob) {
@@ -555,6 +561,10 @@
             //console.log(dataString);
             }
          }
+
+          $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
 
         // $scope.loadDocs = function () {
         //     if (true) {

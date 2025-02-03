@@ -43,11 +43,36 @@ public partial class DocDto
     public string? Relationship { get; set; }
 
     public string? RelativesName { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? DeathCertiUrl { get; set; }
+
+    public string? NameAsPerDeathCerti { get; set; }
+
+    public DateTime? DateOfDeath { get; set; }
+
+    public string? PlaceOfDeath { get; set; }
+
+    public string? VoterIdUrl { get; set; }
+
+    public string? NameAsPerVoterId { get; set; }
+
+    public string? AddressAsPerVoterId { get; set; }
+
+    public string? Dpid { get; set; }
+
+    public string? ClientId { get; set; }
+
     [NotMapped]
 	public IFormFile? PanFile { get; set; }
 	[NotMapped]
 	public IFormFile? AadharFile { get; set; }
-	[NotMapped]
+    [NotMapped]
+    public IFormFile? DeathcertiFile { get; set; }
+    [NotMapped]
+    public IFormFile? VoterFile { get; set; }
+    [NotMapped]
 	public string? CreatedByName { get; set; }
 	[NotMapped]
 	public string? UpdatedByName { get; set; }

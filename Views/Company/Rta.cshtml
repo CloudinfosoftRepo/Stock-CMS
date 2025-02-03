@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rta Management</title>
+</head>
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #fff; /* Ensures that the header has a solid background */
+        z-index: 1; /* Makes sure the header stays on top of the content */
+    }
+
+    .table-responsive {
+        max-height: 500px; /* Set a fixed height to make the table scrollable */
+        overflow-y: auto;
+    }
+
+</style>
+<body ng-controller="CompanyController">
+
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-6">
+
+                    <h1 class="app-page-title mb-0">Rta Management</h1>
+                </div>
+
+                <!-- Right Side: Search and Add New Client -->
+                <div class="col-md-6">
+                    <div class="page-utilities">
+                        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                            <div class="col-auto">
+                                <form class="table-search-form row gx-1 align-items-center">
+                                    <div class="col-auto">
+                                        <input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openRtaModal()">Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table id="tblrta" class="table app-table-hover mb-0 text-left text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="cell">Rta Name</th>
+                                    <th class="cell">Rta Address</th>
+                                    <th class="cell">Created At</th>
+                                    <th class="cell">Created By</th>
+                                    <th class="cell">Updated At</th>
+                                    <th class="cell">Updated By</th>
+                                    <th class="cell">Edit</th>
+                                    @* <th class="cell">Delete</th> *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="rta in customers  | filter: searchQuery">
+                                    <td class="cell">{{ rta.rtaName }}</td>
+                                    <td class="cell">{{ rta.rtaAddress }}</td>
+                                    <td class="cell">{{ rta.createdAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ rta.createdByName }}</td>
+                                    <td class="cell">{{ rta.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ rta.updatedByName }}</td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openRtaModal(rta)">
+                                            <i class="bi bi-pencil"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal fade" id="rtaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveRta()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Rta' : 'Add Rta' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rtaName">Rta Name</label>
+                                    <input type="text" id="rtaName" ng-model="currentRta.rtaName" class="form-control" placeholder="Rta Name" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rtaAddress">Rta Address</label>
+                                    <input type="text" id="rtaAddress" ng-model="currentRta.rtaAddress" class="form-control" placeholder="Address" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Rta' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', []).controller('CompanyController', function ($scope, $http) {
+            $scope.customers  = [];
+            $scope.currentRta = {};
+            $scope.isEditing = false;
+            var isProcessing = false;
+
+            showLoader();
+
+            // Load Customers
+            $scope.loadRta = function () {
+                $http.get('/Company/GetRta').then(function (response) {
+                    $scope.customers  = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading rta:', error);
+                    hideLoader();
+                });
+            };
+
+            $scope.filter = function(filter){
+                $scope.search = filter;
+            }
+
+            // Open Modal
+            $scope.openRtaModal = function (rta = null) {
+                $scope.isEditing = !!rta;
+                $scope.currentRta = rta ? angular.copy(rta) : {};
+                $('#rtaModal').modal('show');
+            };
+
+            // Save Customer
+            $scope.saveRta = function () {
+                if (isProcessing) return;
+                isProcessing = true;
+                const url = $scope.isEditing ? '/Company/UpdateRta/' + $scope.currentRta.id : '/Company/CreateRta';
+                $http.post(url, $scope.currentRta).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadRta();
+                        $('#rtaModal').modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the rta.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            };
+
+            // Initial load
+            $scope.loadRta();
+        });
+    </script>
+</body>
+</html>
