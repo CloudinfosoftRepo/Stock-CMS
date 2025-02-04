@@ -21,7 +21,7 @@ public partial class TblStock
 
     public string? ClamStatus { get; set; }
 
-    public string? ActualQty { get; set; }
+    public double? ActualQty { get; set; }
 
     public double? Qty { get; set; }
 
@@ -49,7 +49,23 @@ public partial class TblStock
 
     public string? StockJson { get; set; }
 
+    public int? CompanyId { get; set; }
+
+    public long? FirstHolderId { get; set; }
+
+    public long? SecondHolderId { get; set; }
+
+    public long? ThirdHolderId { get; set; }
+
+    public virtual TblCompany? Company { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
 
+    public virtual TblDoc? FirstHolderNavigation { get; set; }
+
+    public virtual TblDoc? SecondHolderNavigation { get; set; }
+
     public virtual ICollection<TblGenratedForm> TblGenratedForms { get; set; } = new List<TblGenratedForm>();
+
+    public virtual TblDoc? ThirdHolderNavigation { get; set; }
 }

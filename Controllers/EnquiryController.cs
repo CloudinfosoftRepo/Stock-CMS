@@ -126,5 +126,24 @@ namespace Stock_CMS.Controllers
 			//await _context.SaveChangesAsync();
 			return Json(new { success = true });
 		}
-	}
+
+        [HttpGet]
+        public async Task<ActionResult> GetHeader(long id)
+        {
+            try
+            {
+                var header = await _StockService.GetStockById(id);
+                return Json(header);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+    }
 }

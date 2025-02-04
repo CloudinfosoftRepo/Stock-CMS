@@ -21,6 +21,8 @@ namespace Stock_CMS.Controllers
             return View();
         }
 
+
+
         [HttpGet]
         public async Task<ActionResult> GetLegalHeir(long id)
         {

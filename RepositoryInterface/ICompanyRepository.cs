@@ -10,6 +10,8 @@ namespace Stock_CMS.RepositoryInterface
 		Task<IEnumerable<CompanyDto>> GetCompany();
 		Task<IEnumerable<CompanyDto>> AddCompany(IEnumerable<CompanyDto> data);
 		Task<IEnumerable<CompanyDto>> UpdateCompany(IEnumerable<CompanyDto> data);
+		Task<IEnumerable<CompanyDto>> GetCompanyByIds(long?[] ids);
 
-	}
+
+    }
 }

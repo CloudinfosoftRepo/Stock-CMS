@@ -13,5 +13,7 @@ namespace Stock_CMS.RepositoryInterface
 		Task<IEnumerable<DocDto>> AddDoc(IEnumerable<DocDto> data);
 		Task<IEnumerable<DocDto>> UpdateDoc(IEnumerable<DocDto> data);
 
-	}
+		Task<IEnumerable<DocDto>> GetDocByIds(long?[] ids);
+
+    }
 }

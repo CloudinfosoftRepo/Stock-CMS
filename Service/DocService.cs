@@ -14,16 +14,20 @@ namespace Stock_CMS.Service
         private readonly IDocRepository _DocRepository;
 		private readonly IUserRepository _userRepository;
         private readonly FileUpload _fileUpload;
+        private readonly NormalizeModel _normalizeModel;
 
-		public DocService(IDocRepository DocRepository, IUserRepository userRepository, FileUpload fileUpload)
+        public DocService(IDocRepository DocRepository, IUserRepository userRepository, FileUpload fileUpload, NormalizeModel normalizeModel)
         {
             _DocRepository = DocRepository;
             _userRepository = userRepository;
             _fileUpload = fileUpload;
+            _normalizeModel = normalizeModel;
         }
 
         public async Task<long> AddDoc(DocDto data)
         {
+            data = _normalizeModel.FilterDoc(data);
+
             var isExist = await _DocRepository.GetDocByInfo(data);
             if (isExist.Any()) { return -1; }
             else
@@ -80,8 +84,10 @@ namespace Stock_CMS.Service
         }
         public async Task<Int32> UpdateDoc(DocDto data)
         {
+            data = _normalizeModel.FilterDoc(data);
+
             var isExist = await _DocRepository.GetDocById(data.Id);
-            var chk = await _DocRepository.GetDocByName(data.Name);
+            var chk = await _DocRepository.GetDocByInfo(data);
             bool isMatch = chk.Any(x => x.Name.ToLower() == data.Name.ToLower() && x.Id != data.Id);
             if (isMatch)
             {

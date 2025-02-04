@@ -94,23 +94,23 @@
                                     <th class="cell"> Name</th>
                                     <th class="cell">Pan Number</th>
                                     <th class="cell">Name As Per PAN</th>
-                                    <th class="cell">Pan </th>
+                                     <th class="cell">Pan </th> 
                                     <th class="cell">Aadhar Number</th>
                                     <th class="cell">Name As Per Aadhar</th>
                                     <th class="cell">Address As Per Aadhar</th>
-                                    <th class="cell">Aadhar </th>
+                                     <th class="cell">Aadhar </th> 
                                     <th class="cell">Date Of Birth </th>
                                     <th class="cell">Mobile</th>
                                     <th class="cell">Relationship</th>
                                     <th class="cell">RelativesName</th>
                                     <th class="cell">Email</th>
-                                    <th class="cell">Death Certificate</th>
-                                    <th class="cell">Name As Per DeathCerti</th>
-                                    <th class="cell">Date Of Death</th>
-                                    <th class="cell">Place Of Death</th>
                                     <th class="cell">Voter Id</th>
                                     <th class="cell">Name As Per VoterId</th>
                                     <th class="cell">Address As Per VoterId</th>
+                                    <th class="cell">Death Certificate</th> 
+                                    <th class="cell">Name As Per DeathCerti</th>
+                                    <th class="cell">Date Of Death</th>
+                                    <th class="cell">Place Of Death</th>
                                     <th class="cell">DPId</th>
                                     <th class="cell">ClientId</th>
 
@@ -132,19 +132,20 @@
                                     <td class="cell">{{ doc.name }}</td>
                                     <td class="cell">{{ doc.pan }}</td>
                                     <td class="cell">{{ doc.nameAsPerPan }}</td>
-                                    <td class="cell">
-                                        <div class="">
-                                            <img alt="" src="{{doc.panurl}}" width="35px" height="35px">
-                                        </div>
-                                    </td>
+                                     <td class="cell"> 
+                                         <div class=""> 
+                                             <img src="{{doc.panurl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.panurl)"> 
+
+                                         </div> 
+                                     </td> 
                                     <td class="cell">{{ doc.aadhar }}</td>
                                     <td class="cell">{{ doc.nameAsPerAadhar }}</td>
                                     <td class="cell">{{ doc.addressAsPerAadhar }}</td>
-                                    <td class="cell">
-                                        <div class="">
-                                            <img src="{{doc.aadharUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.aadharUrl)">
-                                        </div>
-                                    </td>
+                                     <td class="cell"> 
+                                         <div class=""> 
+                                             <img src="{{doc.aadharUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.aadharUrl)"> 
+                                         </div> 
+                                     </td> 
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
                                     <td class="cell">{{ doc.relationship }}</td>
@@ -152,19 +153,19 @@
                                     <td class="cell">{{ doc.email }}</td>
                                     <td class="cell">
                                         <div class="">
-                                            <img alt="" src="{{doc.deathCertiUrl}}" width="35px" height="35px">
-                                        </div>
-                                    </td>
-                                    <td class="cell">{{ doc.nameAsPerDeathCerti }}</td>
-                                    <td class="cell">{{ doc.dateOfDeath | date: 'dd-MM-yyyy' }}</td>
-                                    <td class="cell">{{ doc.placeOfDeath }}</td>
-                                    <td class="cell">
-                                        <div class="">
                                             <img alt="" src="{{doc.voterIdUrl}}" width="35px" height="35px">
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.nameAsPerVoterId }}</td>
                                     <td class="cell">{{ doc.addressAsPerVoterId }}</td>
+                                     <td class="cell"> 
+                                         <div class=""> 
+                                             <img alt="" src="{{doc.deathCertiUrl}}" width="35px" height="35px"> 
+                                         </div> 
+                                     </td> 
+                                    <td class="cell">{{ doc.nameAsPerDeathCerti }}</td>
+                                    <td class="cell">{{ doc.dateOfDeath | date: 'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.placeOfDeath }}</td>
                                     <td class="cell">{{ doc.dpid }}</td>
                                     <td class="cell">{{ doc.clientId }}</td>
 
@@ -239,7 +240,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="name">Document Name</label>
+                                    <label for="name">Holder Name</label>
                                     <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
                                 </div>
                             </div>
@@ -288,6 +289,39 @@
                         </div>
                         <br />
                         <div class="row">
+
+                            <h6>
+                                Aadhar Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="aadhar">Aadhar Number</label>
+                                    <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerAadhar">Name As Per Aadhar</label>
+                                    <input type="text" id="nameAsPerAadhar" ng-model="currentDoc.nameAsPerAadhar" class="form-control" placeholder="Enter Name As Per Aadhar" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addressAsPerAadhar">Address As Per Aadhar</label>
+                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar" required></textarea>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="aadharFile">Aadhar File</label>
+                                    <input type="file" id="aadharFile" class="form-control" file-model="currentDoc.aadharFile" ng-model="currentDoc.aadharFile" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
                             <h6>PAN Details </h6>
                             <hr class="hr-border" />
                             <div class="col-md-4">
@@ -316,7 +350,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="nameAsPerVoterId">Name As Per VoterId</label>
-                                    <input type="text" id="nameAsPerVoterId" ng-model="currentDoc.nameAsPerVoterId" class="form-control" placeholder="Enter Name As Per VoterId" required />
+                                    <input type="text" id="nameAsPerVoterId" ng-model="currentDoc.nameAsPerVoterId" class="form-control" placeholder="Enter Name As Per VoterId"  />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -325,45 +359,12 @@
                                     <textarea id="addressAsPerVoterId" ng-model="currentDoc.addressAsPerVoterId" class="form-control" placeholder="Address As Per VoterId"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="panFile">Pan File</label>
-                                    <input type="file" id="panFile" class="form-control" file-model="currentDoc.voterFile" ng-model="currentDoc.voterFile" />
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-
-                            <h6>
-                                Aadhar Details
-                            </h6>
-                            <hr class="hr-border" />
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="aadhar">Aadhar Number</label>
-                                    <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="nameAsPerAadhar">Name As Per Aadhar</label>
-                                    <input type="text" id="nameAsPerAadhar" ng-model="currentDoc.nameAsPerAadhar" class="form-control" placeholder="Enter Name As Per Aadhar" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="addressAsPerAadhar">Address As Per Aadhar</label>
-                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar"></textarea>
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="aadharFile">Aadhar File</label>
-                                    <input type="file" id="aadharFile" class="form-control" file-model="currentDoc.aadharFile" ng-model="currentDoc.aadharFile" />
-                                </div>
-                            </div>
+                             <div class="col-md-4"> 
+                                 <div class="form-group"> 
+                                    <label for="voterFile">Voter File</label>
+                                    <input type="file" id="voterFile" class="form-control" file-model="currentDoc.voterFile" ng-model="currentDoc.voterFile" />
+                                </div> 
+                             </div> 
                         </div>
                         <br />
                         <div class="row">
@@ -560,7 +561,7 @@
                 $scope.isEditing = !!doc;
                 $scope.currentDoc = doc ? angular.copy(doc) : {};
                 $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
-                $scope.currentDoc.dateOfDeath = doc ?  new Date(doc.dateOfDeath) : {}
+                $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : null : {}
                 $('#docModal').modal('show');
             };
 
@@ -586,9 +587,9 @@
                     formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar);
                     formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar);
                     formData.append('dob', $scope.currentDoc.dob.toISOString().split('T')[0]);
-                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath.toISOString().split('T')[0]);
-                    formData.append('nameAsPerDeathCerti', $scope.currentDoc.nameAsPerDeathCerti);
-                    formData.append('placeOfDeath', $scope.currentDoc.placeOfDeath);
+                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString().split('T')[0] : '');
+                    formData.append('nameAsPerDeathCerti',  $scope.currentDoc.nameAsPerDeathCerti );
+                    formData.append('placeOfDeath',  $scope.currentDoc.placeOfDeath );
                     formData.append('clientId', $scope.currentDoc.clientId);
                     formData.append('dpid', $scope.currentDoc.dpid);
                     formData.append('nameAsPerVoterId', $scope.currentDoc.nameAsPerVoterId);

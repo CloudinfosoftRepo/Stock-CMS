@@ -208,7 +208,7 @@ img {
          $scope.loadDocs = function () {
                  if (id)
                  {
-                        $http.get('/doc/GetHolderDoc/'+ id).then(function (response) {
+                        $http.get('/doc/GetHolderDoc1/'+ id).then(function (response) {
                     $scope.docs = response.data;
                     hideLoader();
                 }, function (error) {
@@ -233,7 +233,7 @@ img {
                     isProcessing = true;
             var formData = new FormData();
                 formData.append('id', $scope.isEditing ? $scope.currentHolderDoc.id : 0);
-                formData.append('holderId', $scope.isEditing ? $scope.currentHolderDoc.holderId : id);
+                    formData.append('legalHeirId', $scope.isEditing ? $scope.currentHolderDoc.holderId : id);
                 formData.append('documentName', $scope.currentHolderDoc.documentName);
                 if ($scope.currentHolderDoc.docFile) formData.append('docFile', $scope.currentHolderDoc.docFile);
 

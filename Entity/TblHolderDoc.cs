@@ -21,7 +21,7 @@ public partial class TblHolderDoc
 
     public int? UpdatedBy { get; set; }
 
-    public long HolderId { get; set; }
+    public long? HolderId { get; set; }
 
-    public virtual TblDoc Holder { get; set; } = null!;
+    public long? LegalHeirId { get; set; }
 }

@@ -25,5 +25,7 @@ public partial class TblCompany
 
     public int Rtaid { get; set; }
 
-    public virtual TblRta Rta { get; set; } = null!;
+    public virtual TblRtaCompany Rta { get; set; } = null!;
+
+    public virtual ICollection<TblStock> TblStocks { get; set; } = new List<TblStock>();
 }

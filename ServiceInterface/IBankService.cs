@@ -10,5 +10,7 @@ namespace Stock_CMS.ServiceInterface
         Task<long> AddBank(BankDto data);
 
         Task<Int32> UpdateBank(BankDto data);
+
+        Task<Int32> UpdateBank1(BankDto data);
     }
 }

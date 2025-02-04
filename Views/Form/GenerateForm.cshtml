@@ -44,7 +44,17 @@
                     <h1 class="app-page-title mb-0">Generate Forms</h1>
                 </div>
 
-
+                <div class=" justify-content-center display-flex">
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        <h5> <i>Company Name:{{header.companyName}} </i> </h5>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        <h5> Customer Name:{{header.customer.customerName}} </h5>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        <h5>Folio No:{{header.folioNo}} </h5>
+                    </div>
+                </div>
 
                 <div class=" justify-content-center display-flex">
                     <div class="d-flex gap-2">
@@ -158,6 +168,21 @@
             });
         };
 
+                // Load Stock Form List
+        $scope.loadheader = function () {
+             if (id)
+             {
+                $http.get('/Enquiry/GetHeader/'+ id).then(function (response) {
+                $scope.header = response.data;
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading generated forms:', error);
+                hideLoader();
+            });
+             }
+
+        };
+
             // Get Customer Name by ID
             $scope.gotoform = function (fid) {
                 const form = $scope.formlist.find(c => c.id === fid);
@@ -170,7 +195,7 @@
 
             // Initial Load
             $scope.loadforms();
-
+            $scope.loadheader();
             $scope.loadallforms();
         });
     </script>

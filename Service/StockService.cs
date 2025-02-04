@@ -12,12 +12,16 @@ namespace Stock_CMS.Service
         private readonly IStockRepository _StockRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly IDocRepository _docRepository;
+        private readonly ICompanyRepository _companyRepository;
        
-        public StockService(IStockRepository StockRepository,IUserRepository userRepository,ICustomerRepository customerRepository)
+        public StockService(IStockRepository StockRepository,IUserRepository userRepository,ICustomerRepository customerRepository, IDocRepository docRepository, ICompanyRepository companyRepository)
         {
             _StockRepository = StockRepository;
             _userRepository = userRepository;
             _customerRepository = customerRepository;
+            _docRepository = docRepository;
+            _companyRepository = companyRepository;
         }
 
         public async Task<long> AddStock(StockDto data)
@@ -54,6 +58,7 @@ namespace Stock_CMS.Service
                     data.CreatedAt = isExist.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
+                data.IsActive = isExist.IsActive;
 
                 List<StockDto> updateList = new List<StockDto> { data };
                 var result = await _StockRepository.UpdateStock(updateList);
@@ -84,7 +89,26 @@ namespace Stock_CMS.Service
 				x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
 				return x;
 			});
-			return result;
+
+            //var companyid = result.Select(x => x?.CompanyId).Distinct().ToArray();
+            //var company =  await _companyRepository.GetCompanyByIds(companyid);
+            //var results = result.Select(x =>
+            //{
+            //    x.CompanyName1 = company.FirstOrDefault(u => u.Id == x.CompanyId)?.CompanyName;
+            //    return x;
+            //});
+
+            //var holdersids = results.Select(x => x?.FirstHolderId).Concat(data.Select(x => x?.SecondHolderId)).Concat(data.Select(x => x?.ThirdHolderId)).Distinct().ToArray();
+            //var holders = await _docRepository.GetDocByIds(holdersids);
+            //var result1 = results.Select(x =>
+            //{
+            //    x.FirstHolder1 = holders.FirstOrDefault(u => u.Id == x.FirstHolderId)?.Name;
+            //    x.SecondHolder1 = holders.FirstOrDefault(u => u.Id == x.SecondHolderId)?.Name;
+            //    x.ThirdHolder1 = holders.FirstOrDefault(u => u.Id == x.ThirdHolderId)?.Name;
+            //    return x;
+            //});
+
+            return result;
         }
 
 		public async Task<StockDto> GetStockById(long id)

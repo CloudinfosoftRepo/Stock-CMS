@@ -25,7 +25,12 @@ namespace Stock_CMS.Controllers
 			return View();
 		}
 
-		[HttpGet]
+        public IActionResult HolderDoc1()
+        {
+            return View();
+        }
+
+        [HttpGet]
 	  public async Task<ActionResult> GetDocs(long id)
 		{
 			try
@@ -198,6 +203,33 @@ namespace Stock_CMS.Controllers
             }
         }
 
+        public async Task<IActionResult> updateBank1([FromBody] BankDto bank)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                bank.UpdatedBy = int.Parse(userId);
+                var result = await _bankService.UpdateBank1(bank);
+                string message = result == -2 ? "No record Found." :
+                   //result == -1 ? "Doc already exists." :
+                   result == 0 ? "Failed to update Bank." :
+                   "Bank updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
         public IActionResult HolderDoc()
         {
             return View();
@@ -209,6 +241,25 @@ namespace Stock_CMS.Controllers
             try
             {
                 var HolderDocs = await _holderDocService.GetHolderDocByHolderId(id);
+                return Json(HolderDocs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetHolderDoc1(long id)
+        {
+            try
+            {
+                var HolderDocs = await _holderDocService.GetHolderDocByLegalHeirId(id);
                 return Json(HolderDocs);
             }
             catch (Exception ex)

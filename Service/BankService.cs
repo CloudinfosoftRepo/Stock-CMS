@@ -82,6 +82,44 @@ namespace Stock_CMS.Service
                 data.CreatedAt = dataFirst.CreatedAt;
                 data.UpdatedBy = data.UpdatedBy;
                 data.UpdatedAt = DateTime.Now;
+                data.IsActive = dataFirst.IsActive;
+
+                List<BankDto> updateList = new List<BankDto> { data };
+                var result = await _bankRepository.UpdateBank(updateList);
+                if (result.Any())
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return -2;
+            }
+
+        }
+
+        public async Task<Int32> UpdateBank1(BankDto data)
+        {
+            var isExist = await _bankRepository.GetBankByLegalHeirId(data.LegalHeirId ?? 0);
+            //var chk = await _StockRepository.GetStockByName(data.StockName);
+            //bool isMatch = chk.Any(x => x.StockName.ToLower() == data.StockName.ToLower() && x.Id != data.Id);
+            //if (isMatch)
+            //{
+            //    return -1;
+            //}
+
+            if (isExist.Any())
+            {
+                var dataFirst = isExist.FirstOrDefault();
+                data.CreatedBy = dataFirst.CreatedBy;
+                data.CreatedAt = dataFirst.CreatedAt;
+                data.UpdatedBy = data.UpdatedBy;
+                data.UpdatedAt = DateTime.Now;
+                data.IsActive = dataFirst.IsActive;
 
                 List<BankDto> updateList = new List<BankDto> { data };
                 var result = await _bankRepository.UpdateBank(updateList);

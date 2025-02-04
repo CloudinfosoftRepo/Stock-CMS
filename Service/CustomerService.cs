@@ -54,7 +54,7 @@ namespace Stock_CMS.Service
                     data.CreatedAt = isExist.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
-
+                data.IsActive = isExist.IsActive;
                
 
                 List<CustomerDto> updateList = new List<CustomerDto> { data };

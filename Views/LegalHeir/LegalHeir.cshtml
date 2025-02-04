@@ -26,6 +26,22 @@
         border-top: 2px solid black;
     }
 
+    .iframe-container {
+        position: relative;
+        width: 100%; /* Make the container take up 100% of the available width */
+        height: 0;
+        padding-bottom: 56.25%; /* Aspect ratio of 16:9 (for example) */
+        overflow: hidden;
+    }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
     /* .cell:hover img { */
     /*     width: 100px; */
     /*     height: 100px; */
@@ -94,6 +110,7 @@
 
                                     <th class="cell">Bank Details</th>
                                     <th class="cell">Edit</th>
+                                    <th class="cell">HolderDocs</th>
                                     <th class="cell">Delete</th> 
                                 </tr>
                             </thead>
@@ -104,7 +121,7 @@
                                     <td class="cell">{{ doc.nameAsPerPan }}</td>
                                     <td class="cell">
                                         <div class="">
-                                            <img alt="" src="{{doc.panurl}}" width="35px" height="35px">
+                                            <img src="{{doc.panurl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.panurl)">
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.aadhar }}</td>
@@ -112,7 +129,7 @@
                                     <td class="cell">{{ doc.addressAsPerAadhar }}</td>
                                     <td class="cell">
                                         <div class="">
-                                            <img alt="" src="{{doc.aadharUrl}}" width="35px" height="35px">
+                                            <img src="{{doc.aadharUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.aadharUrl)">
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
@@ -135,7 +152,12 @@
                                         </span>
                                     </td>
                                     <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteLegalHeir(doc.id)">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" data-tooltip="Docs">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </span>
+                                    </td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteLegalHeir(doc)">
                                             <i class="bi bi-trash"></i>
                                         </span>
                                     </td>
@@ -158,6 +180,17 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- Preview Model-->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="iframe-container">
+                    <iframe src="{{imgUrl}}" frameborder="0"></iframe>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -201,7 +234,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Gender</label><br />
+                                    <label>Claiment/NOC</label><br />
                                     <label class="radio-inline">
                                         <input type="radio" ng-model="status" value="Claiment" /> Claiment
                                     </label>
@@ -402,7 +435,6 @@
             $scope.docs = [];
             $scope.isEditing = false;
             var isProcessing = false;
-            $scope.status = 'Claiment';
 
              showLoader();
 
@@ -426,6 +458,7 @@
             $scope.openDocModal = function (doc = null) {
                 $scope.isEditing = !!doc;
                 $scope.currentDoc = doc ? angular.copy(doc) : {};
+                $scope.status = doc ? doc.isClaiment ? 'Claiment' : doc.isNoc ? 'NOC' : 'Claiment': 'Claiment';
                 $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
                 $('#docModal').modal('show');
             };
@@ -448,7 +481,7 @@
                     formData.append('dob', $scope.currentDoc.dob.toISOString().split('T')[0]);
                     formData.append('email', $scope.currentDoc.email);
                     formData.append('isClaiment', $scope.status == 'Claiment' ? true : false);
-                    formData.append('isnoc', $scope.status == 'NOC' ? true : false);
+                    formData.append('isNoc', $scope.status == 'NOC' ? true : false);
 
                 if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
                 if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
@@ -483,18 +516,27 @@
                     cancelButtonText: 'No, keep it'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $http.delete('/LegalHeir/UpdateLegalHeirbyColumn/' + docId).then(function (response) {
+                        $http.post('/LegalHeir/UpdateLegalHeirbyColumn', docId).then(function (response) {
                             Swal.fire({
                                 title: response.data.success ? 'Deleted!' : 'Error',
                                 text: response.data.success ? 'Legal Heir has been deleted.' : 'An error occurred.',
                                 icon: response.data.success ? 'success' : 'error',
                                 confirmButtonText: 'OK'
                             });
-                            $scope.loadData();
+                            $scope.loadDocs();
                         });
                     }
                 });
             };
+
+             $scope.manageHolderDoc = function (id) {
+                window.open('/Doc/HolderDoc1/' + id, '_self');
+            };
+
+             $scope.openimageModal = function (url) {
+            $scope.imgUrl = url;
+            $('#imageModal').modal('show');
+        };
 
              $scope.openBankModal = function (did) {
 
@@ -526,7 +568,7 @@
                     $scope.currentBank.LegalHeirId = $scope.docid2;
                     $scope.currentBank.accountOpeningDate = $scope.currentBank.accountOpeningDate.toISOString().split('T')[0]
 
-                        const url = $scope.currentBank.id ? `/doc/updateBank/${$scope.currentBank.id}` : '/doc/createBank';
+                        const url = $scope.currentBank.id ? `/doc/updateBank1/${$scope.currentBank.id}` : '/doc/createBank';
                     $http.post(url, $scope.currentBank).then(function (response) {
                         if (response.data.success) {
                                 Swal.fire({

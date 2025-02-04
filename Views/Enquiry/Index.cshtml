@@ -143,33 +143,72 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
+                            <div class="col-md-4" hidden>
+                                <div class="form-group">
+                                    <label for="companyName">Company Name</label>
+                                    <input type="text" id="companyName" ng-model="currentStock.companyName" class="form-control" placeholder="Company Name"  />
+                                </div>
+                            </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyName">Company Name</label>
-                                    <input type="text" id="companyName" ng-model="currentStock.companyName" class="form-control" placeholder="Company Name" required />
+                                    <select class="form-select" ng-options="f.id as f.companyName for f in companylist" ng-model="currentStock.companyId" required>
+                                        <option selected disabled value="">Select Company</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+
+                            <div class="col-md-4" hidden>
                                 <div class="form-group">
                                     <label for="firstHolder">First Holder</label>
                                     <input type="text" id="firstHolder" ng-model="currentStock.firstHolder" class="form-control" placeholder="First Holder" />
                                 </div>
                             </div>
+
                             <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="firstHolderId">First Holder</label>
+                                    <select class="form-select" ng-options="f.id as f.name for f in holderlist" ng-model="currentStock.firstHolderId" ng-change="fistholderselect(currentStock.firstHolderId,currentStock.secondHolderId,currentStock.thirdHolderId)" required>
+                                        <option selected disabled value="">Select Holder</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" hidden>
                                 <div class="form-group">
                                     <label for="secondHolder">Second Holder</label>
                                     <input type="text" id="secondHolder" ng-model="currentStock.secondHolder" class="form-control" placeholder="Second Holder" />
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="secondHolderId">Second Holder</label>
+                                    <select class="form-select" ng-options="f.id as f.name for f in holderlist" ng-model="currentStock.secondHolderId" ng-change="secondholderselect(currentStock.firstHolderId,currentStock.secondHolderId,currentStock.thirdHolderId)">
+                                        <option selected disabled value="">Select Holder</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="form-group">
                                     <label for="thirdHolder">Third Holder</label>
                                     <input type="text" id="thirdHolder" ng-model="currentStock.thirdHolder" class="form-control" placeholder="Third Holder" />
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="thirdHolderId">Third Holder</label>
+                                    <select class="form-select" ng-options="f.id as f.name for f in holderlist" ng-model="currentStock.thirdHolderId" ng-change="thirdholderselect(currentStock.firstHolderId,currentStock.secondHolderId,currentStock.thirdHolderId)">
+                                        <option selected disabled value="">Select Holder</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="folioNo">Folio No</label>
@@ -199,13 +238,13 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="rate">Rate</label>
-                                    <input type="number" id="rate" ng-model="currentStock.rate" class="form-control" placeholder="Rate" required />
+                                    <input type="number" step="0.01" id="rate" ng-model="currentStock.rate" class="form-control" placeholder="Rate" required />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" hidden>
                                 <div class="form-group">
                                     <label for="value">Value</label>
-                                    <input type="number" id="value" ng-model="currentStock.value" class="form-control" placeholder="Value" required />
+                                    <input type="number" step="0.01" id="value" ng-model="currentStock.value" class="form-control" placeholder="Value" />
                                 </div>
                             </div>
                         </div>
@@ -214,7 +253,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="brokerage">Brokerage</label>
-                                    <input type="number" id="brokerage" ng-model="currentStock.brokerage" class="form-control" placeholder="Brokerage" />
+                                    <input type="number" step="0.01" id="brokerage" ng-model="currentStock.brokerage" class="form-control" placeholder="Brokerage" />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -271,6 +310,70 @@
                  }
               
             };
+
+            $scope.loadholder = function () {
+                 if (id)
+                 {
+                    $http.get('/Doc/GetDocs/'+ id).then(function (response) {
+                    $scope.holderlist = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+                 }
+
+            };
+
+            $scope.fistholderselect = function (fid,sid,tid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+             
+              var result =  (fid == sid ||  fid == tid)
+               if(result)
+             {  
+                $scope.currentStock.firstHolderId = undefined;
+                alert("Not Allowed");
+
+             
+               }
+            }
+            
+            $scope.secondholderselect = function (fid,sid,tid) {
+                  //var find2 = $scope.holderlist .find(x => x.id === sid);
+                  
+             var result =  (sid == fid ||  sid == tid)
+               if(result)
+             
+             {
+                $scope.currentStock.secondHolderId = undefined;
+                alert("Not Allowed");
+
+             }
+              
+            }
+
+            $scope.thirdholderselect = function (fid,sid,tid) {
+                // var find3 = $scope.holderlist .find(x => x.id === tid);
+                 
+              var result =  (tid == sid ||  tid == fid)
+               if(result)
+             {  
+                $scope.currentStock.thirdHolderId = undefined;
+                alert("Not Allowed");
+
+               }
+            }
+
+            $scope.loadcompany = function () {
+                 
+                    $http.get('/Company/GetCompany').then(function (response) {
+                    $scope.companylist = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+            }
 
             // Load Customers
             $scope.loadCustomers = function () {
@@ -342,6 +445,8 @@
 
             // Initial Load
             $scope.loadStocks();
+            $scope.loadcompany();
+            $scope.loadholder();
            // $scope.loadCustomers();
         });
     </script>

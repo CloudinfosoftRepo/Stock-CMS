@@ -33,7 +33,7 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
-    public virtual DbSet<TblRta> TblRta { get; set; }
+    public virtual DbSet<TblRtaCompany> TblRtaCompanies { get; set; }
 
     public virtual DbSet<TblStock> TblStocks { get; set; }
 
@@ -252,11 +252,6 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Holder).WithMany(p => p.TblHolderDocs)
-                .HasForeignKey(d => d.HolderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Tbl_HolderDocs_Tbl_Doc");
         });
 
         modelBuilder.Entity<TblLegalHeir>(entity =>
@@ -313,9 +308,11 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<TblRta>(entity =>
+        modelBuilder.Entity<TblRtaCompany>(entity =>
         {
-            entity.ToTable("Tbl_RTA");
+            entity.HasKey(e => e.Id).HasName("PK_Tbl_RTA");
+
+            entity.ToTable("Tbl_RTA_Company");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.RtaAddress)
@@ -331,9 +328,6 @@ public partial class StockCmsContext : DbContext
         {
             entity.ToTable("Tbl_Stock");
 
-            entity.Property(e => e.ActualQty)
-                .HasMaxLength(10)
-                .IsFixedLength();
             entity.Property(e => e.Brokerage).HasColumnName("brokerage");
             entity.Property(e => e.ClamStatus)
                 .HasMaxLength(50)
@@ -348,6 +342,7 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("First_Holder");
+            entity.Property(e => e.FirstHolderId).HasColumnName("First_HolderId");
             entity.Property(e => e.FolioNo)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -360,16 +355,34 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Second_Holder");
+            entity.Property(e => e.SecondHolderId).HasColumnName("Second_HolderId");
             entity.Property(e => e.StockJson).IsUnicode(false);
             entity.Property(e => e.ThirdHolder)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Third_Holder");
+            entity.Property(e => e.ThirdHolderId).HasColumnName("Third_HolderId");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Company).WithMany(p => p.TblStocks)
+                .HasForeignKey(d => d.CompanyId)
+                .HasConstraintName("FK_Tbl_Stock_Tbl_Company");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.TblStocks)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Tbl_Stock_Tbl_Stock");
+
+            entity.HasOne(d => d.FirstHolderNavigation).WithMany(p => p.TblStockFirstHolderNavigations)
+                .HasForeignKey(d => d.FirstHolderId)
+                .HasConstraintName("FK_Tbl_Stock_Tbl_Doc");
+
+            entity.HasOne(d => d.SecondHolderNavigation).WithMany(p => p.TblStockSecondHolderNavigations)
+                .HasForeignKey(d => d.SecondHolderId)
+                .HasConstraintName("FK_Tbl_Stock_Tbl_Doc1");
+
+            entity.HasOne(d => d.ThirdHolderNavigation).WithMany(p => p.TblStockThirdHolderNavigations)
+                .HasForeignKey(d => d.ThirdHolderId)
+                .HasConstraintName("FK_Tbl_Stock_Tbl_Doc2");
         });
 
         modelBuilder.Entity<TblUser>(entity =>

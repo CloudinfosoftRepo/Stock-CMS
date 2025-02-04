@@ -47,6 +47,9 @@ namespace Stock_CMS.Repository
             return await UpdateEntities(data);
         }
 
-
+        public async Task<IEnumerable<DocDto>> GetDocByIds(long?[] ids)
+        {
+            return await GetMany(x => ids.Contains(x.Id));
+        }
     }
 }

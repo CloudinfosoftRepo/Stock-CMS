@@ -61,6 +61,7 @@ public static class ConfigureServices
 		services.AddTransient<IStockRepository, StockRepository>();
         
         services.AddTransient<FileUpload>();
+        services.AddTransient<NormalizeModel>();
 
         services.AddTransient<IDocService, DocService>();
 		services.AddTransient<IDocRepository, DocRepository>();

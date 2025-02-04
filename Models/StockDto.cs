@@ -22,7 +22,7 @@ public partial class StockDto
 
     public string? ClamStatus { get; set; }
 
-    public string? ActualQty { get; set; }
+    public double? ActualQty { get; set; }
 
     public double? Qty { get; set; }
 
@@ -49,6 +49,26 @@ public partial class StockDto
     public int? UpdatedBy { get; set; }
 
     public string? StockJson { get; set; }
+
+    public int? CompanyId { get; set; }
+
+    public long? FirstHolderId { get; set; }
+
+    public long? SecondHolderId { get; set; }
+
+    public long? ThirdHolderId { get; set; }
+
+    [NotMapped]
+    public string? CompanyName1 { get; set; }
+
+    [NotMapped]
+    public string? FirstHolder1 { get; set; }
+
+    [NotMapped]
+    public string? SecondHolder1 { get; set; }
+
+    [NotMapped]
+    public string? ThirdHolder1 { get; set; }
 
 
     [NotMapped]

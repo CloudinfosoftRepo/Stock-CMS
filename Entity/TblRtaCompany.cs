@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stock_CMS.Entity;
 
-public partial class TblRta
+public partial class TblRtaCompany
 {
     public int Id { get; set; }
 

@@ -9,5 +9,7 @@ namespace Stock_CMS.ServiceInterface
         Task<Int32> UpdateHolderDoc(HolderDocsDto data);
         Task<IEnumerable<HolderDocsDto>> GetHolderDocByHolderId(long holderId);
 
+        Task<IEnumerable<HolderDocsDto>> GetHolderDocByLegalHeirId(long holderId);
+
     }
 }

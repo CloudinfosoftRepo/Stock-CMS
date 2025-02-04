@@ -55,6 +55,7 @@ namespace Stock_CMS.Service
                     data.CreatedAt = isExist.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
+                data.IsActive = isExist.IsActive;
 
                 List<GenratedFormDto> updateList = new List<GenratedFormDto> { data };
                 var result = await _GenratedFormRepository.UpdateGenratedForm(updateList);

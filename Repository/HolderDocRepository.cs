@@ -24,6 +24,10 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(x => x.HolderId == holderId && x.IsActive == true);
         }
+        public async Task<IEnumerable<HolderDocsDto>> GetHolderDocByLegalHeirId(long legalheirid)
+        {
+            return await GetMany(x => x.LegalHeirId == legalheirid && x.IsActive == true);
+        }
         public async Task<IEnumerable<HolderDocsDto>> GetHolderDocByInfo(HolderDocsDto data)
         {
             return await GetMany(x => x.Id == data.Id && x.DocumentName == data.DocumentName && x.IsActive == true);

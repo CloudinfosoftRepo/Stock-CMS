@@ -21,7 +21,9 @@ namespace Stock_CMS.Models
 
         public int? UpdatedBy { get; set; }
 
-        public long HolderId { get; set; }
+        public long? HolderId { get; set; }
+
+        public long? LegalHeirId { get; set; }
 
         [NotMapped]
         public IFormFile? DocFile { get; set; }

@@ -6,7 +6,7 @@ using Stock_CMS.RepositoryInterface;
 
 namespace Stock_CMS.Repository
 {
-	public class RtaRepository : EfRepository<TblRta, RtaDto>, IRtaRepository
+	public class RtaRepository : EfRepository<TblRtaCompany, RtaDto>, IRtaRepository
     {
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;

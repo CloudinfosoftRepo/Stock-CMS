@@ -32,4 +32,10 @@ public partial class GenratedFormDto
     public string? CreatedByName { get; set; }
     [NotMapped]
     public string? UpdatedByName { get; set; }
+    [NotMapped]
+    public string? CompanyName { get; set; }
+    [NotMapped]
+    public string? CustomerName { get; set; }
+    [NotMapped]
+    public string? FolioNo { get; set; }
 }
