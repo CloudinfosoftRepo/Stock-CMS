@@ -12,12 +12,14 @@ namespace Stock_CMS.Controllers
 		private readonly ILogger<EnquiryController> _logger;
 		private readonly IGenratedFormService _genratedFormService;
 		private readonly IFormService _formService;
+        private readonly IStockService _stockService;
 
-		public FormController(ILogger<EnquiryController> logger, IGenratedFormService genratedFormService,IFormService formService)
+		public FormController(ILogger<EnquiryController> logger, IGenratedFormService genratedFormService,IFormService formService,IStockService stockService)
 		{
 			_logger = logger;
 			_genratedFormService = genratedFormService;
 			_formService = formService;
+            _stockService = stockService;
 		}
 
 		public IActionResult Form()
@@ -137,6 +139,25 @@ namespace Stock_CMS.Controllers
                 _logger.LogError(ex, "Error during delete");
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetHolderByStockId(long id)
+        {
+            try
+            {
+                var result = await _stockService.GetHolderByStockId(id);
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
         }
 
         public IActionResult ChangeOfAddress()

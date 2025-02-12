@@ -18,7 +18,7 @@ namespace Stock_CMS.Repository
 
         public async Task<StockDto> GetStockById(long Id)
         {
-            return await GetOne(x => x.Id == Id);
+            return await GetOne(x => x.Id == Id && x.IsActive == true);
         }  
         public async Task<IEnumerable<StockDto>> GetStockByClientId(long Id)
         {

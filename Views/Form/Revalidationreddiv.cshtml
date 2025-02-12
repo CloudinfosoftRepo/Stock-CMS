@@ -157,7 +157,7 @@
         text-align: left;
       "
     >
-            Sub:Revalidation of Redemption/Dividend Warrant Ref:{{data.warrentno}} Folio No(s):<b>{{data.folioNo}}</b>
+            Sub:Revalidation of Redemption/Dividend <br /> Warrant Ref:{{data.warrentno}}<br /> Folio No(s):<b>{{data.folioNo}}</b>
     </p>
     <p
       style="
@@ -601,7 +601,7 @@
   </p>
     <p style="padding-top: 5pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      Date:<span class="s8"> {{data.today | date:'dd/MM/yyyy'}}</span>
+      Date:<span class="s8"> {{data.today | date:'__/MM/yyyy'}}</span>
     </p>
      </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -631,7 +631,7 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
                       $http.get('/doc/GetBank/'+ docs.id).then(function (response) {
@@ -641,8 +641,8 @@
                    today: new Date(),
                    folioNo : result.folioNo,
                    qty : result.qty,
-                   officename : result.companyName,
-                   officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
+    officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
                    warrentno:'',
                    dateofwarrent:'',
                    amount:'',

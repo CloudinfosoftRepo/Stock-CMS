@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Stock_CMS.Entity;
 using Stock_CMS.Models;
+using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
 
 namespace Stock_CMS.Controllers
@@ -9,11 +11,12 @@ namespace Stock_CMS.Controllers
 	{
 		private readonly IStockService _StockService;
 		private readonly ILogger<EnquiryController> _logger;
-
-		public EnquiryController(ILogger<EnquiryController> logger, IStockService StockService)
+        private readonly ITrackingService _TrackingService;
+		public EnquiryController(ILogger<EnquiryController> logger, IStockService StockService,ITrackingService trackingService)
 		{
 			_logger = logger;
 			_StockService = StockService;
+            _TrackingService = trackingService;
 		}
 
 		public IActionResult Index()
@@ -116,7 +119,33 @@ namespace Stock_CMS.Controllers
 			}
 		}
 
-		[HttpPost]
+        [HttpPost]
+        public async Task<JsonResult> UpdateStockJson(long id, string jsonString)
+        {
+            if (id < 1 && string.IsNullOrEmpty(jsonString))
+            {
+                return Json(new { success = false, message = "Values cannot be Empty" });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+                var result = await _StockService.UpdateStockJson(id, jsonString, int.Parse(userId));
+                string message = result == -2 ? "No record Found." :
+                   result == -1 ? "Stock already exists." :
+                   result == 0 ? "Failed to update Stock." :
+                   "Stock updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
 		public async Task<JsonResult> DeleteStock(long id)
 		{
 			// var product = await _context.TblProducts.FindAsync(id);
@@ -145,5 +174,139 @@ namespace Stock_CMS.Controllers
             }
 
         }
+
+        public IActionResult Tracking()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTracking(long id)
+        {
+            try
+            {
+                var tracking = await _TrackingService.GetTracking();
+                return Json(tracking);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+        [HttpGet]
+        public async Task<ActionResult> GetTrackingById(long id)
+        {
+            try
+            {
+                var Tracking = await _TrackingService.GetTrackingbyStockId(id);
+                return Json(Tracking);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+        [HttpPost]
+        public async Task<JsonResult> CreateTracking(string Tracking, IFormFile? clientSend, IFormFile? clientResponse)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var newdata = JsonConvert.DeserializeObject<TrackingDto>(Tracking);
+                    var userId = HttpContext.Request.Cookies["UserId"];
+
+                    newdata.IsActive = true;
+                    newdata.SendFile = clientSend;
+                    newdata.ResponseFile = clientResponse;
+                    newdata.CreatedAt = DateTime.Now;
+                    newdata.CreatedBy = int.Parse(userId);
+
+                    var result = await _TrackingService.AddTracking(newdata);
+                    newdata.Id = result;
+                    string message = result == -1 ? "Tracking already exists." :
+                     result == 0 ? "Failed to add Tracking." :
+                     $"Tracking added successfully.";
+                    bool success = result > 0;
+                    return Json(new { success = success, message = message, newdata });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error during add");
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+            return Json(new { success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors) });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateTracking(string Tracking, IFormFile? clientSend, IFormFile? clientResponse)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var newdata = JsonConvert.DeserializeObject<TrackingDto>(Tracking);
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                newdata.UpdatedBy = int.Parse(userId);
+                newdata.SendFile = clientSend;
+                newdata.ResponseFile = clientResponse;
+                var result = await _TrackingService.UpdateTracking(newdata);
+                string message = result == -2 ? "No record Found." :
+                   result == -1 ? "Tracking already exists." :
+                   result == 0 ? "Failed to update Tracking." :
+                   "Tracking updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateTrackingbyColumn([FromBody] TrackingDto data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                data.UpdatedBy = int.Parse(userId);
+                data.UpdatedAt = DateTime.Now;
+                var result = await _TrackingService.UpdateTrackingbyColumn(data);
+                string message = result == -1 ? "No record Found." :
+                  result == 0 ? "Failed to delete Form." :
+                  "Form deleted successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during delete");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
     }
 }

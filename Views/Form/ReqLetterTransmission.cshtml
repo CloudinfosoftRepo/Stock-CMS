@@ -168,10 +168,16 @@
     <div ng-if="hDiv">
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
-                <div class="form-group mb-3">
+                <div class="form-group mb-3 col-md-3">
                     <label for="seletedId" class="form-label">select customer</label>
-                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
                         <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="heirId" class="form-label">select Heir</label>
+                    <select class="form-select w-auto" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select Heir</option>
                     </select>
                 </div>
                 <div class="text-center m-2 col-md-4">
@@ -243,7 +249,7 @@
       text-decoration:none;
     "
   >
-            (Unit: <span class="h2">{{data.officename}}</span>)
+            (Unit: <span class="h2">{{data.unit}}</span>)
   </h3>
   <h3 style="padding-left: 5pt; text-indent: 0pt; text-align: left;text-decoration:none;">
             (Folio No: <span class="h2">{{data.folioNo}}</span>)
@@ -448,7 +454,7 @@
             // showLoader();
 
              // Load Customers
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
 
              if(id){
                  var currentDate = new Date();
@@ -456,24 +462,31 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                    $scope.heir = response.data;
+                    var heirs = response.data.find(x => x.id === hid);
                 $scope.data = {
-                   customerName : docs.name,
+                   customerName : heirs.name,
                    today: new Date(),
                    folioNo : result.folioNo,
                    qty : result.qty,
-                   address : docs.addressAsPerAadhar,
-                   mobile: docs.mobile,
-                   officename : result.companyName,
-                   officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
+                   address : heirs.addressAsPerAadhar,
+                   mobile: heirs.mobile,
+                       officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
+    unit: result.companyName,
                    deceasedname:docs.nameAsPerDeathCerti,
                    dateofdemise: new Date(docs.dateOfDeath),
                 };
 
                 hideLoader();
+                 }, function (error) {
+                    console.error('Error loading Legal Heair:', error);
+                    hideLoader();
+                });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -496,8 +509,9 @@
                     mobile: obj.mobile,
                     qty:obj.qty,
                     address:obj.address,
-                   officename: obj.officename,
-                   officeaddress: obj.officeaddress,
+                       officename: obj.officename,
+    officeaddress: obj.officeaddress,
+    unit: obj.unit,
                    deceasedname: obj.deceasedname,
                    dateofdemise: new Date(obj.dateofdemise),
                 };

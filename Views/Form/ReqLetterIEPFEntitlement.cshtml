@@ -147,7 +147,9 @@
     </div>
     <div id="printForm">
         <h1 style="padding: 0 350px 0px 5px; text-indent: 0pt; text-align: left">
-            {{data.customerName}} {{data.holders}}
+            {{data.firstHolder}},
+            {{data.secondHolder}},
+            {{data.thirdHolder}}
         </h1>
         <p class="s1"
            style="
@@ -196,7 +198,7 @@
         text-indent: 0pt;
         text-align: left;
       ">
-            (Unit: <span class="h2">{{data.officename}}</span>)
+            (Unit: <span class="h2">{{data.unit}}</span>)
         </h3>
         <h3 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
             (Folio No: <span class="h2">{{data.folioNo}}</span>)
@@ -222,7 +224,11 @@
       ">
             With reference to the above captioned subject and as discussed with your
             undersigned, I,
-            <b>{{data.customerName}} &amp;  {{data.holders}} </b>would like
+            <b>
+                {{data.firstHolder}}
+                &amp;   {{data.secondHolder}}
+                &amp;{{data.thirdHolder}}
+            </b>would like
             to bring into your kind attention that I am the share holder
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
@@ -293,7 +299,9 @@
               line-height: 11pt;
               text-align: left;
             ">
-                        {{data.customerName}} {{data.holders}}
+                        {{data.firstHolder}} &emsp;
+                        {{data.secondHolder}}&emsp;
+                        {{data.thirdHolder}}
                     </p>
 
                 </td>
@@ -353,7 +361,9 @@
         <br>
         <br>
         <h3 style="padding-left: 5pt; text-indent: 0pt; text-align: justify; display: flex; justify-content: space-between">
-            <p>{{data.customerName}}</p> <p>{{data.holders}}</p>
+            <span>{{data.firstHolder}}</span>
+            <span>{{data.secondHolder}}</span>
+            <span>{{data.thirdHolder}}</span>
             @* MINAXI DILIPKUMAR MEHTA &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DILIPKUMAR RASIKLAL MEHTA *@
         </h3>
     </div>
@@ -378,12 +388,7 @@
                      $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                     var result = response.data;
-                     let holders = [
-                            result.firstHolder || '',
-                            result.secondHolder || '',
-                            result.thirdHolder || ''
-                        ].filter(holder => holder.trim() !== '');
-                     $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                     $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                         $scope.doc = response.data;
                         var docs = $scope.doc.find(x => x.id === sid);
 
@@ -395,9 +400,12 @@
                                qty : result.qty,
                            folioNo : result.folioNo,
                            today: new Date(),
-                           officename: result.companyName,
-                           officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
-                          holders : holders.length > 0 ? `${holders.join(' ')}` : '',
+                               officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
+    unit: result.companyName,
+                              firstHolder: result.firstHolderName,
+    secondHolder: result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
 
                     };
 
@@ -423,9 +431,12 @@
                         mobile: obj.mobile,
                         qty : obj.qty,
                         folioNo : obj.folioNo,
-                        holders: obj.holders,
-                        officename: obj.officename,
-                            officeaddress: obj.officeaddress,
+                            firstHolder: obj.firstHolder,
+    secondHolder: obj.secondHolder,
+    thirdHolder: obj.thirdHolder,
+                           officename: obj.officename,
+    officeaddress: obj.officeaddress,
+    unit: obj.unit,
                     };
                                     id = result.stockId;
 

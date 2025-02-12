@@ -100,6 +100,17 @@
     </style>
 </head>
 <body style="padding-left: 10%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Documents List</h3>
+        </div>
+    </div>
     <div id="printForm">
     <h1 style="
         padding-left: 95pt;
@@ -143,6 +154,7 @@
         Compulsory Requirement Documents
     </h2>
     <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
+      <form name="gForm" ng-submit="genrateForm()">
     <table class="document-table">
         <thead>
             <tr>
@@ -153,31 +165,38 @@
         <tbody>
             <tr>
                 <td>PAN Card</td>
-                <td></td>
+                        <td ng-if ="!subid"> <input type="number" ng-model="data.noofpans" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.noofpans}}</td>
             </tr>
             <tr>
                 <td>Adhar Card (Both Side)</td>
-                <td></td>
+                        <td ng-if ="!subid"><input type="number" ng-model="data.noofaadhars" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.noofaadhars}}</td>
             </tr>
             <tr>
                 <td>Cancel Cheque (Name Printed) (Nationalised Bank)</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.cancelcheque" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.cancelcheque}}</td>
             </tr>
             <tr>
                 <td>Passport Size Photo (Latest)</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.passportphoto" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.passportphoto}}</td>
             </tr>
             <tr>
                 <td>Client Master List (CML) (DP Details)</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.cml" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.cml}}</td>
             </tr>
             <tr>
                 <td>Nominee PAN Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.npans" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.npans}}</td>
             </tr>
             <tr>
                 <td>Nominee Adhar Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.naadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.naadhar}}</td>
             </tr>
             <tr>
                 <td class="text-center" colspan="2">Transmission</td>
@@ -185,96 +204,253 @@
 
             <tr>
                 <td>Legal Heirs Certificate (Pedhi Nama)</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.legalheircerti" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.legalheircerti}}</td>
             </tr>
             <tr>
                 <td>Death Certificate – Deceased Holder</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.deathcerti" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.deathcerti}}</td>
             </tr>
             <tr>
                 <td class="text-center" colspan="2">Other Legal Heirs As per Pedhi Nama</td>
             </tr>
             <tr>
                 <td>PAN Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.legalheirpan" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.legalheirpan}}</td>
             </tr>
             <tr>
                 <td>Adhar Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.legalheiraadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.legalheiraadhar}}</td>
             </tr>
             <tr>
                 <td>Passport Size Photo</td>
-                <td></td>
+                        <td ng-if="!subid">
+                            <input type="number" ng-model="data.legalheirphoto" class="form-control search-orders">
+                        </td>
+                        <td ng-if="subid">{{data.legalheirphoto}}</td>
             </tr>
             <tr>
                 <td class="text-center" colspan="2">Witness -1 (Other Than Family Members)</td>
             </tr>
             <tr>
                 <td>PAN Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness1pan" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness1pan}}</td>
             </tr>
             <tr>
                 <td>Adhar Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness1aadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness1aadhar}}</td>
             </tr>
             <tr>
                 <td>Passport Size Photo</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness1photo" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness1photo}}</td>
             </tr>
             <tr>
                 <td class="text-center" colspan="2">Witness -2 (Other Than Family Members)</td>
             </tr>
             <tr>
                 <td>PAN Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness2pan" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness2pan}}</td>
             </tr>
             <tr>
                 <td>Adhar Card</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness2aadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness2aadhar}}</td>
             </tr>
             <tr>
                 <td>Passport Size Photo</td>
-                <td></td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness2photo" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness2photo}}</td>
             </tr>
         </tbody>
     </table>
+            <div ng-if="hDiv" class="text-center m-2 col-md-4">
+                <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                    Genrate Form
+                </button>
+            </div>
+    </form>
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
     <p class="s3" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-        THIS IS T
+        @* THIS IS T *@
     </p>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
 </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
-
+        $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
+            $scope.subid = id2;
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+         // Load Customers
+         $scope.loadCustomers = function () {
+             if(id){
+           $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                $scope.data = {
+                   customerName : result.firstHolderName,
+                   noofpans: 1,
+                   noofaadhars: 1,
+                   cancelcheque: 1,
+                   passportphoto: 1,
+                   cml:1,
+                   npans: 1,
+                   naadhar: 1,
+                   legalheircerti: 1,
+                   deathcerti: 1,
+                   legalheirpan: 1,
+                   legalheiraadhar: 1,
+                   legalheirphoto: 1,
+                   witness1pan:1,
+                   witness1aadhar:1,
+                   witness1photo:1,
+                   witness2pan:1,
+                   witness2aadhar:1,
+                   witness2photo:1,
+                };
+
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
+            }
 
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    noofpans: obj.noofpans,
+                    noofaadhars: obj.noofaadhars,
+                    cancelcheque: obj.cancelcheque,
+                    passportphoto: obj.passportphoto,
+                    cml: obj.cml,
+                    npans: obj.npans,
+                    naadhar : obj.naadhar,
+                    legalheircerti: obj.legalheircerti,
+                    deathcerti: obj.deathcerti,
+                    legalheirpan: obj.legalheirpan,
+                    legalheiraadhar: obj.legalheiraadhar,
+                    legalheirphoto: obj.legalheirphoto,
+                    witness1pan: obj.witness1pan,
+                    witness1aadhar: obj.witness1aadhar,
+                    witness1photo: obj.witness1photo,
+                    witness2pan: obj.witness2pan,
+                    witness2aadhar: obj.witness2aadhar,
+                    witness2photo: obj.witness2photo,
+                };
+                id= result.stockId;
+                checkData();
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
             }
         };
+
+        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Documents List',
+                 StockId : id,
+                 url : `/Form/DocumentsList?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true,
+                 ClientName: $scope.data.customerName,
+
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        // $scope.loadCustomers();
+                                                window.open(response.data.data.url + response.data.data.id,'_self')
+
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+          $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -287,7 +463,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

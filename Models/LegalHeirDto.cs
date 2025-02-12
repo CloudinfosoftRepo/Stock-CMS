@@ -44,10 +44,24 @@ namespace Stock_CMS.Models
 
         public bool? IsNoc { get; set; }
 
+        public string? RelationWithDead { get; set; }
+
+        public bool? IsDead { get; set; }
+
+        public string? DeathCertiUrl { get; set; }
+
+        public string? NameAsPerDeathCerti { get; set; }
+
+        public DateTime? DateOfDeath { get; set; }
+
+        public string? PlaceOfDeath { get; set; }
+
         [NotMapped]
         public IFormFile? PanFile { get; set; }
         [NotMapped]
         public IFormFile? AadharFile { get; set; }
+        [NotMapped]
+        public IFormFile? DeathcertiFile { get; set; }
         [NotMapped]
         public string? CreatedByName { get; set; }
         [NotMapped]

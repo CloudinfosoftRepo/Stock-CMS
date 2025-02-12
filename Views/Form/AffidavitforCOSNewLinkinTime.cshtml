@@ -234,7 +234,9 @@
       <li data-list-text="1.">
         <p style="padding-left: 41pt; text-indent: -36pt; text-align: justify">
           That I, Shri/Smt.
-                    <span class="h2">{{data.customerName}} &amp; {{data.holders}}</span>, am holding
+                    <span class="h2">
+                        {{data.firstHolder}} &amp; {{data.secondHolder}}  &amp; {{data.thirdHolder}}
+                    </span>, am holding
           <b>{{data.qty}} </b>equity shares solely / jointly in
         </p>
         <p
@@ -410,15 +412,10 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                 let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(docs.dob);
+                    var Age = $scope.calculateAge(docs.dob,docs.dateOfDeath);
 
 
                 $scope.data = {
@@ -437,7 +434,9 @@
                    day: currentDate.getDate(),
                    month: monthsOfYear[currentDate.getMonth()],
                    year: currentDate.getFullYear(),
-               holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+              firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
                 };
 
                 hideLoader();
@@ -472,7 +471,9 @@
                     day:obj.day,
                     month:obj.month,
                     year: obj.year,
-                    holders: obj.holders,
+                    firstHolder:obj.firstHolder,
+                    secondHolder:obj.secondHolder,
+                    thirdHolder:obj.thirdHolder,
                 };
                       id = result.stockId;
                 checkData();
@@ -498,20 +499,34 @@
         $scope.navtogenerateform = function () {
         window.open('/Form/GenerateForm/'+id, '_self');
     };
-          $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
+          $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
     };
 
         //Genrate Form

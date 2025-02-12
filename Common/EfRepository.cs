@@ -6,6 +6,7 @@ using AutoMapper.QueryableExtensions;
 using EFCore.BulkExtensions;
 using Stock_CMS.Entity;
 using Microsoft.EntityFrameworkCore;
+using log4net;
 
 namespace Stock_CMS.Common
 {
@@ -16,10 +17,11 @@ namespace Stock_CMS.Common
         private readonly StockCmsContext _dbContext;
         private readonly IMapper _mapper;
         private readonly int _bulkInsertorUpdateLimit = 1000;
-		//private readonly ILogger<EfRepository<T, TModel>>  _logger;
+        private static readonly ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private readonly ILogger<EfRepository<T, TModel>>  _logger;
 
 
-		public EfRepository( StockCmsContext dbContext, IMapper mapper)
+        public EfRepository( StockCmsContext dbContext, IMapper mapper)
         {
            
             _dbContext = dbContext;
@@ -37,6 +39,7 @@ namespace Stock_CMS.Common
             }
             catch (Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Enumerable.Empty<TModel>();
             }
         }
@@ -44,11 +47,15 @@ namespace Stock_CMS.Common
         {
             try
             {
-                var entity = await _dbContext.Set<T>().FirstOrDefaultAsync(predicate).ConfigureAwait(false);
+                var query = _dbContext.Set<T>().Where(predicate);
+                query = AllIncludes().Aggregate(query, (current, include) => current.Include(include));
+                var entity = await query.FirstOrDefaultAsync().ConfigureAwait(false);
+
                 return entity is not null ? _mapper.Map<T, TModel>(entity) : Activator.CreateInstance<TModel>();
             }
             catch (Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Activator.CreateInstance<TModel>();
             }
         }
@@ -68,6 +75,7 @@ namespace Stock_CMS.Common
             }
             catch (Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Enumerable.Empty<TModel>();
             }
         }
@@ -82,6 +90,7 @@ namespace Stock_CMS.Common
             }
             catch (Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Enumerable.Empty<TModel>();
             }
         }
@@ -102,8 +111,9 @@ namespace Stock_CMS.Common
 			}
 			catch (Exception ex)
 			{
-				//_logger.LogError(ex, "Error updating entities Array");
-				return Enumerable.Empty<TModel>();
+                _logger.Error(ex.Message);
+                //_logger.LogError(ex, "Error updating entities Array");
+                return Enumerable.Empty<TModel>();
 			}
 		}
 
@@ -122,8 +132,9 @@ namespace Stock_CMS.Common
 
                 return Enumerable.Empty<TModel>();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Enumerable.Empty<TModel>();
             }
         }
@@ -141,6 +152,7 @@ namespace Stock_CMS.Common
             }
             catch (Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Enumerable.Empty<TModel>();
             }
         }
@@ -169,8 +181,9 @@ namespace Stock_CMS.Common
 
                 return mapper.Map<IEnumerable<TModel>>(entities);
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.Error(ex.Message);
                 return Enumerable.Empty<TModel>();
             }
         }

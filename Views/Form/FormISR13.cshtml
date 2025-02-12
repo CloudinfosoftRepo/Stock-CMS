@@ -277,7 +277,11 @@
       "
     >
       I/We
-      <span class="s3">{{data.customerName}}, {{data.holders}} </span>the holder(s) of the securities particulars of which are given hereunder
+            <span class="s3">
+                {{data.firstHolder}},
+                {{data.secondHolder}},
+                {{data.thirdHolder}}
+            </span>the holder(s) of the securities particulars of which are given hereunder
       wish to make nomination and do here by nominate the following persons in
       whom shall vest, all the rights in respect of such securities in the event
       of my/our death.
@@ -666,7 +670,7 @@
           </li>
           <li data-list-text="·">
             <p style="padding-left: 43pt; text-indent: -12pt; text-align: left">
-                            Name of guardian: {{data.holders}}
+                            Name of guardian:  {{data.secondHolder}}
             </p>
           </li>
           <li data-list-text="·">
@@ -700,7 +704,11 @@
     >
             Name of the Security Holder(s) Signature Witness with  Name and address
     </p>
-        <p style="text-indent: 0pt; text-align: left">{{data.customerName}}, {{data.holders}}</p>
+        <p style="text-indent: 0pt; text-align: left">
+            {{data.firstHolder}},
+            {{data.secondHolder}},
+            {{data.thirdHolder}}
+        </p>
     <p
       class="s5"
       style="padding-left: 258pt; text-indent: 0pt; text-align: left"
@@ -739,7 +747,8 @@
                         result.secondHolder || '',
                         result.thirdHolder || ''
                     ].filter(holder => holder.trim() !== '');
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                     var year = new Date(doc.dob).getFullYear();
@@ -760,8 +769,10 @@
                     distinctiveNosEnd:'',
                     qty: result.qty,
                     folioNo : result.folioNo,
-                    officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
-                    holders : holders.length > 0 ? `${holders.join(') (')}` : '',
+                    officeaddress: result.company.companyAddress,
+                       firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
                     occupation: '',
                     nationality: 'INDIAN',
                     majordate: new Date(year + 18,month,day),
@@ -801,7 +812,9 @@
                     distinctiveNosEnd: obj.distinctiveNosEnd,
                     officename: obj.officename,
                     officeaddress: obj.officeaddress,
-                    holders: obj.holders,
+                        firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                     occupation: obj.occupation,
                     nationality: obj.nationality,
                     majordate: new Date(obj.majordate),

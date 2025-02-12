@@ -56,7 +56,7 @@ namespace Stock_CMS.Service
 					}
                     if (data.DeathcertiFile != null)
                     {
-                        var DeathcertiUpload = _fileUpload.StoreFile("ClientDeathcerti", data.DeathcertiFile,"Death Certi");
+                        var DeathcertiUpload = _fileUpload.StoreFile("ClientDeathCerti", data.DeathcertiFile,"Death Certi");
                         if (DeathcertiUpload.status == true)
                         {
                             data.DeathCertiUrl = DeathcertiUpload.message;

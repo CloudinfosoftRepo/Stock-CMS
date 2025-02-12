@@ -369,7 +369,7 @@
         text-align: justify;
       ">
             I/We,
-            <span class="s4">{{data.customerName}}, {{data.holders}} </span> {{data.relationship}} <span class="s4"> {{data.sonof}} </span>residing at<span class="s4">{{data.address}}</span>,having Permanent Account No (s)<span class="s4">{{data.accountno}} </span><span class="s5"> </span>do hereby solemnly affirm and state on oath as follows.
+            <span class="s4">{{data.customerName}} </span> {{data.relationship}} <span class="s4"> {{data.sonof}} </span>residing at<span class="s4">{{data.address}}</span>,having Permanent Account No (s)<span class="s4">{{data.accountno}} </span><span class="s5"> </span>do hereby solemnly affirm and state on oath as follows.
         </p>
         <p class="s3"
            style="
@@ -385,7 +385,11 @@
             <li data-list-text="1.">
                 <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
                     That I/we,
-                    <span class="s6">{{data.customerName}}, {{data.holders}} </span><span class="s7"> </span>am/are the sole/joint holder/s of the
+                    <span class="s6">
+                        {{data.firstHolder}},
+                        {{data.secondHolder}},
+                        {{data.thirdHolder}}
+                    </span><span class="s7"> </span>am/are the sole/joint holder/s of the
                     Securities in following folios. I/We request you to issue duplicate
                     certificate(s) for securities, as detailed below in my/our name(s):
                 </p>
@@ -455,7 +459,7 @@
                 <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
                     I/We hereby jointly and severely agree and undertake to indemnify and
                     keep indemnified, saved, defended, harmless, the aforesaid<u>
-                        @* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. *@ {{data.officename}}
+                        @* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. *@ {{data.rta}}
                     </u>
                     <span class="p">
                         (Name of the Company/RTA) and its successors and assigns for all time
@@ -587,7 +591,7 @@
         <br />
         on:
         <span class="s6">
-            {{data.date | date:'dd/MM/yyyy'}}
+            {{data.date | date:'__/MM/yyyy'}}
         </span>
         <p style="padding-top: 13pt; text-indent: 0pt; text-align: left"><br /></p>
         <p class="s16"
@@ -621,12 +625,7 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                       $http.get('/doc/GetBank/'+ doc.id).then(function (response) {
@@ -645,8 +644,11 @@
                     rate: result.rate,
                     folioNo : result.folioNo,
                     officename : result.companyName,
+                    rta: result.company.rtaName,
                     yearofshareaquisition: '',
-                    holders : holders.length > 0 ? `${holders.join(') (')}` : '',
+                       firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
                     place:'Vadodara',
                     date: new Date(),
                     witnessname: '',
@@ -689,8 +691,11 @@
                     distinctiveNosStart: obj.distinctiveNosStart,
                     distinctiveNosEnd: obj.distinctiveNosEnd,
                     officename: obj.officename,
+                    rta: obj.rta,
                     yearofshareaquisition: obj.yearofshareaquisition,
-                    holders: obj.holders,
+                        firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                     place: obj.place,
                     date: new Date(obj.date),
                     witnessname: obj.witnessname,

@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Management</title>
+</head>
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #fff; /* Ensures that the header has a solid background */
+        z-index: 1; /* Makes sure the header stays on top of the content */
+    }
+
+    .table-responsive {
+        max-height: 500px; /* Set a fixed height to make the table scrollable */
+        overflow-y: auto;
+    }
+
+    .iframe-container {
+        position: relative;
+        width: 100%; /* Make the container take up 100% of the available width */
+        height: 0;
+        padding-bottom: 56.25%; /* Aspect ratio of 16:9 (for example) */
+        overflow: hidden;
+    }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+</style>
+<body ng-controller="StockController">
+
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+            <div class="container-xl">
+                <div class="row g-3 mb-4 align-items-center justify-content-between">
+                    <!-- Left Side: Back Button and Title -->
+                    <div class="d-flex align-items-center col-md-6">
+                    <a ng-click="navtoStock()" class="btn btn-custom me-3">
+                            <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
+                        </a>
+                    <h1 class="app-page-title mb-0">Tracking Management</h1>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end align-items-center">
+                        <div class="d-flex gap-2">
+                            <form class="table-search-form row gx-1 align-items-center mb-0">
+                                <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
+                            </form>
+                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openTrackingModal()">Add New</button>
+                            <button class="btn btn-custom"
+                                    style="background-color:#003980;color:white"
+                                    excel-export
+                                table-id="tbltracking"
+                                file-name="Tracking"
+                                    sheet-name="Sheet1"
+                                    file-type="xlsx">
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                    <div class="app-card-body">
+                        <div class="table-responsive">
+                        <table id="tbltracking" class="table app-table-hover mb-0 text-left text-nowrap">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th class="cell">#</th>
+                                    <th class="cell">Date of Submission</th>
+                                        <th class="cell">Company Name</th>
+                                        <th class="cell">Customer</th>
+                                        <th class="cell">Folio No</th>
+                                        
+                                        <th class="cell">Current Quantity</th>
+                                        
+                                        <th class="cell">Process</th>
+                                        <th class="cell">Send To</th>
+                                        <th class="cell">Tracking Id</th>
+                                    <th class="cell">Send File </th>
+                                    <th class="cell">Response File </th>
+                                    <th class="cell">Status</th>
+                                       
+                                        <th class="cell">Created At</th>
+                                        <th class="cell">Created By</th>
+                                        <th class="cell">Updated At</th>
+                                        <th class="cell">Updated By</th>
+                                    <th class="cell">Edit</th>
+                                    <th class="cell">Delete</th>
+                                    @* <th class="cell">Claim Status</th> *@
+                                    @* <th class="cell">Remarks</th> *@
+                                    @* <th class="cell">Active</th> *@
+                                        @* <th class="cell">Genarate Form</th> *@
+                                    @* <th class="cell">Doc Upload</th> *@
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="track in track | filter: searchQuery">
+                                        <td class="cell">{{ $index + 1 }}</td>
+                                    <td class="cell">{{ track.dateofSubmission | date:'dd-MM-yy'}}</td>
+                                    <td class="cell">{{ track.companyName }}</td>
+                                    <td class="cell">{{ track.customerName }}</td>
+                                    <td class="cell">{{ track.folioNo }}</td>
+                                    <td class="cell">{{ track.qty }}</td>
+                                    <td class="cell">{{ track.process}}</td>
+                                    <td class="cell">{{ track.sendTo}}</td>
+                                    <td class="cell">{{ track.trackingId}}</td>
+                                    <td class="cell" ng-click="openimageModal(track.sendUrl)">
+                                        <div class="">
+                                            <img ng-if="isImage(track.sendUrl)" ng-src="{{track.sendUrl}}" width="35" height="35" />
+                                            <i ng-if="!isImage(track.sendUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
+                                    <td class="cell" ng-click="openimageModal(track.responseUrl)">
+                                        <div class="">
+                                            <img ng-if="isImage(track.responseUrl)" ng-src="{{track.responseUrl}}" width="35" height="35" />
+                                            <i ng-if="!isImage(track.responseUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ track.status}}</td>
+                                   
+                                    <td class="cell">{{ track.createdAt | date:'dd-MM-yy' }}</td>
+                                    <td class="cell">{{ track.createdByName }}</td>
+                                    <td class="cell">{{ track.updatedAt | date:'dd-MM-yy' }}</td>
+                                    <td class="cell">{{ track.updatedByName }}</td>
+                                        <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openTrackingModal(track)">
+                                                <i class="bi bi-pencil"></i>
+                                            </span>
+                                    </td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteTracking(track)">
+                                            <i class="bi bi-trash"></i>
+                                        </span>
+                                    </td>
+                                    @* <td class="cell">{{ track.remarks }}</td> *@
+                                    @* <td class="cell">{{ track.isActive ? 'Yes' : 'No' }}</td> *@
+                                    @* <td class="cell">{{ track.clamStatus }}</td> *@
+                                    @* <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="navtogenerateform(track.id)">
+                                            <i class="bi bi-file-earmark-plus"></i>
+                                        </span>
+                                        </td> 
+                                     <td class="cell">
+                                            <span ng-hide="!stock.isClient" class="btn-sm app-btn" style="color:green;font-size:large">
+                                                <i class="bi bi-upload"></i>
+                                            </span>
+                                        </td> *@
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    <!-- Preview Model-->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="iframe-container">
+                    <iframe src="{{imgUrl}}" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Stock Modal -->
+    <div class="modal fade" id="trackingModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveTracking()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Tracking' : 'Add Tracking' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dateofSubmission" class="form-label">Date of Submission</label>
+                                    <input type="date" id="dateofSubmission" ng-model="currentStock.dateofSubmission" class="form-control">
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="process">Process</label>
+                                    <select class="form-select" ng-options="f.process as f.process for f in processlist" ng-model="currentStock.process" required>
+                                        <option selected disabled value="">Select Process</option>
+                                    </select>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-4">
+                                 <div class="form-group">
+                                     <label for="status">Status</label>
+                                    <textarea ng-model="currentStock.status" class="form-control" placeholder="Status"></textarea>
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="sendTo">Send To</label>
+                                    <input type="text" id="sendTo" ng-model="currentStock.sendTo" class="form-control" placeholder="Send To" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="trackingId">Tracking Id</label>
+                                    <input type="text" id="trackingId" ng-model="currentStock.trackingId" class="form-control" placeholder="Tracking Id" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="sendFile">Send File</label>
+                                    <input type="file" id="sendFile" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="responseFile">Response File</label>
+                                    <input type="file" id="responseFile" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Tracking' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', []).controller('StockController', function ($scope, $http) {
+            $scope.stocks = [];
+            $scope.customers = [];
+            $scope.currentStock = {};
+            $scope.isEditing = false;
+            var isProcessing = false;
+
+            showLoader();
+
+             var path = window.location.pathname;
+            var segments = path.split('/');
+            var id = segments[segments.length - 1];
+
+                    $scope.processlist = [
+            { id: 1, process: 'Transmission' },
+            { id: 2, process: 'Duplicate' },
+            { id: 3, process: 'Exchange Shares' },
+            { id: 4, process: 'Objection & Suspense Procedure' }
+        ];
+
+            // Load Tracking
+            $scope.loadTracking = function () {
+                 if (id)
+                 {
+                    $http.get('/Enquiry/GetTrackingById/'+ id).then(function (response) {
+                    $scope.track = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+                 }
+
+            };
+
+             // Load Stocks
+            $scope.loadStocks = function () {
+                 if (id)
+                 {
+                    $http.get('/Enquiry/GetStocksById/'+ id).then(function (response) {
+                    $scope.stocks = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+                 }
+
+            };
+
+            $scope.deleteTracking = function (docId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $http.post('/Enquiry/UpdateTrackingbyColumn', docId).then(function (response) {
+                        Swal.fire({
+                            title: response.data.success ? 'Deleted!' : 'Error',
+                            text: response.data.success ? 'The Tracking has been deleted.' : 'An error occurred.',
+                            icon: response.data.success ? 'success' : 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadTracking();
+                    });
+                }
+            });
+        };
+
+            // $scope.loadholder = function () {
+            //      if (id)
+            //      {
+            //         $http.get('/Doc/GetDocs/'+ id).then(function (response) {
+            //         $scope.holderlist = response.data;
+            //         hideLoader();
+            //     }, function (error) {
+            //         console.error('Error loading stocks:', error);
+            //         hideLoader();
+            //     });
+            //      }
+
+            // };
+
+            // $scope.fistholderselect = function (fid,sid,tid) {
+            //    var find1 = $scope.holderlist .find(x => x.id === fid);
+
+            //   var result =  (fid == sid ||  fid == tid)
+            //    if(result)
+            //  {  
+            //     $scope.currentStock.firstHolderId = undefined;
+            //     alert("Not Allowed");
+
+
+            //    }
+            // }
+
+            // $scope.secondholderselect = function (fid,sid,tid) {
+            //       var find2 = $scope.holderlist .find(x => x.id === sid);
+
+            //  var result =  (sid == fid ||  sid == tid)
+            //    if(result)
+
+            //  {
+            //     $scope.currentStock.secondHolderId = undefined;
+            //     alert("Not Allowed");
+
+            //  }
+
+            // }
+
+            // $scope.thirdholderselect = function (fid,sid,tid) {
+            //     var find3 = $scope.holderlist .find(x => x.id === tid);
+
+            //   var result =  (tid == sid ||  tid == fid)
+            //    if(result)
+            //  {  
+            //     $scope.currentStock.thirdHolderId = undefined;
+            //     alert("Not Allowed");
+
+            //    }
+            // }
+
+            $scope.loadcompany = function () {
+
+                    $http.get('/Company/GetCompany').then(function (response) {
+                    $scope.companylist = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+            }
+
+            // Load Customers
+            // $scope.loadCustomers = function () {
+            //     $http.get('/Master/GetCustomers').then(function (response) {
+            //         $scope.customers = response.data;
+            //     }, function (error) {
+            //         console.error('Error loading customers:', error);
+            //     });
+            // };
+
+            // Get Customer Name by ID
+            // $scope.getCustomerName = function (customerId) {
+            //     const customer = $scope.customers.find(c => c.id === customerId);
+            //     return customer ? customer.customerName : 'Unknown';
+            // };
+
+            // Open Modal
+            $scope.openTrackingModal = function (track = null) {
+                $scope.isEditing = !!track;
+                $scope.currentStock = track ? angular.copy(track) : {};
+                $scope.currentStock.dateofSubmission = track ?  new Date(track.dateofSubmission) : {}
+                $('#trackingModal').modal('show');
+            };
+
+            //  $scope.navtogenerateform = function (id) {
+            //     window.open('/Form/GenerateForm/' + id, '_blank');
+            // };
+
+            // Save Tracking
+            $scope.saveTracking = function () {
+                if (id) 
+                {
+                    if (isProcessing) return;
+                    isProcessing = true;
+                      var sendFile = $('#sendFile')[0];
+                      var clientSend = sendFile.files[0];
+                      
+                      var responseFile = $('#responseFile')[0];
+                      var clientresponse = responseFile.files[0];
+
+                       $scope.currentStock.stockId = id;
+                        var formData = new FormData();
+                        formData.append('clientSend', clientSend);
+                        formData.append('clientresponse', clientresponse);
+                        formData.append('Tracking', JSON.stringify($scope.currentStock));
+
+                    
+                    // $scope.currentStock.dateofSubmission = $scope.currentStock.dateofSubmission.toISOString().split('T')[0]
+
+
+                    const url = $scope.isEditing ? '/Enquiry/UpdateTracking' : '/Enquiry/CreateTracking';
+                    $http.post(url, formData, {
+                    headers: { 'Content-Type': undefined }
+                }).then(function (response) {
+                        if (response.data.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: response.data.message || 'Operation successful!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.loadTracking();
+                            $('#trackingModal').modal('hide');
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.data.message || 'There was an issue with the operation.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                        }
+                        isProcessing = false;
+                    }, function (error) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        isProcessing = false;
+                    });
+                }
+
+            };
+
+            $scope.isImage = function(url) {
+              const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+              return imageExtensions.some(extension => url.toLowerCase().endsWith(extension));
+            };
+
+            $scope.openimageModal = function (url) {
+                    $scope.imgUrl = url;
+                    $('#imageModal').modal('show');
+               };
+
+             $scope.navtoStock = function () {
+                window.open('/Enquiry/Index/'+$scope.stocks.customerId, '_self');
+        };
+            // Initial Load
+            $scope.loadTracking();
+            $scope.loadcompany();
+            $scope.loadStocks();
+            // $scope.loadholder();
+           // $scope.loadCustomers();
+        });
+    </script>
+</body>
+</html>
+

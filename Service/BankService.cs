@@ -65,6 +65,25 @@ namespace Stock_CMS.Service
             }
         }
 
+        public async Task<long> AddBank1(BankDto data)
+        {
+            var isExist = await _bankRepository.GetBankByLegalHeirId(data.LegalHeirId ?? 0);
+            if (isExist.Any()) { return -1; }
+            else
+            {
+                List<BankDto> dataList = new List<BankDto> { data };
+                var result = await _bankRepository.AddBank(dataList);
+                if (result.Any())
+                {
+                    return result.FirstOrDefault().Id;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
         public async Task<Int32> UpdateBank(BankDto data)
         {
             var isExist = await _bankRepository.GetBankByClientId(data.ClientId ?? 0);

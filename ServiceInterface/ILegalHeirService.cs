@@ -10,6 +10,8 @@ namespace Stock_CMS.ServiceInterface
 
         Task<IEnumerable<LegalHeirDto>> GetLegalHeirByClientId(long id);
 
+        Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByClientId(long id);
+
         Task<long> UpdateLegalHeirbyColumn(LegalHeirDto data);
     }
 }

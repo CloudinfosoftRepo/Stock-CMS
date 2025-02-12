@@ -280,8 +280,10 @@ border-bottom-width: 1pt;
             Yours faithfully
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
-        <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-            {{data.customerName}}
+        <p style="padding-left: 12pt; text-indent: 0pt; text-align: left; justify-content: space-evenly;display: flex;">
+        <span>{{data.firstHolder}}</span>
+            <span>{{data.secondHolder}}</span>
+            <span>{{data.thirdHolder}}</span>
         </p>
         <p style="
         padding-top: 2pt;
@@ -323,12 +325,7 @@ border-bottom-width: 1pt;
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                       let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                       $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                       $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
                 $scope.data = {
@@ -338,7 +335,9 @@ border-bottom-width: 1pt;
                    folioNo : result.folioNo,
                    address : docs.addressAsPerAadhar,
                    newAddress : '',
-                   holders : holders.length > 0 ? `${holders.join(') (')}` : ''
+                  firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
                 };
 
                 hideLoader();
@@ -364,7 +363,10 @@ border-bottom-width: 1pt;
                    folioNo : obj.folioNo,
                    address : obj.address,
                    newAddress : obj.newAddress,
-                   holders : obj.holders
+                firstHolder:obj.firstHolder,
+                secondHolder:obj.secondHolder,
+                thirdHolder:obj.thirdHolder,
+
                 };
                       id = result.stockId;
                 checkData();

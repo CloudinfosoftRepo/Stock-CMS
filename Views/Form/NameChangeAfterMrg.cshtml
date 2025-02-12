@@ -220,7 +220,7 @@
         text-align: left;
       "
     >
-      Unit: <span class="s5">{{data.officename}} Folio No.: - {{data.folioNo}}</span>
+      Unit: <span class="s5">{{data.unit}}<br /> Folio No.: - {{data.folioNo}}</span>
     </p>
     <p style="padding-top: 12pt; text-indent: 0pt; text-align: left"><br /></p>
     <h3 style="text-indent: 0pt; text-align: center">
@@ -435,7 +435,7 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                 $scope.data = {
@@ -444,8 +444,9 @@
                    folioNo : result.folioNo,
                    mobile: doc.mobile,
                    address : doc.addressAsPerAadhar,
-                   officename : result.companyName,
-                   officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   officename : result.company.rtaName,
+                   officeaddress: result.company.rtaAddress,
+                   unit: result.companyName,
                    date:new Date(),
                    newName:'',
                 };
@@ -474,6 +475,7 @@
                     mobile: obj.mobile,
                     officename: obj.officename,
                     officeaddress: obj.officeaddress,
+                    unit: obj.unit,
                     clientid:obj.clientid,
                     date:new Date(obj.date),
                     newName:obj.newName,

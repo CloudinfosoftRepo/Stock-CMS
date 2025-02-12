@@ -37,10 +37,12 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblStock> TblStocks { get; set; }
 
+    public virtual DbSet<TblTracking> TblTrackings { get; set; }
+
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -266,6 +268,10 @@ public partial class StockCmsContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.AddressAsPerAadhar).IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DateOfDeath).HasColumnType("datetime");
+            entity.Property(e => e.DeathCertiUrl)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.Dob)
                 .HasColumnType("datetime")
                 .HasColumnName("DOB");
@@ -282,6 +288,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.NameAsPerAadhar)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.NameAsPerDeathCerti)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.NameAsPerPan)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -294,6 +303,12 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.PlaceOfDeath)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.RelationWithDead)
+                .HasMaxLength(20)
+                .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
@@ -329,19 +344,12 @@ public partial class StockCmsContext : DbContext
             entity.ToTable("Tbl_Stock");
 
             entity.Property(e => e.Brokerage).HasColumnName("brokerage");
-            entity.Property(e => e.ClamStatus)
+            entity.Property(e => e.ClaimStatus)
                 .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("Clam_Status");
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+                .HasColumnName("Claim_Status");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.CustomerId).HasColumnName("Customer_Id");
-            entity.Property(e => e.FirstHolder)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("First_Holder");
             entity.Property(e => e.FirstHolderId).HasColumnName("First_HolderId");
             entity.Property(e => e.FolioNo)
                 .HasMaxLength(50)
@@ -351,16 +359,8 @@ public partial class StockCmsContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("PTBF");
             entity.Property(e => e.Remarks).IsUnicode(false);
-            entity.Property(e => e.SecondHolder)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("Second_Holder");
             entity.Property(e => e.SecondHolderId).HasColumnName("Second_HolderId");
             entity.Property(e => e.StockJson).IsUnicode(false);
-            entity.Property(e => e.ThirdHolder)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("Third_Holder");
             entity.Property(e => e.ThirdHolderId).HasColumnName("Third_HolderId");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
@@ -372,17 +372,47 @@ public partial class StockCmsContext : DbContext
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Tbl_Stock_Tbl_Stock");
 
-            entity.HasOne(d => d.FirstHolderNavigation).WithMany(p => p.TblStockFirstHolderNavigations)
+            entity.HasOne(d => d.FirstHolder).WithMany(p => p.TblStockFirstHolders)
                 .HasForeignKey(d => d.FirstHolderId)
                 .HasConstraintName("FK_Tbl_Stock_Tbl_Doc");
 
-            entity.HasOne(d => d.SecondHolderNavigation).WithMany(p => p.TblStockSecondHolderNavigations)
+            entity.HasOne(d => d.SecondHolder).WithMany(p => p.TblStockSecondHolders)
                 .HasForeignKey(d => d.SecondHolderId)
                 .HasConstraintName("FK_Tbl_Stock_Tbl_Doc1");
 
-            entity.HasOne(d => d.ThirdHolderNavigation).WithMany(p => p.TblStockThirdHolderNavigations)
+            entity.HasOne(d => d.ThirdHolder).WithMany(p => p.TblStockThirdHolders)
                 .HasForeignKey(d => d.ThirdHolderId)
                 .HasConstraintName("FK_Tbl_Stock_Tbl_Doc2");
+        });
+
+        modelBuilder.Entity<TblTracking>(entity =>
+        {
+            entity.ToTable("Tbl_Tracking");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DateofSubmission).HasColumnType("datetime");
+            entity.Property(e => e.Process)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ResponseUrl)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.SendTo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.SendUrl)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Status).IsUnicode(false);
+            entity.Property(e => e.TrackingId)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Stock).WithMany(p => p.TblTrackings)
+                .HasForeignKey(d => d.StockId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Tbl_Tracking_Tbl_Stock");
         });
 
         modelBuilder.Entity<TblUser>(entity =>

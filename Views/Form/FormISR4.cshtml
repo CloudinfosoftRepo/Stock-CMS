@@ -202,7 +202,7 @@
         }
 
             #l2 > li > *:first-child:before {
-                content: " ";
+                /* content: " "; */
                 color: black;
                 font-family: Symbol, serif;
                 font-style: normal;
@@ -233,6 +233,50 @@
     </style>
 </head>
 <body style="padding-left: 5%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Form ISR 4</h3>
+        </div>
+    </div>
+
+    <form name="gForm" ng-submit="genrateForm()">
+    <div ng-if="hDiv">
+        
+            <div class="row">
+                @* <div class="col-md-12"> *@
+                <div class="form-group mb-3 col-md-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="certificatenos" class="form-label">Certificate Nos</label>
+                    <input type="text" ng-model="data.certificatenos" class="form-control search-orders" placeholder="Certificate Nos">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
+                    <input type="text" ng-model="data.distinctiveNosStart" class="form-control search-orders" placeholder="Distinctive Nos Start">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
+                    <input type="text" ng-model="data.distinctiveNosEnd" class="form-control search-orders" placeholder="Distinctive Nos End">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+       
+    </div>
     <div id="printForm">
     <h1 style="padding-top: 3pt; padding-left: 42pt; text-indent: 0pt; text-align: center;">Form ISR-4</h1>
     <p class="s1" style="padding-top: 1pt; padding-left: 42pt; text-indent: 0pt; line-height: 114%; text-align: center;">
@@ -242,7 +286,7 @@
     <p class="s1" style="padding-top: 1pt; padding-left: 42pt; text-indent: 0pt; text-align: center;">(for Securities - Shares / Debentures / Bonds, etc., held in physical form)</p>
     <p style="padding-top: 2pt; text-indent: 0pt; text-align: left;"><br /></p>
     <p class="s1" style="text-indent: 0pt; line-height: 12pt; text-align: right;">
-        <b>Date:</b><u>04/12/2024</u>
+        <b>Date:</b><u>{{data.today | date:'dd/MM/yyyy'}}</u>
     </p>
     <ol id="l1">
         <li data-list-text="A.">
@@ -259,7 +303,7 @@
                     <p style="padding-top: 5pt; padding-left: 64pt; text-indent: -21pt; line-height: 129%; text-align: justify;">
                         Demat Account No. (If available):
                         <u>
-46485446858456845
+@* 46485446858456845 *@{{data.dpid}}
                         </u>
                         Provide Client Master List (<b>CML</b>) of your Demat Account from the Depository Participant*
                     </p>
@@ -319,7 +363,10 @@
                                         border-right-style: dotted;
                                         border-right-width: 1pt;
                                     ">
-                                <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Nomination / Declaration to Opt-out</p>
+                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">{{data.firstHolderpan}}
+                                            <br />{{data.secondHolderpan}}
+                                            <br />{{data.thirdHolderpan}}
+                                            <br />Nomination / Declaration to Opt-out</p>
                             </td>
                             <td style="
                                         width: 203pt;
@@ -380,7 +427,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s9">Issue of Duplicate certificate</span></p>
+                                <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option1 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option1" value="option1">
+                                    <span class="s9">Issue of Duplicate certificate</span>
+                                </p>
                     </td>
                     <td style="
                                 width: 224pt;
@@ -393,7 +445,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 28pt; padding-right: 4pt; text-indent: -21pt; line-height: 19pt; text-align: left;">◻<span class="s9">Claim from Unclaimed Suspense Account</span></p>
+                                <p class="s12" style="padding-left: 28pt; padding-right: 4pt; text-indent: -21pt; line-height: 19pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option2 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option2" value="option2">
+                                    <span class="s9">Claim from Unclaimed Suspense Account</span>
+                                </p>
                     </td>
                 </tr>
                 <tr style="height: 40pt;">
@@ -409,7 +466,10 @@
                                 border-right-width: 1pt;
                             ">
                         <p class="s12" style="padding-left: 27pt; text-indent: -22pt; line-height: 19pt; text-align: left;">
-                            ◻ <span class="s13">Replacement </span><span class="s9">/ Renewal / Exchange of securities certificate</span>
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option3 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option3" value="option3">
+                                    <span class="s13">Replacement </span><span class="s9">/ Renewal / Exchange of securities certificate</span>
                         </p>
                     </td>
                     <td style="
@@ -423,7 +483,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s9">Endorsement</span></p>
+                                <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option4 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option4" value="option4">
+                                    <span class="s9">Endorsement</span>
+                                </p>
                     </td>
                 </tr>
                 <tr style="height: 40pt;">
@@ -438,7 +503,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 27pt; text-indent: -22pt; line-height: 19pt; text-align: left;">◻ <span class="s9">Sub-division / Splitting of securities certificate</span></p>
+                                <p class="s12" style="padding-left: 27pt; text-indent: -22pt; line-height: 19pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option5 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option5" value="option5">
+                                    <span class="s9">Sub-division / Splitting of securities certificate</span>
+                                </p>
                     </td>
                     <td style="
                                 width: 224pt;
@@ -451,7 +521,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s9">Consolidation of Folios</span></p>
+                                <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option6 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option6" value="option6">
+                                    <span class="s9">Consolidation of Folios</span>
+                                </p>
                     </td>
                 </tr>
                 <tr style="height: 25pt;">
@@ -466,7 +541,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s9">Consolidation of Securities certificate</span></p>
+                                <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option7 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option7" value="option7">
+                                    <span class="s9">Consolidation of Securities certificate</span>
+                                </p>
                     </td>
                     <td style="
                                 width: 224pt;
@@ -479,7 +559,12 @@
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s12" style="padding-left: 6pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s9">Transmission</span></p>
+                                <p class="s12" style="padding-left: 6pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option8 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option8" value="option8">
+                                    <span class="s9">Transmission</span>
+                                </p>
                     </td>
                 </tr>
                 <tr style="height: 26pt;">
@@ -495,7 +580,12 @@
                                 border-right-width: 1pt;
                             "
                         colspan="2">
-                        <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s9">Transposition </span><span class="s14">(Mention the new order of holders here)</span></p>
+                                <p class="s12" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                    <span ng-if="isPrint" class="s8" ng-bind="requests.option9 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option9" value="option9">
+                                    <span class="s9">Transposition </span><span class="s14">(Mention the new order of holders here)</span> <span class="s9">{{data.firstHolder}} &amp; {{data.secondHolder}} &amp; {{data.thirdHolder}}</span>
+                                </p>
                     </td>
                 </tr>
             </table>
@@ -529,7 +619,7 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p style="text-indent: 0pt; text-align: left;">Tatava </p>
+                                <p style="text-indent: 0pt; text-align: left;">{{data.companyName}} </p>
                     </td>
                 </tr>
                 <tr style="height: 22pt;">
@@ -557,7 +647,7 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p style="text-indent: 0pt; text-align: left;">753156</p>
+                                <p style="text-indent: 0pt; text-align: left;">{{data.folioNo}}</p>
                     </td>
                 </tr>
                 <tr style="height: 66pt;">
@@ -586,9 +676,9 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">1. Xyz</p>
-                            <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">2. Xyz</p>
-                            <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">3. Xyz</p>
+                                <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">1. {{data.firstHolder}} </p>
+                                <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">2. {{data.secondHolder}}</p>
+                                <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">3. {{data.thirdHolder}}</p>
                     </td>
                 </tr>
                 <tr style="height: 15pt;">
@@ -616,7 +706,7 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p style="text-indent: 0pt; text-align: left;">65153156516</p>
+                                <p style="text-indent: 0pt; text-align: left;">{{data.certificatenos}}</p>
                     </td>
                 </tr>
             </table>
@@ -647,7 +737,7 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p style="text-indent: 0pt; text-align: left;">RGRS651SG6</p>
+                                <p style="text-indent: 0pt; text-align: left;">{{data.distinctiveNosStart}} - {{data.distinctiveNosEnd}}</p>
                     </td>
                 </tr>
                 <tr style="height: 44pt;">
@@ -676,7 +766,7 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p style="text-indent: 0pt; text-align: left;">TREWDFSF</p>
+                        <p style="text-indent: 0pt; text-align: left;">{{data.qty}} &amp; &#8377 {{data.rate}}</p>
                     </td>
                 </tr>
             </table>
@@ -686,11 +776,19 @@
             <h3 style="padding-top: 14pt; padding-left: 71pt; text-indent: -28pt; line-height: 14pt; text-align: left;">Document / details required for specific service request:</h3>
             <ul id="l3">
                 <li data-list-text="">
-                        <p class="s15" style="padding-left: 78pt; text-indent: -23pt; line-height: 16pt; text-align: left;">i) <span class="p">Duplicate securities certificate</span></p>
+                            <p class="s15" style="padding-left: 78pt; text-indent: -23pt; line-height: 16pt; text-align: left;">
+                                i)<span ng-if="isPrint" class="s8" ng-bind="doclist.option1 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option1" value="option1"> <span class="p">Duplicate securities certificate</span>
+                            </p>
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-left: 78pt; text-indent: -27pt; text-align: left;">ii) <span class="p">Claim from Unclaimed Suspense Account</span></p>
+                            <p class="s15" style="padding-left: 78pt; text-indent: -27pt; text-align: left;">
+                                ii)<span ng-if="isPrint" class="s8" ng-bind="doclist.option2 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option2" value="option2"> <span class="p">Claim from Unclaimed Suspense Account</span>
+                            </p>
                     <p style="padding-top: 4pt; text-indent: 0pt; text-align: left;"><br /></p>
                     <table style="border-collapse: collapse; margin-left: 92.705pt;" cellspacing="0">
                         <tr style="height: 35pt;">
@@ -718,29 +816,55 @@
                                         border-right-style: solid;
                                         border-right-width: 1pt;
                                     ">
-                                <p class="s9" style="padding-top: 2pt; padding-left: 179pt; padding-right: 2pt; text-indent: -13pt; text-align: right;">(in numbers) (in words)</p>
+                                        <p class="s9" style="padding-top: 2pt; padding-left: 115pt; padding-right: 2pt; text-indent: -13pt; text-align: right;">{{data.qty}}(in numbers) <br /> {{data.qtyinwords}}(in words)</p>
                             </td>
                         </tr>
                     </table>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-top: 13pt; padding-left: 78pt; text-indent: -30pt; text-align: left;">iii) <span class="p">Replacement / Renewal / Exchange of securities certificate</span></p>
+                            <p class="s15" style="padding-top: 13pt; padding-left: 78pt; text-indent: -30pt; text-align: left;">
+                                iii)<span ng-if="isPrint" class="s8" ng-bind="doclist.option3 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option3" value="option3"> <span class="p">Replacement / Renewal / Exchange of securities certificate</span>
+                            </p>
                     <p style="padding-top: 2pt; padding-left: 92pt; text-indent: 0pt; text-align: left;">(that is defaced, mutilated, torn, decrepit, worn out or where the page on the reverse is fully utilized)</p>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-left: 78pt; text-indent: -30pt; line-height: 15pt; text-align: left;">iv)<span class="p">Endorsement</span></p>
+                            <p class="s15" style="padding-left: 78pt; text-indent: -30pt; line-height: 15pt; text-align: left;">
+                                iv) <span ng-if="isPrint" class="s8" ng-bind="doclist.option4 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option4" value="option4"><span class="p">Endorsement</span>
+                            </p>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-left: 78pt; text-indent: -27pt; text-align: left;">v) <span class="p">Sub-division / Splitting of securities certificate</span></p>
+                            <p class="s15" style="padding-left: 78pt; text-indent: -27pt; text-align: left;">
+                                v)<span ng-if="isPrint" class="s8" ng-bind="doclist.option5 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option5" value="option5"> <span class="p">Sub-division / Splitting of securities certificate</span>
+                            </p>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-top: 1pt; padding-left: 78pt; text-indent: -30pt; text-align: left;">vi) <span class="p">Consolidation of securities certificate/Folios</span></p>
+                            <p class="s15" style="padding-top: 1pt; padding-left: 78pt; text-indent: -30pt; text-align: left;">
+                                vi)<span ng-if="isPrint" class="s8" ng-bind="doclist.option6 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option6" value="option6"> <span class="p">Consolidation of securities certificate/Folios</span>
+                            </p>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-top: 1pt; padding-left: 78pt; text-indent: -33pt; text-align: left;">vii)<span class="p">Transmission</span></p>
+                            <p class="s15" style="padding-top: 1pt; padding-left: 78pt; text-indent: -33pt; text-align: left;">
+                                vii)<span ng-if="isPrint" class="s8" ng-bind="doclist.option7 ? '☑' : '☐'"></span>
+
+                                <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option7" value="option7"><span class="p">Transmission</span>
+                            </p>
                 </li>
                 <li data-list-text="">
-                        <p class="s15" style="padding-left: 78pt; text-indent: -36pt; text-align: left;content:none;"> <span class="p">viii) Transposition</span></p>
+                            <p class="s15" style="padding-left: 78pt; text-indent: -36pt; text-align: left;content:none;">
+                                <span class="p">
+                                    viii)<span ng-if="isPrint" class="s8" ng-bind="doclist.option8 ? '☑' : '☐'"></span>
+
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option8" value="option8"> Transposition
+                                </span>
+                            </p>
                 </li>
             </ul>
         </li>
@@ -829,7 +953,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
             </td>
             <td style="
                         width: 143pt;
@@ -842,7 +966,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
             </td>
             <td style="
                         width: 107pt;
@@ -855,7 +979,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
             </td>
         </tr>
         <tr style="height: 21pt;">
@@ -883,7 +1007,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolder}}
             </td>
             <td style="
                         width: 143pt;
@@ -896,7 +1020,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.secondHolder}}
             </td>
             <td style="
                         width: 107pt;
@@ -909,7 +1033,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.thirdHolder}}
             </td>
         </tr>
         <tr style="height: 42pt;">
@@ -937,7 +1061,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolderaddress}}
             </td>
             <td style="
                         width: 143pt;
@@ -950,7 +1074,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.secondHolderaddress}}
             </td>
             <td style="
                         width: 107pt;
@@ -963,7 +1087,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.thirdHolderaddress}}
             </td>
         </tr>
         <tr style="height: 14pt;">
@@ -1022,42 +1146,253 @@
         </tr>
     </table>
     </div>
+    </form>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
 </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
-
+        $scope.data = undefined;
+              $scope.hDiv = true;
+              var params = new URLSearchParams(window.location.search);
+              var id = params.get('id');
+              var id2 = params.get('id2');
+              $scope.isPrint = id2 ? true : false
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+         // Load Customers
+         $scope.loadCustomers = function (sid) {
+             if(id){
+                $scope.hDiv = true;
+                $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                    var result = response.data;
+                    $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
+                        $scope.docs = response.data;
+                        var doc = $scope.docs.find(x => x.id === sid);
+                        $scope.data = {
+                            customerName : doc.nameAsPerAadhar,
+                            today: new Date(),
+                            dpid: doc.dpid,
+                            firstHolderpan: result.firstHolderData ? result.firstHolderData.pan : '',
+                            secondHolderpan: result.secondHolderData ? result.secondHolderData.pan : '',
+                            thirdHolderpan: result.thirdHolderData ? result.thirdHolderData.pan : '',
+                            companyName: result.companyName,
+                            folioNo: result.folioNo,
+                            firstHolder :result.firstHolderName,
+                            secondHolder:result.secondHolderName,
+                            thirdHolder: result.thirdHolderName,
+                            certificatenos: $scope.data && $scope.data.certificatenos || '',
+                            distinctiveNosStart:  $scope.data && $scope.data.distinctiveNosStart || '',
+                            distinctiveNosEnd: $scope.data && $scope.data.distinctiveNosEnd || '',
+                            qty: result.qty,
+                            rate: result.rate,
+                            qtyinwords: $scope.numberToWords(result.qty),
+                            firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
+                            secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
+                            thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
+                        };
+
+                    hideLoader();
+                    }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                    });
+                }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+                });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    today: new Date(obj.today),
+                    dpid: obj.dpid,
+                    firstHolderpan: obj.firstHolderpan,
+                    secondHolderpan: obj.secondHolderpan,
+                    thirdHolderpan: obj.thirdHolderpan,
+                    requestlist:JSON.parse(obj.requestlist),
+                    companyName: obj.companyName,
+                    folioNo: obj.folioNo,
+                    firstHolder:obj.firstHolder,
+                    secondHolder:obj.secondHolder,
+                    thirdHolder:obj.thirdHolder,
+                    certificatenos: obj.certificatenos,
+                    distinctiveNosStart: obj.distinctiveNosStart,
+                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    qty: obj.qty,
+                    rate: obj.rate,
+                    docattach: JSON.parse(obj.docattach),
+                    qtyinwords: obj.qtyinwords,
+                    firstHolderaddress:obj.firstHolderaddress,
+                    secondHolderaddress:obj.secondHolderaddress,
+                    thirdHolderaddress:obj.thirdHolderaddress,
+                };
+                    $scope.requests = $scope.data.requestlist;
+                $scope.doclist = $scope.data.docattach;
+                id = result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
 
+    function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+     $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+
+     $scope.numberToWords = function(num) {
+        var ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+        var tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+        var units = ["", "Hundred", "Thousand", "Lakh", "Crore"];  // Adjusted for Indian system
+
+        // Helper function to convert numbers less than 1000
+        function convertToWords(num) {
+            if (num === 0) return "Zero";
+            var words = "";
+
+            // Process hundreds
+            if (Math.floor(num / 100) > 0) {
+                words += ones[Math.floor(num / 100)] + " Hundred ";
+                num %= 100;
+            }
+
+            // Process tens and ones
+            if (num > 0) {
+                if (num < 20) {
+                    words += ones[num];
+                } else {
+                    words += tens[Math.floor(num / 10)];
+                    if (num % 10 > 0) {
+                        words += " " + ones[num % 10];
+                    }
+                }
+            }
+
+            return words.trim();
+        }
+
+        // Main function to convert numbers to words with appropriate units (Thousand, Lakh, Crore)
+        if (num === 0) return "Zero";
+
+        var result = '';
+        var i = 0;
+
+        // Process lakhs, thousands, and hundreds
+        while (num > 0) {
+            if (num % 1000 !== 0) {
+                result = convertToWords(num % 1000) + " " + units[i] + " " + result;
+            }
+            num = Math.floor(num / 1000);
+            i++;
+        }
+
+        return result.trim();
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+
+            var arr = angular.copy($scope.requests);
+            $scope.data.requestlist = JSON.stringify(arr,null,2);
+
+             var arr1 = angular.copy($scope.doclist);
+             $scope.data.docattach= JSON.stringify(arr1,null,2);
+
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Form ISR 4',
+                 StockId : id,
+                 url : `/Form/FormISR4?id2=`,
+                 jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        // $scope.loadCustomers();
+                        window.open(response.data.data.url + response.data.data.id,'_self')
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
+
+        $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+
         //Function
         $scope.printDiv = function (divId) {
-                    var css ='<style type="text/css"> *{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:15pt}h3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s4{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.a{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s7{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s9{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s12{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s15{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s16{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s18{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s19{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}#l2{padding-left:0pt}#l2>li>*:first-child:before{content:" ";color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}#l3{padding-left:0pt}#l3>li>*:first-child:before{content:" ";color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}table,tbody{vertical-align:top;overflow:visible} </style>';
+                    var css ='<style type="text/css"> *{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:15pt}h3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s4{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.a{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s7{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s9{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s12{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s15{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s16{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s18{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s19{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}#l2{padding-left:0pt}#l2>li>*:first-child:before{color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}#l3{padding-left:0pt}#l3>li>*:first-child:before{color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}table,tbody{vertical-align:top;overflow:visible}.ng-hide{display:none} </style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
@@ -1066,7 +1401,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 

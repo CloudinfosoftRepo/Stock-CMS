@@ -172,7 +172,7 @@
         $scope.loadheader = function () {
              if (id)
              {
-                $http.get('/Enquiry/GetHeader/'+ id).then(function (response) {
+                $http.get('/Enquiry/GetStocksById/'+ id).then(function (response) {
                 $scope.header = response.data;
                 hideLoader();
             }, function (error) {

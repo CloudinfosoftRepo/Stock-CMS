@@ -132,37 +132,48 @@
                                     <td class="cell">{{ doc.name }}</td>
                                     <td class="cell">{{ doc.pan }}</td>
                                     <td class="cell">{{ doc.nameAsPerPan }}</td>
-                                     <td class="cell"> 
-                                         <div class=""> 
-                                             <img src="{{doc.panurl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.panurl)"> 
+                                    <td class="cell" ng-click="openimageModal(doc.panurl)">
+                                        <div class="">
 
-                                         </div> 
-                                     </td> 
+                                            <img ng-if="isImage(doc.panurl)" ng-src="{{doc.panurl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.panurl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
                                     <td class="cell">{{ doc.aadhar }}</td>
                                     <td class="cell">{{ doc.nameAsPerAadhar }}</td>
                                     <td class="cell">{{ doc.addressAsPerAadhar }}</td>
-                                     <td class="cell"> 
-                                         <div class=""> 
-                                             <img src="{{doc.aadharUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.aadharUrl)"> 
-                                         </div> 
-                                     </td> 
+                                    <td class="cell" ng-click="openimageModal(doc.aadharUrl)">
+                                        <div class="">
+
+                                            <img ng-if="isImage(doc.aadharUrl)" ng-src="{{doc.aadharUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.aadharUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
                                     <td class="cell">{{ doc.relationship }}</td>
                                     <td class="cell">{{ doc.relativesName }}</td>
                                     <td class="cell">{{ doc.email }}</td>
-                                    <td class="cell">
+                                    <td class="cell" ng-click="openimageModal(doc.voterIdUrl)">
                                         <div class="">
-                                            <img alt="" src="{{doc.voterIdUrl}}" width="35px" height="35px">
+
+                                            <img ng-if="isImage(doc.voterIdUrl)" ng-src="{{doc.voterIdUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.voterIdUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.nameAsPerVoterId }}</td>
                                     <td class="cell">{{ doc.addressAsPerVoterId }}</td>
-                                     <td class="cell"> 
-                                         <div class=""> 
-                                             <img alt="" src="{{doc.deathCertiUrl}}" width="35px" height="35px"> 
-                                         </div> 
-                                     </td> 
+                                    <td class="cell" ng-click="openimageModal(doc.deathCertiUrl)">
+                                        <div class="">
+
+                                            <img ng-if="isImage(doc.deathCertiUrl)" ng-src="{{doc.deathCertiUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.deathCertiUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
                                     <td class="cell">{{ doc.nameAsPerDeathCerti }}</td>
                                     <td class="cell">{{ doc.dateOfDeath | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.placeOfDeath }}</td>
@@ -678,6 +689,7 @@
                     if (isProcessing) return;
                     isProcessing = true;
                     $scope.currentBank.clientId = $scope.docid2;
+                    $scope.currentBank.LegalHeirId = 0;
                     $scope.currentBank.accountOpeningDate = $scope.currentBank.accountOpeningDate.toISOString().split('T')[0]
 
                         const url = $scope.currentBank.id ? `/doc/updateBank/${$scope.currentBank.id}` : '/doc/createBank';
@@ -722,6 +734,12 @@
 
             $scope.manageHolderDoc = function (id) {
                 window.open('/Doc/HolderDoc/' + id, '_self');
+            };
+
+
+            $scope.isImage = function(url) {
+              const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+              return imageExtensions.some(extension => url.toLowerCase().endsWith(extension));
             };
 
 

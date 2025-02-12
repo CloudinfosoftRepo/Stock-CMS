@@ -158,7 +158,6 @@
                 padding-left: 0pt;
             }
             #l2 > li > *:first-child:before {
-                content: "◻ ";
                 color: black;
                 font-family: Cambria, serif;
                 font-style: normal;
@@ -192,6 +191,43 @@
         </style>
     </head>
 <body style="padding-left: 8%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+    </div>
+
+        <form name="gForm" ng-submit="genrateForm()">
+
+        <div ng-if="hDiv">
+            <div class="row">
+                @* <div class="col-md-4"> *@
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
+                    <input type="text" ng-model="data.distinctiveNosStart" class="form-control search-orders" placeholder="Distinctive Nos Start">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
+                    <input type="text" ng-model="data.distinctiveNosEnd" class="form-control search-orders" placeholder="Distinctive Nos End">
+                </div>
+                 <div class="form-group mb-3  col-md-3">
+                    <label for="newemail" class="form-label">New Email</label>
+                    <input type="email" ng-model="data.newemail" class="form-control search-orders" placeholder="New Email">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="newmobile" class="form-label">New Mobile</label>
+                    <input type="text" ng-model="data.newmobile" class="form-control search-orders" placeholder="New Mobile">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+        </div>
+   
     <div id="printForm">
         <h1 style="padding-top: 3pt; padding-left: 41pt; text-indent: 0pt; text-align: center;">Form ISR – 1</h1>
        
@@ -207,7 +243,7 @@
         <p class="s2" style="padding-top: 1pt; padding-left: 41pt; text-indent: 0pt; text-align: center;">[For Securities (Shares / Debentures / Bonds, etc.) of listed companies held in physical form]</p>
         <p style="padding-top: 2pt; text-indent: 0pt; text-align: left;"><br /></p>
         <p class="s2" style="text-indent: 0pt; text-align: right;">
-            <b>Date:</b><u><b> 25/05/2024</b></u>
+            <b>Date:</b><u><b> {{data.today | date:'dd/MM/yyyy'}}</b></u>
         </p>
         <ol id="l1">
             <li data-list-text="A.">
@@ -226,10 +262,16 @@
                                 border-bottom-width: 1pt;
                                 border-right-style: dotted;
                                 border-right-width: 1pt;
-                            "
-                        >
-                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">PAN</span></p>
-                        </td>
+                            ">
+                                <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+                                   
+                                    <span ng-if="isPrint" class="s8" ng-bind="checkboxes.pan ? '☑ PAN' : '☐ PAN'"></span>
+
+                                    <div ng-show="!isPrint"> <input type="checkbox" ng-model="checkboxes.pan" ng-change="loadCustomers()"> <span class="s8">PAN</span>  </div>
+                                </p>
+                              
+
+                            </td>
                         <td
                             style="
                                 width: 156pt;
@@ -243,7 +285,12 @@
                                 border-right-width: 1pt;
                             "
                         >
-                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Bank details</span></p>
+                                <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+
+                <span ng-if="isPrint" class="s8" ng-bind="checkboxes.bankDetails ? '☑ Bank details' : '☐ Bank details'"></span>
+
+                                    <div ng-show="!isPrint">  <input type="checkbox" ng-model="checkboxes.bankDetails" ng-change="loadCustomers()">  <span class="s8">Bank details</span></div>
+            </p>
                         </td>
                         <td
                             style="
@@ -258,7 +305,12 @@
                                 border-right-width: 1pt;
                             "
                         >
-                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Signature</span></p>
+                                <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+
+                                    <span ng-if="isPrint" class="s8" ng-bind="checkboxes.signature ? '☑ Signature' : '☐ Signature'"></span>
+
+                                    <div ng-show="!isPrint">  <input type="checkbox" ng-model="checkboxes.signature" ng-change="loadCustomers()"> <span class="s8">Signature</span> </div>
+                                </p>
                         </td>
                     </tr>
                     <tr style="height: 26pt;">
@@ -275,7 +327,13 @@
                                 border-right-width: 1pt;
                             "
                         >
-                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Mobile number</span></p>
+                                <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+
+                                    <span ng-if="isPrint" class="s8" ng-bind="checkboxes.mobileNumber ? '☑ Mobile number' : '☐ Mobile number'"></span>
+                                      <div ng-show="!isPrint"> <input type="checkbox" ng-model="checkboxes.mobileNumber" ng-change="loadCustomers()"> <span class="s8">Mobile number</span> </div>
+
+                                    
+                                </p>
                         </td>
                         <td
                             style="
@@ -290,7 +348,12 @@
                                 border-right-width: 1pt;
                             "
                         >
-                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">E-mail ID</span></p>
+                                <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+
+                                    <span ng-if="isPrint" class="s8" ng-bind="checkboxes.emailId ? '☑ E-mail ID' : '☐ E-mail ID'"></span>
+
+                                    <div ng-show="!isPrint"> <input type="checkbox" ng-model="checkboxes.emailId" ng-change="loadCustomers()"> <span class="s8">E-mail ID</span></div>
+                                </p>
                         </td>
                         <td
                             style="
@@ -305,7 +368,12 @@
                                 border-right-width: 1pt;
                             "
                         >
-                            <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">◻ <span class="s8">Address</span></p>
+                                <p class="s7" style="padding-left: 5pt; text-indent: 0pt; line-height: 22pt; text-align: left;">
+
+                                    <span ng-if="isPrint" class="s8" ng-bind="checkboxes.address ? '☑ Address' : '☐ Address'"></span>
+
+                                    <div ng-show="!isPrint"> <input type="checkbox" ng-model="checkboxes.address" ng-change="loadCustomers()"> <span class="s8">Address</span></div>
+                                </p>
                         </td>
                     </tr>
                 </table>
@@ -317,28 +385,30 @@
                 <table class="form-table">
                     <tr>
                       <td class="label">Name of the Issuer Company</td>
-                      <td colspan="5">DRHTDBDR THSRE</td>
-                      <td class="label">Folio No.:REH6815</td>
+                        <td colspan="5">@* DRHTDBDR THSRE *@{{data.companyName}}</td>
+                        <td class="label">Folio No.:@* REH6815 *@{{data.folioNo}}</td>
                     </tr>
                     <tr>
                       <td class="label">Name(s) of the Security holder(s)<br><span class="small">(as per the Certificate(s))</span></td>
                       <td colspan="8">
                             <ol class="holder-list" style="padding-left: 0rem;">
-                          <li>1. REHATREG</li>
-                          <li>2. REAGREG</li>
-                          <li>3. RGERAGER</li>
+                                <li>
+                                    1. @* REHATREG *@{{data.firstHolder}}
+                                </li>
+                                <li>2. @* REAGREG *@{{data.secondHolder}}</li>
+                                <li>3. @* RGERAGER *@{{data.thirdHolder}}</li>
                         </ol>
                       </td>
                     </tr>
                     <tr>
                       <td class="label">Number & Face value of securities</td>
-                      <td colspan="8">TSHTRFDHT RGRES</td>
+                            <td colspan="8">@* TSHTRFDHT RGRES *@{{data.qty}} &amp; &#8377; {{data.rate}}</td>
                     </tr>
                     <tr>
                       <td class="label">Distinctive number of securities<span class="small">(Optional)</span></td>
-                      <td class="label" colspan="4">From <br>JHDFNXF</td>
-                      
-                      <td class="label" colspan="3">To<br> THST TSHT</td>
+                        <td class="label" colspan="4">From <br>{{data.distinctiveNosStart}}</td>
+
+                        <td class="label" colspan="3">To<br> {{data.distinctiveNosEnd}}</td>
                       
                     </tr>
                   </table>
@@ -492,7 +562,18 @@
                 >
                     <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">PAN</p>
                     <p class="s8" style="padding-top: 14pt; padding-left: 5pt; padding-right: 11pt; text-indent: 0pt; text-align: left;">Whether it is Valid (linked to Aadhaar):</p>
-                    <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;"><span class="s11"> </span><span class="s8">Yes </span><span class="s8">No</span></p>
+                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">
+                            <span ng-if="isPrint" class="s8" ng-bind="data.selectedOption === 'Yes' ? '☑ Yes' : '☐ Yes' "></span><br />
+                            <span ng-if="isPrint" class="s8" ng-bind="data.selectedOption === 'No' ? '☑ No' : '☐ No' "></span>
+                            <div ng-show="!isPrint">
+                                <input type="radio" name="option" ng-model="data.selectedOption" value="Yes">
+                                <span class="s8">Yes </span>
+                            </div> <br />
+                            <div ng-show="!isPrint">
+                            <input type="radio" name="option" ng-model="data.selectedOption" value="No">
+                            <span class="s8">No</span>
+                            </div>
+                        </p>
                 </td>
                 <td
                     style="
@@ -638,27 +719,47 @@
                 >
                     <p class="s8" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Any one of the documents, only if there is change in the address;</p>
                     <ul id="l2">
-                        <li data-list-text="◻"><p class="s8" style="padding-left: 17pt; text-indent: -17pt; line-height: 23pt; text-align: left;">Client Master List (<b>CML</b>) of your Demat Account, provided by DP.</p></li>
-                        <li data-list-text="◻">
-                            <p class="s8" style="padding-top: 1pt; padding-right: 5pt; text-indent: 0pt; line-height: 113%; text-align: left;">
+                            <li >
+                                <span ng-if="isPrint" class="s8" ng-bind="checkboxes1.option1 ? '☑' : '☐'"></span>
+                                <div ng-show="!isPrint">
+                                    <input type="checkbox" ng-model="checkboxes1.option1" ng-change="loadCustomers()"></div>
+                                <span class="s8" style="padding-left: 17pt; text-indent: -17pt; line-height: 23pt; text-align: left;">Client Master List (<b>CML</b>) of your Demat Account, provided by DP.</span></li>
+                            <li >
+                                <span ng-if="isPrint" class="s8" ng-bind="checkboxes1.option2 ? '☑' : '☐'"></span>
+                                <div ng-show="!isPrint">
+                                <input type="checkbox" ng-model="checkboxes1.option2" ng-change="loadCustomers()"></div>
+                            <span class="s8" style="padding-top: 1pt; padding-right: 5pt; text-indent: 0pt; line-height: 113%; text-align: left;">
                                 Valid Passport/ Registered Lease or Sale Agreement of Residence / Driving License / Flat Maintenance bill.
-                            </p>
+                            </span>
                         </li>
-                        <li data-list-text="◻">
-                            <p class="s8" style="padding-left: 19pt; text-indent: -18pt; line-height: 10pt; text-align: justify;">Utility bills like Telephone Bill (only land line), Electricity bill or Gas bill - Not more than 3 months old.</p>
+                        <li >
+                                <span ng-if="isPrint" class="s8" ng-bind="checkboxes1.option3 ? '☑' : '☐'"></span>
+                                <div ng-show="!isPrint">
+                                    <input type="checkbox" ng-model="checkboxes1.option3" ng-change="loadCustomers()"></div>
+                            <span class="s8" style="padding-left: 19pt; text-indent: -18pt; line-height: 10pt; text-align: justify;">Utility bills like Telephone Bill (only land line), Electricity bill or Gas bill - Not more than 3 months old.</span>
                             
                         </li>
-                        <li data-list-text="◻">
-                            <p class="s8" style="padding-left: 28px; text-indent: -19pt; line-height: 10pt; text-align: left;">Identity card / document with address, issued by any of the following:</p>
+                        <li >
+                                <span ng-if="isPrint" class="s8" ng-bind="checkboxes1.option4 ? '☑' : '☐'"></span>
+                                <div ng-show="!isPrint">
+                                    <input ng-disabled="isPrint" type="checkbox" ng-model="checkboxes1.option4" ng-change="loadCustomers()"></div>
+                            <span class="s8" style="padding-left: 28px; text-indent: -19pt; line-height: 10pt; text-align: left;">Identity card / document with address, issued by any of the following:</span>
                             <p class="s8" style="padding-top: 3pt; padding-left: 14pt; padding-right: 5pt; text-indent: 0pt; text-align: justify;">
                                 Central/State Government and its Departments, Statutory / Regulatory Authorities, Public Sector Undertakings, Scheduled Commercial Banks, Public Financial Institutions.
                             </p>
                         </li>
-                        <li data-list-text="◻">
-                            <p class="s8" style="padding-left: 19pt; text-indent: -17pt; line-height: 12pt; text-align: left;">For FII / sub account, Power of Attorney given by FII / sub-account to the Custodians (which are duly notarized and / or apostilled or consularised) that gives the registered address should be taken.</p>
+                        <li >
+                                <span ng-if="isPrint" class="s8" ng-bind="checkboxes1.option5 ? '☑' : '☐'"></span>
+                                <div ng-show="!isPrint">
+                                <input type="checkbox" ng-model="checkboxes1.option5" ng-change="loadCustomers()"></div>
+                            <span class="s8" style="padding-left: 19pt; text-indent: -17pt; line-height: 12pt; text-align: left;">For FII / sub account, Power of Attorney given by FII / sub-account to the Custodians (which are duly notarized and / or apostilled or consularised) that gives the registered address should be taken.</span>
                             
                         </li>
-                        <li data-list-text="◻"><p class="s8" style="padding-left: 20PT; text-indent: -17pt; line-height: 22pt; text-align: left;">The proof of address in the name of the spouse</p></li>
+                        <li >
+                                <span ng-if="isPrint" class="s8" ng-bind="checkboxes1.option6 ? '☑' : '☐'"></span>
+                                <div ng-show="!isPrint">
+                                    <input type="checkbox" ng-model="checkboxes1.option6" ng-change="loadCustomers()"></div>
+                            <span class="s8" style="padding-left: 20PT; text-indent: -17pt; line-height: 22pt; text-align: left;">The proof of address in the name of the spouse</span></li>
                     </ul>
                 </td>
             </tr>
@@ -724,19 +825,19 @@
                     <p class="s8" style="padding-left: 5pt; padding-right: 99pt; text-indent: 0pt; text-align: left;">
                         Account Number:
                         <u>
-                            611658645468551
+                                @* 611658645468551 *@{{data.accountno}}
                         </u><br>
                         Bank Name:
                         <u>
-                            Rupay Bank Kota
+                                @* Rupay Bank Kota *@ {{data.bankname}}
                         </u><br>
                         Branch Name:
                         <u>
-                            Kota Branch
+                                @* Kota Branch *@ {{data.branch}}
                         </u><br>
                         IFS Code:
                         <u>
-                            KOT1463
+                                @* KOT1463 *@ {{data.ifsccode}}
                         </u>
                     </p>
                     <p class="s8" style="padding-left: 143pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Provide the following:</p>
@@ -806,9 +907,9 @@
                     "
                 >
                     <p class="s8" style="padding-top: 14pt; padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">
-                        <u> tart@123.com
+                        <u> @* tart@123.com *@{{data.email}}
                         </u>
-                        #
+                            # {{data.newemail}}
                     </p>
                 </td>
             </tr>
@@ -873,9 +974,9 @@
                 >
                     <p class="s8" style="padding-top: 14pt; padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">
                         <u>
-                            486554656156651
+                                @* 486554656156651 *@{{data.mobile}}
                         </u>
-                        #
+                            #{{data.newmobile}}
                     </p>
                 </td>
             </tr>
@@ -883,7 +984,7 @@
         <p class="s14" style="padding-left: 43pt; text-indent: 0pt; text-align: left;">* or any date as may be specified by the CBDT (DP: Depository Participant)</p>
         <p class="s15" style="padding-top: 1pt; padding-left: 43pt; text-indent: 0pt; text-align: left;"># In case it is not provided, the details available in the CML will be updated in the folio</p>
         <p style="text-indent: 0pt; text-align: left;"><br /></p>
-        <h2 style="padding-left: 35pt; text-indent: 0pt; text-align: justify;">Authorization<span class="p">: I / We authorise you (RTA) to update the above PAN and KYC details in my / our folio (s)<u>468559WEF</u> , <u>FWEFE511632 </u> ,(<i>use Separate Annexure if extra space is required</i>) in which I / We are the holder(s) (strike off what is not applicable).</span></h2>
+            <h2 style="padding-left: 35pt; text-indent: 0pt; text-align: justify;">Authorization<span class="p">: I / We authorise you (RTA) to update the above PAN and KYC details in my / our folio (s)<u>{{data.folioNo}}</u> @* , <u>FWEFE511632 </u>  *@,(<i>use Separate Annexure if extra space is required</i>) in which I / We are the holder(s) (strike off what is not applicable).</span></h2>
         
         <h2 style="padding-bottom: 1pt; padding-left: 43pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Declaration: <span class="p">All the above facts stated are true and correct.</span></h2>
         <table style="border-collapse: collapse; margin-left: 6.05pt;" cellspacing="0">
@@ -1040,7 +1141,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolder}}
                 </td>
                 <td
                     style="
@@ -1055,7 +1156,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                        <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.secondHolder}}
                 </td>
                 <td
                     style="
@@ -1070,7 +1171,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                        <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.thirdHolder}}
                 </td>
             </tr>
             <tr style="height: 56pt;">
@@ -1102,7 +1203,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolderaddress}}
                 </td>
                 <td
                     style="
@@ -1117,7 +1218,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                        <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.secondHolderaddress}}
                 </td>
                 <td
                     style="
@@ -1132,7 +1233,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                        <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.thirdHolderaddress}}
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -1199,42 +1300,209 @@
             </tr>
         </table>
         </div>
+    
+    </form>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
     </body>
         <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http, $timeout) {
         $scope.customers = [];
+        $scope.data = undefined;
+                $scope.hDiv = true;
+                var params = new URLSearchParams(window.location.search);
+                var id = params.get('id');
+                var id2 = params.get('id2');
 
+                $scope.isPrint = id2 ? true : false
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+                // Load Customers
+         $scope.loadCustomers = function () {
+             if(id){
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var result = response.data;
+                     $http.get('/doc/GetBank/'+ result.firstHolderId).then(function (response) {
+                        var bank = response.data[0];
+                        
+                $scope.data = {
+                    customerName : result.firstHolderName,
+                    today: new Date(),
+                    companyName: result.companyName,
+                    folioNo: result.folioNo,
+                    firstHolder :result.firstHolderName,
+                    secondHolder:result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    qty: result.qty,
+                    rate: result.rate,
+                    distinctiveNosStart: $scope.data && $scope.data.distinctiveNosStart || '',
+                    distinctiveNosEnd: $scope.data && $scope.data.distinctiveNosEnd || '',
+                    selectedOption: $scope.data && $scope.data.selectedOption || '',
+                    accountno: bank.accountNo,
+                    bankname: bank.bankName,
+                    branch: bank.branch,
+                    ifsccode: bank.ifsccode,
+                    email: result.firstHolderData.email,
+                    mobile: result.firstHolderData.mobile,
+                    newemail:  $scope.data && $scope.data.newemail || '',
+                    newmobile: $scope.data && $scope.data.newmobile || '',
+                    firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
+                    secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
+                    thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
+                };
+
+                hideLoader();
+                 }, function (error) {
+                    console.error('Error loading Bank Deatails:', error);
+                    hideLoader();
+                });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    today: obj.today,
+                    updatecheck:JSON.parse(obj.updatecheck),
+                    companyName: obj.companyName,
+                    folioNo: obj.folioNo,
+                    firstHolder:obj.firstHolder,
+                    secondHolder:obj.secondHolder,
+                    thirdHolder:obj.thirdHolder,
+                    qty: obj.qty,
+                    rate: obj.rate,
+                    distinctiveNosStart: obj.distinctiveNosStart,
+                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    selectedOption: obj.selectedOption,
+                    prooffroaddress:JSON.parse(obj.prooffroaddress),
+                    accountno: obj.accountno,
+                    bankname: obj.bankname,
+                    branch: obj.branch,
+                    ifsccode: obj.ifsccode,
+                    email: obj.email,
+                    mobile: obj.mobile,
+                    newemail: obj.newemail,
+                    newmobile: obj.newmobile,
+                    firstHolderaddress:obj.firstHolderaddress,
+                    secondHolderaddress:obj.secondHolderaddress,
+                    thirdHolderaddress:obj.thirdHolderaddress,
+                };
+            $scope.checkboxes =  $scope.data.updatecheck;
+            $scope.checkboxes1 =  $scope.data.prooffroaddress;
+
+                id= result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
 
+        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+     //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+                 var arr = angular.copy($scope.checkboxes);
+                 var arr1 = angular.copy($scope.checkboxes1);
+                    $scope.data.updatecheck=  JSON.stringify(arr,null,2);
+                    $scope.data.prooffroaddress= JSON.stringify(arr1,null,2);
+
+
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Form ISR – 1',
+                 StockId : id,
+                 url : `/Form/FormISR1?id2=`,
+                 jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        // $scope.loadCustomers();
+                        window.open(response.data.data.url + response.data.data.id,'_self')
+
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
+
+        $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+
         //Function
         $scope.printDiv = function (divId) {
-                var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s5{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s6{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s7{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s9{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s10{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:11pt}.s15{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s17{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}li{display:block}#l2{padding-left:0pt}#l2>li>*:first-child:before{content:"◻ ";color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}table,tbody{vertical-align:top;overflow:visible}.form-table{margin:0 56px;border-collapse:collapse}.form-table td{border:1px solid #000;padding:8px;vertical-align:top}.form-table tr td:first-child{width:40%}</style>';
+                var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s5{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s6{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s7{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s9{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s10{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:11pt}.s15{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s17{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}li{display:block}#l2{padding-left:0pt}#l2>li>*:first-child:before{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}table,tbody{vertical-align:top;overflow:visible}.form-table{margin:0 56px;border-collapse:collapse}.form-table td{border:1px solid #000;padding:8px;vertical-align:top}.form-table tr td:first-child{width:40%}.ng-hide{display:none}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
@@ -1243,7 +1511,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

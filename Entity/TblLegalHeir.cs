@@ -44,4 +44,16 @@ public partial class TblLegalHeir
     public bool? IsClaiment { get; set; }
 
     public bool? IsNoc { get; set; }
+
+    public string? RelationWithDead { get; set; }
+
+    public bool? IsDead { get; set; }
+
+    public string? DeathCertiUrl { get; set; }
+
+    public string? NameAsPerDeathCerti { get; set; }
+
+    public DateTime? DateOfDeath { get; set; }
+
+    public string? PlaceOfDeath { get; set; }
 }

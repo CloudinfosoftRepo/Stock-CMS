@@ -87,5 +87,7 @@ public static class ConfigureServices
         services.AddTransient<ICompanyService, CompanyService>();
         services.AddTransient<ICompanyRepository, CompanyRepository>();
 
+        services.AddTransient<ITrackingService, TrackingService>();
+        services.AddTransient<ITrackingRepository, TrackingRepository>();
     }
 }

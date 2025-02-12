@@ -127,7 +127,9 @@
     </div>
     <div id="printForm">
         <h1 style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-            {{data.customerName}},{{data.holders}}
+            {{data.firstHolder}},
+            {{data.secondHolder}},
+            {{data.thirdHolder}}<br />
             <span class="s1">{{data.address}}</span>
         </h1>
         <p class="s1"
@@ -163,7 +165,7 @@
         </p>
         <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
         <h2 style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-            Unit: @* APCOTEX INDUSTRIES LIMITED *@ {{data.officename}}
+            Unit: @* APCOTEX INDUSTRIES LIMITED *@ {{data.unit}}
         </h2>
         <h2 style="padding-left: 12pt; text-indent: 0pt; text-align: left">
             Folio No: {{data.folioNo}}
@@ -299,8 +301,10 @@ border-bottom-width: 1pt;
             Regards,
         </h2>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
-        <h3 style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-            {{data.customerName}}, {{data.holders}}
+        <h3 style="padding-left: 12pt; text-indent: 0pt; text-align: left; display:flex; justify-content: space-evenly;">
+            <span>{{data.firstHolder}}</span>
+            <span>{{data.secondHolder}}</span>
+            <span>{{data.thirdHolder}}</span>
         </h3>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -327,15 +331,13 @@ border-bottom-width: 1pt;
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                    $http.get('/Company/GetCompany').then(function (response) {
+         var company = response.data.find(x => x.id === result.companyId);
+
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(docs.dob);
+                    var Age = $scope.calculateAge(docs.dob,docs.dateOfDeath);
 
 
                 $scope.data = {
@@ -346,9 +348,12 @@ border-bottom-width: 1pt;
                    newaddress : '',
                    address : docs.addressAsPerAadhar,
                    mobile: docs.mobile,
-                   officename : result.companyName,
-                   officeaddress: 'C 101, 247 Park, L.B.S. Marg, Vikhroli (West), Mumbai, Maharashtra, 400083',
-                                       holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+                   officename : company.rtaName,
+                   officeaddress: company.rtaAddress,
+                   unit: company.companyName,
+                                         firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
 
                 };
 
@@ -357,6 +362,10 @@ border-bottom-width: 1pt;
                     console.error('Error loading Docs:', error);
                     hideLoader();
                 });
+                }, function (error) {
+        console.error('Error loading Company:', error);
+        hideLoader();
+    });
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
@@ -377,7 +386,10 @@ border-bottom-width: 1pt;
                     address:obj.address,
                    officename: obj.officename,
                    officeaddress: obj.officeaddress,
-                   holders: obj.holders,
+                   unit: obj.unit,
+                      firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                 };
                       id = result.stockId;
                 checkData();
@@ -404,20 +416,34 @@ border-bottom-width: 1pt;
         }
     }
 
-          $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
+          $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
     };
 
         //Genrate Form

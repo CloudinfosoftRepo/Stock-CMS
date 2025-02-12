@@ -240,7 +240,7 @@
       class="s4"
       style="padding-left: 10pt; text-indent: 0pt; text-align: left"
     >
-            Unit: <span class="s5">{{data.officename}}</span>
+            Unit: <span class="s5">{{data.unit}}</span>
     </p>
     <h4
       style="
@@ -262,7 +262,7 @@
     </p>
     <p style="padding-top: 12pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">
-            I haveanold shares certificate of <span class="s7">{{data.officename}} </span>I would
+            I haveanold shares certificate of <span class="s7">{{data.unit}} </span>I would
       like to request you to Exchange old certificate with new certificate and
       give me the new certificate at current address so I can process further.
     </p>
@@ -975,7 +975,7 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                 $scope.data = {
@@ -988,8 +988,10 @@
                     distinctiveNosEnd:'',
                     qty: result.qty,
                     folioNo : result.folioNo,
-                    officename : result.companyName,
-                    officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                        officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
+    unit: result.companyName,
+
                 };
 
                 hideLoader();
@@ -1018,8 +1020,9 @@
                     certificatenos: obj.certificatenos,
                     distinctiveNosStart: obj.distinctiveNosStart,
                     distinctiveNosEnd: obj.distinctiveNosEnd,
-                    officename: obj.officename,
-                    officeaddress: obj.officeaddress,
+                        officename: obj.officename,
+    officeaddress: obj.officeaddress,
+    unit: obj.unit,
                 };
                                 id = result.stockId;
 

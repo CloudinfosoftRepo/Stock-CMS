@@ -432,11 +432,11 @@
                     "
                     colspan="2"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">1) {{data.customerName}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">1) {{data.firstHolder}}</p>
+                    <p style="text-indent: 0pt; text-align: left;"><br /></p>                                                 
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">2) {{data.secondHolder}}</p>      
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">2) {{data.holders}}</p>
-                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">3) </p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">3) {{data.thirdHolder}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -898,15 +898,10 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(docs.dob);
+                    var Age = $scope.calculateAge(docs.dob,docs.dateOfDeath);
                      $http.get('/doc/GetBank/'+ docs.id).then(function (response) {
                             var bank = response.data[0];
 
@@ -920,8 +915,10 @@
                    customerName : docs.name,
                    address : docs.addressAsPerAadhar,
                    mobile: docs.mobile,
-                   holders : holders.length > 0 ? `${holders.join(') (')}` : '',
                    email: docs.email,
+                   firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
                    place: 'Vadodara',
                    date: new Date(),
                    bankmanagername: bank.bankManagerName,
@@ -959,7 +956,9 @@
                     customerName: obj.customerName,
                     address:obj.address,
                     mobile: obj.mobile,
-                   holders: obj.holders,
+                   firstHolder:obj.firstHolder,
+                   secondHolder:obj.secondHolder,
+                   thirdHolder:obj.thirdHolder,
                    email: obj.email,
                    place: obj.place,
                    date: new Date(obj.date),
@@ -993,20 +992,34 @@
         window.open('/Form/GenerateForm/'+id, '_self');
     };
 
-     $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
+     $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
     };
 
         //Genrate Form

@@ -57,8 +57,9 @@ namespace Stock_CMS.Service
         public async Task<Int32> UpdateHolderDoc(HolderDocsDto data)
         {
             var isExist = await _holderDocRepository.GetHolderDocById(data.Id);
-            var chk = await _holderDocRepository.GetHolderDocByName(data.DocumentName);
-            bool isMatch = chk.Any(x => x.DocumentName.ToLower() == data.DocumentName.ToLower() && x.Id != data.Id);
+            var chk = await _holderDocRepository.GetHolderDocByInfo(data);
+
+            bool isMatch = chk.Any(x => x.DocumentName.ToLower() == data.DocumentName.ToLower() && x.Id != data.Id && (x.LegalHeirId == data.LegalHeirId && x.HolderId == data.HolderId));
             if (isMatch)
             {
                 return -1;

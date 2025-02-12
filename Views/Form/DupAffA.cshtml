@@ -256,8 +256,9 @@ td:nth-child(5), td:nth-child(6) {
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 43pt; text-indent: 0pt; text-align: left">
       I/We,
-            <span class="s4">{{data.customerName}}, {{data.holders}} </span>{{data.relationship}} <span class="s4">{{data.sonof}} </span>residing at<span class="s4">{{data.address}}</span
-      ><span class="s4"> </span> having Permanent Account No(s)<span class="s4">{{data.accountno}} </span>do hereby solemnly affirm and state on oath as follows.
+            <span class="s4">
+                {{data.customerName}}
+            </span>{{data.relationship}} <span class="s4">{{data.sonof}} </span>residing at<span class="s4">{{data.address}}</span><span class="s4"> </span> having Permanent Account No(s)<span class="s4">{{data.accountno}} </span>do hereby solemnly affirm and state on oath as follows.
     </p>
   
     <p style="padding-top: 8pt; text-indent: 0pt; text-align: left"><br /></p>
@@ -272,7 +273,11 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           That I/We,
-          <span class="s4">{{data.customerName}}, {{data.holders}} </span><span class="s6"> </span>(“all the shareholders”) hold the following
+                    <span class="s4">
+                        {{data.firstHolder}},
+                        {{data.secondHolder}},
+                        {{data.thirdHolder}}
+                    </span><span class="s6"> </span>(“all the shareholders”) hold the following
           (number of) securities under Folio no.
           <span class="s4">{{data.folioNo}} </span><span class="s6"> </span>in  <span class="s4">
                         {{data.officename}}
@@ -322,9 +327,11 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           I/We
-          <span class="s4"
-            >{{data.customerName}}, {{data.holders}} </span
-          >further swear / solemnly declare that I/ we
+          <span class="s4">
+                        {{data.firstHolder}},
+                        {{data.secondHolder}},
+                        {{data.thirdHolder}}
+                    </span>further swear / solemnly declare that I/ we
           am/are applying for issue of duplicate certificate(s) to me/us on the
           ground that the original security(ies) certificate(s) has/have been
           misplaced / not found by me/us, despite a diligent search made by
@@ -337,8 +344,11 @@ td:nth-child(5), td:nth-child(6) {
       <li data-list-text="3.">
         <p style="padding-left: 43pt; text-indent: -14pt; text-align: justify">
           I/We
-          <span class="s4"
-            >{{data.customerName}}, {{data.holders}} </span> further swear/solemnly declare that the said securities are not sold or pledged or
+          <span class="s4">
+                        {{data.firstHolder}},
+                        {{data.secondHolder}},
+                        {{data.thirdHolder}}
+                    </span> further swear/solemnly declare that the said securities are not sold or pledged or
             deposited by way of security to any person/company.
         </p>
        
@@ -354,9 +364,11 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           I/We
-          <span class="s4"
-            >{{data.customerName}}, {{data.holders}} </span
-          ><span class="s6"> </span>hereby further swear / solemnly declare that
+          <span class="s4">
+                        {{data.firstHolder}},
+                        {{data.secondHolder}},
+                        {{data.thirdHolder}}
+                    </span><span class="s6"> </span>hereby further swear / solemnly declare that
           if, after the duplicate share certificate(s) is / are issued to us as
           aforesaid, the original security(ies) certificate(s) is / are at any
           time subsequently, found, recovered or traced by us or by anyone on
@@ -381,9 +393,11 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           I/We
-          <span class="s4"
-            >{{data.customerName}}, {{data.holders}} </span
-          ><span class="s6"> </span>am/are making the above solemn declaration
+          <span class="s4">
+                        {{data.firstHolder}},
+                        {{data.secondHolder}},
+                        {{data.thirdHolder}}
+                    </span><span class="s6"> </span>am/are making the above solemn declaration
           on oath with full knowledge of the fact that in the event the original
           security (ies) certificate(s) issued is /are found, recovered and
           traced by me/us and instead of surrendering the same is / are dealt
@@ -540,7 +554,7 @@ td:nth-child(5), td:nth-child(6) {
         {{data.place}} </span
       ><span class="s6"> </span><br>Date :
       <span class="s4"
-        >{{data.date | date:'dd/MM/yyyy'}} </span
+        >{{data.date | date:'__/MM/yyyy'}} </span
       ><span class="s6"> </span><br>X
       <span class="s4"
       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
@@ -572,12 +586,7 @@ td:nth-child(5), td:nth-child(6) {
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                       $http.get('/doc/GetBank/'+ doc.id).then(function (response) {
@@ -594,7 +603,9 @@ td:nth-child(5), td:nth-child(6) {
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officename : result.companyName,
-                    holders : holders.length > 0 ? `${holders.join(') (')}` : '',
+                       firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
                     place:'Vadodara',
                     date: new Date(),
                 };
@@ -631,7 +642,9 @@ td:nth-child(5), td:nth-child(6) {
                     distinctiveNosStart: obj.distinctiveNosStart,
                     distinctiveNosEnd: obj.distinctiveNosEnd,
                     officename: obj.officename,
-                    holders: obj.holders,
+                       firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                     place: obj.place,
                     date: new Date(obj.date),
                 };

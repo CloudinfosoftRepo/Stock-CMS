@@ -838,7 +838,7 @@
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
                 
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                       $http.get('/doc/GetBank/'+ doc.id).then(function (response) {

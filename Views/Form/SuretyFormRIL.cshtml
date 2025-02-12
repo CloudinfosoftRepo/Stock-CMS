@@ -138,15 +138,15 @@
                 </div>
                 <div class="form-group mb-3 col-md-3">
                     <label for="Surety1Address" class="form-label">Surety 1 Address</label>
-                    <textarea id="surety1Address" ng-model="surity.surety1Address" class="form-control" placeholder="Surety 1 Address"></textarea>
+                    <textarea id="surety1Address" ng-model="data.surety1Address" class="form-control" placeholder="Surety 1 Address"></textarea>
                 </div>
                 <div class="form-group mb-3 col-md-3">
                     <label for="Surety2Name" class="form-label">Surety 2 Name</label>
                     <input type="text" ng-model="data.surety2Name" class="form-control search-orders" placeholder="Surety2Name">
                 </div>
                 <div class="form-group mb-3 col-md-3">
-                    <label for="Surety2Address" class="form-label">Surety 2 Address</label>
-                    <textarea id="Surety2Address" ng-model="surity.Surety2Address" class="form-control" placeholder="Surety 2 Address"></textarea>
+                    <label for="surety2Address" class="form-label">Surety 2 Address</label>
+                    <textarea id="surety2Address" ng-model="data.surety2Address" class="form-control" placeholder="Surety 2 Address"></textarea>
                 </div>
                 <div class="form-group mb-3 col-md-3">
                     <label for="place" class="form-label">Place</label>
@@ -352,7 +352,7 @@
             Address: {{data.surety2Address}}
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
-        <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">Date :{{data.today | date:'dd-MM-yyyy'}}</p>
+        <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">Date :{{data.today | date:'__-MM-yyyy'}}</p>
         <p style="
         padding-top: 9pt;
         padding-left: 10pt;
@@ -385,10 +385,9 @@
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
 
-                 $http.get('/doc/getDocs/' + result.customer.id).then(function (response) {
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-
 
                 $scope.data = {
                     customerName : docs.name,
@@ -431,7 +430,6 @@
                     mobile: obj.mobile,
                     qty : obj.qty,
                     folioNo : obj.folioNo,
-                    officename: obj.officename,
                     place: obj.place,
                     surety1Name:obj.surety1Name,
                     surety1Address:obj.surety1Address,

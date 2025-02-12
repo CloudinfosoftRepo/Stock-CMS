@@ -16,6 +16,8 @@ namespace Stock_CMS.RepositoryInterface
 
         Task<IEnumerable<LegalHeirDto>> GetLegalHeirByClientId(long Id);
 
+        Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByClientId(long Id);
+
         Task<IEnumerable<LegalHeirDto>> UpdateLegalHeirbyColumn(IEnumerable<LegalHeirDto> data, string[] columns);
     }
 }

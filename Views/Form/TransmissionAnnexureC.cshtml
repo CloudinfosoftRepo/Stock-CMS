@@ -67,7 +67,7 @@
       .s8 {
         color: black;
         font-family: Arial, sans-serif;
-        font-style: italic;
+        /* font-style: italic; */
         font-weight: normal;
         text-decoration: none;
         font-size: 11pt;
@@ -324,7 +324,6 @@
         padding-left: 0pt;
       }
       #l1 > li > *:first-child:before {
-        content: "□ ";
         color: #2e5395;
         font-family: Arial, sans-serif;
         font-style: normal;
@@ -340,6 +339,71 @@
     </style>
   </head>
  <body style="padding-left: 8%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>IEPF info</h3>
+        </div>
+    </div>
+    <form name="gForm" ng-submit="genrateForm()">
+    <div ng-if="hDiv">
+        
+            <div class="row">
+                @* <div class="col-md-12"> *@
+                <div class="form-group mb-3 col-md-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="heirId" class="form-label">select Heir</label>
+                    <select class="form-select w-auto" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select Heir</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="countryofbirth" class="form-label">Country of Birth</label>
+                    <input type="text" ng-model="data.countryofbirth" class="form-control search-orders" placeholder="Country of Birth">
+                </div> 
+                <div class="form-group mb-3 col-md-3">
+                    <label for="placeofbirth" class="form-label">Place of Birth</label>
+                    <input type="text" ng-model="data.placeofbirth" class="form-control search-orders" placeholder="Place of Birth">
+                </div> 
+                <div class="form-group mb-3 col-md-3">
+                    <label for="nationality" class="form-label">Nationality</label>
+                    <input type="text" ng-model="data.nationality" class="form-control search-orders" placeholder="Nationality">
+                </div> 
+                <div class="form-group mb-3 col-md-3">
+                    <label for="taxcountry" class="form-label">Tax Taking Country</label>
+                    <input type="text" ng-model="data.taxcountry" class="form-control search-orders" placeholder="Tax Taking Country">
+                </div> 
+                <div class="form-group mb-3 col-md-3">
+                    <label for="taxidnumber" class="form-label">Tax-Payer Identification Number</label>
+                    <input type="text" ng-model="data.taxidnumber" class="form-control search-orders" placeholder="Tax-Payer Identification Number">
+                </div> 
+                <div class="form-group mb-3 col-md-3">
+                    <label for="identitytype" class="form-label">Identification Type</label>
+                    <input type="text" ng-model="data.identitytype" class="form-control search-orders" placeholder="Identification Type">
+                </div> 
+                <div class="form-group mb-3 col-md-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+       
+    </div>
     <div id="printForm">
     <div style="display: flex; align-items: flex-start; gap: 10px;">
       <div class="textbox" style="border: 1pt solid #000000; min-height: 32pt; width: 389pt; padding: 6px;">
@@ -385,6 +449,7 @@
         text-align: left;
       "
     >
+                {{data.rtaName}}
       The Listed Issuer/RTA,
     </h2>
     <p
@@ -396,13 +461,14 @@
         text-align: left;
       "
     >
+                {{data.rtaAddress}}
       (Address)
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <h2 style="padding-left: 25pt; text-indent: 0pt; text-align: left">
       <u>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u
-      >(Name of the Listed Issuer/RTA)
+                    @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@{{data.companyName}}/{{data.rtaName}}
+                </u>(Name of the Listed Issuer/RTA)
     </h2>
     <table
       style="border-collapse: collapse; margin-left: 25.5pt"
@@ -444,7 +510,7 @@
               text-align: left;
             "
           >
-            Mr./Ms.
+            Mr./Ms. {{data.customerName}}
           </p>
         </td>
       </tr>
@@ -560,7 +626,7 @@
             "
           >
             <span class="s5">[Multiple PAN may be entered] </span>PAN
-            (Claimant(s)/Guardian): <u>| | | | | | | | | |</u> |
+            (Claimant(s)/Guardian): <u>{{data.pan}}</u> |
             Acknowledgment attached KYC form attached
           </p>
         </td>
@@ -585,9 +651,10 @@
           </p>
           <p
             class="s6"
-            style="padding-left: 23pt; text-indent: 0pt; text-align: left"
+            style="padding-left: 10pt; text-indent: 0pt; text-align: left"
           >
-           □ KYC
+                            <span ng-if="isPrint" class="s8" ng-bind="data.kyc ? '☑ KYC' : '☐ KYC'"></span>
+                            <div ng-show="!isPrint"> <input ng-disabled="isPrint" type="checkbox" ng-model="data.kyc" value="" ng-change="loadCustomers()">KYC</div>
           </p>
         </td>
         <td
@@ -662,8 +729,29 @@
               text-align: left;
             "
           >
-            Tax Status: □ Resident Individual  □ Resident Minor (through Guardian)
-            □ NRI (please specify) □ PIO □ Others
+            Tax Status:
+
+                           
+                            
+
+                            
+                            <div ng-show="!isPrint"><input ng-disabled="isPrint" type="radio" ng-model="data.resident" value="Resident Individual" ng-change="loadCustomers()">Resident Individual <input ng-disabled="isPrint" type="radio" ng-model="data.resident" value="Resident Minor (through Guardian)" ng-change="loadCustomers()">Resident Minor (through Guardian) <input ng-disabled="isPrint" type="radio" ng-model="data.resident" value="NRI (please specify)" ng-change="loadCustomers()">NRI (please specify) <input ng-disabled="isPrint" type="radio" ng-model="data.resident" value="PIO" ng-change="loadCustomers()">PIO <input ng-disabled="isPrint" type="radio" ng-model="data.resident" value="Others" ng-change="loadCustomers()">Others</div>
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.resident === 'Resident Individual' ? '☑ Resident Individual ' : '☐ Resident Individual ' "></span>
+            @* □ Resident Individual *@
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.resident === 'Resident Minor (through Guardian)' ? '☑ Resident Minor (through Guardian) ' : '☐ Resident Minor (through Guardian) '"></span>
+            @* □ Resident Minor (through Guardian) *@
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.resident === 'NRI (please specify)'? '☑ NRI (please specify) ' : '☐ NRI (please specify) '"></span>
+            @* □ NRI (please specify) *@
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.resident === 'PIO'? '☑ PIO ' : '☐ PIO '"></span>
+            @* □ PIO *@
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.resident === 'Others'? '☑ Others ' : '☐ Others '"></span>
+            @* □ Others *@
+
           </p>
         </td>
         <td
@@ -772,8 +860,19 @@
               text-align: justify;
             "
           >
-          □  Nominee □ Legal Heir □ Successor to the Estate of the deceased
-          □  Administrator of the Estate of the deceased
+                            
+        <div ng-show="!isPrint"> <input ng-disabled="isPrint" type="radio" ng-model="data.relation" value="Nominee" ng-change="loadCustomers()">Nominee <input ng-disabled="isPrint" type="radio" ng-model="data.relation" value="Legal Heir" ng-change="loadCustomers()">Legal Heir <input ng-disabled="isPrint" type="radio" ng-model="data.relation" value="Successor to the Estate of the deceased" ng-change="loadCustomers()">Successor to the Estate of the deceased <input ng-disabled="isPrint" type="radio" ng-model="data.relation" value="Administrator of the Estate of the deceased" ng-change="loadCustomers()">Administrator of the Estate of the deceased</div>
+
+        <span ng-if="isPrint" class="s8" ng-bind="data.relation === 'Nominee' ? '☑  Nominee' : '☐  Nominee' "></span>
+        <span ng-if="isPrint" class="s8" ng-bind="data.relation === 'Legal Heir' ? '☑  Legal Heir' : '☐  Legal Heir' "></span>
+
+        <span ng-if="isPrint" class="s8" ng-bind="data.relation === 'Successor to the Estate of the deceased' ? '☑  Successor to the Estate of the deceased' : '☐  Successor to the Estate of the deceased' "></span>
+
+        <span ng-if="isPrint" class="s8" ng-bind="data.relation === 'Administrator of the Estate of the deceased' ? '☑  Administrator of the Estate of the deceased' : '☐  Administrator of the Estate of the deceased' "></span>
+          @* □  Nominee  
+           □ Legal Heir  
+           □ Successor to the Estate of the deceased 
+           □  Administrator of the Estate of the deceased *@
           </p>
           <p
             class="s13"
@@ -860,7 +959,7 @@
               text-align: left;
             "
           >
-            1)
+                            1) {{data.nameofdeacesed}}
           </p>
         </td>
         <td
@@ -885,7 +984,7 @@
               text-align: center;
             "
           >
-            DD / MM / YYYY
+                            {{data.dateofdeath | date:'dd/MM/yyyy'}}
           </p>
         </td>
       </tr>
@@ -937,7 +1036,7 @@
               text-align: center;
             "
           >
-            DD / MM / YYYY
+            @* DD / MM / YYYY *@
           </p>
         </td>
       </tr>
@@ -989,7 +1088,7 @@
               text-align: center;
             "
           >
-            DD / MM / YYYY
+            @* DD / MM / YYYY *@
           </p>
         </td>
       </tr>
@@ -1147,7 +1246,7 @@
               text-align: left;
             "
           >
-            1)
+                            1) {{data.companyName}}
           </p>
         </td>
         <td
@@ -1163,7 +1262,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+                        <p style="text-indent: 0pt; text-align: left">{{data.folioNo}}<br /></p>
         </td>
         <td
           style="
@@ -1178,7 +1277,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+          <p style="text-indent: 0pt; text-align: left">{{data.qty}}<br /></p>
         </td>
         <td
           style="
@@ -1193,7 +1292,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+          <p style="text-indent: 0pt; text-align: left"> &#8377; {{data.rate}}<br /></p>
         </td>
       </tr>
       <tr style="height: 17pt">
@@ -1446,7 +1545,7 @@
             style="padding-left: 5pt; text-indent: 0pt; text-align: left"
           >
             Mobile No.<span class="s2">+91 </span
-            ><span class="s13">9428171249 </span>Tel. No.
+            ><span class="s13">{{data.mobile}} </span>Tel. No.
             <span style="color: #bebebe">STD -</span>
           </p>
         </td>
@@ -1473,8 +1572,7 @@
               text-align: left;
             "
           >
-            <a
-              href="mailto:DEARMONEYWM@@GMAIL.COM"
+            <a href="mailto:{{data.email}}"
               style="
                 color: black;
                 font-family: Arial, sans-serif;
@@ -1485,8 +1583,8 @@
               "
               target="_blank"
               >Email Address: </a
-            ><a href="mailto:DEARMONEYWM@@GMAIL.COM" class="s17" target="_blank"
-              >DEARMONEYWM@@GMAIL.COM</a
+            ><a href="mailto:{{data.email}}" class="s17" target="_blank"
+              >{{data.email}}</a
             >
           </p>
         </td>
@@ -1528,7 +1626,7 @@
               text-align: left;
             "
           >
-            Address Line 1 <span class="s13">SUNDRAM, PUNIT PALS MIL,</span>
+            Address Line 1 <span class="s13">{{data.address}}</span>
           </p>
         </td>
       </tr>
@@ -1632,7 +1730,7 @@
               text-align: left;
             "
           >
-            Bank Name HDFC BANK
+                            Bank Name: {{data.bankName}}
           </p>
         </td>
       </tr>
@@ -1658,7 +1756,7 @@
               text-align: left;
             "
           >
-            Account No. <span class="s13">014***************</span>
+                            Account No. <span class="s13">@* 014*************** *@{{data.accountNo}}</span>
           </p>
         </td>
         <td
@@ -1693,7 +1791,7 @@
               text-align: left;
             "
           >
-            |11-digit IFSC <span class="s13">HDFC0000147</span>
+                            |11-digit IFSC <span class="s13">@* HDFC0000147 *@{{data.ifsccode}}</span>
           </p>
         </td>
       </tr>
@@ -1719,9 +1817,25 @@
               text-align: left;
             "
           >
-            A/c. Type (<span class="s20">✓</span>) <span class="s21">□ </span>SB
-            <span class="s21">□ </span>Current <span class="s21">□ </span>NRO
-            <span class="s21">□ </span>NRE <span class="s21">□ </span>FCNR
+            A/c. Type (<span class="s20">✓</span>)
+                            @* <span class="s21">□ </span> SB*@ 
+            
+                            <div ng-show="!isPrint"> <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="Savings" ng-change="loadCustomers()">SB <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="Current" ng-change="loadCustomers()">Current <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="NRO" ng-change="loadCustomers()">NRO  <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="NRE" ng-change="loadCustomers()">NRE <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="FCNR" ng-change="loadCustomers()"> FCNR</div>
+
+            <span ng-if="isPrint" class="s8" ng-bind="data.accountType === 'Savings' ? '☑ SB ' : '☐ SB' "></span>
+
+            <span ng-if="isPrint" class="s8" ng-bind="data.accountType === 'Current' ? '☑ Current ' : '☐ Current ' "></span>
+
+            <span ng-if="isPrint" class="s8" ng-bind="data.accountType === 'NRO' ? '☑  NRO' : '☐  NRO' "></span>
+
+            <span ng-if="isPrint" class="s8" ng-bind="data.accountType === 'NRE' ? '☑ NRE ' : '☐  NRE' "></span>
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.accountType === 'FCNR' ? '☑  FCNR' : '☐  FCNR' "></span>
+
+            @* <span class="s21">□ </span>Current  
+            <span class="s21">□ </span>NRO
+            <span class="s21">□ </span>NRE 
+            <span class="s21">□ </span>FCNR*@
           </p>
         </td>
         <td
@@ -1767,7 +1881,7 @@
               text-align: left;
             "
           >
-            9-digit MICR No. 390240003
+                            9-digit MICR No. @* 390240003 *@{{data.micrcode}}
           </p>
         </td>
       </tr>
@@ -1796,7 +1910,7 @@
               text-align: left;
             "
           >
-            Name of bank branch V.I.P ROAD, KARELIBAUG
+            Name of bank branch: {{data.branch}}
           </p>
         </td>
       </tr>
@@ -1866,9 +1980,8 @@
       class="s18"
       style="padding-left: 12pt; text-indent: 0pt; text-align: left"
     >
-      Please attach &amp;<span class="s22">tick</span><span class="s23">✓</span
-      ><span class="s24">□ </span>Cancelled cheque with claimant’s name printed
-      <b>OR</b><span class="s24">□ </span><span class="s26"> </span>Claimant’s
+                Please attach &amp;<span class="s22">tick</span><span class="s23">✓</span><span class="s24"><input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.bankattachfile" value="Cheque" ng-change="loadCustomers()">  <span ng-if="isPrint" class="s18" ng-bind="data.bankattachfile === 'Cheque' ? '☑ ' : '☐ ' "></span> </span> Cancelled cheque with claimant’s name printed
+                <b> OR</b><span class="s24"><input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.bankattachfile" value="BankStatement" ng-change="loadCustomers()">  <span ng-if="isPrint" class="s18" ng-bind="data.bankattachfile === 'BankStatement' ? '☑ ' : '☐ ' "></span> </span><span class="s26"> </span> Claimant’s
       Bank Statement/Passbook (duly attested by the Bank Manager)
     </p>
     <h1
@@ -1915,18 +2028,24 @@
               text-align: left;
             "
           >
-            <span class="s1">Occupation </span>□ <span class="s28"> </span
-            ><span class="s2">Private Sector Service </span>□ <span class="s2"
-              >Public Sector Service </span
-            >□ <span class="s2">Government Service</span>
+                            <span class="s1">Occupation </span> <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Private Sector Service' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Private Sector Service" ng-change="loadCustomers()">
+                            <span class="s28"> </span><span class="s2">Private Sector Service </span> 
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Public Sector Service' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Public Sector Service" ng-change="loadCustomers()">
+                            <span class="s2">Public Sector Service </span> 
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Government Service' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Government Service" ng-change="loadCustomers()">
+                            <span class="s2">Government Service</span>
           </p>
           <p
             class="s21"
             style="padding-left: 5pt; text-indent: 0pt; text-align: left"
           >
-          □ <span class="s2">Business </span>□ <span class="s2"
-              >Professional</span
-            >
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Business' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Business" ng-change="loadCustomers()">
+                            <span class="s2">Business </span> 
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Professional' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Professional" ng-change="loadCustomers()">
+                            <span class="s2">Professional</span>
           </p>
           <p
             class="s21"
@@ -1937,12 +2056,23 @@
               text-align: left;
             "
           >
-          □ <span class="s2">Agriculturist </span>□ <span class="s2"
-              >Retired </span
-            >□ <span class="s2">Home Maker </span>□ <span class="s28"> </span
-            ><span class="s2">Student </span>□ <span class="s2"
-              >Forex Dealer </span
-            >□ 
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Agriculturist' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Agriculturist" ng-change="loadCustomers()">
+                            <span class="s2">Agriculturist </span>
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Retired' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Retired" ng-change="loadCustomers()">
+                            <span class="s2">Retired </span>
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Home Maker' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Home Maker" ng-change="loadCustomers()">
+ <span class="s2">Home Maker </span>
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Student' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Student" ng-change="loadCustomers()">
+                            <span class="s28"> </span><span class="s2">Student </span>
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Forex Dealer' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Forex Dealer" ng-change="loadCustomers()">
+                            <span class="s2">Forex Dealer </span
+            >
+
+                            <span ng-if="isPrint" class="s8" ng-bind="data.occupation === 'Others' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.occupation" value="Others" ng-change="loadCustomers()">
           </p>
           <p
             class="s2"
@@ -1980,11 +2110,11 @@
               text-align: left;
             "
           >
-            The Claimant is <span class="s21">□ </span
-            ><span class="s28"> </span>a Politically Exposed Person<span
-              class="s21"
-              >□ </span
-            ><span class="s28"> </span>Related to a Politically Exposed Person
+                            The Claimant is <span class="s21">
+                                <span ng-if="isPrint" class="s8" ng-bind="data.politicalrelation === 'a Politically Exposed Person' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.politicalrelation" value="a Politically Exposed Person" ng-change="loadCustomers()">
+                            </span><span class="s28"> </span>a Politically Exposed Person
+
+                            <span class="s21"><span ng-if="isPrint" class="s8" ng-bind="data.politicalrelation === 'Related to a Politically Exposed Person' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.politicalrelation" value="Related to a Politically Exposed Person" ng-change="loadCustomers()"> </span><span class="s28"> </span>Related to a Politically Exposed Person
           </p>
           <p
             class="s21"
@@ -1995,8 +2125,7 @@
               text-align: left;
             "
           >
-          □ <span class="s28"> </span
-            ><span class="s2">Neither (Not applicable)</span>
+                            <span ng-if="isPrint" class="s8" ng-bind="data.politicalrelation === 'Neither (Not applicable)' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.politicalrelation" value="Neither (Not applicable)" ng-change="loadCustomers()"> <span class="s28"> </span><span class="s2">Neither (Not applicable)</span>
           </p>
         </td>
       </tr>
@@ -2026,11 +2155,17 @@
             "
           >
             <b>Gross Annual Income </b>(<span class="s30">₹</span>)
-            <span class="s21"> □ </span>Below 1 Lac <span class="s21"> □ </span>1-5
-            Lacs<span class="s21"> □ </span><span class="s28"> </span>5-10
-            Lacs<span class="s21"> □ </span>10-25 Lacs<span class="s21"> □ </span
-            >25 Lacs-1crore
-            <span class="s21"> □ </span>&gt;1 crore
+            <span class="s21">  <span ng-if="isPrint" class="s8" ng-bind="data.income === 'option1' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.income" value="option1" ng-change="loadCustomers()"> </span>Below 1 Lac 
+
+            <span class="s21">  <span ng-if="isPrint" class="s8" ng-bind="data.income === 'option2' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.income" value="option2" ng-change="loadCustomers()"> </span>1-5 Lacs
+
+            <span class="s21">  <span ng-if="isPrint" class="s8" ng-bind="data.income === 'option3' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.income" value="option3" ng-change="loadCustomers()"> </span><span class="s28"> </span>5-10 Lacs
+
+            <span class="s21">  <span ng-if="isPrint" class="s8" ng-bind="data.income === 'option4' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.income" value="option4" ng-change="loadCustomers()"> </span>10-25 Lacs
+
+            <span class="s21"> <span ng-if="isPrint" class="s8" ng-bind="data.income === 'option5' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.income" value="option5" ng-change="loadCustomers()"> </span>25 Lacs-1crore
+
+            <span class="s21">  <span ng-if="isPrint" class="s8" ng-bind="data.income === 'option6' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.income" value="option6" ng-change="loadCustomers()"> </span>&gt;1 crore
           </p>
         </td>
       </tr>
@@ -2061,10 +2196,10 @@
             class="s31"
             style="padding-left: 5pt; text-indent: 0pt; text-align: left"
           >
-            Country of Birth: <span style="color: #000">INDIA </span>Place of
+            Country of Birth: <span style="color: #000">@* INDIA *@{{data.countryofbirth}} </span>Place of
             Birth
             <span class="s32"
-              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+              >@* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@{{data.placeofbirth}}</span
             >
           </p>
           <p
@@ -2077,7 +2212,7 @@
               text-align: left;
             "
           >
-            Nationality : <span style="color: #000">INDIAN</span>
+            Nationality : <span style="color: #000">@* INDIAN *@{{data.nationality}}</span>
           </p>
         </td>
       </tr>
@@ -2106,7 +2241,9 @@
             "
           >
             Are you a tax resident of any country other than India?
-            <span class="s33">□ </span>Yes <span class="s33">□ </span>No
+            <span class="s33"><span ng-if="isPrint" class="s8" ng-bind="data.taxresident === 'Yes ' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.taxresident" value="Yes" ng-change="loadCustomers()"> </span>Yes 
+
+            <span class="s33"><span ng-if="isPrint" class="s8" ng-bind="data.taxresident === 'No ' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.taxresident" value="No" ng-change="loadCustomers()"> </span>No
           </p>
           <p
             class="s31"
@@ -2199,7 +2336,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+          <p style="text-indent: 0pt; text-align: left">{{data.taxcountry}}<br /></p>
         </td>
         <td
           style="
@@ -2214,7 +2351,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+          <p style="text-indent: 0pt; text-align: left">{{data.taxidnumber}}<br /></p>
         </td>
         <td
           style="
@@ -2229,7 +2366,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+          <p style="text-indent: 0pt; text-align: left">{{data.identitytype}}<br /></p>
         </td>
       </tr>
       <tr style="height: 16pt">
@@ -2438,7 +2575,7 @@
       "
     >
       I/We undertake to keep
-      <span class="s37">CAPLIN POINT LABORATORIES LTD&nbsp; </span>(Name of the
+      <span class="s37">@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}} &nbsp; </span>(Name of the
       Company) / its RTA informed about any changes/modification to the above
       information in future and also under take to provide any other additional
       information as may be required by the RTAs.
@@ -2452,10 +2589,10 @@
       "
     >
       I/We hereby authorize
-      <span class="s37">&nbsp;CAPLIN POINT LABORATORIES LTD&nbsp; </span>(Name
+      <span class="s37">&nbsp;@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}&nbsp; </span>(Name
       of the Company) and its RTA to provide/ share any of the information
       provided by me/us including my holdings in the
-      <span class="s37">&nbsp;CAPLIN POINT LABORATORIES LTD&nbsp; </span>(Name
+      <span class="s37">&nbsp;@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}&nbsp; </span>(Name
       of the Company) to any
     </p>
     <p
@@ -2505,8 +2642,8 @@
             text-decoration: none;
             font-size: 12pt;
           "
-          >VADODARA </span
-        >Date
+          >{{data.place}} </span
+        > <br />Date {{data.today | date:'__/MM/yyyy'}}
       </p>
     </div>
   
@@ -2538,7 +2675,7 @@
       Documents Attached
     </p>
     <ul id="l1">
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2548,10 +2685,12 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option1 === true ? '☑' : '☐' "></span>
+                            <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option1" value="option1" ng-change="loadCustomers()">
           Copy of Death Certificate of the deceased holder
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2561,10 +2700,12 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option2 === true ? '☑' : '☐' "></span>
+                            <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option2" value="option2" ng-change="loadCustomers()">
           Copy of Birth Certificate (in case the Claimant is a minor)
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2574,10 +2715,12 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option3 === true ? '☑' : '☐' "></span>
+<input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option3" value="option3" ng-change="loadCustomers()">
           Copy of PAN Card of Claimant / Guardian
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2587,10 +2730,12 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option4 === true ? '☑' : '☐' "></span>
+                            <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option4" value="option4" ng-change="radiocheck('option4')">
           KYC Acknowledgment OR
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2600,10 +2745,12 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option5 === true ? '☑' : '☐' "></span>
+                            <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option5" value="option5" ng-change="radiocheck('option5')">
           KYC form of Claimant
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2614,8 +2761,13 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option6 === true ? '☑' : '☐' "></span>
+                            <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option6" value="option6" ng-change="radiocheck1('option6')">
           Cancelled cheque with claimant’s name printed OR
-          <span class="s24">□ </span><span class="s26"> </span>Claimant’s Bank
+                            <span class="s24">
+                                <span ng-if="isPrint" class="s22" ng-bind="doclist.option7 === true ? '☑' : '☐' "></span>
+                                    <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option7" value="option7" ng-change="radiocheck1('option7')">
+                                </span><span class="s26"> </span>Claimant’s Bank
           Statement/Passbook
         </p>
         <p
@@ -2627,11 +2779,12 @@
             text-align: left;
           "
         >
-        □<span class="s26"> </span
-          ><span class="s22">Nomination Form duly completed</span>
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option8 === true ? '☑' : '☐' "></span>
+                            <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option8" value="option8" ng-change="loadCustomers()">
+                            <span class="s26"> </span><span class="s22">Nomination Form duly completed</span>
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2641,10 +2794,12 @@
             text-align: left;
           "
         >
+        <span ng-if="isPrint" class="s22" ng-bind="doclist.option9 === true ? '☑' : '☐' "></span>
+<input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option9" value="option9" ng-change="loadCustomers()">
           Annexure D - Individual Affidavits given EACH Legal Heir
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2654,10 +2809,12 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option10 === true ? '☑' : '☐' "></span>
+<input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option10" value="option10" ng-change="loadCustomers()">
           Original security certificate(s)
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2667,10 +2824,12 @@
             text-align: left;
           "
         >
+        <span ng-if="isPrint" class="s22" ng-bind="doclist.option11 === true ? '☑' : '☐' "></span>
+<input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option11" value="option11" ng-change="loadCustomers()">
           Annexure E - Bond of Indemnity furnished by Legal Heirs
         </p>
       </li>
-      <li data-list-text="□">
+      <li  >
         <p
           class="s22"
           style="
@@ -2680,6 +2839,8 @@
             text-align: left;
           "
         >
+                        <span ng-if="isPrint" class="s22" ng-bind="doclist.option12 === true ? '☑' : '☐' "></span>
+<input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option12" value="option12" ng-change="loadCustomers()">
           Annexure F - NOC from other Legal Heirs
         </p>
       </li>
@@ -2700,42 +2861,258 @@
       >
     </h1>
     </div>
+    </form>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
   </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
+    $scope.data = undefined;
+              $scope.hDiv = true;
+              var params = new URLSearchParams(window.location.search);
+              var id = params.get('id');
+              var id2 = params.get('id2');
+              $scope.isPrint = id2 ? true : false
 
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+        $scope.radiocheck = function(val){
+            if(val == 'option4'){
+                $scope.doclist.option5 = false;
+            }
+            else{
+                $scope.doclist.option4 = false;
+            }
+            
+            $scope.loadCustomers();
+        } 
+
+        $scope.radiocheck1 = function(val){
+            if(val == 'option6'){
+                $scope.doclist.option7 = false;
+            }
+            else{
+                $scope.doclist.option6 = false;
+            }
+            $scope.loadCustomers();
+        }
+
+                 // Load Customers
+         $scope.loadCustomers = function (sid,hid) {
+             if(id){
+                $scope.hDiv = true;
+                $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                    var result = response.data;
+                    $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
+                        $scope.docs = response.data;
+                        var doc = $scope.docs.find(x => x.id === sid);
+                        $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                            $scope.heir =response.data;
+                            var heirs = response.data.find(x => x.id === hid);
+                            $http.get('/doc/GetLegalHeirBank/'+ heirs.id).then(function (response) {
+                                var bank = response.data[0];
+                               
+                                $scope.data = {
+                                    customerName : heirs.nameAsPerAadhar,
+                                    rtaName: result.company.rtaName,
+                                    rtaAddress: result.company.rtaAddress,
+                                    companyName: result.companyName,
+                                    pan: heirs.pan,
+                                    kyc: $scope.data && $scope.data.kyc || 'KYC',
+                                    resident: $scope.data && $scope.data.resident || '',
+                                    relation: $scope.data && $scope.data.relation || '',
+                                    nameofdeacesed: doc.name,
+                                    dateofdeath: doc.dateOfDeath,
+                                    folioNo: result.folioNo,
+                                    qty: result.qty,
+                                    rate: result.rate,
+                                    mobile: heirs.mobile,
+                                    email: heirs.email,
+                                    address: heirs.addressAsPerAadhar,
+                                    bankName: bank.bankName,
+                                    accountNo: bank.accountNo,
+                                    ifsccode: bank.ifsccode,
+                                    accountType: bank.accountType,
+                                    micrcode: bank.micrcode,
+                                    branch: bank.branch,
+                                    bankattachfile: $scope.data && $scope.data.bankattachfile || '',
+                                    occupation: $scope.data && $scope.data.occupation || '',
+                                    politicalrelation: $scope.data && $scope.data.politicalrelation || '',
+                                    income: $scope.data && $scope.data.income || '',
+                                    countryofbirth: $scope.data && $scope.data.countryofbirth || 'INDIA',
+                                    placeofbirth: $scope.data && $scope.data.placeofbirth || '',
+                                    nationality: $scope.data && $scope.data.nationality || 'INDIAN',
+                                    taxresident: $scope.data && $scope.data.taxresident || '',
+                                    taxcountry: $scope.data && $scope.data.taxcountry || '',
+                                    taxidnumber: $scope.data && $scope.data.taxidnumber || '',
+                                    identitytype: $scope.data && $scope.data.identitytype || '',
+                                    place: $scope.data && $scope.data.place || 'Vadodara',
+                                    today: new Date(),
+                                };
+
+                                hideLoader();
+                            }, function (error) {
+                            console.error('Error loading Bank Deatails:', error);
+                            hideLoader();
+                            });
+                        }, function (error) {
+                        console.error('Error loading legal Heir:', error);
+                        hideLoader();
+                        });
+                    }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                    });
+                }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+                });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    rtaName: obj.rtaName,
+                    rtaAddress: obj.rtaAddress,
+                    companyName: obj.companyName,
+                    pan: obj.pan,
+                    kyc: obj.kyc,
+                    resident: obj.resident,
+                    relation: obj.relation,
+                    nameofdeacesed: obj.nameofdeacesed,
+                    dateofdeath: obj.dateofdeath,
+                    folioNo: obj.folioNo,
+                    qty: obj.qty,
+                    rate: obj.rate,
+                    mobile: obj.mobile,
+                    email: obj.email,
+                    address: obj.address,
+                    bankName: obj.bankName,
+                    accountNo: obj.accountNo,
+                    ifsccode: obj.ifsccode,
+                    accountType: obj.accountType,
+                    micrcode: obj.micrcode,
+                    branch: obj.branch,
+                    bankattachfile: obj.bankattachfile,
+                    occupation: obj.occupation,
+                    politicalrelation: obj.politicalrelation,
+                    income: obj.income,
+                    countryofbirth: obj.countryofbirth,
+                    placeofbirth: obj.placeofbirth,
+                    nationality: obj.nationality,
+                    taxresident: obj.taxresident,
+                    taxcountry: obj.taxcountry,
+                    taxidnumber: obj.taxidnumber,
+                    identitytype: obj.identitytype,
+                    place: obj.place,
+                    today: new Date(obj.today),
+                    docattach: JSON.parse(obj.docattach),
+                };
+                $scope.doclist = $scope.data.docattach;
+                id = result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
 
+    function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+     $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+                  var arr = angular.copy($scope.doclist);
+                 $scope.data.docattach= JSON.stringify(arr,null,2);
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Transmission Annexure C',
+                 StockId : id,
+                 url : `/Form/TransmissionAnnexureC?id2=`,
+                 jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        // $scope.loadCustomers();
+                        window.open(response.data.data.url + response.data.data.id,'_self')
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
+
         //Function
         $scope.printDiv = function (divId) {
-                        var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}.s1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}h2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt}.s5{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s6{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s7{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s8{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:11pt}.s9{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s10{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:11pt}.s12{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s13{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:8pt;vertical-align:4pt}.s15{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:bold;text-decoration:none;font-size:12pt}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s17{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s18{color:#2e5395;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s20{color:black;font-family:"MS PGothic",sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:6pt;vertical-align:-1pt}.s21{color:black;font-family:Webdings,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s22{color:#2e5395;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s23{color:#2e5395;font-family:"MS PGothic",sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s24{color:#2e5395;font-family:Webdings,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s26{color:#2e5395;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}p{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s27{color:black;font-family:"MS PGothic",sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s28{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s30{color:black;font-family:Tahoma,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s31{color:#2a2929;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s32{color:#2a2929;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s33{color:#585858;font-family:Webdings,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s34{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:8pt;vertical-align:4pt}.s35{color:#262524;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s36{color:#006fbf;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s37{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s38{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:-1pt}.s39{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:10pt}.s40{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt}.h3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:9pt}li{display:block}#l1{padding-left:0pt}#l1>li>*:first-child:before{content:"□ ";color:#2e5395;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}table,tbody{vertical-align:top;overflow:visible}</style>';
+                        var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}.s1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}h2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt}.s5{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s6{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s7{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s8{color:black;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;font-size:11pt}.s9{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s10{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:11pt}.s12{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s13{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:8pt;vertical-align:4pt}.s15{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:bold;text-decoration:none;font-size:12pt}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s17{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s18{color:#2e5395;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s20{color:black;font-family:"MS PGothic",sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:6pt;vertical-align:-1pt}.s21{color:black;font-family:Webdings,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s22{color:#2e5395;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s23{color:#2e5395;font-family:"MS PGothic",sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s24{color:#2e5395;font-family:Webdings,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s26{color:#2e5395;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}p{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s27{color:black;font-family:"MS PGothic",sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s28{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s30{color:black;font-family:Tahoma,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s31{color:#2a2929;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s32{color:#2a2929;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s33{color:#585858;font-family:Webdings,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s34{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:8pt;vertical-align:4pt}.s35{color:#262524;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s36{color:#006fbf;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s37{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s38{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:-1pt}.s39{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:10pt}.s40{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt}.h3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:9pt}li{display:block}#l1{padding-left:0pt}#l1>li>*:first-child:before{color:#2e5395;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}table,tbody{vertical-align:top;overflow:visible}.ng-hide{display:none}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
@@ -2744,7 +3121,7 @@
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

@@ -75,7 +75,7 @@ namespace Stock_CMS.Common
                         Directory.CreateDirectory(directoryPath);
                     }
 
-                    var filename = $"{DateTime.Now.Ticks}_{docName}.{Path.GetExtension(file.FileName)}";
+                    var filename = $"{DateTime.Now.Ticks}_{docName}{Path.GetExtension(file.FileName)}";
                     filePath = Path.Combine(directoryPath, filename);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))

@@ -97,7 +97,9 @@
         text-align: left;
       "
     >
-            {{data.customerName}}
+            {{data.firstHolder}},
+            {{data.secondHolder}},
+            {{data.thirdHolder}}
     </h1>
     <p
       class="s1"
@@ -155,7 +157,7 @@
         text-align: left;
       "
     >
-            Unit: {{data.officename}}
+            Unit: {{data.unit}}
     </h3>
     <p
       style="
@@ -284,8 +286,8 @@
       Yours faithfully
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
-      <u>({{data.customerName}}</u>)
+    <p style="padding-left: 12pt; text-indent: 0pt; text-align: left; display:flex;justify-content:space-between;">
+            <u>{{(data.firstHolder)}}</u><u>{{(data.secondHolder)}}</u><u>{{(data.thirdHolder)}}</u>
     </p>
     <p
       style="
@@ -321,7 +323,7 @@
              $scope.hDiv = true;
         $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
             var result = response.data;
-            $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+            $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                  $scope.docs = response.data;
                 var doc = $scope.docs.find(x => x.id === sid);
             $scope.data = {
@@ -330,9 +332,13 @@
                folioNo : result.folioNo,
                mobile: doc.mobile,
                address : doc.addressAsPerAadhar,
-               officename : result.companyName,
-               officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
+    unit: result.companyName,
                date:new Date(),
+                   firstHolder: result.firstHolderName,
+    secondHolder: result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
             };
 
             hideLoader();
@@ -357,11 +363,14 @@
                 qty : obj.qty,
                 address:obj.address,
                 mobile: obj.mobile,
-                officename: obj.officename,
-                officeaddress: obj.officeaddress,
+                    officename: obj.officename,
+    officeaddress: obj.officeaddress,
+    unit: obj.unit,
                 clientid:obj.clientid,
                 date:new Date(obj.date),
-
+                    firstHolder: obj.firstHolder,
+    secondHolder: obj.secondHolder,
+    thirdHolder: obj.thirdHolder,
             };
                             id = result.stockId;
 

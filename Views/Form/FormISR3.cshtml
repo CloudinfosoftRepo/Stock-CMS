@@ -149,7 +149,11 @@
         <p style="padding-top: 1pt; padding-left: 11pt; text-indent: 0pt; text-align: justify;">Registered Address of the Company: {{data.officeaddress}}</p>
         <p style="padding-top: 10pt; text-indent: 0pt; text-align: left;"><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; line-height: 108%; text-align: justify;">
-            I / we <u> {{data.customerName}} </u> the holder(s) of the securities particulars of which are given hereunder,
+            I / we <u>
+                {{data.firstHolder}},
+                {{data.secondHolder}},
+                {{data.thirdHolder}}
+            </u> the holder(s) of the securities particulars of which are given hereunder,
             <u>
                 <i><b> do not wish to nominate </b></i>
             </u>
@@ -321,11 +325,11 @@
         </p>
         <p style="text-indent: 0pt; text-align: left;"><br /></p>
         <p style="padding-top: 2pt; padding-left: 11pt; text-indent: 0pt; line-height: 213%; text-align: left;">Name(s) and Address of Security holders(s) ature(s)Sole / First Holder Name</p>
-        <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;">{{data.customerName}}<br />{{data.address}}<br /><br /></p>
+        <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;">{{data.firstHolder}}<br />{{data.firstHolderaddress}}<br /><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Second Holder Name</p>
-        <p style="text-indent: 0pt; text-align: left;">{{data.holders}}<br />{{data.address}}<br /><br /></p>
+        <p style="text-indent: 0pt; text-align: left;">{{data.secondHolder}}<br />{{data.secondHolderaddress}}<br /><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Third Holder Name</p>
-        <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;"><br /></p>
+        <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;">{{data.thirdHolder}}<br />{{data.thirdHolderaddress}}<br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Sign</p>
         <p style="padding-top: 4pt; text-indent: 0pt; text-align: left;"><br /></p>
         <table style="border-collapse: collapse; margin-left: 6.114pt;" cellspacing="0">
@@ -415,15 +419,10 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(doc.dob);
+                    var Age = $scope.calculateAge(doc.dob,doc.dateOfDeath);
                 $scope.data = {
                     customerName : doc.name,
                     officename : result.companyName,
@@ -434,8 +433,13 @@
                     distinctiveNosEnd:'',
                     qty: result.qty,
                     folioNo : result.folioNo,
-                    officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
-                    holders : holders.length > 0 ? `${holders.join(') (')}` : '',
+                    officeaddress: result.company.companyAddress,
+                    firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
+                    firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
+                    secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
+                    thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
                     witnessname: 'Shreyash Chhagani',
                     witnessaddress: 'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
                 };
@@ -467,7 +471,12 @@
                     distinctiveNosEnd: obj.distinctiveNosEnd,
                     officename: obj.officename,
                     officeaddress: obj.officeaddress,
-                    holders: obj.holders,
+                    firstHolder: obj.firstHolder,
+                    secondHolder:obj.secondHolder,
+                    thirdHolder:obj.thirdHolder,
+                    firstHolderaddress:obj.firstHolderaddress,
+                    secondHolderaddress:obj.secondHolderaddress,
+                    thirdHolderaddress:obj.thirdHolderaddress,
                     witnessname: obj.witnessname,
                     witnessaddress: obj.witnessaddress,
                 };
@@ -493,20 +502,34 @@
         }
     }
 
-          $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
+         $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
     };
 
         //Genrate Form

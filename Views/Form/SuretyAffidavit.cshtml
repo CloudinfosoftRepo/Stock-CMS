@@ -429,7 +429,7 @@
     <h1 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
       Dated this
       <u
-        >{{data.day}} </u
+        >@* {{data.day}} *@ &emsp; &emsp; </u
       >day of
             <u>{{data.month}} </u><span class="p"> </span>{{data.year}}.
     </h1>
@@ -470,7 +470,7 @@
              $scope.hDiv = true;
         $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
             var result = response.data;
-            $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+            $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                  $scope.docs = response.data;
                 var doc = $scope.docs.find(x => x.id === sid);
                 var arr = angular.copy($scope.surityList);

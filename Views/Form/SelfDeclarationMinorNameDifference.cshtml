@@ -151,7 +151,7 @@
         text-align: left;
 font-size:medium;
       ">
-            Name of Company:{{data.officename}},
+            Name of Company:{{data.unit}},
         </h3>
         <h3 style="padding:0 350px 0 12pt; text-indent: 0pt; text-align: left;font-size:medium;">
             
@@ -170,7 +170,7 @@ font-size:medium;
     </h2>
     <p style="padding-top: 7pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 6pt; text-indent: 0pt;line-height: 2; text-align: justify">
-        I/We<u>{{data.customerName}}</u>And<u>{{data.holders}} </u> Indian
+            I/We<u>{{data.firstHolder}}</u>And<u>{{data.secondHolder}} </u>And<u>{{data.thirdHolder}} </u> Indian
         inhabitant, residing at<u>{{data.address}}</u> do hereby solemnly affirm and say that:
     </p>
 
@@ -260,18 +260,10 @@ font-size:medium;
          // Load Customers
          $scope.loadCustomers = function (sid) {
          if(id){
-             var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
-             var currentDate = new Date();
-         var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
              $scope.hDiv = true;
         $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
             var result = response.data;
-             let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-            $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+            $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                  $scope.docs = response.data;
                 var doc = $scope.docs.find(x => x.id === sid);
             $scope.data = {
@@ -279,11 +271,14 @@ font-size:medium;
                qty:result.qty,
                folioNo : result.folioNo,
                address : doc.addressAsPerAadhar,
-               officename : result.companyName,
-               officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
+    unit: result.companyName,
                date:new Date(),
                nameasperCertificate:'',
-                holders : holders.length > 0 ? `${holders.join(') (')}` : ''
+                    firstHolder: result.firstHolderName,
+    secondHolder: result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
             };
 
             hideLoader();
@@ -307,11 +302,15 @@ font-size:medium;
                 folioNo : obj.folioNo,
                 qty : obj.qty,
                 address:obj.address,
-                officename: obj.officename,
-                officeaddress: obj.officeaddress,
+                   officename: obj.officename,
+    officeaddress: obj.officeaddress,
+    unit: obj.unit,
+
                 clientid:obj.clientid,
                 date:new Date(obj.date),
-                holders: obj.holders,
+                    firstHolder: obj.firstHolder,
+    secondHolder: obj.secondHolder,
+    thirdHolder: obj.thirdHolder,
                 nameasperCertificate: obj.nameasperCertificate,
 
             };

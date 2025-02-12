@@ -220,6 +220,10 @@
                         <option selected disabled value="">Select customer</option>
                     </select>
                 </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
+                </div>
                 @* </div> *@
                 <div class="text-center m-2 col-md-4">
                     <button type="submit" class="btn" style="background-color:#003980; color:white;">
@@ -251,10 +255,16 @@
         <li data-list-text="1.">
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: justify">
                 That the following Equity Shares are registered in (name)
-                    <span class="s2">{{data.customerName}}</span><span class="s1"> </span>
+                    <span class="s2">
+                        {{data.firstHolder}}
+                    </span><span class="s1"> </span>
                     @* <span class="s2">PRABHULAL THAKKER </span> *@
                     jointly with (name)
-                    <span class="s2">{{data.holders}}</span><span class="s1"> </span>under LF No <u>{{data.lfno}} </u>in the books of
+                    <span class="s2">
+                        {{data.secondHolder}}
+                    </span><span class="s1">
+                        {{data.thirdHolder}}
+                    </span>under LF No <u>{{data.lfno}} </u>in the books of
                     <span class="s2">{{data.officename}}</span><span class="s1"> </span>having its Registered Office at
                 <span class="s2">
                         {{data.officeaddress}}
@@ -349,7 +359,7 @@
     </p>
     <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-            Solemnly affirmed at Ahmedabad, this @* {{data.day}} *@<u> &emsp; &emsp;</u> day of <span class="s5">{{data.month}} </span>,
+            Solemnly affirmed at @* Ahmedabad *@{{data.place}}, this @* {{data.day}} *@<u> &emsp; &emsp;</u> day of <span class="s5">{{data.month}} </span>,
         {{data.year}}
     </p>
     <p style="padding-top: 11pt; text-indent: 0pt; text-align: left"><br /></p>
@@ -399,15 +409,10 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                let holders = [
-                        result.firstHolder || '',
-                        result.secondHolder || '',
-                        result.thirdHolder || ''
-                    ].filter(holder => holder.trim() !== '');
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid)
-                    var Age = $scope.calculateAge(doc.dob);
+                    var Age = $scope.calculateAge(doc.dob,doc.dateOfDeath);
                      $http.get('/doc/GetBank/'+ doc.id).then(function (response) {
                         var bank = response.data[0];
                 $scope.data = {
@@ -419,19 +424,22 @@
                    aadhar: doc.aadhar,
                    address : doc.addressAsPerAadhar,
                    officename : result.companyName,
-                   officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   officeaddress:  result.company.companyAddress,
                    nameonpan: doc.nameAsPerPan,
                    nameonaadhar: doc.nameAsPerAadhar,
                    bankname: bank.bankName,
                    branch: bank.branch,
-                   lfno: doc.folioNo,
+                   lfno: result.folioNo,
                    dpid: doc.dpid,
                    clientid: doc.clientId,
                    accountno:bank.accountNo,
                    day: currentDate.getDate(),
                    month: monthsOfYear[currentDate.getMonth()],
                    year: currentDate.getFullYear(),
-                    holders : holders.length > 0 ? `(${holders.join(') (')})` : ''
+                   place: 'Vadodara',
+                   firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
                 };
 
                 hideLoader();
@@ -475,7 +483,10 @@
                     day:obj.day,
                     month:obj.month,
                     year:obj.year,
-                    holders: obj.holders,
+                    place: obj.place,
+                    firstHolder:obj.firstHolder,
+                secondHolder:obj.secondHolder,
+                thirdHolder:obj.thirdHolder,
                 };
                 id= result.stockId;
                 checkData();
@@ -498,20 +509,34 @@
         }
     }
 
-          $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
+          $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
     };
 
         //Genrate Form

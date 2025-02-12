@@ -88,10 +88,16 @@
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
                 @* <div class="col-md-4"> *@
-                <div class="form-group mb-3">
-                    <label for="seletedid" class="form-label">select customer</label>
-                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                <div class="form-group mb-3 col-md-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
                         <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="heirId" class="form-label">select Heir</label>
+                    <select class="form-select w-auto" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select Heir</option>
                     </select>
                 </div>
                     <div class="form-group mb-3 col-md-3">
@@ -135,7 +141,7 @@
         line-height: 108%;
         text-align: justify;
       ">
-            I <u>{{data.customerName}}</u> (name of legal heir),{{data.relationship}} <u>{{data.sonof}}</u> (name of deceased holder as
+            I <u>{{data.customerName}}</u> (name of legal heir),{{data.relationship}} of <u>{{data.sonof}}</u> (name of deceased holder as
         appearing on the share certificate), aged about <u>{{data.age}}</u> years, and
         residing at
             <u>{{data.address}}</u>, do hereby solemnly affirm and declare as under:
@@ -325,7 +331,7 @@
 
 
         // Load Customers
-         $scope.loadCustomers = function (sid) {
+         $scope.loadCustomers = function (sid,hid) {
 
 
              if(id){
@@ -334,17 +340,20 @@
                  $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(doc.dob);
+                     $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                    $scope.heir = response.data;
+                    var heirs = response.data.find(x => x.id === hid);
+                    var Age = $scope.calculateAge(heirs.dob,heirs.dateOfDeath);
                     $scope.data = {
-                       customerName : doc.name,
+                       customerName : heirs.name,
                        age : Age,
-                       relationship: doc.relationship,
-                       sonof: doc.relativesName,
+                       relationship: heirs.relationWithDead,
+                       sonof: doc.name,
                        deceasedholdername: doc.nameAsPerDeathCerti,
-                       address : doc.addressAsPerAadhar,
+                       address : heirs.addressAsPerAadhar,
                        officename : result.companyName,
                        placeofdeath: doc.placeOfDeath,
                        place:'Vadodara',
@@ -355,6 +364,10 @@
                     };
 
                     hideLoader();
+                     }, function (error) {
+                    console.error('Error loading Legal Heair:', error);
+                    hideLoader();
+                });
                  }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -406,20 +419,34 @@
         }
     }
 
-        $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
+       $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
     };
 
         $scope.navtogenerateform = function () {

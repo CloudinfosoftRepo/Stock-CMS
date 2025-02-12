@@ -4,6 +4,7 @@ using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stock_CMS.Service
 {
@@ -77,6 +78,35 @@ namespace Stock_CMS.Service
             }
 
         }
+
+        public async Task<Int32> UpdateStockJson(long id, string jsonString, int updatedBy)
+        {
+            var isExist = await _StockRepository.GetStockById(id);
+            var data = isExist;
+
+            if (isExist.Id > 0)
+            {
+                data.StockJson = jsonString;
+                data.UpdatedBy = updatedBy;
+                data.UpdatedAt = DateTime.Now;
+
+                List<StockDto> updateList = new List<StockDto> { data };
+                var result = await _StockRepository.UpdateStock(updateList);
+                if (result.Any())
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return -2;
+            }
+
+        }
         public async Task<IEnumerable<StockDto>> GetStockByClientId(long  clientid)
         {
             var data = await _StockRepository.GetStockByClientId(clientid);
@@ -114,10 +144,28 @@ namespace Stock_CMS.Service
 		public async Task<StockDto> GetStockById(long id)
 		{  
 			var result = await _StockRepository.GetStockById(id);
-			var customer = await _customerRepository.GetCustomerById(result.CustomerId.Value);
+			var customer = await _customerRepository.GetCustomerById(result.CustomerId ?? 0);
             result.Customer = customer;
-			return result;
+            var compony = await _companyRepository.GetCompanyById(result.CompanyId ?? 0);
+            result.Company = compony.FirstOrDefault();
+            var holder1 = await _docRepository.GetDocById(result.FirstHolderId ?? 0);
+            result.FirstHolderData = holder1.FirstOrDefault(); 
+            var holder2 = await _docRepository.GetDocById(result.SecondHolderId ?? 0);
+            result.SecondHolderData = holder2.FirstOrDefault(); 
+            var holder3 = await _docRepository.GetDocById(result.ThirdHolderId ?? 0);
+            result.ThirdHolderData = holder3.FirstOrDefault();
+
+            return result;
 		}
 
+
+        public async Task<IEnumerable<DocDto>> GetHolderByStockId(long id)
+        {
+            var stock = await _StockRepository.GetStockById(id);
+            long?[] holdersids = { stock.FirstHolderId, stock.SecondHolderId, stock.ThirdHolderId };
+            var holders = await _docRepository.GetDocByIds(holdersids);
+
+            return holders;
+        }
 	}
 }

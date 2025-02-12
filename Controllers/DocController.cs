@@ -175,6 +175,36 @@ namespace Stock_CMS.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> createBank1([FromBody] BankDto bank)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var userId = HttpContext.Request.Cookies["UserId"];
+
+                    bank.IsActive = true;
+                    bank.CreatedAt = DateTime.Now;
+                    bank.CreatedBy = int.Parse(userId);
+
+                    var result = await _bankService.AddBank1(bank);
+                    bank.Id = result;
+                    string message = result == -1 ? "Bank already exists." :
+                     result == 0 ? "Failed to add Bank." :
+                     $"Bank added successfully.";
+                    bool success = result > 0;
+                    return Json(new { success = success, message = message, bank });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error during add");
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+            return Json(new { success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors) });
+        }
+
+        [HttpPost]
 
         public async Task<IActionResult> updateBank([FromBody] BankDto bank)
         {

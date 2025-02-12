@@ -43,6 +43,11 @@ namespace Stock_CMS.Repository
             return await GetMany(x => x.DocId == Id && x.IsActive ==true);
         }
 
+        public async Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByClientId(long Id)
+        {
+            return await GetMany(x => x.DocId == Id && x.IsClaiment == true && x.IsActive == true);
+        }
+
         public async Task<IEnumerable<LegalHeirDto>> UpdateLegalHeirbyColumn(IEnumerable<LegalHeirDto> data, string[] columns)
         {
             return await UpdateEntitiesArray(data, columns);

@@ -339,10 +339,10 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                 $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                 $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(doc.dob);
+                    var Age = $scope.calculateAge(doc.dob,doc.dateOfDeath);
                 $scope.data = {
                    customerName : doc.name,
                    newName: '',
@@ -457,21 +457,36 @@
     $scope.navtogenerateform = function () {
         window.open('/Form/GenerateForm/'+id, '_self');
     };
-          $scope.calculateAge = function(dob) {
-      if (!dob) {
-        return '';
-      }
-      var birthDate = new Date(dob);
-      var currentDate = new Date();
-      var age = currentDate.getFullYear() - birthDate.getFullYear();
-      var m = currentDate.getMonth() - birthDate.getMonth();
 
-      // Adjust age if the current month is before the birth month or if the birth day hasn't occurred yet
-      if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
-    };
+    $scope.calculateAge = function(dob, deathDate) {
+            if (!dob) {
+                return '';
+            }
+
+            var birthDate = new Date(dob);
+            var currentDate = new Date();
+            var age = currentDate.getFullYear() - birthDate.getFullYear();
+            var m = currentDate.getMonth() - birthDate.getMonth();
+
+            if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            // If deathDate is provided, calculate age at the time of death
+            if (deathDate) {
+                var deathDateObj = new Date(deathDate);
+                age = deathDateObj.getFullYear() - birthDate.getFullYear();
+                var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+                if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age;
+                // return age + ' (deceased)';
+            }
+
+            return age;
+        };
 
         // $scope.loadDocs = function () {
         //     if (true) {

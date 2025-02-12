@@ -129,7 +129,7 @@
         padding-left: 0pt;
       }
       #l1 > li > *:first-child:before {
-        content: "□ ";
+        /* content: "□ "; */
         color: black;
         font-family: Arial, sans-serif;
         font-style: normal;
@@ -190,6 +190,45 @@ table {
     </style>
   </head>
  <body style="padding-left: 8%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Transmission Annexure D</h3>
+        </div>
+    </div>
+    <form name="gForm" ng-submit="genrateForm()">
+    <div ng-if="hDiv">
+            <div class="row">
+                @* <div class="col-md-12">  *@
+                <div class="form-group mb-3 col-md-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3 col-md-3">
+                    <label for="heirId" class="form-label">select Heir</label>
+                    <select class="form-select w-auto" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select Heir</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place">
+                </div>
+                @* </div> *@
+                <div class="text-center m-2 col-md-4">
+                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                        Genrate Form
+                    </button>
+                </div>
+            </div>
+    </div>
     <div id="printForm">
     <div
     class="textbox"
@@ -251,21 +290,19 @@ table {
       "
     >
       I
-      <span class="s5"
-        >UYIOTRXTC CTFVGB YVGUBH YUBHDS NUJ </span
-      ><span class="s6"> </span>Son / daughter / Spouse of  <span class="s5">
-        BABHBHRYB VBYUARBYVBYU RVABIRBHV UVBAREIULAER </span
+      <span class="s5">{{data.customerName}} </span><span class="s6"> </span>{{data.relationWithDead}} of  <span class="s5">
+        {{data.sonof}} </span
       >residing at
       <span class="s5"
-        >BHLAVYUBHB GRHBHAREBH RUYBGYUERNBVYU VREBBABREAG</span
+        >{{data.address}}</span
       ><span class="s5">
-         BIURSBUISB ESBVHRBSV WERBSARHBGKUYR RSHBKAUYER YRBSFYUEKA REYBUARKUB RBAYUF </span
+         @* BIURSBUISB ESBVHRBSV WERBSARHBGKUYR RSHBKAUYER YRBSFYUEKA REYBUARKUB RBAYUF *@ </span
       >do hereby solemnly affirm and state on oath as follows.
     </p>
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left" />
     <p style="padding-left: 38pt; text-indent: 0pt; text-align: left">
-      That Mr. /Mrs <span class="s5">Gema Traeg</span>@@ (“the deceased holder”) held the following securities in his / her name as single holder:
+                That Mr. /Mrs <span class="s5">@* Gema Traeg *@{{data.sonof}}</span>@@ (“the deceased holder”) held the following securities in his / her name as single holder:
     </p>
     
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
@@ -283,16 +320,16 @@ table {
       </tr>
       <tr style="height: 16pt;">
         <td class="table-cell">
-          <p class="s8">1) EFW</p>
+                        <p class="s8">1) {{data.officename}}</p>
         </td> 
         <td class="table-cell">
-          <p>VSEVE</p>
+                        <p>{{data.folioNo}}</p>
         </td>
         <td class="table-cell">
-          <p>1232</p>
+          <p>{{data.qty}}</p>
         </td>
       </tr>
-      <tr style="height: 16pt;">
+      <!--<tr style="height: 16pt;">
         <td class="table-cell">
           <p class="s8">2) FWEF</p>
         </td>
@@ -313,11 +350,12 @@ table {
         <td class="table-cell">
           <p>14856</p>
         </td>
-      </tr>
+                </tr>-->
     </table>
     
     <ul id="l1">
       <li data-list-text="□">
+                    
         <p
           style="
             padding-top: 3pt;
@@ -326,13 +364,14 @@ table {
             text-align: justify;
           "
         >
+                        <span ng-if="isPrint" class="s8" ng-bind="radiochk.option1 ? '☑' : '☐'"></span>
+
+                        <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="radiochk.option1" ng-change="radiocheck('option1')">
           That the aforesaid deceased holder died <i>intestate </i>leaving
           behind him/her, the following persons as the only surviving heirs as per the
           Succession Certificate/ Legal Heirship Certificate(or its equivalent
           certificate)/Court Decree dated
-          <span class="s5"
-            >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span
-          ><span class="s6"> </span>/ according to the Law of Intestate
+          <span class="s5">@* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@{{data.dateofdeath | date:'dd/MM/yyyy'}} </span><span class="s6"> </span>/ according to the Law of Intestate
           Succession by which he/she was governed at the time of his/her death
           and without registering any nominee. *
         </p>
@@ -343,12 +382,14 @@ table {
         </p>
       </li>
       <li data-list-text="□">
-        <p style="padding-left: 49pt; text-indent: -11pt; text-align: justify">
+
+                    <p style="padding-left: 49pt; text-indent: -11pt; text-align: justify">
+                        <span ng-if="isPrint" class="s8" ng-bind="radiochk.option2 ? '☑' : '☐'"></span>
+
+                        <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="radiochk.option2" ng-change="radiocheck('option2')">
           That the aforesaid deceased holder died leaving behind the following persons as the legatees as per the Will/ Probated Will/ Letter of
       Administration dated
-      <span class="s5"
-        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span
-      >and without registering any nominee. *
+      <span class="s5">@* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@{{data.dateofdeath | date:'dd/MM/yyyy'}} </span>and without registering any nominee. *
         </p>
       </li>
     </ul>
@@ -372,36 +413,36 @@ table {
       </tr>
       
       <!-- Row 1 -->
-      <tr>
-        <td class="name-col number-col">1) GMFNBD</td>
-        <td class="wide-col empty-cell">WREFE</td>
-        <td class="short-col empty-cell">15VESV</td>
-        <td class="relation-col empty-cell">14563</td>
+        <tr ng-repeat="tmp in heirlist">
+                    <td class="name-col number-col">{{ $index + 1 }}) {{tmp.name}}</td>
+                    <td class="wide-col empty-cell">{{tmp.addressAsPerAadhar}}</td>
+                    <td class="short-col empty-cell">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
+                    <td class="relation-col empty-cell">{{tmp.relationWithDead}}</td>
       </tr>
     
-      <!-- Row 2 -->
-      <tr>
+      <!-- Row 2 
+                <tr>
         <td class="name-col number-col">2) SZDX</td>
         <td class="wide-col empty-cell">FESFE</td>
         <td class="short-col empty-cell">15VES</td>
         <td class="relation-col empty-cell">1235</td>
-      </tr>
+                </tr>-->
     
-      <!-- Row 3 -->
+      <!-- Row 3 
       <tr>
         <td class="name-col number-col">3) MHFGNDBD</td>
         <td class="wide-col empty-cell">FSEFSE</td>
         <td class="short-col empty-cell">V15E6SV</td>
         <td class="relation-col empty-cell">14523</td>
-      </tr>
+      </tr>-->
     
-      <!-- Row 4 -->
+      <!-- Row 4 
       <tr>
         <td class="name-col number-col">4)</td>
         <td class="wide-col empty-cell"></td>
         <td class="short-col empty-cell"></td>
         <td class="relation-col empty-cell"></td>
-      </tr>
+                </tr>-->
     </table>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
@@ -471,7 +512,7 @@ table {
     <p style="padding-left: 38pt; text-indent: 0pt; text-align: left">
       Place:
       <span class="s5"
-        >Recvev</span
+        >{{data.place}}</span
       >
     </p>
     <p
@@ -484,7 +525,7 @@ table {
     >
       Date :
       <span class="s5"
-        >12/05/2025</span
+        >@* 12/05/2025 *@{{data.today | date:'__/MM/yyyy'}}</span
       >
     </p>
     <p style="text-indent: 0pt; text-align: left" />
@@ -525,42 +566,235 @@ table {
       $ = <span class="s13">Name of the Guardian</span>
     </p>
  </div>
+    </form>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
   </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
-
+            $scope.data = undefined;
+              $scope.hDiv = true;
+              var params = new URLSearchParams(window.location.search);
+              var id = params.get('id');
+              var id2 = params.get('id2');
+              $scope.isPrint = id2 ? true : false
         var isProcessing = false;
 
         // showLoader();
 
+        $scope.radiocheck = function(val){
+            if(val == 'option1'){
+                $scope.radiochk.option2 = false;
+            }
+            else{
+                $scope.radiochk.option1 = false;
+            }
+
+            $scope.loadCustomers();
+        }
+
+
+
         // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
+         $scope.loadCustomers = function (sid,hid) {
+             if(id){
+                $scope.hDiv = true;
+                $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                    var result = response.data;
+                    $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
+                        $scope.docs = response.data;
+                        var doc = $scope.docs.find(x => x.id === sid);
+                        $http.get('/LegalHeir/GetLegalHeir/' + doc.id).then(function (response) {
+                            $scope.heirlist = response.data;
+                            $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                                $scope.heir =response.data;
+                                var heirs = response.data.find(x => x.id === hid);
+
+                                $scope.data = {
+                                    customerName : heirs.nameAsPerAadhar,
+                                    relationWithDead: heirs.relationWithDead,
+                                    sonof: doc.nameAsPerAadhar,
+                                    address: heirs.addressAsPerAadhar,
+                                    officename : result.companyName,
+                                    folioNo : result.folioNo,
+                                    qty: result.qty,
+                                    dateofdeath: doc.dateOfDeath,
+                                    place: $scope.data && $scope.data.place || 'Vadodara',
+                                    today: new Date(),
+                                };
+
+                                hideLoader();
+                            }, function (error) {
+                            console.error('Error loading legal Heir:', error);
+                            hideLoader();
+                            });
+                        }, function (error) {
+                        console.error('Error loading Legal Heirs:', error);
+                        hideLoader();
+                        });
+                    }, function (error) {
+                    console.error('Error loading Docs:', error);
+                    hideLoader();
+                    });
+                }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+                });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    customerName: obj.customerName,
+                    relationWithDead: obj.relationWithDead,
+                    sonof: obj.sonof,
+                    address: obj.address,
+                    officename: obj.officename,
+                    folioNo: obj.folioNo,
+                    qty: obj.qty,
+                    selectedoptions: JSON.parse(obj.selectedoptions),
+                    heirs: JSON.parse(obj.heirs),
+                    dateofdeath: new Date(obj.dateofdeath),
+                    place: obj.place,
+                    today: new Date(obj.today),
+                };
+                $scope.radiochk = $scope.data.selectedoptions;
+                $scope.heirlist = $scope.data.heirs;
+                id = result.stockId;
+                checkData();
                 hideLoader();
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
-        };
-
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
-                }, function (error) {
-                    console.error('Error loading Docs:', error);
-                    hideLoader();
-                });
             }
         };
 
+    function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+     $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+                  var arr = angular.copy($scope.heirlist);
+                 $scope.data.heirs = JSON.stringify(arr,null,2);
+
+                 var arr1 = angular.copy($scope.radiochk);
+                 $scope.data.selectedoptions = JSON.stringify(arr1,null,2);
+
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Transmission Annexure D',
+                 StockId : id,
+                 url : `/Form/TransmissionAnnexureD?id2=`,
+                 jsonString : jsonString,
+                 ClientName: $scope.data.customerName,
+                 IsActive : true
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        // $scope.loadCustomers();
+                        window.open(response.data.data.url + response.data.data.id,'_self')
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+         $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
+
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
+    };
+
+        // Load Legal Heir
+        // $scope.loadlegalheir = function () {
+        //     $http.get('/LegalHeir/GetLegalHeir/' + docs.id).then(function (response) {
+        //         $scope.heirlist = response.data;
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading Legal Heirs:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
+
         //Function
         $scope.printDiv = function (divId) {
-                        var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}.s1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt}.s3{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}p{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s6{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s7{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt}.s8{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s9{color:#d9d9d9;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s10{color:#d9d9d9;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s12{color:#a6a6a6;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s13{color:#2e5395;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt}#l1>li>*:first-child:before{content:"□ ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}table,tbody{vertical-align:top;overflow:visible}.table-cell{width:184pt}.title-cell{font-weight:bold}.number-cell{width:35pt}table{border-collapse:collapse;margin-left:5.5pt}td{border:1px solid #a6a8ab;padding-left:4pt;padding-top:1pt;text-align:left;vertical-align:top}.title{padding-left:20pt}.subtitle{padding-left:1pt}.short-col{width:35pt}.wide-col{width:184pt}.name-col{width:183pt}.relation-col{width:86pt}.number-col{padding-left:10pt}.empty-cell{padding-left:0pt}</style>';
+                        var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}.s1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s2{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt}.s3{color:black;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}p{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s6{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s7{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt}.s8{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s9{color:#d9d9d9;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s10{color:#d9d9d9;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s12{color:#a6a6a6;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s13{color:#2e5395;font-family:Arial,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt}#l1>li>*:first-child:before{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}table,tbody{vertical-align:top;overflow:visible}.table-cell{width:184pt}.title-cell{font-weight:bold}.number-cell{width:35pt}table{border-collapse:collapse;margin-left:5.5pt}td{border:1px solid #a6a8ab;padding-left:4pt;padding-top:1pt;text-align:left;vertical-align:top}.title{padding-left:20pt}.subtitle{padding-left:1pt}.short-col{width:35pt}.wide-col{width:184pt}.name-col{width:183pt}.relation-col{width:86pt}.number-col{padding-left:10pt}.empty-cell{padding-left:0pt}.ng-hide{display:none;}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
@@ -569,7 +803,7 @@ table {
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

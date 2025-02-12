@@ -259,7 +259,7 @@
           ">
                 That I Shall be liable for any consequences in case of any loss to
                     @* Trident Limited  *@
-                    {{data.officename}}due to this declaration and I hereby unconditionally
+                    {{data.officename}} due to this declaration and I hereby unconditionally
                 and irrevocably submit to the exclusive jurisdiction of the Competent
                 Court / forum in Barnala, Punjab with regard to any question to or
                 matter arising out of these presents and/or any other document that
@@ -274,7 +274,7 @@
         line-height: 108%;
         text-align: left;
       ">
-        This declaration is hereby executed and submitted to TRIDENT LIMITED to
+            This declaration is hereby executed and submitted to @* TRIDENT LIMITED *@{{data.officename}} to
         accomplish the change of address.
     </p>
     <p style="
@@ -367,7 +367,7 @@
                  $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
                     $scope.data = {

@@ -10,17 +10,9 @@ public partial class StockDto
 
     public long? CustomerId { get; set; }
 
-    public string? CompanyName { get; set; }
-
-    public string? FirstHolder { get; set; }
-
-    public string? SecondHolder { get; set; }
-
-    public string? ThirdHolder { get; set; }
-
     public string? FolioNo { get; set; }
 
-    public string? ClamStatus { get; set; }
+    public string? ClaimStatus { get; set; }
 
     public double? ActualQty { get; set; }
 
@@ -59,16 +51,16 @@ public partial class StockDto
     public long? ThirdHolderId { get; set; }
 
     [NotMapped]
-    public string? CompanyName1 { get; set; }
+    public string? CompanyName { get; set; }
 
     [NotMapped]
-    public string? FirstHolder1 { get; set; }
+    public string? FirstHolderName { get; set; }
 
     [NotMapped]
-    public string? SecondHolder1 { get; set; }
+    public string? SecondHolderName { get; set; }
 
     [NotMapped]
-    public string? ThirdHolder1 { get; set; }
+    public string? ThirdHolderName { get; set; }
 
 
     [NotMapped]
@@ -82,6 +74,10 @@ public partial class StockDto
 	public bool IsClient { get; set; }
 
 	public virtual CustomerDto? Customer { get; set; }
+    public virtual CompanyDto? Company { get; set; }
+    public virtual DocDto? FirstHolderData { get; set; }
+    public virtual DocDto? SecondHolderData { get; set; }
+    public virtual DocDto? ThirdHolderData { get; set; }
 
 
 }

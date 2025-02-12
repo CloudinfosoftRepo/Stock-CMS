@@ -59,7 +59,7 @@
             <div class="row g-3 mb-4 align-items-center justify-content-between">
                 <!-- Left Side: Back Button and Title -->
                 <div class="d-flex align-items-center col-md-6">
-                    <a asp-controller="Master" asp-action="Client" class="btn btn-custom me-3">
+                    <a ng-click="navtoStock()" class="btn btn-custom me-3">
                         <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
                     </a>
                     <h1 class="app-page-title mb-0">Legal Heir Management</h1>
@@ -102,6 +102,12 @@
                                     <th class="cell">Mobile</th>
                                     <th class="cell">Email</th>
                                     <th class="cell">Claiment/NOC</th>
+                                    <th class="cell">Relationship with Dead</th>
+                                    <th class="cell">Dead/Alive</th>
+                                    <th class="cell">Death Certificate</th>
+                                    <th class="cell">Name As Per DeathCerti</th>
+                                    <th class="cell">Date Of Death</th>
+                                    <th class="cell">Place Of Death</th>
 
                                     <th class="cell">Created At</th>
                                     <th class="cell">Created By</th>
@@ -119,23 +125,42 @@
                                     <td class="cell">{{ doc.name }}</td>
                                     <td class="cell">{{ doc.pan }}</td>
                                     <td class="cell">{{ doc.nameAsPerPan }}</td>
-                                    <td class="cell">
+                                    <td class="cell" ng-click="openimageModal(doc.panurl)">
                                         <div class="">
-                                            <img src="{{doc.panurl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.panurl)">
+
+                                            <img ng-if="isImage(doc.panurl)" ng-src="{{doc.panurl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.panurl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.aadhar }}</td>
                                     <td class="cell">{{ doc.nameAsPerAadhar }}</td>
                                     <td class="cell">{{ doc.addressAsPerAadhar }}</td>
-                                    <td class="cell">
+                                    <td class="cell" ng-click="openimageModal(doc.aadharUrl)">
                                         <div class="">
-                                            <img src="{{doc.aadharUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.aadharUrl)">
+
+                                            <img ng-if="isImage(doc.aadharUrl)" ng-src="{{doc.aadharUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.aadharUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
                                     <td class="cell">{{ doc.email }}</td>
                                     <td class="cell">{{ doc.isClaiment ? 'Claiment' : 'NOC' }}</td>
+                                    <td class="cell">{{ doc.relationWithDead }}</td>
+                                    <td class="cell">{{ doc.isDead ? 'Dead' : 'Alive' }}</td>
+                                    <td class="cell" ng-click="openimageModal(doc.deathCertiUrl)">
+                                        <div class="">
+
+                                            <img ng-if="isImage(doc.deathCertiUrl)" ng-src="{{doc.deathCertiUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.deathCertiUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ doc.nameAsPerDeathCerti }}</td>
+                                    <td class="cell">{{ doc.dateOfDeath | date: 'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.placeOfDeath }}</td>
 
                                     <td class="cell">{{ doc.createdAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.createdByName }}</td>
@@ -234,6 +259,22 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <label for="relationWithDead">Relationship With the Dead</label>
+                                    <input type="text" id="relationWithDead" ng-model="currentDoc.relationWithDead" class="form-control" required />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Dead</label><br />
+                                    <label class="radio-inline">
+                                        <input type="checkbox" ng-model="currentDoc.isDead" /> Dead
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <label>Claiment/NOC</label><br />
                                     <label class="radio-inline">
                                         <input type="radio" ng-model="status" value="Claiment" /> Claiment
@@ -297,6 +338,38 @@
                                 <div class="form-group">
                                     <label for="aadharFile">Aadhar File</label>
                                     <input type="file" id="aadharFile" class="form-control" file-model="currentDoc.aadharFile" ng-model="currentDoc.aadharFile" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <h6>
+                                Death Certificate Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerDeathCerti">Name As Per Death Certi</label>
+                                    <input type="text" id="nameAsPerDeathCerti" ng-model="currentDoc.nameAsPerDeathCerti" class="form-control" placeholder="Enter Name As Per Death Certi" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="placeOfDeath">Place Of Death</label>
+                                    <input type="text" id="placeOfDeath" ng-model="currentDoc.placeOfDeath" class="form-control" placeholder="Enter Place Of Death" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dateOfDeath">Date of Demise</label>
+                                    <input type="date" id="dateOfDeath" ng-model="currentDoc.dateOfDeath" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="deathcertiFile">Death Certificate File</label>
+                                    <input type="file" id="deathcertiFile" class="form-control" file-model="currentDoc.deathcertiFile" ng-model="currentDoc.deathcertiFile" />
                                 </div>
                             </div>
                         </div>
@@ -482,9 +555,16 @@
                     formData.append('email', $scope.currentDoc.email);
                     formData.append('isClaiment', $scope.status == 'Claiment' ? true : false);
                     formData.append('isNoc', $scope.status == 'NOC' ? true : false);
+                    formData.append('relationWithDead', $scope.currentDoc.relationWithDead);
+                    formData.append('isDead', $scope.currentDoc.isDead ? true : false);
+                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString().split('T')[0] : '');
+                    formData.append('nameAsPerDeathCerti',  $scope.currentDoc.nameAsPerDeathCerti ?? '');
+                    formData.append('placeOfDeath',  $scope.currentDoc.placeOfDeath ?? '');
 
                 if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
                 if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
+                 if ($scope.currentDoc.deathcertiFile) formData.append('deathcertiFile', $scope.currentDoc.deathcertiFile);
+
 
                 var url = $scope.isEditing
                     ? '/LegalHeir/update/' + $scope.currentDoc.id
@@ -565,10 +645,11 @@
                 {
                     if (isProcessing) return;
                     isProcessing = true;
+                    $scope.currentBank.clientId = 0;
                     $scope.currentBank.LegalHeirId = $scope.docid2;
                     $scope.currentBank.accountOpeningDate = $scope.currentBank.accountOpeningDate.toISOString().split('T')[0]
 
-                        const url = $scope.currentBank.id ? `/doc/updateBank1/${$scope.currentBank.id}` : '/doc/createBank';
+                        const url = $scope.currentBank.id ? `/doc/updateBank1/${$scope.currentBank.id}` : '/doc/createBank1';
                     $http.post(url, $scope.currentBank).then(function (response) {
                         if (response.data.success) {
                                 Swal.fire({
@@ -602,6 +683,16 @@
                 }
 
             };
+
+
+            $scope.isImage = function(url) {
+              const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+              return imageExtensions.some(extension => url.toLowerCase().endsWith(extension));
+            };
+
+              $scope.navtoStock = function () {
+                window.open('/Doc/Doc/'+id, '_self');
+        };
 
              $scope.loadDocs();
 

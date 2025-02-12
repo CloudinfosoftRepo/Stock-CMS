@@ -126,5 +126,25 @@ namespace Stock_CMS.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetClaimentLegalHeir(long id)
+        {
+            try
+            {
+                var Docs = await _legalHeirService.GetClaimentLegalHeirByClientId(id);
+                return Json(Docs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
     }
 }

@@ -65,9 +65,9 @@ public partial class TblDoc
 
     public virtual TblCustomer? Customer { get; set; }
 
-    public virtual ICollection<TblStock> TblStockFirstHolderNavigations { get; set; } = new List<TblStock>();
+    public virtual ICollection<TblStock> TblStockFirstHolders { get; set; } = new List<TblStock>();
 
-    public virtual ICollection<TblStock> TblStockSecondHolderNavigations { get; set; } = new List<TblStock>();
+    public virtual ICollection<TblStock> TblStockSecondHolders { get; set; } = new List<TblStock>();
 
-    public virtual ICollection<TblStock> TblStockThirdHolderNavigations { get; set; } = new List<TblStock>();
+    public virtual ICollection<TblStock> TblStockThirdHolders { get; set; } = new List<TblStock>();
 }

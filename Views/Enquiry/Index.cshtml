@@ -80,6 +80,7 @@
                                         <th class="cell">Updated At</th>
                                         <th class="cell">Updated By</th>
                                         <th class="cell">Edit</th>
+                                        <th class="cell">Stock Form</th>
                                         <th class="cell">Genarate Form</th>
                                         @* <th class="cell">Doc Upload</th> *@
                                     </tr>
@@ -87,11 +88,11 @@
                                 <tbody>
                                     <tr ng-repeat="stock in stocks | filter: searchQuery">
                                         <td class="cell">{{ $index + 1 }}</td>
-                                        <td class="cell">{{ stock.companyName }}</td>
-                                        <td class="cell">{{ stock.customerName }}</td>
-                                        <td class="cell">{{ stock.firstHolder }}</td>
-                                        <td class="cell">{{ stock.secondHolder }}</td>
-                                        <td class="cell">{{ stock.thirdHolder }}</td>
+                                    <td ng-click="manageTrackingDoc(stock.id)" class="cell">{{ stock.companyName }}</td>
+                                    <td class="cell">{{ stock.customerName }}</td>
+                                        <td class="cell">{{ stock.firstHolderName }}</td>
+                                        <td class="cell">{{ stock.secondHolderName }}</td>
+                                        <td class="cell">{{ stock.thirdHolderName }}</td>
                                         <td class="cell">{{ stock.folioNo }}</td>
                                         <td class="cell">{{ stock.clamStatus }}</td>
                                     <td class="cell">{{ stock.actualQty }}</td>
@@ -111,8 +112,13 @@
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openStockModal(stock)">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-                                        </td>  
-                                        <td class="cell">
+                                        </td>
+                                    <td class="cell">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo)">
+                                            <i class="bi bi-pencil"></i>
+                                        </span>
+                                    </td>
+                                    <td class="cell">
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="navtogenerateform(stock.id)">
                                             <i class="bi bi-file-earmark-plus"></i>
                                         </span>
@@ -131,6 +137,109 @@
                
             </div>
         </div>
+
+    <!-- Form Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:75%" role="document">
+            <div class="modal-content">
+                <form name="gForm">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Stock' : 'Add Stock' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Folio No -->
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="folioNo">Folio No</label>
+                                    <div class="form-control-plaintext">{{ currentStockfolioNo }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Actual Quantity -->
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="qty">Actual Quantity</label>
+                                    <input type="number" id="qty" ng-model="jsonData.actualQty" class="form-control" placeholder="Quantity" required />
+                                </div>
+                            </div>
+                            <!-- Certificate No -->
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="actualQty">Certificate No</label>
+                                    <input type="text" id="actualQty" ng-model="jsonData.certificateNo" class="form-control" placeholder="Certificate No" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
+                            <!-- Distinctive No From -->
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="rate">Distinctive No From</label>
+                                    <input type="text" step="0.01" ng-model="jsonData.distinctiveNosFrom" class="form-control" placeholder="Distinctive No From" required />
+                                </div>
+                            </div>
+
+                            <!-- Distinctive No To -->
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="rate">Distinctive No To</label>
+                                    <input type="text" step="0.01" ng-model="jsonData.distinctiveNosTo" class="form-control" placeholder="Distinctive No To" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add Button -->
+                        <div class="text-center mb-3">
+                            <button ng-click="addStockData(gForm.$valid)" class="btn" style="background-color:#003980; color:white;">
+                                ADD
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button ng-click="SaveStockJson()" class="btn" style="background-color:#003980; color:white">
+                            {{ isEditing ? 'Save Changes' : 'Add Stock' }}
+                        </button>
+                    </div>
+                </form>
+                <div class="m-2">
+                    <!-- Stock List Table -->
+                    <table class="table table-bordered table-striped table-hover mb-0 text-left">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th class="cell">#</th>
+                                <th class="cell">Folio No</th>
+                                <th class="cell">Actual Quantity</th>
+                                <th class="cell">Certificate No</th>
+                                <th class="cell">Distinctive Nos From</th>
+                                <th class="cell">Distinctive Nos To</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="f in stockList">
+                                <td class="cell">{{ $index + 1 }}</td>
+                                <td class="cell">{{ currentStockfolioNo }}</td>
+                                <td class="cell">{{ f.actualQty }}</td>
+                                <td class="cell">{{ f.certificateNo }}</td>
+                                <td class="cell">{{ f.distinctiveNosFrom }}</td>
+                                <td class="cell">{{ f.distinctiveNosTo }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Add/Edit Stock Modal -->
     <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -286,6 +395,7 @@
         angular.module('Stock-CMS', []).controller('StockController', function ($scope, $http) {
             $scope.stocks = [];
             $scope.customers = [];
+            $scope.stockList = [];
             $scope.currentStock = {};
             $scope.isEditing = false;
             var isProcessing = false;
@@ -401,6 +511,85 @@
                 window.open('/Form/GenerateForm/' + id, '_blank');
             };
 
+
+            $scope.addStockData = function(isv) {
+            if (isv) {
+
+                $scope.stockList.push($scope.jsonData);
+
+                $scope.jsonData = {};
+
+                console.log('Stock data added:', $scope.stockList);
+            } else {
+                alert('Please fill in the required fields');
+            }
+        }
+
+                       // Open Modal
+        $scope.openFormModal = function (id,folioNo) {
+            $scope.currentStockId = id;
+            $scope.currentStockfolioNo = folioNo;
+
+             $scope.jsonData = { };
+            $('#formModal').modal('show');
+        };
+
+        $scope.SaveStockJson = function() {
+            if (isProcessing) return;
+            if ($scope.stockList.length < 2) {
+             Swal.fire({
+                        title: 'Error!',
+                        text:  'Please Add Atlest 2 Records',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                isProcessing = false;
+                return;
+            };
+            isProcessing = true;
+           $scope.stockList[0].folioNo = $scope.currentStockfolioNo;
+            $scope.stockList.forEach(item => delete item["$$hashKey"]);
+            let jsonString = JSON.stringify($scope.stockList, null, 2);
+
+
+            const url = '/Enquiry/UpdateStockJson?id=' + $scope.currentStockId + '&jsonString=' + encodeURIComponent(jsonString);
+
+            $http({
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(response) {
+                if (response.data.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.data.message || 'Operation successful!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.loadStocks();
+                    $('#stockModal').modal('hide');
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.data.message || 'There was an issue with the operation.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+                isProcessing = false;
+            }, function(error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                isProcessing = false;
+            });
+        };
+
             // Save Stock
             $scope.saveStock = function () {
                 if (id) 
@@ -442,6 +631,10 @@
                 }
                     
             };
+
+                     $scope.manageTrackingDoc = function (id) {
+            window.open('/Enquiry/Tracking/' + id, '_self');
+        };
 
             // Initial Load
             $scope.loadStocks();

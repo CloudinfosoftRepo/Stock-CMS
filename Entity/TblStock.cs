@@ -9,17 +9,9 @@ public partial class TblStock
 
     public long? CustomerId { get; set; }
 
-    public string? CompanyName { get; set; }
-
-    public string? FirstHolder { get; set; }
-
-    public string? SecondHolder { get; set; }
-
-    public string? ThirdHolder { get; set; }
-
     public string? FolioNo { get; set; }
 
-    public string? ClamStatus { get; set; }
+    public string? ClaimStatus { get; set; }
 
     public double? ActualQty { get; set; }
 
@@ -61,11 +53,13 @@ public partial class TblStock
 
     public virtual TblCustomer? Customer { get; set; }
 
-    public virtual TblDoc? FirstHolderNavigation { get; set; }
+    public virtual TblDoc? FirstHolder { get; set; }
 
-    public virtual TblDoc? SecondHolderNavigation { get; set; }
+    public virtual TblDoc? SecondHolder { get; set; }
 
     public virtual ICollection<TblGenratedForm> TblGenratedForms { get; set; } = new List<TblGenratedForm>();
 
-    public virtual TblDoc? ThirdHolderNavigation { get; set; }
+    public virtual ICollection<TblTracking> TblTrackings { get; set; } = new List<TblTracking>();
+
+    public virtual TblDoc? ThirdHolder { get; set; }
 }

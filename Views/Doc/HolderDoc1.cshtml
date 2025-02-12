@@ -58,7 +58,7 @@ img {
                 <div class="row g-3 mb-4 align-items-center justify-content-between">
                     <!-- Left Side: Back Button and Title -->
                     <div class="d-flex align-items-center col-md-6">
-                        <a asp-controller="Master" asp-action="Client" class="btn btn-custom me-3">
+                    <a ng-click="navtoLegalHeir()" class="btn btn-custom me-3">
                             <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
                         </a>
                         <h1 class="app-page-title mb-0">Document Management</h1>
@@ -102,9 +102,12 @@ img {
                             <tbody>
                                 <tr ng-repeat="doc in docs | filter: searchQuery" ">
                                     <td class="cell">{{ doc.documentName }}</td>
-                                    <td class="cell">
+                                    <td class="cell" ng-click="openimageModal(doc.docUrl)">
                                         <div class="">
-                                            <img src="{{doc.docUrl}}" alt="" width="35px" height="35px" ng-click="openimageModal(doc.docUrl)">
+
+                                            <img ng-if="isImage(doc.docUrl)" ng-src="{{doc.docUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.docUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
                                         </div>
                                     </td>
 
@@ -140,7 +143,7 @@ img {
     </div>
 
         <!-- Add/Edit Stock Modal -->
-        <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="docModal" tabindex="-2" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-xl"  role="document">
                 <div class="modal-content">
                     <form ng-submit="saveDoc()">
@@ -233,7 +236,8 @@ img {
                     isProcessing = true;
             var formData = new FormData();
                 formData.append('id', $scope.isEditing ? $scope.currentHolderDoc.id : 0);
-                    formData.append('legalHeirId', $scope.isEditing ? $scope.currentHolderDoc.holderId : id);
+                                    formData.append('holderId', 0);
+                            formData.append('legalHeirId', $scope.isEditing ? $scope.currentHolderDoc.legalHeirId : id);
                 formData.append('documentName', $scope.currentHolderDoc.documentName);
                 if ($scope.currentHolderDoc.docFile) formData.append('docFile', $scope.currentHolderDoc.docFile);
 
@@ -251,8 +255,11 @@ img {
                     confirmButtonText: 'OK'
                 });
                       isProcessing = false;
+                          if(response.data.success)
+                          {
                 $scope.loadDocs();
                 $('#docModal').modal('hide');
+                          }
             });
                 }
         };
@@ -286,6 +293,15 @@ img {
             $('#imageModal').modal('show');
         };
 
+                $scope.navtoLegalHeir = function () {
+           window.open('/LegalHeir/LegalHeir/'+id, '_self');
+        };
+
+
+                $scope.isImage = function(url) {
+          const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+          return imageExtensions.some(extension => url.toLowerCase().endsWith(extension));
+        };
 
 
         $scope.loadDocs();

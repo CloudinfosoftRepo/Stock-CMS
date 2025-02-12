@@ -109,19 +109,29 @@
         <form name="gForm" ng-submit="genrateForm()">
             <div class="row">
                 @* <div class="col-md-4"> *@
-                <div class="form-group mb-3">
-                    <label for="seletedid" class="form-label">select customer</label>
-                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                <div class="form-group mb-3 col-md-3">
+                    <label for="seletedId" class="form-label">select customer</label>
+                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
                         <option selected disabled value="">Select customer</option>
                     </select>
                 </div>
                 <div class="form-group mb-3 col-md-3">
-                    <label for="certificate" class="form-label">Certificate</label>
-                    <input type="text" ng-model="data.certificate" class="form-control search-orders" placeholder="Certificate">
+                    <label for="heirId" class="form-label">select Heir</label>
+                    <select class="form-select w-auto" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                        <option selected disabled value="">Select Heir</option>
+                    </select>
                 </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="certificate" class="form-label">Distinctive</label>
-                    <input type="text" ng-model="data.distinctive" class="form-control search-orders" placeholder="Distinctive">
+                <div class="form-group mb-3  col-md-3">
+                    <label for="certificatenos" class="form-label">Certificate Nos</label>
+                    <input type="text" ng-model="data.certificatenos" class="form-control search-orders" placeholder="Certificate Nos">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
+                    <input type="text" ng-model="data.distinctiveNosStart" class="form-control search-orders" placeholder="Distinctive Nos Start">
+                </div>
+                <div class="form-group mb-3  col-md-3">
+                    <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
+                    <input type="text" ng-model="data.distinctiveNosEnd" class="form-control search-orders" placeholder="Distinctive Nos End">
                 </div>
 
 
@@ -195,7 +205,7 @@
         text-align: left;
       "
     >
-            Unit: <b>{{data.officename}}</b>
+            Unit: <b>{{data.unit}}</b>
     </p>
     <p
       class="s4"
@@ -256,27 +266,9 @@
       <!-- Empty Rows Repeated (we'll keep only 1 and reduce redundancy) -->
       <tr style="height: 20pt">
                 <td class="table-cell">{{data.folioNo}}</td>
-                <td class="table-cell">{{data.certificate}}</td>
+                <td class="table-cell">{{data.certificatenos}}</td>
                 <td class="table-cell">{{data.qty}}</td>
-                <td class="table-cell">{{data.distinctive}}</td>
-      </tr>
-      <tr style="height: 20pt">
-                <td class="table-cell">{{data.folioNo}}</td>
-                <td class="table-cell">{{data.certificate}}</td>
-                <td class="table-cell">{{data.qty}}</td>
-                <td class="table-cell">{{data.distinctive}}</td>
-      </tr>
-      <tr style="height: 20pt">
-                <td class="table-cell">{{data.folioNo}}</td>
-                <td class="table-cell">{{data.certificate}}</td>
-                <td class="table-cell">{{data.qty}}</td>
-                <td class="table-cell">{{data.distinctive}}</td>
-      </tr>
-      <tr style="height: 20pt">
-                <td class="table-cell">{{data.folioNo}}</td>
-                <td class="table-cell">{{data.certificate}}</td>
-                <td class="table-cell">{{data.qty}}</td>
-                <td class="table-cell">{{data.distinctive}}</td>
+                <td class="table-cell">{{data.distinctiveNosStart}} - {{data.distinctiveNosEnd}}</td>
       </tr>
       <!-- Repeat this pattern for remaining rows -->
     </table>
@@ -318,7 +310,7 @@
         // showLoader();
 
         // Load Customers
-         $scope.loadCustomers = function (sid) {
+         $scope.loadCustomers = function (sid,hid) {
              if(id){
                  var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
                  var currentDate = new Date();
@@ -326,26 +318,35 @@
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
-                $http.get('/doc/getDocs/' +  result.customer.id).then(function (response) {
+                $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
+                     $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                    $scope.heir =response.data;
+                    var heirs = response.data.find(x => x.id === hid);
                 $scope.data = {
-                   customerName : doc.name,
+                   customerName : heirs.name,
                    qty:result.qty,
-                   sonof: doc.relativesName,
+                   sonof: doc.name,
                    folioNo : result.folioNo,
-                   mobile: doc.mobile,
-                   address : doc.addressAsPerAadhar,
-                   officename : result.companyName,
-                   officeaddress: '1101, Crescenzo, G-Block, Opp. MCA Club, Bandra-Kurla Complex, Bandra (East), Mumbai, Maharashtra, 400051',
+                   mobile: heirs.mobile,
+                   address : heirs.addressAsPerAadhar,
+                   officename : result.company.rtaName,
+    officeaddress: result.company.rtaAddress,
+    unit: result.companyName,
                    date:new Date(),
-                   distinctive:'',
-                   certificate:'',
+                   certificatenos:'',
+                    distinctiveNosStart: '',
+                    distinctiveNosEnd:'',
                    deceasedDate: new Date(doc.dateOfDeath),
 
                 };
 
                 hideLoader();
+                }, function (error) {
+                    console.error('Error loading Legal Heair:', error);
+                    hideLoader();
+                });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -367,12 +368,14 @@
                     qty : obj.qty,
                     address:obj.address,
                     mobile: obj.mobile,
-                    officename: obj.officename,
-                    officeaddress: obj.officeaddress,
+                   officename: obj.officename,
+    officeaddress: obj.officeaddress,
+    unit: obj.unit,
                     clientid:obj.clientid,
                     date:new Date(obj.date),
-                    distinctive:obj.distinctive,
-                   certificate:obj.certificate,
+                   certificatenos: obj.certificatenos,
+                    distinctiveNosStart: obj.distinctiveNosStart,
+                    distinctiveNosEnd: obj.distinctiveNosEnd,
                    deceasedDate:obj.deceasedDate,
                 };
                                 id = result.stockId;

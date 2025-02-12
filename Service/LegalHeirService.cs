@@ -48,6 +48,14 @@ namespace Stock_CMS.Service
                             data.Panurl = panUpload.message;
                         }
                     }
+                    if (data.DeathcertiFile != null)
+                    {
+                        var DeathcertiUpload = _fileUpload.StoreFile("ClientDeathCerti", data.DeathcertiFile, "Death Certi");
+                        if (DeathcertiUpload.status == true)
+                        {
+                            data.DeathCertiUrl = DeathcertiUpload.message;
+                        }
+                    }
                 }
                 var result = await _legalHeirRepository.AddLegalHeir(dataList);
                 if (result.Any())
@@ -107,6 +115,18 @@ namespace Stock_CMS.Service
                     {
                         data.Panurl = existingProduct.Panurl;
                     }
+                    if (data.DeathcertiFile != null)
+                    {
+                        var deathcertiUpload = _fileUpload.StoreFile("ClientDeathCerti", data.DeathcertiFile, "Death Certi");
+                        if (deathcertiUpload.status == true)
+                        {
+                            data.DeathCertiUrl = deathcertiUpload.message;
+                        }
+                    }
+                    else
+                    {
+                        data.DeathCertiUrl = existingProduct.DeathCertiUrl;
+                    }
                 }
 
                 List<LegalHeirDto> updateList = new List<LegalHeirDto> { data };
@@ -155,6 +175,23 @@ namespace Stock_CMS.Service
             {
                 return 0;
             }
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByClientId(long id)
+        {
+            var data = await _legalHeirRepository.GetClaimentLegalHeirByClientId(id);
+
+            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var users = await _userRepository.GetUsersByIds(ids);
+            var result = data.Select(x =>
+            {
+                x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+                x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+                return x;
+            });
+
+
+            return result;
         }
     }
 }
