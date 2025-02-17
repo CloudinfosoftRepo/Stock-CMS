@@ -42,7 +42,8 @@ public partial class StockCmsContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+ => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

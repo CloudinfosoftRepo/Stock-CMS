@@ -302,6 +302,7 @@
            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
                 $scope.data = {
+                    docid: result.firstHolderId,
                    customerName : result.firstHolderName,
                    noofpans: 1,
                    noofaadhars: 1,
@@ -336,6 +337,7 @@
                 var result = response.data;
                 var obj = JSON.parse(result.jsonString);
                 $scope.data = {
+                    docid: obj.docid,
                     customerName: obj.customerName,
                     noofpans: obj.noofpans,
                     noofaadhars: obj.noofaadhars,
@@ -388,6 +390,7 @@
                  jsonString : jsonString,
                  IsActive : true,
                  ClientName: $scope.data.customerName,
+                  ClientId: $scope.data.docid,
 
              }
 
@@ -405,11 +408,18 @@
 
                     } else {
                         Swal.fire({
-                            title: 'Error!',
-                            text: response.data.message || 'There was an issue adding the customer.',
-                            icon: 'error',
-                            confirmButtonText: 'Try Again'
-                        });
+                         title: 'This Form is already Exits',
+                         text: "do you want to go to that form?",
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonText: 'Yes',
+                         cancelButtonText: 'No'
+                     }).then((result) => {
+                         if (result.isConfirmed) {
+                             window.open(response.data.message, '_self');
+                         }
+                 });
+
                     }
                     isProcessing = false;
                 }, function (error) {

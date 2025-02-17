@@ -19,7 +19,11 @@ namespace Stock_CMS.Repository
         public async Task<GenratedFormDto> GetGenratedFormById(long Id)
         {
             return await GetOne(x => x.Id == Id);
-        }  
+        }
+        public async Task<IEnumerable<GenratedFormDto>> GetGenratedFormByInfo(GenratedFormDto data)
+        {
+            return await GetMany(x => x.ClientId == data.ClientId && x.FormName == data.FormName && x.IsActive == true && x.ClientName.ToLower() == data.ClientName.ToLower() && x.StockId == data.StockId);
+        }
         public async Task<IEnumerable<GenratedFormDto>> GetGenratedForm()
         {
             return await GetMany(x => x.IsActive == true);

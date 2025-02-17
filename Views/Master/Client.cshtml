@@ -19,6 +19,21 @@
         overflow-y: auto;
     }
 
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
+
+    .nav-style{
+        color: blue !important;
+    }
+
+    .nav-style:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
 </style>
 <body ng-controller="ClientController">
    
@@ -69,38 +84,38 @@
                                         <th class="cell">Created By</th>
                                         <th class="cell">Updated At</th>
                                         <th class="cell">Updated By</th>
-                                        <th class="cell">Edit</th>
-                                        <th ng-hide="search" class="cell">C2C</th>
-                                    <th class="cell">Docs</th>
+                                        <th class="cell sticky-action text-center">Action</th>
+                                    @* <th ng-hide="search" class="cell sticky-action">C2C</th> *@
+                                    @* <th class="cell sticky-action">Docs</th> *@
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="customer in customers | filter: searchQuery | filter:{isClient:search}">
                                         <td class="cell">{{ $index + 1 }}</td>
-                                        <td ng-click="manageClient(customer.id)" class="cell">{{ customer.customerName }}</td>
+                                    <td ng-click="manageClient(customer.id)" class="cell nav-style">{{ customer.customerName }}</td>
                                         <td class="cell">{{ customer.mobile }}</td>
                                         <td class="cell">{{ customer.address }}</td>
                                         <td class="cell">{{ customer.createdAt | date:'dd-MM-yyyy' }}</td>
                                         <td class="cell">{{ customer.createdByName }}</td>
                                         <td class="cell">{{ customer.updatedAt | date:'dd-MM-yyyy' }}</td>
                                         <td class="cell">{{ customer.updatedByName }}</td>
-                                        <td class="cell">
-                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCustomerModal(customer)" data-tooltip="Edit Client">
+                                    <td class="cell sticky-action">
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCustomerModal(customer)"  title="Edit Client">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-                                        </td>
 
-                                        <td ng-hide="search" class="cell text-center">
-                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-hide="customer.isClient" ng-click="updateIsClient(customer)" data-tooltip="Convert to Client">
+
+
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-hide="customer.isClient" ng-click="updateIsClient(customer)" title="Convert to Client">
                                                 <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m12 0-.66.03 3.81 3.81 1.35-1.34c3.25 1.57 5.59 4.74 5.95 8.5h1.5c-.51-6.16-5.66-11-11.95-11m0 4c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5m-11.95 9c.51 6.16 5.66 11 11.95 11l.66-.03-3.81-3.81-1.35 1.34c-3.25-1.56-5.59-4.74-5.95-8.5zm11.95 0c-3.87 0-7 1.57-7 3.5v1.5h14v-1.5c0-1.93-3.13-3.5-7-3.5z" /></svg>
                                             </span>
-                                        </td>
+                                        
 
-                                    <td  class="cell">
-                                        <span class="btn-sm app-btn" ng-hide="!customer.isClient" style="color:green;font-size:large" ng-click="manageDocs(customer.id)" data-tooltip="Docs">
+                                   
+                                        <span class="btn-sm app-btn" ng-hide="!customer.isClient" style="color:green;font-size:large" ng-click="manageDocs(customer.id)" title="Holders">
                                                 <i class="bi bi-file-earmark-text"></i>
                                             </span>
-                                        </td>
+                                    </td>
                                     </tr>
                                 </tbody>
                             </table>

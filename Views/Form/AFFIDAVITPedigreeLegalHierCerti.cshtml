@@ -3,62 +3,70 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AFFIDAVIT Pedigree - legal hier certi.</title>
     <style type="text/css">
-              * {
-                margin: 0;
-                padding: 0;
-                text-indent: 0;
-              }
-              .p,
-              p {
-                color: black;
-                font-family: "Times New Roman", serif;
-                font-style: normal;
-                font-weight: normal;
-                text-decoration: none;
-                font-size: 14pt;
-                margin: 0pt;
-              }
-              .s2 {
-                color: black;
-                font-family: Calibri, sans-serif;
-                font-style: normal;
-                font-weight: normal;
-                text-decoration: none;
-                font-size: 12pt;
-              }
-              .s3 {
-                color: black;
-                font-family: Arial, sans-serif;
-                font-style: normal;
-                font-weight: normal;
-                text-decoration: none;
-                font-size: 12pt;
-              }
-              .s4 {
-                color: black;
-                font-family: Arial, sans-serif;
-                font-style: normal;
-                font-weight: normal;
-                text-decoration: none;
-                font-size: 8pt;
-                vertical-align: 4pt;
-              }
-              .s5 {
-                color: black;
-                font-family: "Times New Roman", serif;
-                font-style: normal;
-                font-weight: normal;
-                text-decoration: none;
-                font-size: 14pt;
-              }
-              li {
-                display: block;
-              }
-              #l1 {
-                padding-left: 0pt;
-                counter-reset: c1 1;
-              }
-              #l1 > li > *:first-child:before {
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        .p,
+        p {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 14pt;
+            margin: 0pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s4 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 8pt;
+            vertical-align: 4pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 14pt;
+        }
+
+        li {
+            display: block;
+        }
+
+        #l1 {
+            padding-left: 0pt;
+            counter-reset: c1 1;
+        }
+
+            #l1 > li > *:first-child:before {
                 counter-increment: c1;
                 content: counter(c1, decimal) ". ";
                 color: black;
@@ -67,72 +75,110 @@
                 font-weight: normal;
                 text-decoration: none;
                 font-size: 14pt;
-              }
-              #l1 > li:first-child > *:first-child:before {
+            }
+
+            #l1 > li:first-child > *:first-child:before {
                 counter-increment: c1 0;
-              }
-              table,
-              tbody {
-                vertical-align: top;
-                overflow: visible;
-              }
-              /* Table Styles */
+            }
+
+        table,
+        tbody {
+            vertical-align: top;
+            overflow: visible;
+        }
+        /* Table Styles */
         .styled-table {
-          border-collapse: collapse;
-          margin-left: 27.5pt;
+            border-collapse: collapse;
+            margin-left: 27.5pt;
         }
 
         /* Common Styles for Table Cells */
         .column {
-          border: 1pt solid black;
-          padding: 8pt;
-          text-align: left;
+            border: 1pt solid black;
+            padding: 8pt;
+            text-align: left;
         }
 
         .name {
-          width: 95pt;
+            width: 95pt;
         }
 
         .age {
-          width: 68pt;
+            width: 68pt;
         }
 
         .relationship {
-          width: 81pt;
-          text-align: center;
+            width: 81pt;
+            text-align: center;
         }
 
         .status {
-          width: 74pt;
+            width: 74pt;
         }
 
         .photo {
-          width: 85pt;
+            width: 85pt;
         }
 
         /* Text Styles */
         .text {
-          margin: 0;
-          padding: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .text-left {
-          padding-left: 23pt;
-          text-indent: -2pt;
+            padding-left: 23pt;
+            text-indent: -2pt;
         }
 
         .text-center {
-          text-align: center;
-          padding-left: 3pt;
+            text-align: center;
+            padding-left: 3pt;
         }
 
         .text-indent {
-          text-indent: 10pt;
+            text-indent: 10pt;
         }
 
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
     </style>
 </head>
-<body style="padding-left: 15%;" ng-controller="FormController">
+
+<body style="padding: 5%;" ng-controller="FormController">
+
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
         <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
@@ -145,153 +191,192 @@
         </div>
     </div>
 
-    <div ng-if="hDiv">
-        <form name="gForm" ng-submit="genrateForm()">
-            <div class="row">
-                @* <div class="col-md-4"> *@
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="seletedId" class="form-label">select customer</label>
-                        <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
-                            <option selected disabled value="">Select customer</option>
-                        </select>
+    <div ng-if="hDiv" class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form name="gForm" ng-submit="genrateForm()">
+                    <h4 class="card-title text-center mb-4" style="color:#003980;">Generate Form</h4>
+
+                    <div class="row">
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" ng-options="g.id as g.name for g in heirs" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Place of Submission -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Place</label>
+                                <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Form Submission">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group mb-3 col-md-3">
-                        <label for="heirId" class="form-label">select Heir</label>
-                        <select class="form-select w-auto" ng-options="g.id as g.name for g in heirs" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
-                            <option selected disabled value="">Select Heir</option>
-                        </select>
+                    <div class="row">
+                        <!-- Occupation -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="occupation" class="form-label">Occupation</label>
+                                <input type="text" ng-model="data.occupation" class="form-control" placeholder="Occupation">
+                            </div>
+                        </div>
+
+                        <!-- Witness 1's Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="witness1name" class="form-label">Witness 1's Name</label>
+                                <input type="text" ng-model="data.witness1name" class="form-control" placeholder="Witness 1's Name">
+                            </div>
+                        </div>
+
+                        <!-- Witness 1's Address -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="witness1address" class="form-label">Witness 1's Address</label>
+                                <textarea id="witness1address" ng-model="data.witness1address" class="form-control" placeholder="Witness 1's Address"></textarea>
+                            </div>
+                        </div>
                     </div>
-                @* </div> *@
-                <div class="form-group mb-3 col-md-3">
-                    <label for="place" class="form-label">Place</label>
-                    <input type="text" ng-model="data.place" class="form-control search-orders" placeholder="Place of Form Submition">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="occupation" class="form-label">Occupation</label>
-                    <input type="text" ng-model="data.occupation" class="form-control search-orders" placeholder="Occupation">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="witness1name" class="form-label">Witness1's Name</label>
-                    <input type="text" ng-model="data.witness1name" class="form-control search-orders" placeholder="Witness1's Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="witness1address" class="form-label">Witness1's Address</label>
-                    <textarea id="witness1address" ng-model="data.witness1address" class="form-control" placeholder="Witness1's Address"></textarea>
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="witness2name" class="form-label">Witness2's Name</label>
-                    <input type="text" ng-model="data.witness2name" class="form-control search-orders" placeholder="Witness2's Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="witness2address" class="form-label">Witness2's Address</label>
-                    <textarea id="witness2address" ng-model="data.witness2address" class="form-control" placeholder="Witness2's Address"></textarea>
-                </div>
-                <div class="text-center m-2 col-md-4">
-                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
-                        Genrate Form
-                    </button>
-                </div>
+                    <div class="row">
+                        <!-- Witness 2's Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="witness2name" class="form-label">Witness 2's Name</label>
+                                <input type="text" ng-model="data.witness2name" class="form-control" placeholder="Witness 2's Name">
+                            </div>
+                        </div>
+
+                        <!-- Witness 2's Address -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="witness2address" class="form-label">Witness 2's Address</label>
+                                <textarea id="witness2address" ng-model="data.witness2address" class="form-control" placeholder="Witness 2's Address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="col-md-4 d-flex align-items-center justify-content-center mb-3">
+                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                            Generate Form
+                        </button>
+                    </div>
+
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div id="printForm">
-    <p style="
+        <p style="
         padding-top: 3pt;
         padding-left: 91pt;
         text-indent: -46pt;
         line-height: 108%;
         text-align: left;
       ">
-        <u>PEDIGREE / LEGAL HEIR’S CERTIFICATE / SURVIVING</u>
-        <u>MEMBER’S DECLARATION / AFFIDAVIT</u>
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="
+            <u>PEDIGREE / LEGAL HEIR’S CERTIFICATE / SURVIVING</u>
+            <u>MEMBER’S DECLARATION / AFFIDAVIT</u>
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="
         padding-left: 27pt;
         text-indent: 0pt;
         line-height: 200%;
         text-align: justify;
       ">
             I the undersigned@*  PRAVIN GORDHANBHAI PATEL *@{{data.customerName}} Age – @* 79 *@ {{data.age}}years, Occupation:{{data.occupation}}
-        @* Retired *@, Residing at: @* 99, ASUTOSH NAGAR SOCIETY, KARELIBAUG, VADODARA,
+            @* Retired *@, Residing at: @* 99, ASUTOSH NAGAR SOCIETY, KARELIBAUG, VADODARA,
         GUJARAT – 390018 *@{{data.address}}<span class="s2">.</span>
-    </p>
-    <p style="
+        </p>
+        <p style="
         padding-left: 27pt;
         text-indent: 0pt;
         line-height: 16pt;
         text-align: justify;
       ">
-        do hereby solemnly affirm and declare on oath as under:-
-    </p>
-    <p style="padding-top: 7pt; text-indent: 0pt; text-align: left"><br /></p>
-    <ol id="l1">
-        <li data-list-text="1.">
-            <p style="
+            do hereby solemnly affirm and declare on oath as under:-
+        </p>
+        <p style="padding-top: 7pt; text-indent: 0pt; text-align: left"><br /></p>
+        <ol id="l1">
+            <li data-list-text="1.">
+                <p style="
             padding-left: 63pt;
             text-indent: -18pt;
             line-height: 200%;
             text-align: left;
           ">
-                I the undersigned is residing at above mentioned address with my
-                family.
-            </p>
-        </li>
-        <li data-list-text="2.">
-            <p style="padding-left: 63pt; text-indent: -17pt; text-align: left">
-                That my father @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}}
-            </p>
-        </li>
-    </ol>
-    <p class="s3"
-       style="
+                    I the undersigned is residing at above mentioned address with my
+                    family.
+                </p>
+            </li>
+            <li data-list-text="2.">
+                <p style="padding-left: 63pt; text-indent: -17pt; text-align: left">
+                    That my father @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}}
+                </p>
+            </li>
+        </ol>
+        <p class="s3"
+           style="
         padding-top: 16pt;
         padding-left: 63pt;
         text-indent: 0pt;
         line-height: 200%;
         text-align: left;
       ">
-        <span class="p">was expired on Date @* </span>31<span class="s4">ST</span>
+            <span class="p">was expired on Date </span>@*31<span class="s4">ST</span>
         MARCH 1999 *@ {{data.dateofdeath | dateWithSuffix }}
-        <span class="p">after death of my father legal heirs of my father is as under :-</span>
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <table class="styled-table">
-            <tr class="row" >
-            <td class="column name">
-                <p class="text">Name Of Member</p>
-            </td>
-            <td class="column age">
-                <p class="text">Age (In Yrs.)</p>
-            </td>
-            <td class="column relationship">
-                <p class="text">Relationship with Deceased</p>
-            </td>
-            <td class="column status">
-                <p class="text">Live / Deceased</p>
-            </td>
-            <td class="column photo">
-                <p class="text">Photo</p>
-            </td>
-        </tr>
+            <span class="p">after death of my father legal heirs of my father is as under :-</span>
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <table class="styled-table">
+            <tr class="row">
+                <td class="column name">
+                    <p class="text">Name Of Member</p>
+                </td>
+                <td class="column age">
+                    <p class="text">Age (In Yrs.)</p>
+                </td>
+                <td class="column relationship">
+                    <p class="text">Relationship with Deceased</p>
+                </td>
+                <td class="column status">
+                    <p class="text">Live / Deceased</p>
+                </td>
+                <td class="column photo">
+                    <p class="text">Photo</p>
+                </td>
+            </tr>
             <tr class="row" ng-repeat="heir in heirlist">
-            <td class="column name">
-                <p class="text">{{heir.name}}</p>
-            </td>
-            <td class="column age">
+                <td class="column name">
+                    <p class="text">{{heir.name}}</p>
+                </td>
+                <td class="column age">
                     <p class="text">{{calculateAge(heir.dob,heir.dateOfDeath)}}</p>
-            </td>
-            <td class="column relationship">
+                </td>
+                <td class="column relationship">
                     <p class="text">{{heir.relationWithDead}}</p>
-            </td>
-            <td class="column status">
+                </td>
+                <td class="column status">
                     <p class="text">{{heir.isDead ? 'Deceased' : 'Live'}}</p>
-            </td>
-            <td class="column photo">
-                <p class="text"></p>
-            </td>
-        </tr>
-        @*<tr class="row">
+                </td>
+                <td class="column photo">
+                    <p class="text"></p>
+                </td>
+            </tr>
+            @*<tr class="row">
             <td class="column name">
                 <p class="text">Pravin Gordhanbhai Patel</p>
             </td>
@@ -308,139 +393,139 @@
                 <p class="text"></p>
             </td>
         </tr>*@
-    </table>
+        </table>
 
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="
         padding-left: 27pt;
         text-indent: 16pt;
         line-height: 200%;
         text-align: justify;
       ">
-        That above mentioned pedigree/legal heir’s certificate is true and correct
-        and mentioned in this pedigree/legal heir’s certificate all names of legal
-        heirs of Late Father @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}} are true and correct.
-    </p>
-    <p style="
+            That above mentioned pedigree/legal heir’s certificate is true and correct
+            and mentioned in this pedigree/legal heir’s certificate all names of legal
+            heirs of Late Father @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}} are true and correct.
+        </p>
+        <p style="
         padding-top: 3pt;
         padding-left: 27pt;
         text-indent: 4pt;
         line-height: 200%;
         text-align: justify;
       ">
-        This Affidavit/ legal heir’s certificate executing for the intention to
+            This Affidavit/ legal heir’s certificate executing for the intention to
             declare all legal heirs of @*GORDHANBHAI BECHARBHAI PATEL *@{{ data.sonof}} with concern
-        competent authority for necessary works, obtain pedigree/ legal heir’s
-        certificate and also enter the legal heirs in deceased in his movable and
-        immovable property.
-    </p>
-    <p style="
+            competent authority for necessary works, obtain pedigree/ legal heir’s
+            certificate and also enter the legal heirs in deceased in his movable and
+            immovable property.
+        </p>
+        <p style="
         padding-top: 8pt;
         padding-left: 27pt;
         text-indent: 71pt;
         line-height: 200%;
         text-align: justify;
       ">
-        Whatever is mentioned in this Affidavit/ legal heir’s certificate is true
-        and correct to the best of my knowledge and belief.
-    </p>
-    <p style="
+            Whatever is mentioned in this Affidavit/ legal heir’s certificate is true
+            and correct to the best of my knowledge and belief.
+        </p>
+        <p style="
         padding-top: 8pt;
         padding-left: 27pt;
         text-indent: 0pt;
         line-height: 150%;
         text-align: justify;
       ">
-        Date: {{data.today | date:'__/MM/yyyy'}}. Place: {{data.place}}.
-    </p>
-    <table class="styled-table">
-        <tr class="header-row">
-            <td class="header-cell" colspan="4">
-                <p class="text-center">Witness :- 1</p>
-            </td>
-        </tr>
-        <tr class="data-row">
-            <td class="column name">
-                <p class="text-left">Name</p>
-            </td>
-            <td class="column address">
-                <p class="text-left">Address</p>
-            </td>
-            <td class="column sign">
-                <p class="text-left">Sign</p>
-            </td>
-            <td class="column photo">
-                <p class="text-left">Photo</p>
-            </td>
-        </tr>
-        <tr class="data-row">
-            <td class="column name">
+            Date: {{data.today | date:'__/MM/yyyy'}}. Place: {{data.place}}.
+        </p>
+        <table class="styled-table">
+            <tr class="header-row">
+                <td class="header-cell" colspan="4">
+                    <p class="text-center">Witness :- 1</p>
+                </td>
+            </tr>
+            <tr class="data-row">
+                <td class="column name">
+                    <p class="text-left">Name</p>
+                </td>
+                <td class="column address">
+                    <p class="text-left">Address</p>
+                </td>
+                <td class="column sign">
+                    <p class="text-left">Sign</p>
+                </td>
+                <td class="column photo">
+                    <p class="text-left">Photo</p>
+                </td>
+            </tr>
+            <tr class="data-row">
+                <td class="column name">
                     <p class="text-left">{{data.witness1name}}</p>
-            </td>
-            <td class="column address">
+                </td>
+                <td class="column address">
                     <p class="text-left">{{data.witness1address}}</p>
-            </td>
-            <td class="column sign">
-                <p class="text-left"></p>
-            </td>
-            <td class="column photo">
-                <p class="text-left"></p>
-            </td>
-        </tr>
-        <tr class="header-row">
-            <td class="header-cell" colspan="4">
-                <p class="text-center">Witness :- 2</p>
-            </td>
-        </tr>
-        <tr class="data-row">
-            <td class="column name">
-                <p class="text-left">Name</p>
-            </td>
-            <td class="column address">
-                <p class="text-left">Address</p>
-            </td>
-            <td class="column sign">
-                <p class="text-left">Sign</p>
-            </td>
-            <td class="column photo">
-                <p class="text-left">Photo</p>
-            </td>
-        </tr>
-        <tr class="data-row">
-            <td class="column name">
+                </td>
+                <td class="column sign">
+                    <p class="text-left"></p>
+                </td>
+                <td class="column photo">
+                    <p class="text-left"></p>
+                </td>
+            </tr>
+            <tr class="header-row">
+                <td class="header-cell" colspan="4">
+                    <p class="text-center">Witness :- 2</p>
+                </td>
+            </tr>
+            <tr class="data-row">
+                <td class="column name">
+                    <p class="text-left">Name</p>
+                </td>
+                <td class="column address">
+                    <p class="text-left">Address</p>
+                </td>
+                <td class="column sign">
+                    <p class="text-left">Sign</p>
+                </td>
+                <td class="column photo">
+                    <p class="text-left">Photo</p>
+                </td>
+            </tr>
+            <tr class="data-row">
+                <td class="column name">
                     <p class="text-left"> {{data.witness2name}}</p>
-            </td>
-            <td class="column address">
+                </td>
+                <td class="column address">
                     <p class="text-left">{{data.witness2address}}</p>
-            </td>
-            <td class="column sign">
-                <p class="text-left"></p>
-            </td>
-            <td class="column photo">
-                <p class="text-left"></p>
-            </td>
-        </tr>
-    </table>
+                </td>
+                <td class="column sign">
+                    <p class="text-left"></p>
+                </td>
+                <td class="column photo">
+                    <p class="text-left"></p>
+                </td>
+            </tr>
+        </table>
 
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 262pt; text-indent: 0pt; text-align: left">
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-left: 262pt; text-indent: 0pt; text-align: left">
             {{data.customerName}}
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="
         padding-left: 193pt;
         text-indent: 0pt;
         line-height: 1pt;
         text-align: left;
       " />
-    <p style="
+        <p style="
         padding-top: 13pt;
         padding-left: 284pt;
         text-indent: 0pt;
         text-align: left;
       ">
-        Signature.
-    </p>
+            Signature.
+        </p>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
 </body>
@@ -488,6 +573,7 @@
                     var heir = response.data.find(x => x.id === hid);
                     var arr = angular.copy($scope.heirlist);
                 $scope.data = {
+                    docid: heir.id,
                        customerName : heir.name,
                    age :  $scope.calculateAge(heir.dob,heir.dateOfDeath),
                    sonof: docs.name,
@@ -524,6 +610,7 @@
                 var result = response.data;
                 var obj = JSON.parse(result.jsonString);
                 $scope.data = {
+                    docid: obj.docid,
                   customerName : obj.customerName,
                   age: obj.age,
                   sonof: obj.sonof,
@@ -556,15 +643,15 @@
 
             $timeout(function() {
                 $scope.printDiv('printForm');
-            }, 0);  
+            }, 0);
         } else {
-            setTimeout(checkData, 1000); 
+            setTimeout(checkData, 1000);
         }
     }
 
     $scope.calculateAge = function(dob, deathDate) {
         if (!dob) {
-            return ''; 
+            return '';
         }
 
         var birthDate = new Date(dob);
@@ -603,6 +690,7 @@
                  jsonString : jsonString,
                  IsActive : true,
                  ClientName: $scope.data.customerName,
+                  ClientId: $scope.data.docid,
              }
 
              const url = '/Form/GenrateForm';
@@ -617,12 +705,19 @@
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: response.data.message || 'There was an issue adding the customer.',
-                            icon: 'error',
-                            confirmButtonText: 'Try Again'
-                        });
+                       Swal.fire({
+                         title: 'This Form is already Exits',
+                         text: "do you want to go to that form?",
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonText: 'Yes',
+                         cancelButtonText: 'No'
+                     }).then((result) => {
+                         if (result.isConfirmed) {
+                             window.open(response.data.message, '_self');
+                         }
+                 });
+
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -667,10 +762,11 @@
 
         //Function
         $scope.printDiv = function (divId) {
+            var css = '<style type="text/css">*{margin:0;padding:0;text-indent:0;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;margin:0pt;}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}table,tbody{vertical-align:top;overflow:visible;}.styled-table{border-collapse:collapse;margin-left:27.5pt;}.column{border:1pt solid black;padding:8pt;text-align:left;}.name{width:95pt;}.age{width:68pt;}.relationship{width:81pt;text-align:center;}.status{width:74pt;}.photo{width:85pt;}.text{margin:0;padding:0;}.text-left{padding-left:23pt;text-indent:-2pt;}.text-center{text-align:center;padding-left:3pt;}.text-indent{text-indent:10pt;}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
-            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"><style type="text/css">*{margin:0;padding:0;text-indent:0;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;margin:0pt;}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}table,tbody{vertical-align:top;overflow:visible;}.styled-table{border-collapse:collapse;margin-left:27.5pt;}.column{border:1pt solid black;padding:8pt;text-align:left;}.name{width:95pt;}.age{width:68pt;}.relationship{width:81pt;text-align:center;}.status{width:74pt;}.photo{width:85pt;}.text{margin:0;padding:0;}.text-left{padding-left:23pt;text-indent:-2pt;}.text-center{text-align:center;padding-left:3pt;}.text-indent{text-indent:10pt;}</style>< head > <body onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 0 8% 0 8%;"onload="window.print()">' + innerContents + '</html>');
             popupWinindow.document.close();
         };
         //Initialize

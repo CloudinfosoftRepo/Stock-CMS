@@ -10,5 +10,13 @@ namespace Stock_CMS.ServiceInterface
         Task<IEnumerable<UserDto>> GetUser(bool status);
         Task<UserDto> GetUserById(int id);
 
+        Task<IEnumerable<UserDto>> GetUserByRole();
+
+        Task<int> AddUsers(UserDto data);
+
+        Task<Int32> UpdateUsers(UserDto data);
+
+        Task<long> UpdateUserbyColumn(UserDto data);
+
     }
 }

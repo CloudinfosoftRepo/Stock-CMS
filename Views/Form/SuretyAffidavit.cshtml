@@ -63,9 +63,44 @@
     padding-top: 2pt;
     padding-left: 1pt;
   }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
     </style>
   </head>
-<body style="padding: 5% 8% 0 8%;" ng-controller="FormController">
+<body style="padding: 5%;" ng-controller="FormController">
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
         <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
@@ -77,80 +112,147 @@
             <h3>Surety affidavit</h3>
         </div>
     </div>
-    <div ng-if="hDiv">
-        <form name="gForm" ng-submit="addSurityData()">
-            <div class="row">
-                @* <div class="col-md-4"> *@
-                <div class="form-group mb-3">
-                    <label for="seletedid" class="form-label">select customer</label>
-                    <select class="form-select w-auto" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
-                        <option selected disabled value="">Select customer</option>
-                    </select>
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="suretyname" class="form-label">Surity Name</label>
-                    <input type="text" ng-model="surity.suretyname" class="form-control search-orders" placeholder="Surity Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="age" class="form-label">Age</label>
-                    <input type="text" ng-model="surity.age" class="form-control search-orders" placeholder="Age">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="suretyaddress" class="form-label"> Surity Address </label>
-                    <textarea id="suretyaddress" ng-model="surity.suretyaddress" class="form-control" placeholder="Surity Address"></textarea>
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="knowtheapplicant" class="form-label">Know The Applicant in Years</label>
-                    <input type="text" ng-model="surity.knowtheapplicant" class="form-control search-orders" placeholder="Know The Applicant in Years">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="bussinessaddress" class="form-label">Bussiness Address</label>
-                    <textarea id="bussinessaddress" ng-model="surity.bussinessaddress" class="form-control" placeholder="Bussiness Address"></textarea>
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="panno" class="form-label">PAN No</label>
-                    <input type="text" ng-model="surity.panno" class="form-control search-orders" placeholder="PAN No">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="netassetsworth" class="form-label">Net Assets Worth</label>
-                    <input type="text" ng-model="surity.netassetsworth" class="form-control search-orders" placeholder="Net Assets Worth">
-                </div> 
-                <div class="form-group mb-3 col-md-3">
-                    <label for="annualsalaryincome" class="form-label">Annual Salary Income</label>
-                    <input type="text" ng-model="surity.annualsalaryincome" class="form-control search-orders" placeholder="Annual Salary Income">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="employername" class="form-label">Employer Name</label>
-                    <input type="text" ng-model="surity.employername" class="form-control search-orders" placeholder="Employer Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="selfbussinessannualincome" class="form-label">Self Owned Bussiness Annual Income</label>
-                    <input type="text" ng-model="surity.selfbussinessannualincome" class="form-control search-orders" placeholder="Self Owned Bussiness Annual Income">
-                </div> 
-                <div class="form-group mb-3 col-md-3">
-                    <label for="worthofselfimmovableproperty" class="form-label">Asset worth of self owned Immovable Property</label>
-                    <input type="text" ng-model="surity.worthofselfimmovableproperty" class="form-control search-orders" placeholder="Asset worth of self owned Immovable Property">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="witnessname" class="form-label">Witness Name</label>
-                    <input type="text" ng-model="surity.witnessname" class="form-control search-orders" placeholder="Witness Name">
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="witnessaddress" class="form-label"> Witness Address </label>
-                    <textarea id="witnessaddress" ng-model="surity.witnessaddress" class="form-control" placeholder="Witness Address"></textarea>
-                </div>
-                @* </div> *@
+    <div ng-if="hDiv" class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form name="gForm" ng-submit="addSurityData()">
+                    <h4 class="card-title text-center mb-4" style="color:#003980;">Add Surety Data</h4>
+
+                    <div class="row">
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedid" class="form-label">Select Customer</label>
+                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Surety Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="suretyname" class="form-label">Surety Name</label>
+                                <input type="text" ng-model="surity.suretyname" class="form-control" placeholder="Surety Name">
+                            </div>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="text" ng-model="surity.age" class="form-control" placeholder="Age">
+                            </div>
+                        </div>
+                        </div>
+                    <div class="row">
+                        <!-- Surety Address -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="suretyaddress" class="form-label">Surety Address</label>
+                                <textarea id="suretyaddress" ng-model="surity.suretyaddress" class="form-control" placeholder="Surety Address"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Know The Applicant in Years -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="knowtheapplicant" class="form-label">Know The Applicant in Years</label>
+                                <input type="text" ng-model="surity.knowtheapplicant" class="form-control" placeholder="Know The Applicant in Years">
+                            </div>
+                        </div>
+
+                        <!-- Business Address -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="bussinessaddress" class="form-label">Business Address</label>
+                                <textarea id="bussinessaddress" ng-model="surity.bussinessaddress" class="form-control" placeholder="Business Address"></textarea>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="row">
+                        <!-- PAN No -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="panno" class="form-label">PAN No</label>
+                                <input type="text" ng-model="surity.panno" class="form-control" placeholder="PAN No">
+                            </div>
+                        </div>
+
+                        <!-- Net Assets Worth -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="netassetsworth" class="form-label">Net Assets Worth</label>
+                                <input type="text" ng-model="surity.netassetsworth" class="form-control" placeholder="Net Assets Worth">
+                            </div>
+                        </div>
+
+                        <!-- Annual Salary Income -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="annualsalaryincome" class="form-label">Annual Salary Income</label>
+                                <input type="text" ng-model="surity.annualsalaryincome" class="form-control" placeholder="Annual Salary Income">
+                            </div>
+                        </div>
+                        </div>
+                    <div class="row">
+                        <!-- Employer Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="employername" class="form-label">Employer Name</label>
+                                <input type="text" ng-model="surity.employername" class="form-control" placeholder="Employer Name">
+                            </div>
+                        </div>
+
+                        <!-- Self Owned Business Annual Income -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="selfbussinessannualincome" class="form-label">Self Owned Business Annual Income</label>
+                                <input type="text" ng-model="surity.selfbussinessannualincome" class="form-control" placeholder="Self Owned Business Annual Income">
+                            </div>
+                        </div>
+
+                        <!-- Asset worth of self-owned Immovable Property -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="worthofselfimmovableproperty" class="form-label">Asset Worth of Self Owned Immovable Property</label>
+                                <input type="text" ng-model="surity.worthofselfimmovableproperty" class="form-control" placeholder="Asset Worth of Self Owned Immovable Property">
+                            </div>
+                        </div>
+                        </div>
+                    <div class="row">
+                        <!-- Witness Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="witnessname" class="form-label">Witness Name</label>
+                                <input type="text" ng-model="surity.witnessname" class="form-control" placeholder="Witness Name">
+                            </div>
+                        </div>
+
+                        <!-- Witness Address -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="witnessaddress" class="form-label">Witness Address</label>
+                                <textarea id="witnessaddress" ng-model="surity.witnessaddress" class="form-control" placeholder="Witness Address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-md-4 text-center m-2">
+                        <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                            ADD
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Generate Form Button -->
                 <div class="text-center m-2 col-md-4">
-                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
-                        ADD
+                    <button type="submit" class="btn btn-primary" ng-click="genrateForm()" style="background-color:#003980; color:white; border-radius: 5px;">
+                        Generate Form
                     </button>
                 </div>
             </div>
-        </form>
-        <div class="text-center m-2 col-md-4">
-            <button type="submit" class="btn" ng-click="genrateForm()" style="background-color:#003980; color:white;">
-                Generate Form
-            </button>
         </div>
     </div>
 
@@ -475,6 +577,7 @@
                 var doc = $scope.docs.find(x => x.id === sid);
                 var arr = angular.copy($scope.surityList);
             $scope.data = {
+                docid: doc.id,
                 customerName: doc.name,
                 surity: JSON.stringify(arr, null, 2),
                 day: currentDate.getDate(),
@@ -499,6 +602,7 @@
             var result = response.data;
             var obj = JSON.parse(result.jsonString);
             $scope.data = {
+                docid: obj.docid,
                 customerName: obj.customerName,
                 surity : JSON.parse(obj.surity),
                 day: obj.day,
@@ -551,6 +655,7 @@
              url : `/Form/SuretyAffidavit?id2=`,
              jsonString : jsonString,
              ClientName: $scope.data.customerName,
+              ClientId: $scope.data.docid,
              IsActive : true
          }
 
@@ -568,11 +673,18 @@
 
                 } else {
                     Swal.fire({
-                        title: 'Error!',
-                        text: response.data.message || 'There was an issue adding the customer.',
-                        icon: 'error',
-                        confirmButtonText: 'Try Again'
-                    });
+                         title: 'This Form is already Exits',
+                         text: "do you want to go to that form?",
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonText: 'Yes',
+                         cancelButtonText: 'No'
+                     }).then((result) => {
+                         if (result.isConfirmed) {
+                             window.open(response.data.message, '_self');
+                         }
+                 });
+
                 }
                 isProcessing = false;
             }, function (error) {

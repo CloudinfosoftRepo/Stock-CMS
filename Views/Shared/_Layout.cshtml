@@ -8,7 +8,6 @@
 		user = Context.Request.Cookies["UserId"];
 		userName = Context.Request.Cookies["Username"].ToString();
 		role = Context.Request.Cookies["Role"].ToString();
-
 	}
 	catch
 	{
@@ -38,7 +37,81 @@
     <link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/assets/css/sweetalert2.min.css" rel="stylesheet" />
 </head>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	  // Function to set active state for clicked menu items (main and submenu items)
+	  document.querySelectorAll('.nav-link').forEach(function(link) {
+		link.addEventListener('click', function(e) {
+		  // Prevent the default behavior for submenu toggle links
+		  if (link.classList.contains('submenu-toggle')) {
+			return;
+		  }
 
+		  // Remove 'active' class from all menu links
+		  document.querySelectorAll('.nav-link').forEach(function(item) {
+			item.classList.remove('active');
+		  });
+
+		  // Add 'active' class to the clicked link
+		  link.classList.add('active');
+
+		  // Check if the clicked link is part of a submenu
+		  if (link.closest('.submenu-list')) {
+			// If submenu item is clicked, set parent submenu as active as well
+			const parentSubmenu = link.closest('.submenu');
+			parentSubmenu.classList.add('active');
+
+			// Ensure the parent submenu is expanded (collapse behavior)
+			const submenuToggle = parentSubmenu.previousElementSibling;
+			if (submenuToggle && submenuToggle.classList.contains('submenu-toggle')) {
+			  // Open the submenu if it's not already open
+			  if (submenuToggle.getAttribute('aria-expanded') === 'false') {
+				submenuToggle.setAttribute('aria-expanded', 'true');
+				parentSubmenu.classList.add('show');
+			  }
+			}
+		  }
+		});
+	  });
+
+	  // Optionally, check the URL and set the active class based on the current page
+	  const path = window.location.pathname;
+
+	  // Dynamically set the active state when the page is loaded based on the URL
+	  if (path.includes('Dashboard')) {
+		document.getElementById('dashboard-link').classList.add('active');
+	  } else if (path.includes('Client')) {
+		document.getElementById('client-link').classList.add('active');
+	  } else if (path.includes('User')) {
+		document.getElementById('user-link').classList.add('active');
+	  } else if (path.includes('Rta')) {
+		document.getElementById('rta-link').classList.add('active');
+		// Ensure parent submenu is also active when an item inside is selected
+		const submenuMaster = document.getElementById('submenu-master');
+		submenuMaster.classList.add('active');
+		// Make sure the submenu stays open
+		const submenuToggle = submenuMaster.previousElementSibling;
+		if (submenuToggle && submenuToggle.classList.contains('submenu-toggle')) {
+		  submenuToggle.setAttribute('aria-expanded', 'true');
+		  submenuMaster.classList.add('show');
+		}
+	  } else if (path.includes('Company')) {
+		document.getElementById('company-link').classList.add('active');
+		// Ensure parent submenu is also active when an item inside is selected
+		const submenuMaster = document.getElementById('submenu-master');
+		submenuMaster.classList.add('active');
+		// Make sure the submenu stays open
+		const submenuToggle = submenuMaster.previousElementSibling;
+		if (submenuToggle && submenuToggle.classList.contains('submenu-toggle')) {
+		  submenuToggle.setAttribute('aria-expanded', 'true');
+		  submenuMaster.classList.add('show');
+		}
+	  } else if (path.includes('Form')) {
+		document.getElementById('form-link').classList.add('active');
+	  }
+	});
+
+</script>
 <body class="app">
 
 	<div class="overlay" id="loader">
@@ -189,103 +262,182 @@
 
 				</div><!--//app-branding-->
 
+				@* <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1"> *@
+				@* 	<ul class="app-menu list-unstyled accordion" id="menu-accordion"> *@
+				@* 		<li class="nav-item"> *@
+				@* 			<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> *@
+						
+				@* 				<a class="nav-link" asp-action="Dashboard" asp-controller="Home"> *@
+				@* 				<span class="nav-icon"> *@
+				@* 					<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> *@
+				@* 						<path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" /> *@
+				@* 						<path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z" /> *@
+				@* 						<circle cx="3.5" cy="5.5" r=".5" /> *@
+				@* 						<circle cx="3.5" cy="8" r=".5" /> *@
+				@* 						<circle cx="3.5" cy="10.5" r=".5" /> *@
+				@* 					</svg> *@
+				@* 				</span> *@
+				@* 				<span class="nav-link-text">Dashboard</span> *@
+				@* 			</a><!--//nav-link--> *@
+				@* 		</li><!--//nav-item--> *@
+				@* 		<li hidden class="  nav-item has-submenu"> *@
+				@* 			<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> *@
+				@* 			<a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false" aria-controls="submenu-1"> *@
+				@* 				<span class="nav-icon"> *@
+				@* 					<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> *@
+				@* 					<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> *@
+				@* 						<path fill-rule="evenodd" d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z" /> *@
+				@* 						<path d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z" /> *@
+				@* 					</svg> *@
+				@* 				</span> *@
+				@* 				<span class="nav-link-text">Master</span> *@
+				@* 				<span class="submenu-arrow"> *@
+				@* 					<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> *@
+				@* 						<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" /> *@
+				@* 					</svg> *@
+				@* 				</span><!--//submenu-arrow--> *@
+				@* 			</a><!--//nav-link--> *@
+				@* 			<div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion"> *@
+				@* 				<ul class="submenu-list list-unstyled"> *@
+
+				@* 		<li class="submenu-item"> *@
+				@* 						<a class="nav-link collapsed" asp-action="Customer" asp-controller="Master"> *@
+				@* 							<i class="bi bi-dot"></i> *@
+				@* 							<span>Customer</span> *@
+				@* 						</a> *@
+				@* 		</li> *@
+									
+									
+				@* 				</ul> *@
+				@* 			</div> *@
+				@* 		</li><!--//nav-item--> *@
+
+				@* 		<a class="nav-link collapsed" asp-action="Client" asp-controller="Master"> *@
+				@* 			<span class="nav-icon"> *@
+				@* 				<i class="fa fa-user" aria-hidden="true"></i> *@
+				@* 			</span> *@
+				@* 			<span class="nav-link-text">Client</span> *@
+				@* 		</a> *@
+				@* 		<a class="nav-link collapsed" asp-action="Form" asp-controller="Form"> *@
+				@* 			<span class="nav-icon"> *@
+				@* 				<i class="bi bi-file-text" aria-hidden="true"></i> *@
+				@* 			</span> *@
+				@* 			<span class="nav-link-text">Form</span> *@
+				@* 		</a> *@
+				@* 		@* form in submenu *@ 
+				@* 		 <li class="nav-item has-submenu"> *@
+				@* 			<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> *@
+				@* 			<a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false" aria-controls="submenu-1"> *@
+				@* 				<span class="nav-icon"> *@
+				@* 					<i class="bi bi-building"></i> *@
+				@* 				</span> *@
+				@* 				<span> Master</span> *@
+								
+				@* 			</a><!--//nav-link--> *@
+				@* 			<div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion"> *@
+				@* 				<ul class="submenu-list list-unstyled"> *@
+				@* 					<li class="submenu-item"><a class="submenu-link" asp-action="Rta" asp-controller="Company">RTA</a></li> *@
+				@* 					<li class="submenu-item"><a class="submenu-link" asp-action="Company" asp-controller="Company">Company</a></li> *@
+				@* 				</ul> *@
+				@* 			</div> *@
+				@* 		</li>  *@
+						
+				@* 		<!--//nav-item--> *@
+
+				@* 		@* <a class="nav-link collapsed" asp-action="ChangeOfAddress" asp-controller="Form"> *@
+				@* 			<span class="nav-icon"> *@
+				@* 				<i class="fa fa-user" aria-hidden="true"></i> *@
+				@* 			</span> *@
+				@* 			<span class="nav-link-text">Form -ChangeOfAddress</span> *@
+				@* 		</a> *@
+				@* 		<a class="nav-link collapsed" asp-action="AFFIDAVIT003COA" asp-controller="Form"> *@
+				@* 			<span class="nav-icon"> *@
+				@* 				<i class="fa fa-user" aria-hidden="true"></i> *@
+				@* 			</span> *@
+				@* 			<span class="nav-link-text">Form -AFFIDAVIT003COA</span> *@
+				@* 		</a> *@ 
+
+				@* 	</ul><!--//app-menu--> *@
+				@* </nav> *@
+				
+				
 				<nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
 					<ul class="app-menu list-unstyled accordion" id="menu-accordion">
+
+						<!-- Dashboard Menu Item -->
 						<li class="nav-item">
-							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-						
-								<a class="nav-link" asp-action="Dashboard" asp-controller="Home">
+							<a class="nav-link" asp-action="Dashboard" asp-controller="Home" id="dashboard-link">
 								<span class="nav-icon">
-									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-										<path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z" />
-										<circle cx="3.5" cy="5.5" r=".5" />
-										<circle cx="3.5" cy="8" r=".5" />
-										<circle cx="3.5" cy="10.5" r=".5" />
-									</svg>
+									<i class="bi bi-house-door"></i> <!-- Bootstrap Home Icon for Dashboard -->
 								</span>
 								<span class="nav-link-text">Dashboard</span>
-							</a><!--//nav-link-->
-						</li><!--//nav-item-->
-						<li hidden class="  nav-item has-submenu">
-							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-							<a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false" aria-controls="submenu-1">
+							</a>
+						</li>
+
+						<!-- Client Menu Item (Outside of Submenu) -->
+						<li class="nav-item">
+							<a class="nav-link" asp-action="Client" asp-controller="Master" id="client-link">
 								<span class="nav-icon">
-									<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path fill-rule="evenodd" d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z" />
-										<path d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z" />
-									</svg>
+									<i class="fa fa-user"></i> <!-- FontAwesome user icon for Client -->
+								</span>
+								<span class="nav-link-text">Client</span>
+							</a>
+						</li>
+						
+						@if (role == "Admin")
+						{
+						<!-- Client Menu Item (Outside of Submenu) -->
+						<li class="nav-item">
+							<a class="nav-link" asp-action="Users" asp-controller="User" id="user-link">
+								<span class="nav-icon">
+									<i class="fa fa-user"></i> <!-- FontAwesome user icon for User -->
+								</span>
+								<span class="nav-link-text">Users</span>
+							</a>
+						</li>
+						}
+
+						<!-- Master Menu Item (Submenu) -->
+						<li class="nav-item has-submenu">
+							<a class="nav-link submenu-toggle" href="#" id="master-link" data-bs-toggle="collapse" data-bs-target="#submenu-master" aria-expanded="false" aria-controls="submenu-master">
+								<span class="nav-icon">
+									<i class="bi bi-file-earmark"></i> <!-- Bootstrap file icon for Master -->
 								</span>
 								<span class="nav-link-text">Master</span>
 								<span class="submenu-arrow">
-									<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-										<path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-									</svg>
-								</span><!--//submenu-arrow-->
-							</a><!--//nav-link-->
-							<div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
-								<ul class="submenu-list list-unstyled">
-
-						<li class="submenu-item">
-										<a class="nav-link collapsed" asp-action="Customer" asp-controller="Master">
-											<i class="bi bi-dot"></i>
-											<span>Customer</span>
-										</a>
-						</li>
-									
-									
-								</ul>
-							</div>
-						</li><!--//nav-item-->
-
-						<a class="nav-link collapsed" asp-action="Client" asp-controller="Master">
-							<span class="nav-icon">
-								<i class="fa fa-user" aria-hidden="true"></i>
-							</span>
-							<span class="nav-link-text">Client</span>
-						</a>
-						<a class="nav-link collapsed" asp-action="Form" asp-controller="Form">
-							<span class="nav-icon">
-								<i class="bi bi-file-text" aria-hidden="true"></i>
-							</span>
-							<span class="nav-link-text">Form</span>
-						</a>
-						@* form in submenu *@
-						 <li class="nav-item has-submenu">
-							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-							<a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu-1" aria-expanded="false" aria-controls="submenu-1">
-								<span class="nav-icon">
-									<i class="bi bi-building"></i>
+									<i class="bi bi-chevron-down"></i> <!-- Bootstrap chevron-down icon for submenu arrow -->
 								</span>
-								<span> Master</span>
-								
-							</a><!--//nav-link-->
-							<div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
+							</a>
+							<div id="submenu-master" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
 								<ul class="submenu-list list-unstyled">
-									<li class="submenu-item"><a class="submenu-link" asp-action="Rta" asp-controller="Company">RTA</a></li>
-									<li class="submenu-item"><a class="submenu-link" asp-action="Company" asp-controller="Company">Company</a></li>
+									<li class="submenu-item">
+										<a class="nav-link" asp-action="Rta" asp-controller="Company" id="rta-link">
+											<i class="bi bi-dot"></i> <!-- Bootstrap dot icon for submenu items -->
+											<span>RTA</span>
+										</a>
+									</li>
+									<li class="submenu-item">
+										<a class="nav-link" asp-action="Company" asp-controller="Company" id="company-link">
+											<i class="bi bi-dot"></i> <!-- Bootstrap dot icon for submenu items -->
+											<span>Company</span>
+										</a>
+									</li>
 								</ul>
 							</div>
-						</li> 
-						
-						<!--//nav-item-->
+						</li>
 
-						@* <a class="nav-link collapsed" asp-action="ChangeOfAddress" asp-controller="Form">
-							<span class="nav-icon">
-								<i class="fa fa-user" aria-hidden="true"></i>
-							</span>
-							<span class="nav-link-text">Form -ChangeOfAddress</span>
-						</a>
-						<a class="nav-link collapsed" asp-action="AFFIDAVIT003COA" asp-controller="Form">
-							<span class="nav-icon">
-								<i class="fa fa-user" aria-hidden="true"></i>
-							</span>
-							<span class="nav-link-text">Form -AFFIDAVIT003COA</span>
-						</a> *@
-
-					</ul><!--//app-menu-->
-				</nav><!--//app-nav-->
+						<!-- Form Menu Item -->
+						<li class="nav-item">
+							<a class="nav-link" asp-action="Form" asp-controller="Form" id="form-link">
+								<span class="nav-icon">
+									<i class="bi bi-file-earmark-text"></i> <!-- Bootstrap file-text icon for Form -->
+								</span>
+								<span class="nav-link-text">Form</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<!--//app-nav-->
 				@* <div class="app-sidepanel-footer">
 					<nav class="app-nav app-nav-footer">
 						<ul class="app-menu footer-menu list-unstyled">

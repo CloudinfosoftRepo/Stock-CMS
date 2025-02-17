@@ -9,5 +9,8 @@ namespace Stock_CMS.ServiceInterface
 		Task<Int32> UpdateDoc(DocDto data);
 		Task<IEnumerable<DocDto>> GetDocByClientId(long id);
 
-	}
+		Task<DocDto> GetDocById(long id);
+
+
+    }
 }

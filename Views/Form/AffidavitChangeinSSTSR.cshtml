@@ -211,9 +211,110 @@
         vertical-align: top;
         overflow: visible;
       }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
     </style>
   </head>
-<body style="padding-left: 5%;" ng-controller="FormController">
+<body style="padding: 5%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Affidavit-Change in SS TSR</h3>
+        </div>
+    </div>
+
+    <div ng-if="hDiv" class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form name="gForm" ng-submit="genrateForm()">
+                    <h4 class="card-title text-center mb-4" style="color:#003980;">Generate Form</h4>
+
+                    <div class="row">
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Place of Form Submission -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Place of Form Submission</label>
+                                <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Form Submission">
+                            </div>
+                        </div>
+
+                        <!-- Letter Date -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="letterdate" class="form-label">Letter Date</label>
+                                <input type="date" ng-model="data.letterdate" class="form-control" placeholder="Letter Date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Letter No -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="letterno" class="form-label">Letter No</label>
+                                <input type="text" ng-model="data.letterno" class="form-control" placeholder="Letter No">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-md-4 text-center m-2">
+                        <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                            Generate Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="printForm">
     <h1
       style="
@@ -409,9 +510,10 @@
         text-align: left;
       "
     />
-    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify">
-      I/We 1 <u>JAGDISH NARENDRAGIRI GOSAI</u> S/d/o<u> NARENDRAGIRI GOSAI</u>
-      aged 65 <u>rgsrgdgtndbdbr </u>.2<u>
+    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify" ng-repeat="item in doc">
+            I/We {{ $index + 1 }} <u>{{item.name}}</u> {{data.relationship}}<u> {{item.relativesName}}</u>
+            aged <u>{{calculateAge(item.dob,item.dateOfDeath)}}</u>.<br />
+      <!--2<u>
         EVSV VEWV FSD </u
       >S/d/o<u>
         EVSE SFCVRS  </u
@@ -427,36 +529,32 @@
         NTBVRS BRSVRS </u
       >aged<u>
       BHKJ NJKJBBK  </u
-      >.
+            >.-->
       Residing at
-      B-205, KARMBHUMI APPARTMENT, BHUMIPARK SOCIETY, SHAPAR,      BEHIND DENA BANK, RAJKOT, GUJARAT, 360024 solemnly affirm and declare in
-      favour of <span class="s4">TATA CHEMICALS LTD</span
-      ><span class="h3"> </span>(<b>Name of the Company) </b>whose securities
+      @* B-205, KARMBHUMI APPARTMENT, BHUMIPARK SOCIETY, SHAPAR,      BEHIND DENA BANK, RAJKOT, GUJARAT, 360024 *@ {{data.address}} solemnly affirm and declare in
+            favour of <span class="s4">@* TATA CHEMICALS LTD *@{{data.companyName}}</span><span class="h3"> </span>(<b>Name of the Company) </b>whose securities
       were held by the holders prior to transfer to IEPF Demat Account),
-      <b>Registered Office: </b><span class="s5">TATA CHEMICALS LTD, </span
-      ><span class="s6"
-        >Bombay House, 24 Homi Mody Street, Fort, Mumbai, Maharashtra, 400001 </span
-      ><b>( </b
+            <b>Registered Office: </b><span class="s5">@* TATA CHEMICALS LTD, *@{{ data.companyName}} </span>
+
+            <span class="s6">@* Bombay House, 24 Homi Mody Street, Fort, Mumbai, Maharashtra, 400001 *@</span><b>( </b
       ><span class="s7"
         >Name and full address of the Registered Office of the Company is
         printed on all certificate[s], warrant[s] and annual report[s], issued
         by the Company) </span
       ><span class="s8">is situated at </span
       ><span class="s7"
-        >Bombay House, 24 Homi Mody Street, Fort, Mumbai, Maharashtra,
-        400001</span
-      >
+        >@* Bombay House, 24 Homi Mody Street, Fort, Mumbai, Maharashtra,
+        400001 *@{{data.companyAddress}}
+            </span>
     </p>
 <br>
     <ol id="l3">
       <li data-list-text="1.">
         <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
-          That I/We weree the sole/joint holders of <u>428</u> number of shares/
+          That I/We weree the sole/joint holders of <u>{{data.qty}}</u> number of shares/
           debentures/ bonds (<b
             >mention the details of TOTAL number of securities prior to transfer
-            of shares to the IEPF Demat Account as provided by IEPF Rules</b
-          >) in <span class="h3">TATA CHEMICALS LTD </span>(<b
-            >Name of Company) </b
+            of shares to the IEPF Demat Account as provided by IEPF Rules</b>) in <span class="h3">@* TATA CHEMICALS LTD *@{{ data.companyName}} </span>(<b>Name of Company) </b
           >whose securities were held by the holders as detailed below:
         </p>
         <p style="padding-top: 2pt; text-indent: 0pt; text-align: left">
@@ -645,7 +743,7 @@
               </p>
             </td>
           </tr>
-          <tr style="height: 15pt">
+                    <tr style="height: 15pt" ng-repeat="tmp in shares">
             <td
               style="
                 width: 85pt;
@@ -655,6 +753,8 @@
                 border-left-width: 1pt;
                 border-right-style: solid;
                 border-right-width: 1pt;
+border-bottom-style: solid;
+    border-bottom-width: 1pt;
               "
             >
               <p
@@ -666,7 +766,7 @@
                   text-align: center;
                 "
               >
-                C1S0040674
+                                {{tmp.folioNo}}
               </p>
             </td>
             <td
@@ -678,6 +778,8 @@
                 border-left-width: 1pt;
                 border-right-style: solid;
                 border-right-width: 1pt;
+border-bottom-style: solid;
+    border-bottom-width: 1pt;
               "
             >
               <p
@@ -689,7 +791,7 @@
                   text-align: center;
                 "
               >
-                25
+                                {{tmp.actualQty}}
               </p>
             </td>
             <td
@@ -704,9 +806,9 @@
                 border-right-style: solid;
                 border-right-width: 1pt;
               "
-              rowspan="16"
+              @* rowspan="16" *@
             >
-              <p style="text-indent: 0pt; text-align: left"><br /></p>
+                            <p style="text-indent: 0pt; text-align: left"> {{tmp.certificateNo}}<br /></p>
             </td>
             <td
               style="
@@ -717,6 +819,8 @@
                 border-left-width: 1pt;
                 border-right-style: solid;
                 border-right-width: 1pt;
+border-bottom-style: solid;
+    border-bottom-width: 1pt;
               "
             >
               <p
@@ -728,7 +832,7 @@
                   text-align: center;
                 "
               >
-                82955517
+                                {{tmp.distinctiveNosFrom}}
               </p>
             </td>
             <td
@@ -740,6 +844,8 @@
                 border-left-width: 1pt;
                 border-right-style: solid;
                 border-right-width: 1pt;
+border-bottom-style: solid;
+    border-bottom-width: 1pt;
               "
             >
               <p
@@ -751,11 +857,11 @@
                   text-align: center;
                 "
               >
-                82955541
+                                {{tmp.distinctiveNosTo}}
               </p>
             </td>
           </tr>
-          <tr style="height: 13pt">
+          <!--<tr style="height: 13pt">
             <td
               style="
                 width: 85pt;
@@ -1902,7 +2008,7 @@
                 150686357
               </p>
             </td>
-          </tr>
+                    </tr>-->
         </table>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
       </li>
@@ -1949,9 +2055,9 @@
           Right Issue or acquired from the market in the year(s)
         </p>
         <p style="padding-left: 32pt; text-indent: 0pt; text-align: justify">
-          <u>
-            BRSBR YRTHRRYHT STRHRRHT </u
-          >.
+                    <u ng-repeat="tmp in shares">
+                        @* BRSBR YRTHRRYHT STRHRRHT *@ {{tmp.year + ','}}
+                    </u>.
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
       </li>
@@ -1978,15 +2084,17 @@
         <p style="text-indent: 0pt; text-align: left"><br /></p>
       </li>
       <li data-list-text="6.">
-        <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+                <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
+                    <s>
           Due to old age and health problems, I now find it difficult to sign as
           per my signature recorded with the Company. Dr.<u>
-            ESEF TGRFER  </u
+            @* ESEF TGRFER *@ &emsp;&emsp;  </u
           >of<u>
-            VSWEVSV TEGRTR        </u>
+                        @* VSWEVSV TEGRTR  *@   &emsp;&emsp;
+                    </u>
           has issued a medical certificate in my favour giving the reasons for
-          my inability to sign the relevant documents (<u
-            >Strike out if not applicable</u
+                        my inability to sign the relevant documents
+                </s>(<u>Strike out if not applicable</u
           >)
         </p>
 
@@ -2009,12 +2117,12 @@
           style="padding-left: 32pt; text-indent: -18pt; text-align: justify"
         >
           <span class="p">That</span>,
-          <u>SHANTAGAURI GOSAI &amp; VINODGIRI GOSAI</u>
+                    <u>@* SHANTAGAURI GOSAI &amp; VINODGIRI GOSAI *@{{data.customerName}}</u>
           <span class="p">(name as recorded with the Company</span>  against the above folio) and
           <span class="s14"
-            >SHANTABEN&nbsp; NARENDRAGIRI&nbsp; GOSAI&nbsp; &amp;&nbsp;
-            VINODGIRI</span
-          ><span class="s13"> </span
+            >@* SHANTABEN&nbsp; NARENDRAGIRI&nbsp; GOSAI&nbsp; &amp;&nbsp;
+            VINODGIRI *@{{data.panname}}
+                    </span><span class="s13"> </span
           ><span class="s15"
             >(name as supporting documents-Death Certificate) is one and the
             same person.</span
@@ -2032,7 +2140,7 @@
       <li data-list-text="9.">
         <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
           That I/we enclose legible self-attested copies of my/our Valid
-          Passport / PAN Card bearing No. <u>ABWPG5493Q</u> as proof of identity
+          Passport / PAN Card bearing No. <u>{{data.pan}}</u> as proof of identity
           (mandatory).
         </p>
       </li>
@@ -2056,9 +2164,9 @@
           This Affidavit is executed in favour of the Company/its Agent on
           my/our own volition and is in the format as required by the
           Company/its Agent forwarded to me/us vide its letter No.  <u>
-        INIFRV BFDJNFDB</u
-      >dated<u>
-        JBKRFDJ BDFKJJNK</u
+                        @* INIFRV BFDJNFDB *@{{data.letterno}}
+                    </u>dated<u>
+        @* JBKRFDJ BDFKJJNK *@{{data.letterdate | date:'dd-MM-yyyy'}}</u
       >
         </p>
       </li>
@@ -2080,8 +2188,7 @@
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify">
       Solemnly declared and affirmed on Identification at<u>
-        BRD NTTG </u
-      >on this<u> 20 </u>day of<u> 12 </u>2023.
+        {{data.place}} </u>on this<u> @* 20  *@ &emsp;&emsp;&emsp;</u>day of<u> {{data.month}} </u>{{data.year}}.
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
@@ -2102,14 +2209,14 @@
         line-height: 214%;
         text-align: justify;
       "
-    >
-      Specimen signature of JAGDISH NARENDRAGIRI GOSAI 1. <br>
-      Specimen signature of<u
+           ng-repeat="item in doc">
+      Specimen signature of {{item.name}} {{ $index + 1}}. <br>
+      @* Specimen signature of<u
         >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      </u>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  2.
+      </u> 
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  2. *@
     </p>
-    <p
+    <!--<p
       style="
         padding-left: 14pt;
         text-indent: 0pt;
@@ -2130,7 +2237,7 @@
         >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       </u>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   4.
-    </p>
+        </p>-->
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p
       style="
@@ -2139,12 +2246,12 @@
         text-indent: 0pt;
         text-align: left;
       "
-    >
-      Tel. No of the holder.: Email id of the holder:
+        >
+      Tel. No of the holder.:{{data.mobile}} <br /> Email id of the holder:{{data.email}}
     </p>
+    <!--<p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
     <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
-    <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
-    <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>
+        <p style="text-indent: 0pt; text-align: left"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></p>-->
 
     <p
       style="
@@ -2184,14 +2291,14 @@
     <p style="padding-left: 5pt; text-indent: 6pt; text-align: left">
       First Class Magistrate/ Notary Public]
       <br> 
-      Registration No.<u>jvjbjhvgnkmlk bhbjbhj</u>
+      Registration No.<u></u>
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <h1 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
       Notary Register at Book No.<u>
-        &ncvcse </u
+         </u
       >Serial No.<u>
-        tre feewdfc</u
+        </u
       >
     </h1>
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
@@ -2237,35 +2344,228 @@
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
   </body>
 <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http) {
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
-
+         $scope.data = undefined;
+            $scope.hDiv = true;
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var id2 = params.get('id2');
         var isProcessing = false;
 
         // showLoader();
 
-        // Load Customers
-        $scope.loadCustomers = function () {
-            $http.get('/Master/GetCustomers').then(function (response) {
-                $scope.customers = response.data[0];
-                hideLoader();
-            }, function (error) {
-                console.error('Error loading customers:', error);
-                hideLoader();
-            });
-        };
 
-        $scope.loadDocs = function () {
-            if (true) {
-                $http.get('/doc/getDocs/' + 1).then(function (response) {
-                    $scope.docs = response.data;
-                    hideLoader();
+    $scope.navtogenerateform = function () {
+        window.open('/Form/GenerateForm/'+id, '_self');
+    };
+
+    // Load Customers
+
+        $scope.loadCustomers = function (sid) {
+
+             if(id){
+                 var currentDate = new Date();
+             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                 $scope.hDiv = true;
+            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                $scope.stock = response.data;
+                var result = response.data;
+                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
+                    $scope.doc = response.data;
+                    var docs = $scope.doc.find(x => x.id === sid);
+                $scope.data = {
+                    docid: docs.id,
+                   customerName : docs.name,
+                   address: docs.addressAsPerAadhar,
+                   companyName: result.companyName,
+                   companyAddress: result.company.companyAddress,
+                   qty: result.qty,
+                   jsondata: result.stockJson,
+                   panname: docs.nameAsPerPan,
+                   pan: docs.pan,
+                   letterno: '',
+                   letterdate: '',
+                   mobile: docs.mobile,
+                   email: docs.email,
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+                   place:'Vadodara',
+                };
+                $scope.shares = JSON.parse($scope.data.jsondata);
+
+                hideLoader();
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
                 });
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+
+            if(id2){
+                 $scope.hDiv = false;
+            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                var result = response.data;
+                var obj = JSON.parse(result.jsonString);
+                $scope.data = {
+                    docid: obj.docid,
+                    customerName: obj.customerName,
+                    holders: JSON.parse(obj.holders),
+                    address: obj.address,
+                    companyName: obj.companyName,
+                    companyAddress: obj.companyAddress,
+                    qty: obj.qty,
+                    jsondata: obj.jsondata,
+                    panname: obj.panname,
+                    pan: obj.pan,
+                    letterno: obj.letterno,
+                    letterdate: obj.letterdate,
+                    mobile:obj.mobile,
+                    email:obj.email,
+                    place: obj.place,
+                    day:obj.day,
+                    month:obj.month,
+                    year: obj.year
+                };
+                $scope.doc = $scope.data.holders;
+                $scope.shares = JSON.parse($scope.data.jsondata);
+                id = result.stockId;
+               checkData();
+                hideLoader();
+
+
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
             }
         };
+
+                function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+          $scope.calculateAge = function(dob, deathDate) {
+        if (!dob) {
+            return '';
+        }
+
+        var birthDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - birthDate.getFullYear();
+        var m = currentDate.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        // If deathDate is provided, calculate age at the time of death
+        if (deathDate) {
+            var deathDateObj = new Date(deathDate);
+            age = deathDateObj.getFullYear() - birthDate.getFullYear();
+            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+            // return age + ' (deceased)';
+        }
+
+        return age;
+    };
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+             if(id){
+
+                 var arr = angular.copy($scope.doc);
+                 $scope.data.holders = JSON.stringify(arr,null,2);
+
+             let jsonString = JSON.stringify($scope.data, null, 2);
+             var data ={
+                 formName : 'Affidavit Change in SS TSR',
+                 StockId : id,
+                 url : `/Form/AffidavitChangeinSSTSR?id2=`,
+                 jsonString : jsonString,
+                 IsActive : true,
+                 ClientName: $scope.data.customerName,
+                  ClientId: $scope.data.docid,
+             }
+
+             const url = '/Form/GenrateForm';
+                $http.post(url, data).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        // $scope.loadCustomers();
+                        window.open(response.data.data.url + response.data.data.id,'_self')
+                    } else {
+                       Swal.fire({
+                         title: 'This Form is already Exits',
+                         text: "do you want to go to that form?",
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonText: 'Yes',
+                         cancelButtonText: 'No'
+                     }).then((result) => {
+                         if (result.isConfirmed) {
+                             window.open(response.data.message, '_self');
+                         }
+                 });
+
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+            }
+         }
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
 
         //Function
         $scope.printDiv = function (divId) {
@@ -2273,12 +2573,12 @@
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
-            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 5%;"onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding: 0 5% 0 5%;"onload="window.print()">' + innerContents + '</html>');
             popupWinindow.document.close();
         };
         //Initialize
         $scope.loadCustomers();
-        $scope.loadDocs();
+        // $scope.loadDocs();
     });
 </script>
 </html>

@@ -41,6 +41,26 @@ namespace Stock_CMS.Controllers
             }
 
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetLegalHeirById(long id)
+        {
+            try
+            {
+                var Docs = await _legalHeirService.GetLegalHeirById(id);
+                return Json(Docs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> create([FromForm] LegalHeirDto data)
         {

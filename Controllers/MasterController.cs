@@ -127,7 +127,7 @@ namespace Stock_CMS.Controllers
                 string message = result == -2 ? "No record Found." :
                   result == -1 ? "Client already exists." :
                   result == 0 ? "Failed to update Client." :
-                  "Client updated successfully.";
+                  "Convert to Client successfully.";
                 bool success = result > 0;
                 return Json(new { success = success, message = message });
             }

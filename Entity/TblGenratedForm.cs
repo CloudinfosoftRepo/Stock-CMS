@@ -27,5 +27,7 @@ public partial class TblGenratedForm
 
     public string? ClientName { get; set; }
 
+    public long? ClientId { get; set; }
+
     public virtual TblStock? Stock { get; set; }
 }

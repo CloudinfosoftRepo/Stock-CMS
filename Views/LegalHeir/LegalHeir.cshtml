@@ -42,6 +42,11 @@
             height: 100%;
         }
 
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
     /* .cell:hover img { */
     /*     width: 100px; */
     /*     height: 100px; */
@@ -114,10 +119,10 @@
                                     <th class="cell">Updated At</th>
                                     <th class="cell">Updated By</th>
 
-                                    <th class="cell">Bank Details</th>
-                                    <th class="cell">Edit</th>
-                                    <th class="cell">HolderDocs</th>
-                                    <th class="cell">Delete</th> 
+                                    <th class="cell sticky-action text-center">Action</th>
+                                    @* <th class="cell">Edit</th> *@
+                                    @* <th class="cell">HolderDocs</th> *@
+                                    @* <th class="cell">Delete</th>  *@
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,23 +171,20 @@
                                     <td class="cell">{{ doc.createdByName }}</td>
                                     <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.updatedByName }}</td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)">
+                                    <td class="cell sticky-action">
+                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)" title="Bank Details">
                                             <i class="bi bi-bank"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
+                                    
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)" title="Edit Legal Heir">
                                             <i class="bi bi-pencil"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" data-tooltip="Docs">
+                     
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" title="Add Additional Documents">
                                             <i class="bi bi-file-earmark-text"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteLegalHeir(doc)">
+                                
+                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteLegalHeir(doc)" title="Delete Legal Heir">
                                             <i class="bi bi-trash"></i>
                                         </span>
                                     </td>
@@ -532,7 +534,16 @@
                 $scope.isEditing = !!doc;
                 $scope.currentDoc = doc ? angular.copy(doc) : {};
                 $scope.status = doc ? doc.isClaiment ? 'Claiment' : doc.isNoc ? 'NOC' : 'Claiment': 'Claiment';
-                $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
+                        $scope.currentDoc.dob = doc ?  new Date(doc.dob) : undefined;
+                        $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : undefined : undefined;
+                        $scope.currentDoc.panFile = undefined;
+                        $scope.currentDoc.aadharFile= undefined;
+                        $scope.currentDoc.deathcertiFile=undefined;
+        document.getElementById('aadharFile').value = '';
+                        document.getElementById('panFile').value = '';
+                        document.getElementById('deathcertiFile').value = '';
+
+
                 $('#docModal').modal('show');
             };
 
@@ -581,6 +592,11 @@
                     });
                           isProcessing = false;
                     $scope.loadDocs();
+                            $scope.currentDoc.panFile ='';
+        $scope.currentDoc.aadharFile ='';
+        $scope.currentDoc.deathcertiFile ='';
+         $scope.currentDoc.dob = undefined;
+        $scope.currentDoc.dateOfDeath = undefined;
                     $('#docModal').modal('hide');
                 });
                     }
@@ -691,7 +707,13 @@
             };
 
               $scope.navtoStock = function () {
-                window.open('/Doc/Doc/'+id, '_self');
+        $http.get('/doc/GetDocById/'+ id).then(function (response) {
+                               var doc = response.data;
+                                           window.open('/Doc/Doc/'+doc.customerId, '_self');
+                           }, function (error) {
+                               console.error('Error loading Docs:', error);
+                               hideLoader();
+                           });  
         };
 
              $scope.loadDocs();

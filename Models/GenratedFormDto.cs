@@ -28,6 +28,8 @@ public partial class GenratedFormDto
 
     public string? ClientName { get; set; }
 
+    public long? ClientId { get; set; }
+
     [NotMapped]
     public string? CreatedByName { get; set; }
     [NotMapped]

@@ -48,7 +48,25 @@ namespace Stock_CMS.Controllers
 			}
 
 		}
-		[HttpPost]
+
+        public async Task<ActionResult> GetDocById(long id)
+        {
+            try
+            {
+                var Docs = await _docService.GetDocById(id);
+                return Json(Docs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+        [HttpPost]
 		public async Task<IActionResult> create([FromForm] DocDto doc)
 		{
 			if (ModelState.IsValid)

@@ -18,6 +18,12 @@
         overflow-y: auto;
     }
 
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
+
 </style>
 <body ng-controller="CompanyController">
 
@@ -61,7 +67,7 @@
                                     <th class="cell">Created By</th>
                                     <th class="cell">Updated At</th>
                                     <th class="cell">Updated By</th>
-                                    <th class="cell">Edit</th>
+                                    <th class="cell sticky-action">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,8 +81,8 @@
                                     <td class="cell">{{ company.createdByName }}</td>
                                     <td class="cell">{{ company.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ company.updatedByName }}</td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCompanyModal(company)">
+                                    <td class="cell sticky-action">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCompanyModal(company)" title="Edit Company">
                                             <i class="bi bi-pencil"></i>
                                         </span>
                                     </td>

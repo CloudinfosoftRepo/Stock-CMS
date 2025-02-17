@@ -1,0 +1,291 @@
+﻿
+<!DOCTYPE html>
+<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Management</title>
+</head>
+<style>
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        background-color: #fff; /* Ensures that the header has a solid background */
+        z-index: 1; /* Makes sure the header stays on top of the content */
+    }
+
+    .table-responsive {
+        max-height: 500px; /* Set a fixed height to make the table scrollable */
+        overflow-y: auto;
+    }
+
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
+
+    .nav-style {
+        color: blue !important;
+    }
+
+        .nav-style:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+</style>
+<body ng-controller="ClientController">
+
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-6">
+
+                    <h1 class="app-page-title mb-0">User Management</h1>
+                </div>
+
+                <!-- Right Side: Search and Add New Client -->
+                <div class="col-md-6">
+                    <div class="page-utilities">
+                        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                            <div class="col-auto">
+                                <form class="table-search-form row gx-1 align-items-center">
+                                    <div class="col-auto">
+                                        <input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openUserModal()">Add New User</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table class="table app-table-hover mb-0 text-left text-nowrap">
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th class="cell">#</th>
+                                    <th class="cell">User Name</th>
+                                    <th class="cell">Role Name</th>
+                                    <th class="cell">email</th>
+                                    <th class="cell">Mobile</th>
+                                    <th class="cell">Address</th>
+                                    <th class="cell">Created At</th>
+                                    <th class="cell">Created By</th>
+                                    <th class="cell">Updated At</th>
+                                    <th class="cell">Updated By</th>
+                                    <th class="cell sticky-action text-center">Action</th>
+                                    @* <th ng-hide="search" class="cell sticky-action">C2C</th> *@
+                                    @* <th class="cell sticky-action">Docs</th> *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="u in user | filter: searchQuery">
+                                    <td class="cell">{{ $index + 1 }}</td>
+                                    <td class="cell">{{ u.name }}</td>
+                                    <td class="cell">{{ u.roleName }}</td>
+                                    <td class="cell">{{ u.email }}</td>
+                                    <td class="cell">{{ u.contactNo }}</td>
+                                    <td class="cell">{{ u.address }}</td>
+                                    <td class="cell">{{ u.createdAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ u.createdByName }}</td>
+                                    <td class="cell">{{ u.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ u.updatedByName }}</td>
+                                    <td class="cell sticky-action">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openUserModal(u)" title="Edit User">
+                                            <i class="bi bi-pencil"></i>
+                                        </span>
+
+                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteUser(u)" title="Delata User">
+                                            <i class="bi bi-trash"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveUser()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit User' : 'Add User' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" ng-model="currentUser.name" class="form-control" placeholder="User's Name" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="roleId" class="form-label">Select Role</label>
+                                    <select class="form-select" ng-options="f.id as f.name for f in role" ng-model="currentUser.roleId">
+                                        <option selected disabled value="">Select Role</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="text" id="email" ng-model="currentUser.email" class="form-control" placeholder="Email" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="contactNo">Contact No</label>
+                                    <input type="text" id="contactNo" ng-model="currentUser.contactNo" class="form-control" placeholder="Contact No" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="text" id="password" ng-model="currentUser.password" class="form-control" placeholder="Password" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <textarea id="address" ng-model="currentUser.address" class="form-control" placeholder="Address"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add User' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        angular.module('Stock-CMS', []).controller('ClientController', function ($scope, $http) {
+            $scope.user = [];
+            $scope.currentUser = {};
+            $scope.isEditing = false;
+            var isProcessing = false;
+
+            showLoader();
+
+            // Load Customers
+            $scope.loadUsers = function () {
+                $http.get('/User/GetUserByRole').then(function (response) {
+                    $scope.user = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Users:', error);
+                    hideLoader();
+                });
+            };
+
+            // Load Role
+            $scope.loadRole = function () {
+                $http.get('/User/GetRole').then(function (response) {
+                    $scope.role = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading Role:', error);
+                    hideLoader();
+                });
+            };
+
+            // Open Modal
+            $scope.openUserModal = function (user = null) {
+                $scope.isEditing = !!user;
+                $scope.currentUser = user ? angular.copy(user) : {};
+                $('#userModal').modal('show');
+            };
+
+            // Save Customer
+            $scope.saveUser = function () {
+                if (isProcessing) return;
+                isProcessing = true;
+                const url = $scope.isEditing ? '/User/UpdateUser/' + $scope.currentUser.id : '/User/CreateUsers';
+                $http.post(url, $scope.currentUser).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadUsers();
+                        $('#userModal').modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the customer.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    isProcessing = false;
+                });
+            };
+
+
+            // Delete User
+            $scope.deleteUser = function (user) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $http.post('/User/UpdateUserbyColumn', user).then(function (response) {
+                            Swal.fire({
+                                title: response.data.success ? 'Deleted!' : 'Error',
+                                text: response.data.success ? 'User has been deleted.' : 'An error occurred.',
+                                icon: response.data.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.loadUsers();
+                        });
+                    }
+                });
+            };
+
+            // Initial load
+            $scope.loadUsers();
+            $scope.loadRole();
+        });
+    </script>
+</body>
+</html>

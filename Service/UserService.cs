@@ -1,4 +1,6 @@
-﻿using Stock_CMS.Models;
+﻿using Stock_CMS.Common;
+using Stock_CMS.Models;
+using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
 
@@ -132,6 +134,110 @@ namespace Stock_CMS.Service
                 UpdatedBy = user.UpdatedBy,
             };
             return result;
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUserByRole()
+        {
+            var user = await _user.GetUsers(x => x.IsActive == true);
+            var role = await _roleRepository.GetRoles();
+
+            var data = user.Where(x => x.RoleId != 1).ToList();
+
+            var result = from u in data
+                         join r in role on u.RoleId equals r.Id into rGroup
+                         from r in rGroup.DefaultIfEmpty()
+                         select new UserDto
+                         {
+                             Id = u.Id,
+                             Name = u.Name,
+                             RoleId = u.RoleId,
+                             RoleName = r.Name,
+                             Email = u.Email,
+                             Password = u.Password,
+                             Address = u.Address,
+                             ContactNo = u.ContactNo,
+                             IsActive = u.IsActive,
+                             CreatedAt = u.CreatedAt,
+                             CreatedBy = u.CreatedBy,
+                             UpdatedAt = u.UpdatedAt,
+                             UpdatedBy = u.UpdatedBy,
+                         };
+            return result;
+        }
+
+        public async Task<int> AddUsers(UserDto data)
+        {
+            var isExist = await _user.GetUserByInfo(data);
+            if (isExist.Any()) { return -1; }
+            else
+            {
+                List<UserDto> dataList = new List<UserDto> { data };
+                var result = await _user.AddUsers(dataList);
+                if (result.Any())
+                {
+                    return result.FirstOrDefault().Id;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public async Task<Int32> UpdateUsers(UserDto data)
+        {
+            var isExist = await _user.GetUserByUserId(data.Id);
+            var chk = await _user.GetUserByInfo(data);
+
+            bool isMatch = chk.Any(x => x.Name.ToLower() == data.Name.ToLower() && x.Id != data.Id && (x.Email == data.Email && x.ContactNo == data.ContactNo));
+            if (isMatch)
+            {
+                return -1;
+            }
+
+            if (isExist.Any())
+            {
+                var existingProduct = isExist.FirstOrDefault();
+                if (existingProduct != null)
+                {
+                    data.CreatedBy = existingProduct.CreatedBy;
+                    data.CreatedAt = existingProduct.CreatedAt;
+                    data.UpdatedBy = data.UpdatedBy;
+                    data.UpdatedAt = DateTime.Now;
+                    data.IsActive = existingProduct.IsActive;
+                }
+
+                List<UserDto> updateList = new List<UserDto> { data };
+                var result = await _user.UpdateUser(updateList);
+                if (result.Any())
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return -2;
+            }
+
+        }
+
+        public async Task<long> UpdateUserbyColumn(UserDto data)
+        {
+            data.IsActive = false;
+            List<UserDto> updatelist = new List<UserDto>() { data };
+            var result = await _user.UpdateUserbyColumn(updatelist, ["IsActive", "UpdatedAt", "UpdatedBy"]);
+            if (result.Any())
+            {
+                return result.FirstOrDefault().Id;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

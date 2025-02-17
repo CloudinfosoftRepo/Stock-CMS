@@ -19,6 +19,20 @@
         overflow-y: auto;
     }
 
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
+
+    .nav-style {
+        color: blue !important;
+    }
+
+        .nav-style:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
 </style>
 <body ng-controller="StockController">
     
@@ -79,16 +93,16 @@
                                         <th class="cell">Created By</th>
                                         <th class="cell">Updated At</th>
                                         <th class="cell">Updated By</th>
-                                        <th class="cell">Edit</th>
-                                        <th class="cell">Stock Form</th>
-                                        <th class="cell">Genarate Form</th>
+                                    <th class="cell sticky-action text-center">Action</th>
+                                        @* <th class="cell">Stock Form</th> *@
+                                        @* <th class="cell">Genarate Form</th> *@
                                         @* <th class="cell">Doc Upload</th> *@
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="stock in stocks | filter: searchQuery">
                                         <td class="cell">{{ $index + 1 }}</td>
-                                    <td ng-click="manageTrackingDoc(stock.id)" class="cell">{{ stock.companyName }}</td>
+                                    <td ng-click="manageTrackingDoc(stock.id)" class="cell nav-style">{{ stock.companyName }}</td>
                                     <td class="cell">{{ stock.customerName }}</td>
                                         <td class="cell">{{ stock.firstHolderName }}</td>
                                         <td class="cell">{{ stock.secondHolderName }}</td>
@@ -108,18 +122,16 @@
                                         <td class="cell">{{ stock.createdByName }}</td>
                                         <td class="cell">{{ stock.updatedAt | date:'dd-MM-yy' }}</td>
                                         <td class="cell">{{ stock.updatedByName }}</td>
-                                        <td class="cell">
-                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openStockModal(stock)">
+                                    <td class="cell sticky-action">
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openStockModal(stock)" title="Edit stock">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-                                        </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo)">
-                                            <i class="bi bi-pencil"></i>
+                                      
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo)" title="add stock aquisition data">
+                                            <i class="bi bi-file-earmark-bar-graph"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="navtogenerateform(stock.id)">
+                                   
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="navtogenerateform(stock.id)" title="Generate form">
                                             <i class="bi bi-file-earmark-plus"></i>
                                         </span>
                                         </td> 
@@ -194,6 +206,14 @@
                                     <input type="text" step="0.01" ng-model="jsonData.distinctiveNosTo" class="form-control" placeholder="Distinctive No To" required />
                                 </div>
                             </div>
+
+                            <!-- Year of Share Aquisation -->
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="year">Year of Share Aquisation</label>
+                                    <input type="text" ng-model="jsonData.year" class="form-control" placeholder="Year of Share Aquisation" required />
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Add Button -->
@@ -223,6 +243,7 @@
                                 <th class="cell">Certificate No</th>
                                 <th class="cell">Distinctive Nos From</th>
                                 <th class="cell">Distinctive Nos To</th>
+                                <th class="cell">Year</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -233,6 +254,7 @@
                                 <td class="cell">{{ f.certificateNo }}</td>
                                 <td class="cell">{{ f.distinctiveNosFrom }}</td>
                                 <td class="cell">{{ f.distinctiveNosTo }}</td>
+                                <td class="cell">{{ f.year }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -530,6 +552,13 @@
             $scope.currentStockId = id;
             $scope.currentStockfolioNo = folioNo;
 
+            var data = $scope.stocks.find(c => c.id === id).stockJson;
+            if(data){
+            $scope.stockList = JSON.parse(data);
+            }
+            else{
+                $scope.stockList = [];
+            }
              $scope.jsonData = { };
             $('#formModal').modal('show');
         };
@@ -569,7 +598,8 @@
                         confirmButtonText: 'OK'
                     });
                     $scope.loadStocks();
-                    $('#stockModal').modal('hide');
+                    $scope.stockList = [];
+                    $('#formModal').modal('hide');
                 } else {
                     Swal.fire({
                         title: 'Error!',

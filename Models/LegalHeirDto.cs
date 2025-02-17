@@ -66,6 +66,5 @@ namespace Stock_CMS.Models
         public string? CreatedByName { get; set; }
         [NotMapped]
         public string? UpdatedByName { get; set; }
-
     }
 }

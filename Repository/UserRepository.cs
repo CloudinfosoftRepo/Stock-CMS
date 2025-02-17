@@ -34,9 +34,20 @@ namespace Stock_CMS.Repository
 
         }
 
+        public async Task<IEnumerable<UserDto>> GetAllUsers()
+        {
+            return await GetMany(x => x.IsActive == true);
+
+        }
+
         public async Task<IEnumerable<UserDto>> AddUser(IEnumerable<UserDto> user)
         {
             return await AddEntities(user);
+        }
+
+        public async Task<IEnumerable<UserDto>> AddUsers(IEnumerable<UserDto> user)
+        {
+            return await AddEntitiesNotMap(user);
         }
         public async Task<IEnumerable<UserDto>> UpdateUser(IEnumerable<UserDto> user)
         {
@@ -45,6 +56,10 @@ namespace Stock_CMS.Repository
         public async Task<UserDto> GetUserById(int id)
         {
             return await GetOne(x => x.Id == id);
+        }
+        public async Task<IEnumerable<UserDto>> GetUserByUserId(long id)
+        {
+            return await GetMany(x => x.Id == id && x.IsActive == true);
         }
         public async Task<IEnumerable<UserDto>> GetUserByIds(int[] ids)
         {
@@ -61,6 +76,15 @@ namespace Stock_CMS.Repository
         public async Task<IEnumerable<UserDto>> GetUsersByIds(int?[] ids)
         {
             return await GetMany(x => ids.Contains(x.Id));
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUserByInfo(UserDto data)
+        {
+            return await GetMany(x => x.Name.ToLower() == data.Name.ToLower() && x.ContactNo == data.ContactNo && x.Email == data.Email && x.IsActive == true);
+        }
+        public async Task<IEnumerable<UserDto>> UpdateUserbyColumn(IEnumerable<UserDto> data, string[] columns)
+        {
+            return await UpdateEntitiesArray(data, columns);
         }
     }
 }

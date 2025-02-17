@@ -151,7 +151,46 @@
         vertical-align: top;
         overflow: visible;
       }
+
+
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
     </style>
+
+
   </head>
 <body style="padding: 5% 8% 0 8% ;" ng-controller="FormController">
     <div class="row align-items-center">
@@ -165,28 +204,44 @@
             <h3>Req Letter - Transmission</h3>
         </div>
     </div>
-    <div ng-if="hDiv">
-        <form name="gForm" ng-submit="genrateForm()">
-            <div class="row">
-                <div class="form-group mb-3 col-md-3">
-                    <label for="seletedId" class="form-label">select customer</label>
-                    <select class="form-select w-auto" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
-                        <option selected disabled value="">Select customer</option>
-                    </select>
-                </div>
-                <div class="form-group mb-3 col-md-3">
-                    <label for="heirId" class="form-label">select Heir</label>
-                    <select class="form-select w-auto" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
-                        <option selected disabled value="">Select Heir</option>
-                    </select>
-                </div>
-                <div class="text-center m-2 col-md-4">
-                    <button type="submit" class="btn" style="background-color:#003980; color:white;">
-                        Genrate Form
-                    </button>
-                </div>
+    <div ng-if="hDiv" class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form name="gForm" ng-submit="genrateForm()">
+                    <h4 class="card-title text-center mb-4" style="color:#003980;">Generate Form</h4>
+
+                    <div class="row">
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-md-4 text-center mt-4">
+                            <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                                Generate Form
+                            </button>
+                        </div>
+                    
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div id="printForm">
     <h1 style="padding-top: 3pt; text-indent: 0pt; text-align: center">
@@ -469,6 +524,7 @@
                     $scope.heir = response.data;
                     var heirs = response.data.find(x => x.id === hid);
                 $scope.data = {
+                    docid: heirs.id,
                    customerName : heirs.name,
                    today: new Date(),
                    folioNo : result.folioNo,
@@ -503,6 +559,7 @@
                 var result = response.data;
                 var obj = JSON.parse(result.jsonString);
                 $scope.data = {
+                    docid: obj.docid,
                     customerName: obj.customerName,
                     today: obj.today,
                     folioNo : obj.folioNo,
@@ -566,6 +623,7 @@
                  url : `/Form/ReqLetterTransmission?id2=`,
                  jsonString : jsonString,
                  ClientName: $scope.data.customerName,
+                  ClientId: $scope.data.docid,
                  IsActive : true
              }
 
@@ -583,11 +641,18 @@
 
                     } else {
                         Swal.fire({
-                            title: 'Error!',
-                            text: response.data.message || 'There was an issue adding the customer.',
-                            icon: 'error',
-                            confirmButtonText: 'Try Again'
-                        });
+                         title: 'This Form is already Exits',
+                         text: "do you want to go to that form?",
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonText: 'Yes',
+                         cancelButtonText: 'No'
+                     }).then((result) => {
+                         if (result.isConfirmed) {
+                             window.open(response.data.message, '_self');
+                         }
+                 });
+
                     }
                     isProcessing = false;
                 }, function (error) {

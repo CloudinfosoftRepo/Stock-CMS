@@ -29,6 +29,11 @@ namespace Stock_CMS.Models
         public DateTime? UpdatedAt { get; set; }
 
         public int? UpdatedBy { get; set; }
+
+        [NotMapped]
+        public string? CreatedByName { get; set; }
+        [NotMapped]
+        public string? UpdatedByName { get; set; }
     }
 
     public class SignInRequest

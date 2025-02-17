@@ -35,6 +35,11 @@
             height: 100%;
         }
 
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
 </style>
 <body ng-controller="StockController">
 
@@ -93,8 +98,8 @@
                                         <th class="cell">Created By</th>
                                         <th class="cell">Updated At</th>
                                         <th class="cell">Updated By</th>
-                                    <th class="cell">Edit</th>
-                                    <th class="cell">Delete</th>
+                                    <th class="cell sticky-action text-center">Action</th>
+                                    @* <th class="cell">Delete</th> *@
                                     @* <th class="cell">Claim Status</th> *@
                                     @* <th class="cell">Remarks</th> *@
                                     @* <th class="cell">Active</th> *@
@@ -131,13 +136,12 @@
                                     <td class="cell">{{ track.createdByName }}</td>
                                     <td class="cell">{{ track.updatedAt | date:'dd-MM-yy' }}</td>
                                     <td class="cell">{{ track.updatedByName }}</td>
-                                        <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openTrackingModal(track)">
+                                    <td class="cell sticky-action">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openTrackingModal(track)" title="Edit Tracking">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteTracking(track)">
+                                    
+                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteTracking(track)" title="Delete Tracking">
                                             <i class="bi bi-trash"></i>
                                         </span>
                                     </td>
@@ -403,7 +407,10 @@
             $scope.openTrackingModal = function (track = null) {
                 $scope.isEditing = !!track;
                 $scope.currentStock = track ? angular.copy(track) : {};
-                $scope.currentStock.dateofSubmission = track ?  new Date(track.dateofSubmission) : {}
+                $scope.currentStock.dateofSubmission = track ?  new Date(track.dateofSubmission) : undefined
+
+                  document.getElementById('sendFile').value = '';
+                document.getElementById('responseFile').value = '';
                 $('#trackingModal').modal('show');
             };
 
@@ -445,6 +452,8 @@
                                 confirmButtonText: 'OK'
                             });
                             $scope.loadTracking();
+                             document.getElementById('sendFile').value = '';
+                document.getElementById('responseFile').value = '';
                             $('#trackingModal').modal('hide');
                         } else {
                             Swal.fire({

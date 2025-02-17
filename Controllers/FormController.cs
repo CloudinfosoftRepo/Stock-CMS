@@ -40,11 +40,11 @@ namespace Stock_CMS.Controllers
 					data.CreatedBy = int.Parse(userId);
 
 					var result = await _genratedFormService.GenrateForm(data);
-					data.Id = result;
-					string message = result == -1 ? "Form already exists." :
-					 result == 0 ? "Failed to add Form Data." :
+					data.Id = result.id;
+					string message = result.flag == -1 ? data.Url + result.id :
+					 result.flag == 0 ? "Failed to add Form Data." :
 					 $"Form data added successfully.";
-					bool success = result > 0;
+					bool success = result.flag > 0;
 					return Json(new { success = success, message = message, data });
 				}
 				catch (Exception ex)

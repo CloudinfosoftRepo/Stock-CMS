@@ -21,23 +21,44 @@ namespace Stock_CMS.Service
             _customerRepository = customerRepository;
         }
 
-        public async Task<long> GenrateForm(GenratedFormDto data)
+        public async Task<dynamic> GenrateForm(GenratedFormDto data)
         {
-            //var isExist = await _GenratedFormRepository.GetGenratedFormByInfo(data);
-            //if (isExist.Any()) { return -1; }
-            //else
-            //{
+            var isExist = await _GenratedFormRepository.GetGenratedFormByInfo(data);
+            if (isExist.Any()) 
+            {
+            var form = from x in isExist
+                    select new
+                    {
+                        id = x.Id,
+                        flag = -1
+                    };
+                return form.FirstOrDefault();
+            }
+            else
+            {
                 List<GenratedFormDto> dataList = new List<GenratedFormDto> { data };
                 var result = await _GenratedFormRepository.GenrateForm(dataList);
                 if (result.Any())
                 {
-                    return result.FirstOrDefault().Id;
+                    var form = from x in result
+                               select new
+                               {
+                                   id = x.Id,
+                                   flag = x.Id,
+                               };
+                    return form.FirstOrDefault();
                 }
                 else
                 {
-                    return 0;
+                    var form = from x in result
+                               select new
+                               {
+                                   id = x.Id,
+                                   flag = 0
+                               };
+                    return form.FirstOrDefault();
                 }
-            //}
+            }
         }
         public async Task<Int32> UpdateGenratedForm(GenratedFormDto data)
         {
@@ -93,6 +114,7 @@ namespace Stock_CMS.Service
         public async Task<GenratedFormDto> GetGenratedFormById(long id)
 		{  
 			var result = await _GenratedFormRepository.GetGenratedFormById(id);
+
 			return result;
 		}
 
@@ -109,7 +131,9 @@ namespace Stock_CMS.Service
                 return x;
             });
 
-            return result;
+            var results = result.OrderByDescending(x => x.Id);
+
+            return results;
         }
 
     }

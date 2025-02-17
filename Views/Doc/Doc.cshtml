@@ -42,6 +42,11 @@
             height: 100%;
         }
 
+    .sticky-action {
+        position: sticky;
+        right: 0;
+        z-index: 2;
+    }
 
     /* .cell:hover img { */
     /*     width: 100px; */
@@ -119,10 +124,10 @@
                                     <th class="cell">Updated At</th>
                                     <th class="cell">Updated By</th>
 
-                                    <th class="cell">Legal Heir/Claiment Details</th>
-                                    <th class="cell">Bank Details</th>
-                                    <th class="cell">Edit</th>
-                                    <th class="cell">HolderDocs</th>
+                                    <th class="cell sticky-action text-center">Action</th>
+                                    @* <th class="cell">Bank Details</th> *@
+                                    @* <th class="cell">Edit</th> *@
+                                    @* <th class="cell">HolderDocs</th> *@
 
                                     @* <th class="cell">Delete</th> *@
                                 </tr>
@@ -184,23 +189,20 @@
                                     <td class="cell">{{ doc.createdByName }}</td>
                                     <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.updatedByName }}</td>
-                                    <td class="cell text-center">
-                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="navtolegalheit(doc.id)">
+                                    <td class="cell sticky-action text-center">
+                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="navtolegalheit(doc.id)" title="Legal Heir\Claiment">
                                             <i class="bi bi-person-add"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell text-center">
-                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)">
+                           
+                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)" title="Bank Details">
                                             <i class="bi bi-bank"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
+                               
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)" title="Edit Holder">
                                             <i class="bi bi-pencil"></i>
                                         </span>
-                                    </td>
-                                    <td class="cell">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" data-tooltip="Docs">
+                                   
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" title="Add Additional Documents">
                                             <i class="bi bi-file-earmark-text"></i>
                                         </span>
                                     </td>
@@ -570,9 +572,17 @@
 
             $scope.openDocModal = function (doc = null) {
                 $scope.isEditing = !!doc;
-                $scope.currentDoc = doc ? angular.copy(doc) : {};
-                $scope.currentDoc.dob = doc ?  new Date(doc.dob) : {}
-                $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : null : {}
+                $scope.currentDoc = doc ? angular.copy(doc) : { };
+                $scope.currentDoc.dob = doc ?  new Date(doc.dob) : undefined;
+                $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : undefined : undefined;
+                $scope.currentDoc.panFile = undefined;
+                $scope.currentDoc.aadharFile= undefined;
+                $scope.currentDoc.deathcertiFile=undefined;
+                $scope.currentDoc.voterFile= undefined;
+                document.getElementById('aadharFile').value = '';
+                document.getElementById('panFile').value = '';
+                document.getElementById('deathcertiFile').value = '';
+                document.getElementById('voterFile').value = '';
                 $('#docModal').modal('show');
             };
 
@@ -628,6 +638,13 @@
                     });
                           isProcessing = false;
                     $scope.loadDocs();
+                            $scope.currentDoc.panFile = '';
+        $scope.currentDoc.aadharFile= '';
+         $scope.currentDoc.deathcertiFile= '';
+        $scope.currentDoc.voterFile= '';
+                $scope.currentDoc.dob = undefined;
+        $scope.currentDoc.dateOfDeath = undefined;
+
                     $('#docModal').modal('hide');
                 });
                     }
