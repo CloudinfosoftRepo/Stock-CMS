@@ -42,8 +42,7 @@ public partial class StockCmsContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
- => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
-
+=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,6 +56,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.AccountOpeningDate).HasColumnType("datetime");
             entity.Property(e => e.AccountType)
                 .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.BankCity)
+                .HasMaxLength(25)
                 .IsUnicode(false);
             entity.Property(e => e.BankEmail)
                 .HasMaxLength(100)
@@ -85,8 +87,14 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("MICRCode");
+            entity.Property(e => e.NameAsPerBankAccount)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.PhoneNo)
                 .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.PinCode)
+                .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.PostalAddress).IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -142,6 +150,9 @@ public partial class StockCmsContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.AddressAsPerAadhar).IsUnicode(false);
             entity.Property(e => e.AddressAsPerVoterId).IsUnicode(false);
+            entity.Property(e => e.City)
+                .HasMaxLength(25)
+                .IsUnicode(false);
             entity.Property(e => e.ClientId)
                 .HasMaxLength(15)
                 .IsUnicode(false);
@@ -169,6 +180,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.NameAsPerAadhar)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.NameAsPerCertificate)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.NameAsPerDeathCerti)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -187,6 +201,9 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.PinCode)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.PlaceOfDeath)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -196,10 +213,14 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.RelativesName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.State)
+                .HasMaxLength(25)
+                .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.VoterIdUrl)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.WitnessJson).IsUnicode(false);
 
             entity.HasOne(d => d.Customer).WithMany(p => p.TblDocs)
                 .HasForeignKey(d => d.CustomerId)
@@ -268,6 +289,9 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.AddressAsPerAadhar).IsUnicode(false);
+            entity.Property(e => e.City)
+                .HasMaxLength(25)
+                .IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DateOfDeath).HasColumnType("datetime");
             entity.Property(e => e.DeathCertiUrl)
@@ -289,6 +313,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.NameAsPerAadhar)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.NameAsPerCertificate)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.NameAsPerDeathCerti)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -304,11 +331,17 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.PinCode)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.PlaceOfDeath)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.RelationWithDead)
                 .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.State)
+                .HasMaxLength(25)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
@@ -356,6 +389,7 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Folio_No");
+            entity.Property(e => e.NomineeJson).IsUnicode(false);
             entity.Property(e => e.Ptbf)
                 .IsUnicode(false)
                 .HasColumnName("PTBF");

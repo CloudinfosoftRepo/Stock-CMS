@@ -156,13 +156,7 @@
                             </div>
                         </div>
 
-                        <!-- Name as per Certificate -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="nameasperCertificate" class="form-label">Name as per Certificate</label>
-                                <input type="text" ng-model="data.nameasperCertificate" class="form-control search-orders" placeholder="Name as per Certificate">
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <!-- Submit Button -->
@@ -219,8 +213,8 @@ font-size:medium;
     </h2>
     <p style="padding-top: 7pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 6pt; text-indent: 0pt;line-height: 2; text-align: justify">
-            I/We<u>{{data.firstHolder}}</u>And<u>{{data.secondHolder}} </u>And<u>{{data.thirdHolder}} </u> Indian
-        inhabitant, residing at<u>{{data.address}}</u> do hereby solemnly affirm and say that:
+            I/We<u>{{data.firstHolder}} </u>And<u> {{data.secondHolder}} </u>And<u> {{data.thirdHolder}} </u> Indian
+        inhabitant, residing at <u>{{data.address}}</u> do hereby solemnly affirm and say that:
     </p>
 
     <p style="padding-top: 8pt; text-indent: 0pt; text-align: left;"><br /></p>
@@ -245,7 +239,7 @@ font-size:medium;
             text-align: left;
             line-height: 1.8;
           ">
-                As per PAN / Demat account Name of sole/1<span class="s4">st</span>/2<span class="s4">nd</span> holder is <u>{{data.customerName}}</u>.
+                    As per PAN / Demat account Name of sole/1<span class="s4">st</span>/2<span class="s4">nd</span> holder is <u>{{data.nameonpan}}</u>.
             </p>
 
         </li>
@@ -257,7 +251,7 @@ font-size:medium;
             text-align: left;
             line-height: 1.8;
           ">
-                    As per share certificate Name of sole/1<span class="s4">st</span>/2<span class="s4">nd</span> holder is <u>{{data.nameasperCertificate}}</u>which is incorrect.
+                    As per share certificate Name of sole/1<span class="s4">st</span>/2<span class="s4">nd</span> holder is <u>{{data.customerName}}</u> which is incorrect.
             </p>
         </li>
         <li data-list-text="4.">
@@ -309,6 +303,7 @@ font-size:medium;
          // Load Customers
          $scope.loadCustomers = function (sid) {
          if(id){
+             hideLoader();
              $scope.hDiv = true;
         $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
             var result = response.data;
@@ -317,6 +312,7 @@ font-size:medium;
                 var doc = $scope.docs.find(x => x.id === sid);
             $scope.data = {
                 docid: doc.id,
+                nameonpan: doc.nameAsPerPan,
                customerName : doc.name,
                qty:result.qty,
                folioNo : result.folioNo,
@@ -349,6 +345,7 @@ font-size:medium;
             var obj = JSON.parse(result.jsonString);
             $scope.data = {
                 docid: obj.docid,
+                nameonpan: obj.nameonpan,
                 customerName: obj.customerName,
                 folioNo : obj.folioNo,
                 qty : obj.qty,

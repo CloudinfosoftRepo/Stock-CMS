@@ -46,4 +46,10 @@ public partial class TblBank
     public string? AccountType { get; set; }
 
     public long? LegalHeirId { get; set; }
+
+    public string? BankCity { get; set; }
+
+    public string? PinCode { get; set; }
+
+    public string? NameAsPerBankAccount { get; set; }
 }

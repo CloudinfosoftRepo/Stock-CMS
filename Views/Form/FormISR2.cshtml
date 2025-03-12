@@ -151,6 +151,31 @@
                         <!-- Place of Document Submission -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
+                                <label for="place" class="form-label">First HolderName as per Cheque</label>
+                                <input type="text" ng-model="data.firstnameaspercheque" class="form-control" placeholder="First HolderName as per Cheque">
+                            </div>
+                        </div>
+
+                        <!-- Place of Document Submission -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Second HolderName as per Cheque</label>
+                                <input type="text" ng-model="data.secondnameaspercheque" class="form-control" placeholder="Second HolderName as per Cheque">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Place of Document Submission -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Third HolderName as per Cheque</label>
+                                <input type="text" ng-model="data.thirdnameaspercheque" class="form-control" placeholder="Third HolderName as per Cheque">
+                            </div>
+                        </div>
+
+                        <!-- Place of Document Submission -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
                                 <label for="place" class="form-label">Place</label>
                                 <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Document Submission">
                             </div>
@@ -479,11 +504,11 @@
                     "
                     colspan="2"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">1) {{data.firstHolder}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">1) {{data.firstnameaspercheque}}</p>
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>                                                 
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">2) {{data.secondHolder}}</p>      
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">2) {{data.secondnameaspercheque}}</p> 
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">3) {{data.thirdHolder}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">3) {{data.thirdnameaspercheque}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -849,7 +874,7 @@
                     "
                     colspan="4"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Name of the Bank Manager:{{data.bankmanagername}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Name of the Bank Manager:</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -883,7 +908,7 @@
                     "
                     colspan="4"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Employee Code: {{data.empcode}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Employee Code: </p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -901,7 +926,7 @@
                     "
                     colspan="2"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Date: {{data.date | date:'dd/MM/yyyy'}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">Date: </p>
                 </td>
                 <td
                     style="
@@ -917,7 +942,7 @@
                     "
                     colspan="4"
                 >
-                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">E-mail address: {{data.bankmanageremail}}</p>
+                    <p class="s1" style="padding-left: 5pt; text-indent: 0pt; line-height: 12pt; text-align: left;">E-mail address: </p>
                 </td>
             </tr>
         </table>
@@ -940,6 +965,7 @@
         $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -969,9 +995,10 @@
                    thirdHolder: result.thirdHolderName,
                    place: 'Vadodara',
                    date: new Date(),
-                   bankmanagername: bank.bankManagerName,
-                   empcode: bank.employeeCode,
-                   bankmanageremail: bank.bankMangerEmail,
+                   firstnameaspercheque: '',
+                   secondnameaspercheque: '',
+                   thirdnameaspercheque: '',
+
                 };
 
                 hideLoader();
@@ -1011,9 +1038,9 @@
                    email: obj.email,
                    place: obj.place,
                    date: new Date(obj.date),
-                   bankmanagername: obj.bankmanagername,
-                   empcode: obj.empcode,
-                   bankmanageremail: obj.bankmanageremail,
+                   firstnameaspercheque: obj.firstnameaspercheque,
+                   secondnameaspercheque: obj.secondnameaspercheque,
+                   thirdnameaspercheque: obj.thirdnameaspercheque,
                 };
                                 id = result.stockId;
 

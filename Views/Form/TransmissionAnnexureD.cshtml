@@ -503,9 +503,9 @@ table {
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
       That among the aforesaid legal heirs, Master/ Kum.<span class="s5">
-        RVYBUNHBBNJK JKBGHJ </span
-      >aged <span class="s5">10 </span>years is a minor
-      and is being represented by Mr./Ms. <span class="s7">$</span> being his / her
+                    @* RVYBUNHBBNJK JKBGHJ *@<u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
+                </span>aged <span class="s5"><u>&emsp;&emsp;&emsp;&emsp;</u> </span>years is a minor
+                and is being represented by Mr./Ms. <span class="s5"><u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u></span> being his / her
       father / mother / legal guardian.
     </p>
     <p style="text-indent: 0pt; text-align: left" />
@@ -580,9 +580,7 @@ table {
       "
     >
       Date :
-      <span class="s5"
-        >@* 12/05/2025 *@{{data.today | date:'__/MM/yyyy'}}</span
-      >
+                <span class="s5">@* 12/05/2025 {{data.today | date:'__/MM/yyyy'}}*@ <u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u></span>
     </p>
     <p style="text-indent: 0pt; text-align: left" />
     <p
@@ -634,6 +632,10 @@ table {
               var id = params.get('id');
               var id2 = params.get('id2');
               $scope.isPrint = id2 ? true : false
+              $scope.radiochk = {
+                  option1: false,
+                  option2: false
+              }
         var isProcessing = false;
 
         // showLoader();
@@ -654,6 +656,7 @@ table {
         // Load Customers
          $scope.loadCustomers = function (sid,hid) {
              if(id){
+                 hideLoader();
                 $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                     var result = response.data;

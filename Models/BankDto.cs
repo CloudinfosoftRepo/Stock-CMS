@@ -46,6 +46,12 @@ namespace Stock_CMS.Models
 
         public long? LegalHeirId { get; set; }
 
+        public string? BankCity { get; set; }
+
+        public string? PinCode { get; set; }
+
+        public string? NameAsPerBankAccount { get; set; }
+
         [NotMapped]
         public string? CreatedByName { get; set; }
         [NotMapped]

@@ -322,7 +322,7 @@
                     <td class="security-column" style="font-weight: 600;">No. of securities held</td>
                 </tr>
                 <tr>
-                        <td>1){{data.customerName}}</td>
+                        <td>1){{data.officename}}</td>
                         <td>{{data.folioNo}}</td>
                     <td>{{data.qty}}</td>
                 </tr>
@@ -594,6 +594,7 @@
         // Load Customers
          $scope.loadCustomers = function (sid,hid) {
              if(id){
+                 hideLoader();
                 $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                     var result = response.data;

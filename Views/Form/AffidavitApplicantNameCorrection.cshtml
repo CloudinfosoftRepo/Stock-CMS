@@ -291,9 +291,9 @@
     <ol id="l1">
         <li data-list-text="1.">
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: justify">
-                That the following Equity Shares are registered in (name)
+                That the following Equity {{data.qty}} Shares are registered in (name)
                     <span class="s2">
-                        {{data.firstHolder}}
+                        {{data.nameoncertificate}}
                     </span><span class="s1"> </span>
                     @* <span class="s2">PRABHULAL THAKKER </span> *@
                     jointly with (name)
@@ -352,16 +352,16 @@
                 That in my bank account having no <u>{{data.accountno}}</u> with
                     <span class="s1">{{data.bankname}}</span>,
                     <span class="s1">{{data.branch}} </span>Branch, my name has been recorded |
-                    mentioned as <span class="s1">{{data.customerName}}</span>.
-            </p>
+                    mentioned as <span class="s1">{{data.nameonbank}}</span>.
+            </p>                                         
             <p style="text-indent: 0pt; text-align: left"><br /></p>
         </li>
         <li data-list-text="6.">
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: justify">
                 That
                 <span class="s1">
-                        {{data.customerName}}, and {{data.nameonaadhar}},
-                        {{data.nameonpan}}, {{data.customerName}} as mentioned above in Sr no 2 to 5 is one and the same person
+                        {{data.nameonpan}}, and {{data.nameonaadhar}},
+                        {{data.customerName}}, {{data.nameonbank}} as mentioned above in Sr no 2 to 5 is one and the same person
                 </span>
             </p>
            
@@ -377,7 +377,7 @@
             text-align: left;
           ">
                 I execute this affidavit to be submitted to concerned authority for
-                claiming shares and dividend thereof.
+                claiming {{data.qty}} shares and dividend thereof.
             </p>
         </li>
     </ol>
@@ -440,6 +440,7 @@
         // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                  var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -465,6 +466,8 @@
                    officeaddress:  result.company.companyAddress,
                    nameonpan: doc.nameAsPerPan,
                    nameonaadhar: doc.nameAsPerAadhar,
+                   nameoncertificate: doc.nameAsPerCertificate,
+                   nameonbank: bank.nameAsPerBankAccount,
                    bankname: bank.bankName,
                    branch: bank.branch,
                    lfno: result.folioNo,
@@ -478,6 +481,7 @@
                    firstHolder :result.firstHolderName,
                    secondHolder:result.secondHolderName,
                    thirdHolder: result.thirdHolderName,
+                   qty: result.qty
                 };
 
                 hideLoader();
@@ -515,6 +519,8 @@
                     bankname: obj.bankname,
                     branch: obj.branch,
                     nameonaadhar: obj.nameonaadhar,
+                    nameoncertificate: obj.nameoncertificate,
+                    nameonbank: obj.nameonbank,
                     lfno: obj.lfno,
                     dpid:obj.dpid,
                     clientid:obj.clientid,
@@ -526,6 +532,7 @@
                     firstHolder:obj.firstHolder,
                 secondHolder:obj.secondHolder,
                 thirdHolder:obj.thirdHolder,
+                qty: obj.qty
                 };
                 id= result.stockId;
                 checkData();

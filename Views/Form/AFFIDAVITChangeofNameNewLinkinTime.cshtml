@@ -329,6 +329,7 @@
          $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;

@@ -207,30 +207,60 @@
                             </div>
                         </div>
 
-                        <!-- Certificate Nos -->
+                        <!-- Nominee's Name -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
+                                <label for="nomineename" class="form-label">Nominee's Name</label>
+                                <input type="text" ng-model="data.nomineename" class="form-control" placeholder="Nominee's Name">
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <!-- Distinctive Nos Start -->
+                        <!-- Nominee's Address -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
+                                <label for="address" class="form-label">Nominee's Address</label>
+                                <textarea id="address" ng-model="data.address"
+                                          class="form-control" style="height: 100px;" placeholder="Nominee's Address" required></textarea>
                             </div>
                         </div>
 
-                        <!-- Distinctive Nos End -->
+                        <!-- Nominee's Date of Birth -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
+                                <label for="dob" class="form-label">Nominee's DOB</label>
+                                <input type="date" ng-model="data.dob" class="form-control" placeholder="Nominee's DOB">
                             </div>
                         </div>
+
+                        <!-- Nominee's Relationship -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="relationship" class="form-label">Relationship</label>
+                                <input type="text" ng-model="data.relationship" class="form-control" placeholder="Relationship">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Nominee's Name of Relative -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="sonof" class="form-label">Relative's Name</label>
+                                <input type="text" ng-model="data.sonof" class="form-control" placeholder="Relative's Name">
+                            </div>
+                        </div>
+
+                        <!-- Nominee's Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="email" class="form-label">Nominee's Email</label>
+                                <input type="text" ng-model="data.email" class="form-control" placeholder="Nominee's Email">
+                            </div>
+                        </div>
+
+                   
 
                         <!-- Occupation -->
                         <div class="col-md-4 mb-3">
@@ -240,6 +270,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <!-- Nationality -->
                         <div class="col-md-4 mb-3">
@@ -248,15 +279,15 @@
                                 <input type="text" ng-model="data.nationality" class="form-control" placeholder="Nationality">
                             </div>
                         </div>
-
+                   
                         <!-- Relationship -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="relation" class="form-label">Relationship</label>
-                                <input type="text" ng-model="data.relation" class="form-control" placeholder="Relationship">
+                                <label for="relation" class="form-label">Relationship with the security holder</label>
+                                <input type="text" ng-model="data.relation" class="form-control" placeholder="Relationship with the security holder">
                             </div>
                         </div>
-
+                    
                         <!-- Witness's Name -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -266,6 +297,7 @@
                         </div>
                     </div>
                     <div class="row">
+
                         <!-- Witness Address -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -525,7 +557,7 @@
               </p>
             </td>
           </tr>
-          <tr style="height: 24pt">
+                    <tr style="height: 24pt" ng-repeat="tmp in shares">
             <td
               style="
                 width: 93pt;
@@ -562,7 +594,7 @@
                 border-right-color: #231f20;
               "
             >
-                            <p style="text-indent: 0pt; text-align: left">{{data.folioNo}}</p>
+                            <p style="text-indent: 0pt; text-align: left">{{tmp.folioNo}}</p>
             </td>
             <td
               style="
@@ -581,7 +613,7 @@
                 border-right-color: #231f20;
               "
             >
-              <p style="text-indent: 0pt; text-align: left">{{data.qty}}</p>
+                            <p style="text-indent: 0pt; text-align: left">{{tmp.actualQty}}</p>
             </td>
             <td
               style="
@@ -600,7 +632,7 @@
                 border-right-color: #231f20;
               "
             >
-                            <p style="text-indent: 0pt; text-align: left">{{data.certificatenos}}</p>
+                            <p style="text-indent: 0pt; text-align: left">{{tmp.certificateNo}}</p>
             </td>
             <td
               style="
@@ -619,7 +651,7 @@
                 border-right-color: #231f20;
               "
             >
-                            <p style="text-indent: 0pt; text-align: left">{{data.distinctiveNosStart}}-{{data.distinctiveNosEnd}}</p>
+                            <p style="text-indent: 0pt; text-align: left">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</p>
             </td>
           </tr>
         </table>
@@ -645,7 +677,7 @@
                 text-align: left;
               "
             >
-                            Name: {{data.customerName}}
+                            Name: {{data.nomineename}}
             </p>
           </li>
           <li data-list-text="(b)">
@@ -669,7 +701,7 @@
                 text-align: left;
               "
             >
-                            @* Father’s/Mother’s/Spouse’s name *@{{data.relationship}}: {{data.sonof}}
+                            @* Father’s/Mother’s/Spouse’s name *@{{data.relationship}} Of: {{data.sonof}}
             </p>
           </li>
           <li data-list-text="(d)">
@@ -742,22 +774,22 @@
         <ul id="l4">
           <li data-list-text="·">
             <p style="padding-left: 43pt; text-indent: -12pt; text-align: left">
-              Date of birth:{{data.dob | date:'dd/MM/yyyy'}}
+                            Date of birth:<u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
           </li>
           <li data-list-text="·">
             <p style="padding-left: 43pt; text-indent: -12pt; text-align: left">
-              Date of attaining majority:{{data.majordate | date:'dd/MM/yyyy'}}
+                            Date of attaining majority:<u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
           </li>
           <li data-list-text="·">
             <p style="padding-left: 43pt; text-indent: -12pt; text-align: left">
-                            Name of guardian:  {{data.secondHolder}}
+                            Name of guardian: <u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
           </li>
           <li data-list-text="·">
             <p style="padding-left: 43pt; text-indent: -12pt; text-align: left">
-              Address of guardian: {{data.address}}
+                            Address of guardian: <u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
           </li>
         </ul>
@@ -821,6 +853,7 @@
          // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
@@ -840,16 +873,15 @@
                     docid: doc.id,
                     customerName : doc.name,
                     officename : result.companyName,
-                    address : doc.addressAsPerAadhar,
-                    dob: doc.dob,
-                    sonof: doc.relativesName,
-                    relationship: doc.relationship,
-                    email: doc.email,
+                    nomineename: '',
+                    address : '',
+                    dob: '',
+                    sonof: '',
+                    relationship: '',
+                    email: '',
                     relation:'',
                     natureofsecurity: 'Equity',
-                    certificatenos:'',
-                    distinctiveNosStart: '',
-                    distinctiveNosEnd:'',
+                    jsondata: result.stockJson,
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officeaddress: result.company.companyAddress,
@@ -862,7 +894,7 @@
                     witnessaddress:'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
                     witnessname:'Shreyash Chhagani',
                 };
-
+                $scope.shares = JSON.parse($scope.data.jsondata);
                 hideLoader();
                 }, function (error) {
                     console.error('Error loading Docs:', error);
@@ -882,6 +914,7 @@
                 $scope.data = {
                     docid: obj.docid,
                     customerName: obj.customerName,
+                    nomineename: obj.nomineename,
                     address: obj.address,
                     natureofsecurity: obj.natureofsecurity,
                     folioNo: obj.folioNo,
@@ -891,9 +924,7 @@
                     relationship: obj.relationship,
                     email: obj.email,
                     relation: obj.relation,
-                    certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    jsondata: obj.jsondata,
                     officename: obj.officename,
                     officeaddress: obj.officeaddress,
                         firstHolder:obj.firstHolder,
@@ -906,7 +937,7 @@
                     witnessaddress: obj.witnessaddress,
                 };
                                 id = result.stockId;
-
+    $scope.shares = JSON.parse($scope.data.jsondata);
                 checkData();
                 hideLoader();
             }, function (error) {
@@ -950,6 +981,15 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Form ISR 13',
@@ -1031,7 +1071,7 @@
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
-            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 0 5% 0 5%;""onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 0 5% 0 5%;"onload="window.print()">' + innerContents + '</html>');
             popupWinindow.document.close();
         };
         //Initialize

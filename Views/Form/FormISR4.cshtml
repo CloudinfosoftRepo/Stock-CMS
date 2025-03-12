@@ -1214,6 +1214,28 @@
               var params = new URLSearchParams(window.location.search);
               var id = params.get('id');
               var id2 = params.get('id2');
+                $scope.requests = {
+                    option1: false,
+                    option2: false,
+                    option3: false,
+                    option4: false,
+                    option5: false,
+                    option6: false,
+                    option7: false,
+                    option8: false,
+                    option9: false,
+                };
+                $scope.doclist = { 
+                    option1: false,
+                    option2: false,
+                    option3: false,
+                    option4: false,
+                    option5: false,
+                    option6: false,
+                    option7: false,
+                    option8: false,
+                };
+
               $scope.isPrint = id2 ? true : false
         var isProcessing = false;
 
@@ -1222,6 +1244,7 @@
          // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                 $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                     var result = response.data;

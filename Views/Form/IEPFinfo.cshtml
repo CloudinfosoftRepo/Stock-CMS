@@ -895,6 +895,7 @@
          // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;

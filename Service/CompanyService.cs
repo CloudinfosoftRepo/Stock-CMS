@@ -108,6 +108,7 @@ namespace Stock_CMS.Service
                              RtaAddress = r.RtaAddress,
                              RtaName = r.RtaName,
                              Rtaid = r.Id,
+                             IsActive = c.IsActive,
                          };
 
             return result;

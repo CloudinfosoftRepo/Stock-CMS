@@ -6,7 +6,10 @@ namespace Stock_CMS.RepositoryInterface
 	public interface IDocRepository
 	{
 		Task<IEnumerable<DocDto>> GetDocById(long Id);
-		Task<IEnumerable<DocDto>> GetdocByClientId(long Id);
+
+		Task<DocDto> GetOneDocById(long Id);
+
+        Task<IEnumerable<DocDto>> GetdocByClientId(long Id);
 		Task<IEnumerable<DocDto>> GetDocByInfo(DocDto data);
 		Task<IEnumerable<DocDto>> GetDocByName(string Name);
 		Task<IEnumerable<DocDto>> GetDoc();

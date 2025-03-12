@@ -56,6 +56,13 @@ namespace Stock_CMS.Models
 
         public string? PlaceOfDeath { get; set; }
 
+        public string? State { get; set; }
+
+        public string? City { get; set; }
+
+        public string? PinCode { get; set; }
+
+        public string? NameAsPerCertificate { get; set; }
         [NotMapped]
         public IFormFile? PanFile { get; set; }
         [NotMapped]

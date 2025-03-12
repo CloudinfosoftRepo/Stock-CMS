@@ -11,6 +11,8 @@ namespace Stock_CMS.RepositoryInterface
 		Task<IEnumerable<TrackingDto>> UpdateTracking(IEnumerable<TrackingDto> data);
 		Task<IEnumerable<TrackingDto>> GetTrackingbyStockId(long Id);
 
-		Task<IEnumerable<TrackingDto>> UpdateFormbyColumn(IEnumerable<TrackingDto> data, string[] columns);
+		Task<IEnumerable<TrackingDto>> GetTrackingbyStockIds(long[] Ids);
+
+        Task<IEnumerable<TrackingDto>> UpdateFormbyColumn(IEnumerable<TrackingDto> data, string[] columns);
     }
 }

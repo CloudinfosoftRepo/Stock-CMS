@@ -16,6 +16,14 @@ namespace Stock_CMS.ServiceInterface
 
         Task<IEnumerable<DocDto>> GetHolderByStockId(long id);
 
+        Task<string> UploadStockExcel(UploadStockDto data1, int createdBy);
 
+        Task<Int32> UpdateNomineeJson(long id, string jsonString, int updatedBy);
+
+        Task<dynamic> GetStocksStatusCount();
+
+        Task<dynamic> GetStocksByStatus();
+
+        Task<dynamic> GetStocksByStatusName(string status);
     }
 }

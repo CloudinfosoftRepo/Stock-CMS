@@ -14,6 +14,9 @@ namespace Stock_CMS.RepositoryInterface
         Task<IEnumerable<CustomerDto>> UpdateCustomer(IEnumerable<CustomerDto> data);
         Task<IEnumerable<CustomerDto>> UpdateCustomerbyColumn(IEnumerable<CustomerDto> data, string[] columns);
 
+        Task<IEnumerable<CustomerDto>> GetEnquiryCustomer();
 
-	}
+
+
+    }
 }

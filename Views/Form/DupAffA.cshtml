@@ -226,31 +226,6 @@ td:nth-child(5), td:nth-child(6) {
                             </div>
                         </div>
 
-                        <!-- Certificate Nos -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
-                            </div>
-                        </div>
-
-                        <!-- Distinctive Nos Start -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Distinctive Nos End -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
-                            </div>
-                        </div>
-
                         <!-- Place -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -366,13 +341,13 @@ td:nth-child(5), td:nth-child(6) {
             <td>From</td>
             <td>To</td>
           </tr>
-          <tr>
+                    <tr ng-repeat="tmp in shares">
                         <td>@* 1) *@ {{data.officename}}</td>
-            <td>{{data.folioNo}}</td>
-            <td>{{data.qty}}</td>
-            <td>{{data.certificatenos}}</td>
-            <td>{{data.distinctiveNosStart}}</td>
-            <td>{{data.distinctiveNosEnd}}</td>
+                        <td>{{tmp.folioNo}}</td>
+                        <td>{{tmp.actualQty}}</td>
+                        <td>{{tmp.certificateNo}}</td>
+                        <td>{{tmp.distinctiveNosFrom}}</td>
+                        <td>{{tmp.distinctiveNosTo}}</td>
         </tr>
         </table>
         <p style="padding-top: 3pt; text-indent: 0pt; text-align: left">
@@ -615,9 +590,7 @@ td:nth-child(5), td:nth-child(6) {
       <span class="s4">
         {{data.place}} </span
       ><span class="s6"> </span><br>Date :
-      <span class="s4"
-        >{{data.date | date:'__/MM/yyyy'}} </span
-      ><span class="s6"> </span><br>X
+      <span class="s4">@* {{data.date | date:'__/MM/yyyy'}} *@<u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u> </span><span class="s6"> </span><br>X
       <span class="s4"
       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
     </p>
@@ -645,6 +618,7 @@ td:nth-child(5), td:nth-child(6) {
          // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
@@ -660,9 +634,7 @@ td:nth-child(5), td:nth-child(6) {
                     sonof: doc.relativesName,
                     relationship: doc.relationship,
                     accountno:bank.accountNo,
-                    certificatenos:'',
-                    distinctiveNosStart: '',
-                    distinctiveNosEnd:'',
+                    jsondata: result.stockJson,
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officename : result.companyName,
@@ -672,7 +644,7 @@ td:nth-child(5), td:nth-child(6) {
                     place:'Vadodara',
                     date: new Date(),
                 };
-
+                $scope.shares = JSON.parse($scope.data.jsondata);
                 hideLoader();
                                     }, function (error) {
         console.error('Error loading Bank Deatails:', error);
@@ -702,9 +674,7 @@ td:nth-child(5), td:nth-child(6) {
                     sonof: obj.sonof,
                     accountno: obj.accountno,
                     relationship: obj.relationship,
-                    certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    jsondata: obj.jsondata,
                     officename: obj.officename,
                        firstHolder:obj.firstHolder,
     secondHolder:obj.secondHolder,
@@ -712,6 +682,7 @@ td:nth-child(5), td:nth-child(6) {
                     place: obj.place,
                     date: new Date(obj.date),
                 };
+                $scope.shares = JSON.parse($scope.data.jsondata);
                       id = result.stockId;
                 checkData();
                 hideLoader();
@@ -752,6 +723,15 @@ td:nth-child(5), td:nth-child(6) {
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Dup Aff-A',

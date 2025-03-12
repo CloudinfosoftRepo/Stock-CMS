@@ -11,5 +11,7 @@ namespace Stock_CMS.ServiceInterface
 
         Task<long> UpdateCustomerbyColumn(CustomerDto customer);
 
-	}
+        Task<long> GetEnqiryCustomersCount();
+
+    }
 }

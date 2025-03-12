@@ -64,6 +64,16 @@ public partial class DocDto
 
     public string? ClientId { get; set; }
 
+    public string? WitnessJson { get; set; }
+
+    public string? State { get; set; }
+
+    public string? City { get; set; }
+
+    public string? PinCode { get; set; }
+
+    public string? NameAsPerCertificate { get; set; }
+
     [NotMapped]
 	public IFormFile? PanFile { get; set; }
 	[NotMapped]

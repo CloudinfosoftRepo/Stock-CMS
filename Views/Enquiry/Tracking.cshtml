@@ -209,7 +209,10 @@
                             <div class="col-md-4">
                                  <div class="form-group">
                                      <label for="status">Status</label>
-                                    <textarea ng-model="currentStock.status" class="form-control" placeholder="Status"></textarea>
+                                    @* <textarea ng-model="currentStock.status" class="form-control" placeholder="Status"></textarea> *@
+                                    <select class="form-select" ng-options="f.status as f.status for f in statuslist" ng-model="currentStock.status" required>
+                                        <option selected disabled value="">Select Status</option>
+                                    </select>
                                  </div>
                             </div>
                         </div>
@@ -269,6 +272,16 @@
             { id: 2, process: 'Duplicate' },
             { id: 3, process: 'Exchange Shares' },
             { id: 4, process: 'Objection & Suspense Procedure' }
+        ];
+
+        $scope.statuslist = [
+            { id: 1, status: 'Pending' },
+            { id: 2, status: 'Follow Up' },
+            { id: 3, status: 'IEPF' },
+            { id: 4, status: 'IEPF Post Receipt Submit' },
+            { id: 5, status: 'DRF Form Submitted' },
+            { id: 6, status: 'Demated' },
+            { id: 7, status: 'Completed' }
         ];
 
             // Load Tracking

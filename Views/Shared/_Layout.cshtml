@@ -36,6 +36,33 @@
     <link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
     <link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="~/assets/css/sweetalert2.min.css" rel="stylesheet" />
+	<style>
+		/*spinner*/
+		#loader {
+			position: fixed !important; /* Position it relative to the viewport */
+			top: 50% !important; /* Center it vertically */
+			left: 50% !important; /* Center it horizontally */
+			transform: translate(-50%, -50%) !important; /* Adjust to exact center */
+			z-index: 9999 !important; /* Make sure it's on top */
+			display: flex;
+			justify-content: center !important; /* Center horizontally */
+			align-items: center !important; /* Center vertically */
+			width: 100vw !important; /* Make the overlay take the full screen */
+			height: 100vh !important; /* Make the overlay take the full screen */
+			background-color: rgba(0, 0, 0, 0.5) !important; /* Semi-transparent dark background */
+		}
+
+		.loder_css {
+			--bs-spinner-width: 5rem !important;
+			--bs-spinner-height: 5rem !important;
+			--bs-spinner-vertical-align: -0.125em !important;
+			--bs-spinner-border-width: 0.3em !important;
+			--bs-spinner-animation-speed: 0.75s !important;
+			--bs-spinner-animation-name: spinner-border !important;
+			border: var(--bs-spinner-border-width) solid rgb(39 87 62) !important;
+			border-right-color: rgba(0, 0, 0, 0) !important;
+		}
+	</style>
 </head>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
@@ -106,16 +133,17 @@
 		  submenuToggle.setAttribute('aria-expanded', 'true');
 		  submenuMaster.classList.add('show');
 		}
-	  } else if (path.includes('Form')) {
-		document.getElementById('form-link').classList.add('active');
-	  }
+	  } 
+	 //  else if (path.includes('Form')) {
+		// document.getElementById('form-link').classList.add('active');
+	 //  }
 	});
 
 </script>
 <body class="app">
 
 	<div class="overlay" id="loader">
-		<div class="spinner-border text-dark" role="status">
+		<div class="spinner-border loder_css text-dark" role="status">
 			@*  <span class="sr-only">Loading...</span> *@
 		</div>
 	</div>
@@ -390,8 +418,8 @@
 						<li class="nav-item">
 							<a class="nav-link" asp-action="Users" asp-controller="User" id="user-link">
 								<span class="nav-icon">
-									<i class="fa fa-user"></i> <!-- FontAwesome user icon for User -->
-								</span>
+										<i class="fa-solid fa-user-gear"></i>
+									</span>
 								<span class="nav-link-text">Users</span>
 							</a>
 						</li>
@@ -401,7 +429,7 @@
 						<li class="nav-item has-submenu">
 							<a class="nav-link submenu-toggle" href="#" id="master-link" data-bs-toggle="collapse" data-bs-target="#submenu-master" aria-expanded="false" aria-controls="submenu-master">
 								<span class="nav-icon">
-									<i class="bi bi-file-earmark"></i> <!-- Bootstrap file icon for Master -->
+									<i class="fa-solid fa-building"></i> <!-- Bootstrap file icon for Master -->
 								</span>
 								<span class="nav-link-text">Master</span>
 								<span class="submenu-arrow">
@@ -426,15 +454,16 @@
 							</div>
 						</li>
 
-						<!-- Form Menu Item -->
+						<!-- Form Menu Item 
 						<li class="nav-item">
 							<a class="nav-link" asp-action="Form" asp-controller="Form" id="form-link">
 								<span class="nav-icon">
-									<i class="bi bi-file-earmark-text"></i> <!-- Bootstrap file-text icon for Form -->
+                                    <i class="bi bi-file-earmark-text"></i>-->
+                        <!-- Bootstrap file-text icon for Form 
 								</span>
 								<span class="nav-link-text">Form</span>
 							</a>
-						</li>
+                        </li>-->
 					</ul>
 				</nav>
 				<!--//app-nav-->

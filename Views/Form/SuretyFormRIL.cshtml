@@ -163,31 +163,6 @@
                             </div>
                         </div>
 
-                        <!-- Certificate Nos -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
-                            </div>
-                        </div>
-
-                        <!-- Distinctive Nos Start -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Distinctive Nos End -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
-                            </div>
-                        </div>
-
                         <!-- Surety 1 Name -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -298,12 +273,12 @@
             </tr>
 
             <!-- Repeat the following rows for content -->
-            <tr style="height: 14pt">
-                <td><p>{{data.folioNo}}</p></td>
-                <td><p>{{data.distinctiveNosStart}}</p></td>
-                <td><p>{{data.distinctiveNosEnd}}</p></td>
-                <td><p>{{data.certificatenos}}</p></td>
-                <td><p>{{data.qty}}</p></td>
+            <tr style="height: 14pt" ng-repeat="tmp in shares">
+                <td><p>{{tmp.folioNo}}</p></td>
+                <td><p>{{tmp.distinctiveNosFrom}}</p></td>
+                <td><p>{{tmp.distinctiveNosTo}}</p></td>
+                <td><p>{{tmp.certificateNo}}</p></td>
+                <td><p>{{tmp.actualQty}}</p></td>
             </tr>
         </table>
         <!-- <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p> -->
@@ -433,7 +408,7 @@
             Address: {{data.surety2Address}}
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
-        <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">Date :{{data.today | date:'__-MM-yyyy'}}</p>
+        <p style="padding-left: 10pt; text-indent: 0pt; text-align: left">Date :@* {{data.today | date:'__-MM-yyyy'}} *@ <u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u></p>
         <p style="
         padding-top: 9pt;
         padding-left: 10pt;
@@ -460,6 +435,7 @@
                  // Load Customers
          $scope.loadCustomers = function (sid) {
                 if(id){
+                    hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -483,12 +459,10 @@
                        surety1Address:'',
                        surety2Name:'',
                        surety2Address:'',
-                       certificatenos:'',
-                   distinctiveNosStart: '',
-                   distinctiveNosEnd:'',
+                       jsondata: result.stockJson,
 
                 };
-
+                $scope.shares = JSON.parse($scope.data.jsondata);
                 hideLoader();
                 }, function (error) {
                     console.error('Error loading Docs:', error);
@@ -518,12 +492,10 @@
                     surety1Address:obj.surety1Address,
                     surety2Name:obj.surety2Name,
                     surety2Address:obj.surety2Address,
-                    certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    jsondata: obj.jsondata,
                 };
                                 id = result.stockId;
-
+                                $scope.shares = JSON.parse($scope.data.jsondata);
                 checkData();
                 hideLoader();
             }, function (error) {
@@ -553,6 +525,15 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                      formName :'Surety Form RIL',

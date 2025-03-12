@@ -374,5 +374,31 @@ namespace Stock_CMS.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateWitnessJson(long id, string jsonString)
+        {
+            if (id < 1 && string.IsNullOrEmpty(jsonString))
+            {
+                return Json(new { success = false, message = "Values cannot be Empty" });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+                var result = await _docService.UpdateWitnessJson(id, jsonString, int.Parse(userId));
+                string message = result == -2 ? "No record Found." :
+                   result == -1 ? "Witness already exists." :
+                   result == 0 ? "Failed to update Witnessess." :
+                   "Witnessess updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace Stock_CMS.ServiceInterface
 
 		Task<DocDto> GetDocById(long id);
 
+		Task<Int32> UpdateWitnessJson(long id, string jsonString, int updatedBy);
+
 
     }
 }

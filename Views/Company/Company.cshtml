@@ -165,8 +165,10 @@
             $scope.loadCompany = function () {
                 $http.get('/Company/GetCompany').then(function (response) {
                     $scope.customers = response.data;
+                    hideLoader();
                 }, function (error) {
                     console.error('Error loading company:', error);
+                    hideLoader();
                 });
             };
 
@@ -174,8 +176,10 @@
             $scope.loadRta = function () {
                 $http.get('/Company/GetRta').then(function (response) {
                     $scope.rtas = response.data;
+                    hideLoader();
                 }, function (error) {
                     console.error('Error loading RTA data:', error);
+                    hideLoader();
                 });
             };
 

@@ -104,5 +104,14 @@ namespace Stock_CMS.Service
                 return 0;
             }
         }
+
+        public async Task<long> GetEnqiryCustomersCount()
+        {
+            var data = await _customerRepository.GetEnquiryCustomer();
+
+            var result = data.Count();
+
+            return result;
+        }
     }
 }

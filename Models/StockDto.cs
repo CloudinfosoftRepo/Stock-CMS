@@ -50,6 +50,8 @@ public partial class StockDto
 
     public long? ThirdHolderId { get; set; }
 
+    public string? NomineeJson { get; set; }
+
     [NotMapped]
     public string? CompanyName { get; set; }
 
@@ -80,4 +82,12 @@ public partial class StockDto
     public virtual DocDto? ThirdHolderData { get; set; }
 
 
+}
+
+public class UploadStockDto
+{
+    public long? CustomerId { get; set; }
+
+    [NotMapped]
+    public IFormFile? DocFile { get; set; }
 }

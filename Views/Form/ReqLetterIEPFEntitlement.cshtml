@@ -431,6 +431,7 @@
                  // Load Customers
              $scope.loadCustomers = function (sid) {
                     if(id){
+                        hideLoader();
                      var currentDate = new Date();
                  var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                      $scope.hDiv = true;
@@ -444,8 +445,8 @@
                     $scope.data = {
                         docid: docs.id,
                         customerName : docs.name,
-                           address : docs.addressAsPerAadhar,
-                           mobile: docs.mobile,
+                               mobile: result.firstHolderData.mobile,
+    address : result.firstHolderData.addressAsPerAadhar,
                                qty : result.qty,
                            folioNo : result.folioNo,
                            today: new Date(),

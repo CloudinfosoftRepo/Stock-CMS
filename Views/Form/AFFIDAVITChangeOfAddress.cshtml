@@ -164,14 +164,6 @@
 
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="state" class="form-label">State</label>
-                                <input type="text" ng-model="data.state" class="form-control" placeholder="State">
-                            </div>
-                        </div>
-                     </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
                                 <label for="place" class="form-label">Place</label>
                                 <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Form Submission">
                             </div>
@@ -413,6 +405,7 @@
          $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
                 var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -428,7 +421,7 @@
                        relationship: doc.relationship,
                        sonof: doc.relativesName,
                        address : doc.addressAsPerAadhar,
-                       state: '',
+                       state: doc.state,
                        newaddress:'',
                        officename : result.companyName,
                        place:'Vadodara',

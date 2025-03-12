@@ -49,6 +49,8 @@ public partial class TblStock
 
     public long? ThirdHolderId { get; set; }
 
+    public string? NomineeJson { get; set; }
+
     public virtual TblCompany? Company { get; set; }
 
     public virtual TblCustomer? Customer { get; set; }

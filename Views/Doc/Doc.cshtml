@@ -106,6 +106,9 @@
                                      <th class="cell">Aadhar </th> 
                                     <th class="cell">Date Of Birth </th>
                                     <th class="cell">Mobile</th>
+                                    <th class="cell">State</th>
+                                    <th class="cell">City</th>
+                                    <th class="cell">PINCODE</th>
                                     <th class="cell">Relationship</th>
                                     <th class="cell">RelativesName</th>
                                     <th class="cell">Email</th>
@@ -158,6 +161,9 @@
                                     </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
+                                    <td class="cell">{{ doc.state }}</td>
+                                    <td class="cell">{{ doc.city }}</td>
+                                    <td class="cell">{{ doc.pinCode }}</td>
                                     <td class="cell">{{ doc.relationship }}</td>
                                     <td class="cell">{{ doc.relativesName }}</td>
                                     <td class="cell">{{ doc.email }}</td>
@@ -192,6 +198,10 @@
                                     <td class="cell sticky-action text-center">
                                         <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="navtolegalheit(doc.id)" title="Legal Heir\Claiment">
                                             <i class="bi bi-person-add"></i>
+                                        </span>
+
+                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openFormModal(doc.id)" title="Add Witness">
+                                            <i class="bi bi-person-vcard"></i>
                                         </span>
                            
                                         <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)" title="Bank Details">
@@ -228,6 +238,83 @@
         </div>
     </div>
 
+
+    <!-- Form Modal -->
+    <div class="modal fade" id="witnessModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:75%" role="document">
+            <div class="modal-content">
+
+             
+                <form name="gForm">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Witness' : 'Add Witness' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <!-- Witness's Name -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="witnessname">Witness's Name</label>
+                                    <input type="text" id="witnessname" ng-model="jsonData.witnessname" class="form-control" placeholder="Witness Name" required />
+                                </div>
+                            </div>
+
+                            <!-- Witness's Address -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="witnessaddress">Witness's Address</label>
+                                    <textarea id="witnessaddress" ng-model="jsonData.witnessaddress" class="form-control" style="height: 100px;" placeholder="Witness Address" required></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <!-- Add Button -->
+                            <div class="text-center mb-3">
+                                <button ng-click="addWitnessData(gForm.$valid)" class="btn" style="background-color:#003980; color:white;">
+                                    ADD
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button ng-click="SaveWitnessJson()" class="btn" style="background-color:#003980; color:white">
+                            {{ isEditing ? 'Save Changes' : 'Add Witness' }}
+                        </button>
+                    </div>
+                </form>
+                <div class="m-2">
+                    <!-- Stock List Table -->
+                    <table class="table table-bordered table-striped table-hover mb-0 text-left">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th class="cell">#</th>
+                                <th class="cell">Witness's Name</th>
+                                <th class="cell">Witness's Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="f in witnesslist">
+                                <td class="cell">{{ $index + 1 }}</td>
+                                <td class="cell">{{ f.witnessname }}</td>
+                                <td class="cell">{{ f.witnessaddress }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Preview Model-->
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -259,6 +346,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <label for="nameAsPerCertificate">Name As Per Certificate</label>
+                                    <input type="text" id="nameAsPerCertificate" ng-model="currentDoc.nameAsPerCertificate" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <label for="dob">Date of Birth</label>
                                     <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control" required />
                                 </div>
@@ -285,6 +378,24 @@
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" id="email" ng-model="currentDoc.email" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" ng-model="currentDoc.state" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" ng-model="currentDoc.city" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pinCode">PINCODE</label>
+                                    <input type="text" id="pinCode" ng-model="currentDoc.pinCode" class="form-control" required />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -451,6 +562,18 @@
                                     <label for="postalAddress">Bank Address</label>
                                     <textarea id="postalAddress" ng-model="currentBank.postalAddress" class="form-control" placeholder="Bank Address"></textarea>
                                 </div>
+                            </div> 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankCity">Bank City</label>
+                                    <input type="text" id="bankCity" ng-model="currentBank.bankCity" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pinCode">Bank PINCODE</label>
+                                    <input type="text" id="pinCode" ng-model="currentBank.pinCode" class="form-control" required />
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -462,6 +585,12 @@
                                 <div class="form-group">
                                     <label for="bankEmail">Bank Email</label>
                                     <input type="email" id="bankEmail" ng-model="currentBank.bankEmail" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerBankAccount">Name As Per BankAccount</label>
+                                    <input type="text" id="nameAsPerBankAccount" ng-model="currentBank.nameAsPerBankAccount" class="form-control" required />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -484,24 +613,6 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="bankManagerName">Bank Manager Name</label>
-                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="employeeCode">Employee Code</label>
-                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="bankMangerEmail">Bank Manger's Email</label>
-                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
                                     <label for="ifsccode">IFSC Code</label>
                                     <input type="text" id="ifsccode" ng-model="currentBank.ifsccode" class="form-control" required />
                                 </div>
@@ -512,6 +623,25 @@
                                     <input type="text" id="micrcode" ng-model="currentBank.micrcode" class="form-control" required />
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankManagerName">Bank Manager Name</label>
+                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="employeeCode">Employee Code</label>
+                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankMangerEmail">Bank Manger's Email</label>
+                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control"  />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -545,6 +675,7 @@
             $scope.currentDoc = {};
             $scope.docs = [];
             $scope.bank = [];
+            $scope.witnesslist = [];
             $scope.currentBank = {};
             $scope.docid2 = undefined;
             $scope.isEditing = false;
@@ -570,6 +701,90 @@
                     }
                 };
 
+        $scope.addWitnessData = function(isv) {
+            if (isv) {
+
+                $scope.witnesslist.push($scope.jsonData);
+
+                $scope.jsonData = {};
+
+                console.log('witness data added:', $scope.witnesslist);
+            } else {
+                alert('Please fill in the required fields');
+            }
+        }
+
+        // Open Modal
+        $scope.openFormModal = function (id) {
+            $scope.currentDocId = id;
+
+            var data = $scope.docs.find(c => c.id === id).witnessJson;
+            if(data){
+            $scope.witnesslist = JSON.parse(data);
+            }
+            else{
+                $scope.witnesslist = [];
+            }
+             $scope.jsonData = { };
+            $('#witnessModal').modal('show');
+        };
+
+        $scope.SaveWitnessJson = function() {
+            if (isProcessing) return;
+            // if ($scope.witnesslist.length < 2) {
+            //  Swal.fire({
+            //             title: 'Error!',
+            //             text:  'Please Add Atlest 2 Records',
+            //             icon: 'error',
+            //             confirmButtonText: 'Try Again'
+            //         });
+            //     isProcessing = false;
+            //     return;
+            // };
+            isProcessing = true;
+            $scope.witnesslist.forEach(item => delete item["$$hashKey"]);
+            let jsonString = JSON.stringify($scope.witnesslist, null, 2);
+
+
+            const url = '/doc/UpdateWitnessJson?id=' + $scope.currentDocId + '&jsonString=' + encodeURIComponent(jsonString);
+
+            $http({
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(response) {
+                if (response.data.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.data.message || 'Operation successful!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.loadDocs();
+                    $scope.witnesslist = [];
+                    $('#witnessModal').modal('hide');
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.data.message || 'There was an issue with the operation.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+                isProcessing = false;
+            }, function(error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                isProcessing = false;
+            });
+        };
+
             $scope.openDocModal = function (doc = null) {
                 $scope.isEditing = !!doc;
                 $scope.currentDoc = doc ? angular.copy(doc) : { };
@@ -591,6 +806,16 @@
                            //      alert("Please enter a valid 10-digit mobile number.");
                            //      return;
                            //  }
+
+                           if($scope.currentDoc.dateOfDeath && $scope.currentDoc.dob > $scope.currentDoc.dateOfDeath){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Please enter a valid Date of Demise.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                               return;
+                           }
                if (id)
                     {
                         if (isProcessing) return;
@@ -599,6 +824,7 @@
                     formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
                     formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
                     formData.append('name', $scope.currentDoc.name);
+                    formData.append('nameAsPerCertificate', $scope.currentDoc.nameAsPerCertificate);
                     formData.append('mobile', $scope.currentDoc.mobile);
                     formData.append('relationship', $scope.currentDoc.relationship);
                     formData.append('relativesName', $scope.currentDoc.relativesName);
@@ -616,6 +842,9 @@
                     formData.append('nameAsPerVoterId', $scope.currentDoc.nameAsPerVoterId);
                     formData.append('addressAsPerVoterId', $scope.currentDoc.addressAsPerVoterId);
                     formData.append('email', $scope.currentDoc.email);
+                    formData.append('state', $scope.currentDoc.state);
+                    formData.append('city', $scope.currentDoc.city);
+                    formData.append('pinCode', $scope.currentDoc.pinCode);
 
 
                 if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);

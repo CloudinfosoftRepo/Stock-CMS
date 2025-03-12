@@ -245,47 +245,25 @@
                             </div>
                         </div>
 
-                        <!-- Certificate Nos -->
+                        <!-- Select Witness Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
+                                <label for="fwitness" class="form-label">Select 1st Witness</label>
+                                <select class="form-select" ng-options=" x.witnessname as x.witnessname for x in witnesslist" ng-model="data.fwitness" ng-change="fwitnessselect(data.fwitness,data.switness)">
+                                    <option selected disabled value="">Select Witness</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <!-- Distinctive Nos Start -->
+                        <!-- Select Witness Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
-                            </div>
-                        </div>
-
-                        <!-- Distinctive Nos End -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
-                            </div>
-                        </div>
-
-                        <!-- Witness 1's Name -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="witness1name" class="form-label">Witness 1's Name</label>
-                                <input type="text" ng-model="data.witness1name" class="form-control" placeholder="Witness 1's Name">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <!-- Witness 2's Name -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="witness2name" class="form-label">Witness 2's Name</label>
-                                <input type="text" ng-model="data.witness2name" class="form-control" placeholder="Witness 2's Name">
+                                <label for="switness" class="form-label">Select 2nd Witness</label>
+                                <select class="form-select" ng-options=" x.witnessname as x.witnessname for x in witnesslist" ng-model="data.switness" ng-change="switnessselect(data.fwitness,data.switness)">
+                                    <option selected disabled value="">Select Witness</option>
+                                </select>
                             </div>
                         </div>
 
@@ -385,21 +363,21 @@
         </tr>
 
         <!-- Repeated row structure can be simplified -->
-        <tr style="height: 18pt">
+            <tr style="height: 18pt" ng-repeat="tmp in shares">
             <td class="table-cell" style="width: 104pt;">
                     <p class="table-text">{{data.officename}}</p>
             </td>
             <td class="table-cell" style="width: 107pt;">
-                    <p class="table-text">{{data.certificatenos}}</p>
+                    <p class="table-text">{{tmp.certificateNo}}</p>
             </td>
             <td class="table-cell" style="width: 106pt;">
-                    <p class="table-text">{{data.distinctiveNosStart}} - {{data.distinctiveNosEnd}}</p>
+                    <p class="table-text">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</p>
             </td>
             <td class="table-cell" style="width: 66pt;">
-                    <p class="table-text">{{data.folioNo}}</p>
+                    <p class="table-text">{{tmp.folioNo}}</p>
             </td>
             <td class="table-cell" style="width: 98pt;">
-                <p class="table-text">{{data.qty}}</p>
+                    <p class="table-text">{{tmp.actualQty}}</p>
             </td>
         </tr>
 
@@ -472,7 +450,7 @@
                     <p style="text-align: left;">{{ $index + 1 }}){{tmp.name}}</p>
             </td>
                 <td style="width: 184pt; border: 1px solid #a6a8ab;">{{tmp.addressAsPerAadhar}}</td>
-                <td style="width: 35pt; border: 1px solid #a6a8ab;">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
+                <td style="width: 35pt; text-align:center; border: 1px solid #a6a8ab;">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
                 <td style="width: 86pt; border: 1px solid #a6a8ab;">{{tmp.relationWithDead}}</td>
         </tr>
 
@@ -519,7 +497,7 @@
                 <p class="s2" style="text-indent: 0pt; text-align: left">Name of the Legal Heir(s)/Claimant(s)</p>
             </td>
             <td style="width: 163pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
-                <p class="s2" style="padding-left: 67pt; padding-right: 17pt; text-indent: 0pt; text-align: left;">Address and contact details</p>
+                <p class="s2" style="padding-left: 3pt; text-indent: 0pt; text-align: left;">Address and contact details</p>
             </td>
             <td style="width: 28pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
                 <p class="s2" style="padding-left: 3pt; text-indent: 0pt; text-align: left;">Age</p>
@@ -538,7 +516,7 @@
                     <p style="text-indent: 0pt; text-align: left">{{tmp.addressAsPerAadhar}}</p>
             </td>
             <td style="width: 28pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
-                    <p style="text-indent: 0pt; text-align: left">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</p>
+                    <p style="text-indent: 0pt; text-align: center">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</p>
             </td>
             <td style="width: 142pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
                     <p style="text-indent: 0pt; text-align: left">{{tmp.relationWithDead}}</p>
@@ -624,10 +602,10 @@
                 @* VSVSBG G EGTHRTT *@{{data.witness1name}}
         </span>
         <span class="s5">
-            @* BRSDVS BGRDBRB *@
+                @* BRSDVS BGRDBRB *@
         </span>
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="text-indent: 0pt; text-align: left">Address: {{data.witness1address}}<br /></p>
     <p style="
         padding-left: 5pt;
         text-indent: 0pt;
@@ -649,18 +627,18 @@
         And 2) Mr. /Ms.
             <span class="s5">@* IYVJY VJBYHB *@{{data.witness2name}}</span>
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="text-indent: 0pt; text-align: left">Address: {{data.witness2address}}<br /></p>
     <p style="
         padding-left: 5pt;
         text-indent: 0pt;
         line-height: 1pt;
         text-align: left;
       " />
-    <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
     <p class="s11"
        style="padding-left: 6pt; text-indent: 0pt; text-align: justify">
         (Name and signature of the witness )<span class="s12">
-            @* FCVG HGVJB HJ B *@
+                @* FCVG HGVJB HJ B *@
         </span>
     </p>
     <p style="text-indent: 0pt; text-align: left" />
@@ -754,7 +732,7 @@
     </p>
     <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-            on<span style="color: #d0d1d4">: </span><span class="s12">{{data.today | date:'__/MM/yyyy'}}</span>
+            on<span style="color: #d0d1d4">: </span><span class="s5">@* {{data.today | date:'__/MM/yyyy'}} *@<u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u></span>
     </p>
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
     <p class="s8" style="padding-left: 6pt; text-indent: 0pt; text-align: left">
@@ -832,12 +810,14 @@
     // Load Customers
          $scope.loadCustomers = function (sid,hid) {
              if(id){
+                 hideLoader();
                 $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                     var result = response.data;
                     $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                         $scope.docs = response.data;
                         var doc = $scope.docs.find(x => x.id === sid);
+                        $scope.witnesslist = JSON.parse(doc.witnessJson);
                         $http.get('/LegalHeir/GetLegalHeir/' + doc.id).then(function (response) {
                             $scope.heirlist = response.data;
                             $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
@@ -849,20 +829,20 @@
                                     customerName : heirs.nameAsPerAadhar,
                                     sonof: doc.nameAsPerAadhar,
                                     officename : result.companyName,
-                                    certificatenos:'',
-                                    distinctiveNosStart:'',
-                                    distinctiveNosEnd:'',
+                                    jsondata: result.stockJson,
                                     folioNo : result.folioNo,
                                     qty: result.qty,
                                     dateofdeath: doc.dateOfDeath,
                                     rtaName: result.company.rtaName,
                                     witness1name:'',
+                                    witness1address:'',
                                     witness2name:'',
+                                    witness2address:'',
                                     singnedsubmitdate:'',
                                     place: 'Vadodara',
                                     today: new Date(),
                                 };
-
+                                $scope.shares = JSON.parse($scope.data.jsondata);
                                 hideLoader();
                             }, function (error) {
                             console.error('Error loading legal Heir:', error);
@@ -892,9 +872,7 @@
                     customerName: obj.customerName,
                     sonof: obj.sonof,
                     officename: obj.officename,
-                    certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    jsondata: obj.jsondata,
                     folioNo: obj.folioNo,
                     qty: obj.qty,
                     dateofdeath: new Date(obj.dateofdeath),
@@ -902,14 +880,16 @@
                     claiment: JSON.parse(obj.claiment),
                     rtaName: obj.rtaName,
                     witness1name: obj.witness1name,
+                    witness1address: obj.witness1address,
                     witness2name: obj.witness2name,
+                    witness2address: obj.witness2address,
                     singnedsubmitdate: new Date(obj.singnedsubmitdate),
                     place: obj.place,
                     today: new Date(obj.today),
                 };
                 $scope.heirlist = $scope.data.heirs;
                 $scope.heir = $scope.data.claiment;
-
+                $scope.shares = JSON.parse($scope.data.jsondata);
                 id = result.stockId;
                 checkData();
                 hideLoader();
@@ -920,9 +900,64 @@
             }
         };
 
+        $scope.fwitnessselect = function (fid,sid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+
+              var result =  (fid == sid)
+               if(result)
+             {
+                $scope.data.fwitness = undefined;
+                    Swal.fire({
+        title: 'Error!',
+        text: 'Same person can not be selected for multiple Witnesses.',
+        icon: 'error',
+        confirmButtonText: 'Try Again'
+    });
+                $scope.data.witness1name = '';
+                $scope.data.witness1address = '';
+               }
+               else{
+                   var witness1 = $scope.witnesslist.find(y => y.witnessname == fid);
+                   $scope.data.witness1name = witness1.witnessname;
+                   $scope.data.witness1address = witness1.witnessaddress;
+               }
+            }
+
+             $scope.switnessselect = function (fid,sid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+
+              var result =  (fid == sid)
+               if(result)
+             {
+                $scope.data.switness = undefined ;
+                    Swal.fire({
+        title: 'Error!',
+        text: 'Same person can not be selected for multiple Witnesses.',
+        icon: 'error',
+        confirmButtonText: 'Try Again'
+    });
+                $scope.data.witness2name = '';
+                $scope.data.witness2address = '';
+               }
+               else{
+                   var witness2 = $scope.witnesslist.find(y => y.witnessname == sid);
+                   $scope.data.witness2name = witness2.witnessname;
+                   $scope.data.witness2address = witness2.witnessaddress;
+               }
+            }
+
          //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
                   var arr = angular.copy($scope.heirlist);
                  $scope.data.heirs = JSON.stringify(arr,null,2);
 

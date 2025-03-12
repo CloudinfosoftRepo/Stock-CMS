@@ -329,7 +329,7 @@
     <p style="padding-left: 12pt; text-indent: 0pt; text-align: left">
       Yours faithfully
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    <p style="text-indent: 0pt; text-align: left; padding-top: 20pt"><br /></p>
     <p style="padding-left: 12pt; text-indent: 0pt; text-align: left; display:flex;justify-content:space-between;">
             <u>{{(data.firstHolder)}}</u><u>{{(data.secondHolder)}}</u><u>{{(data.thirdHolder)}}</u>
     </p>
@@ -361,6 +361,7 @@
             // Load Customers
          $scope.loadCustomers = function (sid) {
          if(id){
+             hideLoader();
              var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
              var currentDate = new Date();
          var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -375,8 +376,8 @@
                customerName : doc.name,
                qty:result.qty,
                folioNo : result.folioNo,
-               mobile: doc.mobile,
-               address : doc.addressAsPerAadhar,
+                   mobile: result.firstHolderData.mobile,
+    address : result.firstHolderData.addressAsPerAadhar,
                    officename : result.company.rtaName,
     officeaddress: result.company.rtaAddress,
     unit: result.companyName,

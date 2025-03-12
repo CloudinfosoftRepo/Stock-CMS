@@ -186,18 +186,35 @@
                                 <input type="text" ng-model="surity.netassetsworth" class="form-control" placeholder="Net Assets Worth">
                             </div>
                         </div>
-
-                        <!-- Annual Salary Income -->
+                    </div>
+                    <div class="row">
                         <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <input type="radio" ng-model="incomesource" value="Employed" /> Employed
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <input type="radio" ng-model="incomesource" value="Self Bussiness" /> Self Bussiness
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <input type="radio" ng-model="incomesource" value="Self Assets" /> Self Assets
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Annual Salary Income -->
+                        <div class="col-md-4 mb-3" ng-show="incomesource == 'Employed'">
                             <div class="form-group">
                                 <label for="annualsalaryincome" class="form-label">Annual Salary Income</label>
                                 <input type="text" ng-model="surity.annualsalaryincome" class="form-control" placeholder="Annual Salary Income">
                             </div>
                         </div>
-                        </div>
-                    <div class="row">
+
                         <!-- Employer Name -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" ng-show="incomesource == 'Employed'">
                             <div class="form-group">
                                 <label for="employername" class="form-label">Employer Name</label>
                                 <input type="text" ng-model="surity.employername" class="form-control" placeholder="Employer Name">
@@ -205,7 +222,7 @@
                         </div>
 
                         <!-- Self Owned Business Annual Income -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" ng-show="incomesource == 'Self Bussiness'">
                             <div class="form-group">
                                 <label for="selfbussinessannualincome" class="form-label">Self Owned Business Annual Income</label>
                                 <input type="text" ng-model="surity.selfbussinessannualincome" class="form-control" placeholder="Self Owned Business Annual Income">
@@ -213,13 +230,13 @@
                         </div>
 
                         <!-- Asset worth of self-owned Immovable Property -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" ng-show="incomesource == 'Self Assets'">
                             <div class="form-group">
                                 <label for="worthofselfimmovableproperty" class="form-label">Asset Worth of Self Owned Immovable Property</label>
                                 <input type="text" ng-model="surity.worthofselfimmovableproperty" class="form-control" placeholder="Asset Worth of Self Owned Immovable Property">
                             </div>
                         </div>
-                        </div>
+                     </div>
                     <div class="row">
                         <!-- Witness Name -->
                         <div class="col-md-4 mb-3">
@@ -408,7 +425,7 @@
       </tr>
       <tr style="height: 35pt">
         <td class="table-cell table-cell-center" style="width: 198pt;">
-          <p class="s3 table-header">Signature of first Surety :</p>
+          <p class="s3 table-header">Signature of Surety :</p>
         </td>
         <td class="table-cell" style="width: 198pt;">
           <p class="table-empty-cell"></p>
@@ -547,6 +564,7 @@
                 var params = new URLSearchParams(window.location.search);
                 var id = params.get('id');
                 var id2 = params.get('id2');
+                $scope.incomesource = "Employed";
                 $scope.btnhide = id2 === null ? true : false;
                 var isProcessing = false;
 
@@ -567,6 +585,7 @@
                 // Load Customers
          $scope.loadCustomers = function (sid) {
          if(id){
+             hideLoader();
              var currentDate = new Date();
          var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
              $scope.hDiv = true;

@@ -12,6 +12,7 @@ namespace Stock_CMS.Controllers
 		private readonly IStockService _StockService;
 		private readonly ILogger<EnquiryController> _logger;
         private readonly ITrackingService _TrackingService;
+
 		public EnquiryController(ILogger<EnquiryController> logger, IStockService StockService,ITrackingService trackingService)
 		{
 			_logger = logger;
@@ -308,5 +309,61 @@ namespace Stock_CMS.Controllers
             }
         }
 
+
+        [HttpPost]
+        public async Task<JsonResult> UploadDoc([FromForm] UploadStockDto data)
+        {
+            if (ModelState.IsValid)
+            {
+                if (data.CustomerId == null || data.CustomerId == 0)
+                {
+                    return Json(new { success = false, message = "Please Go Through a Client to add Stocks", errors = ModelState.Values.SelectMany(v => v.Errors) });
+                }
+                try
+                {
+                    var userId = HttpContext.Request.Cookies["UserId"];
+
+                    var result = await _StockService.UploadStockExcel(data,Int32.Parse(userId ?? "0"));
+                    //Stock.Id = result;
+                    //string message = result == -1 ? "Stock already exists." :
+                    // result == 0 ? "Failed to add Stock." :
+                    // $"Stock added successfully.";
+                    //bool success = result > 0;
+                    return Json(new { success = true, message = result });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error during add");
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+            return Json(new { success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors) });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateNomineeJson(long id, string jsonString)
+        {
+            if (id < 1 && string.IsNullOrEmpty(jsonString))
+            {
+                return Json(new { success = false, message = "Values cannot be Empty" });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+                var result = await _StockService.UpdateNomineeJson(id, jsonString, int.Parse(userId));
+                string message = result == -2 ? "No record Found." :
+                   result == -1 ? "Nominee already exists." :
+                   result == 0 ? "Failed to update Nominees." :
+                   "Nominees updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

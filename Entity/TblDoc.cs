@@ -63,6 +63,16 @@ public partial class TblDoc
 
     public string? ClientId { get; set; }
 
+    public string? WitnessJson { get; set; }
+
+    public string? State { get; set; }
+
+    public string? City { get; set; }
+
+    public string? PinCode { get; set; }
+
+    public string? NameAsPerCertificate { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
 
     public virtual ICollection<TblStock> TblStockFirstHolders { get; set; } = new List<TblStock>();

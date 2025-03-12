@@ -349,8 +349,8 @@ border-bottom-width: 1pt;
         <h2 style="padding-left: 12pt; text-indent: 0pt; text-align: left">
             Regards,
         </h2>
-        <p style="text-indent: 0pt; text-align: left"><br /></p>
-        <h3 style="padding-left: 12pt; text-indent: 0pt; text-align: left; display:flex; justify-content: space-evenly;">
+        <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
+        <h3 style="padding-left: 12pt; text-indent: 0pt; text-align: left; display:flex; justify-content: space-between;">
             <span>{{data.firstHolder}}</span>
             <span>{{data.secondHolder}}</span>
             <span>{{data.thirdHolder}}</span>
@@ -375,6 +375,7 @@ border-bottom-width: 1pt;
         $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -396,8 +397,8 @@ border-bottom-width: 1pt;
                    age : Age,
                    folioNo : result.folioNo,
                    newaddress : '',
-                   address : docs.addressAsPerAadhar,
-                   mobile: docs.mobile,
+                       mobile: result.firstHolderData.mobile,
+    address : result.firstHolderData.addressAsPerAadhar,
                    officename : company.rtaName,
                    officeaddress: company.rtaAddress,
                    unit: company.companyName,

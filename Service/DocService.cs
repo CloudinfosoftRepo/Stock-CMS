@@ -206,5 +206,34 @@ namespace Stock_CMS.Service
             return result.FirstOrDefault();
         }
 
+        public async Task<Int32> UpdateWitnessJson(long id, string jsonString, int updatedBy)
+        {
+            var isExist = await _DocRepository.GetOneDocById(id);
+            var data = isExist;
+
+            if (isExist.Id > 0)
+            {
+                data.WitnessJson = jsonString;
+                data.UpdatedBy = updatedBy;
+                data.UpdatedAt = DateTime.Now;
+
+                List<DocDto> updateList = new List<DocDto> { data };
+                var result = await _DocRepository.UpdateDoc(updateList);
+                if (result.Any())
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                return -2;
+            }
+
+        }
+
     }
 }

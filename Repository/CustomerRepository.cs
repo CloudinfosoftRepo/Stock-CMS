@@ -47,6 +47,10 @@ namespace Stock_CMS.Repository
             return await UpdateEntitiesArray(data , columns);
         }
 
+        public async Task<IEnumerable<CustomerDto>> GetEnquiryCustomer()
+        {
+            return await GetMany(x => x.IsActive == true && x.IsClient == false);
+        }
 
     }
 }

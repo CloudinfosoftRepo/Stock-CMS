@@ -5,6 +5,7 @@ using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
+using System.Globalization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stock_CMS.Service
@@ -14,12 +15,14 @@ namespace Stock_CMS.Service
         private readonly ITrackingRepository _trackingRepository;
         private readonly IUserRepository _userRepository;
         private readonly FileUpload _fileUpload;
+        private readonly IStockRepository _stockRepository;
 
-        public TrackingService(ITrackingRepository trackingRepository, IUserRepository userRepository, FileUpload fileUpload)
+        public TrackingService(ITrackingRepository trackingRepository, IUserRepository userRepository, FileUpload fileUpload, IStockRepository stockRepository)
         {
             _trackingRepository = trackingRepository;
             _userRepository = userRepository;
             _fileUpload = fileUpload;
+            _stockRepository = stockRepository;
         }
 
         public async Task<long> AddTracking(TrackingDto data)
@@ -52,6 +55,14 @@ namespace Stock_CMS.Service
                 var result = await _trackingRepository.AddTracking(dataList);
                 if (result.Any())
                 {
+                    var stock = await _stockRepository.GetStockById(result.FirstOrDefault().StockId);
+                    stock.ClaimStatus = result.FirstOrDefault().Status;
+                    List<StockDto> stockList = new List<StockDto> { stock };
+                    var response = await _stockRepository.UpdateStock(stockList);
+                    if (response.Any())
+                    {
+                        return result.FirstOrDefault().Id;
+                    }
                     return result.FirstOrDefault().Id;
                 }
                 else
@@ -107,6 +118,14 @@ namespace Stock_CMS.Service
                 var result = await _trackingRepository.UpdateTracking(updateList);
                 if (result.Any())
                 {
+                    var stock = await _stockRepository.GetStockById(result.FirstOrDefault().StockId);
+                    stock.ClaimStatus = result.FirstOrDefault().Status;
+                    List<StockDto> stockList = new List<StockDto> { stock };
+                    var response = await _stockRepository.UpdateStock(stockList);
+                    if (response.Any())
+                    {
+                        return 1;
+                    }
                     return 1;
                 }
                 else

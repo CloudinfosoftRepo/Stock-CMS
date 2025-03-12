@@ -42,5 +42,10 @@ namespace Stock_CMS.Repository
         {
             return await UpdateEntitiesArray(data, columns);
         }
+
+        public async Task<IEnumerable<TrackingDto>> GetTrackingbyStockIds(long[] Ids)
+        {
+            return await GetMany(x => x.IsActive == true && Ids.Contains(x.StockId));
+        }
     }
 }

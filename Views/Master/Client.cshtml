@@ -34,7 +34,7 @@
         text-decoration: underline;
     }
 
-</style>
+</style> 
 <body ng-controller="ClientController">
    
         <div class="app-content pt-3 p-md-3 p-lg-4">
@@ -63,11 +63,24 @@
                             </div>
                         </div>
                     </div>
-                    <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-1">
-                        <a class="flex-sm-fill text-sm-center nav-link active" data-bs-toggle="tab" ng-click="filter()" role="tab" aria-selected="true">All</a>
-                        <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab" ng-click="filter(false)" role="tab" aria-selected="false">Enquiry</a>
-                        <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab" ng-click="filter(true)" role="tab" aria-selected="false">Client</a>
-                    </nav>
+                <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-1">
+                    <!-- All Tab -->
+                    <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+                       ng-class="{'active': search === ''}" ng-click="filter('')"
+                       role="tab" aria-selected="{{search === '' ? 'true' : 'false'}}">All</a>
+
+                    <!-- Enquiry Tab -->
+                    <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+                       ng-class="{'active': search === false}" ng-click="filter(false)"
+                       role="tab" aria-selected="{{search === false ? 'true' : 'false'}}">Enquiry</a>
+
+                    <!-- Client Tab -->
+                    <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+                       ng-class="{'active': search === true}" ng-click="filter(true)"
+                       role="tab" aria-selected="{{search === true ? 'true' : 'false'}}">Client</a>
+                </nav>
+
+
                 </div>
 
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -192,6 +205,7 @@
 
             $scope.filter = function(filter){
                 $scope.search = filter;
+                localStorage.setItem("enquiry",filter);
             }
 
             // Open Modal
@@ -279,8 +293,17 @@
                 window.open('/Doc/Doc/' + id, '_self');
             };
 
+            window.addEventListener('beforeunload', function() {
+              localStorage.clear();
+            });
+
             // Initial load
+            var storedSearch = localStorage.getItem('enquiry');
+
+            $scope.search = storedSearch ? JSON.parse(storedSearch) : '';
+            // $scope.filter(localStorage.getItem('enquiry'));
             $scope.loadCustomers();
+             
         });
     </script>
 </body>

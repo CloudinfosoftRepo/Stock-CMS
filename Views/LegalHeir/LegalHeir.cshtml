@@ -105,6 +105,9 @@
                                     <th class="cell">Aadhar </th>
                                     <th class="cell">Date Of Birth </th>
                                     <th class="cell">Mobile</th>
+                                    <th class="cell">State</th>
+                                    <th class="cell">City</th>
+                                    <th class="cell">PINCODE</th>
                                     <th class="cell">Email</th>
                                     <th class="cell">Claiment/NOC</th>
                                     <th class="cell">Relationship with Dead</th>
@@ -151,6 +154,9 @@
                                     </td>
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
+                                    <td class="cell">{{ doc.state }}</td>
+                                    <td class="cell">{{ doc.city }}</td>
+                                    <td class="cell">{{ doc.pinCode }}</td>
                                     <td class="cell">{{ doc.email }}</td>
                                     <td class="cell">{{ doc.isClaiment ? 'Claiment' : 'NOC' }}</td>
                                     <td class="cell">{{ doc.relationWithDead }}</td>
@@ -240,6 +246,12 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <label for="nameAsPerCertificate">Name As Per Certificate</label>
+                                    <input type="text" id="nameAsPerCertificate" ng-model="currentDoc.nameAsPerCertificate" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <label for="dob">Date of Birth</label>
                                     <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control" required />
                                 </div>
@@ -254,6 +266,24 @@
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" id="email" ng-model="currentDoc.email" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" ng-model="currentDoc.state" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" ng-model="currentDoc.city" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pinCode">PINCODE</label>
+                                    <input type="text" id="pinCode" ng-model="currentDoc.pinCode" class="form-control" required />
                                 </div>
                             </div>
                         </div>
@@ -332,7 +362,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="addressAsPerAadhar">Address As Per Aadhar</label>
-                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar"></textarea>
+                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar" required></textarea>
 
                                 </div>
                             </div>
@@ -418,6 +448,18 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    <label for="bankCity">Bank City</label>
+                                    <input type="text" id="bankCity" ng-model="currentBank.bankCity" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pinCode">Bank PINCODE</label>
+                                    <input type="text" id="pinCode" ng-model="currentBank.pinCode" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <label for="phoneNo">Bank Phone</label>
                                     <input type="text" id="phoneNo" ng-model="currentBank.phoneNo" class="form-control" required />
                                 </div>
@@ -426,6 +468,12 @@
                                 <div class="form-group">
                                     <label for="bankEmail">Bank Email</label>
                                     <input type="email" id="bankEmail" ng-model="currentBank.bankEmail" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerBankAccount">Name As Per BankAccount</label>
+                                    <input type="text" id="nameAsPerBankAccount" ng-model="currentBank.nameAsPerBankAccount" class="form-control" required />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -448,24 +496,6 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="bankManagerName">Bank Manager Name</label>
-                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="employeeCode">Employee Code</label>
-                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="bankMangerEmail">Bank Manger's Email</label>
-                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
                                     <label for="ifsccode">IFSC Code</label>
                                     <input type="text" id="ifsccode" ng-model="currentBank.ifsccode" class="form-control" required />
                                 </div>
@@ -474,6 +504,24 @@
                                 <div class="form-group">
                                     <label for="micrcode">MICR Code</label>
                                     <input type="text" id="micrcode" ng-model="currentBank.micrcode" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankManagerName">Bank Manager Name</label>
+                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="employeeCode">Employee Code</label>
+                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankMangerEmail">Bank Manger's Email</label>
+                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control"  />
                                 </div>
                             </div>
                         </div>
@@ -548,6 +596,18 @@
             };
 
             $scope.saveDoc = function () {
+                $scope.currentDoc.isDead = $scope.currentDoc.dateOfDeath ? true : false;
+                           if($scope.currentDoc.dateOfDeath && $scope.currentDoc.dob > $scope.currentDoc.dateOfDeath){
+
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Please enter a valid Date of Demise.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                               return;
+                           }
+                           
                if (id)
                     {
                         if (isProcessing) return;
@@ -556,6 +616,7 @@
                     formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
                     formData.append('docId', $scope.isEditing ? $scope.currentDoc.docId : id);
                     formData.append('name', $scope.currentDoc.name);
+                    formData.append('nameAsPerCertificate', $scope.currentDoc.nameAsPerCertificate);
                     formData.append('mobile', $scope.currentDoc.mobile);
                     formData.append('pan', $scope.currentDoc.pan);
                     formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan);
@@ -571,6 +632,9 @@
                     formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString().split('T')[0] : '');
                     formData.append('nameAsPerDeathCerti',  $scope.currentDoc.nameAsPerDeathCerti ?? '');
                     formData.append('placeOfDeath',  $scope.currentDoc.placeOfDeath ?? '');
+                    formData.append('state', $scope.currentDoc.state);
+                    formData.append('city', $scope.currentDoc.city);
+                    formData.append('pinCode', $scope.currentDoc.pinCode);
 
                 if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
                 if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);

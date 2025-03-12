@@ -166,31 +166,6 @@
                                 </select>
                             </div>
                         </div>
-
-                        <!-- Certificate Nos Input -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Distinctive Nos Start Input -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
-                            </div>
-                        </div>
-
-                        <!-- Distinctive Nos End Input -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
-                            </div>
-                        </div>
                     </div>
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
@@ -205,7 +180,7 @@
 
     <div id="printForm">
     <p style="padding-left: 5pt; text-align: left; margin: 0;font-size: 16px;">
-      <b>{{data.customerName}}</b>
+            <b>{{data.firstHolder}},{{data.secondHolder}},{{data.thirdHolder}}</b>
     </p>
     <p style="padding: 0 352px 0 5pt; text-align: left; margin: 0;font-size: 16px;">
             {{data.address}}
@@ -322,11 +297,11 @@
         </td>
       </tr>
       <!-- Empty Rows Repeated (we'll keep only 1 and reduce redundancy) -->
-      <tr style="height: 20pt">
-                <td class="table-cell">{{data.folioNo}}</td>
-                <td class="table-cell">{{data.certificatenos}}</td>
-                <td class="table-cell">{{data.qty}}</td>
-                <td class="table-cell">{{data.distinctiveNosStart}} - {{data.distinctiveNosEnd}}</td>
+            <tr style="height: 20pt" ng-repeat="tmp in shares">
+                <td class="table-cell">{{tmp.folioNo}}</td>
+                <td class="table-cell">{{tmp.certificateNo}}</td>
+                <td class="table-cell">{{tmp.actualQty}}</td>
+                <td class="table-cell">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</td>
       </tr>
       <!-- Repeat this pattern for remaining rows -->
     </table>
@@ -349,9 +324,9 @@
     >
       Thanking You,
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <h2 style="padding-left: 41pt; text-indent: 0pt; text-align: left">
-            {{data.customerName}}
+    <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
+    <h2 style="padding-left: 41pt; text-indent: 0pt; text-align: left; display: flex; justify-content: space-between">
+            <b>{{data.firstHolder}}</b><b>{{data.secondHolder}}</b><b>{{data.thirdHolder}}</b>
     </h2>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -370,6 +345,7 @@
         // Load Customers
          $scope.loadCustomers = function (sid,hid) {
              if(id){
+                 hideLoader();
                  var docid = $scope.seletedid == undefined ? 0 : $scope.seletedid;
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -388,19 +364,19 @@
                    qty:result.qty,
                    sonof: doc.name,
                    folioNo : result.folioNo,
-                   mobile: heirs.mobile,
-                   address : heirs.addressAsPerAadhar,
+                       mobile: result.firstHolderData.mobile,
+    address : result.firstHolderData.addressAsPerAadhar,
                    officename : result.company.rtaName,
     officeaddress: result.company.rtaAddress,
     unit: result.companyName,
                    date:new Date(),
-                   certificatenos:'',
-                    distinctiveNosStart: '',
-                    distinctiveNosEnd:'',
+                   jsondata: result.stockJson,
                    deceasedDate: new Date(doc.dateOfDeath),
-
+                       firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
                 };
-
+                $scope.shares = JSON.parse($scope.data.jsondata);
                 hideLoader();
                 }, function (error) {
                     console.error('Error loading Legal Heair:', error);
@@ -433,13 +409,14 @@
     unit: obj.unit,
                     clientid:obj.clientid,
                     date:new Date(obj.date),
-                   certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                   jsondata: obj.jsondata,
                    deceasedDate:obj.deceasedDate,
+                      firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                 };
                                 id = result.stockId;
-
+                                $scope.shares = JSON.parse($scope.data.jsondata);
                 checkData();
                 hideLoader();
             }, function (error) {
@@ -467,6 +444,15 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Transmission Req Letter',

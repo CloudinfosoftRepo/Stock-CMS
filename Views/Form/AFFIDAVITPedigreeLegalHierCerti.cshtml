@@ -235,39 +235,29 @@
                             </div>
                         </div>
 
-                        <!-- Witness 1's Name -->
+                        <!-- Select Witness Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="witness1name" class="form-label">Witness 1's Name</label>
-                                <input type="text" ng-model="data.witness1name" class="form-control" placeholder="Witness 1's Name">
+                                <label for="fwitness" class="form-label">Select 1st Witness</label>
+                                <select class="form-select" ng-options=" x.witnessname as x.witnessname for x in witnesslist" ng-model="data.fwitness" ng-change="fwitnessselect(data.fwitness,data.switness)">
+                                    <option selected disabled value="">Select Witness</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Witness 1's Address -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="witness1address" class="form-label">Witness 1's Address</label>
-                                <textarea id="witness1address" ng-model="data.witness1address" class="form-control" placeholder="Witness 1's Address"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Witness 2's Name -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="witness2name" class="form-label">Witness 2's Name</label>
-                                <input type="text" ng-model="data.witness2name" class="form-control" placeholder="Witness 2's Name">
-                            </div>
-                        </div>
 
-                        <!-- Witness 2's Address -->
+                        <!-- Select Witness Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="witness2address" class="form-label">Witness 2's Address</label>
-                                <textarea id="witness2address" ng-model="data.witness2address" class="form-control" placeholder="Witness 2's Address"></textarea>
+                                <label for="switness" class="form-label">Select 2nd Witness</label>
+                                <select class="form-select" ng-options=" x.witnessname as x.witnessname for x in witnesslist" ng-model="data.switness" ng-change="switnessselect(data.fwitness,data.switness)">
+                                    <option selected disabled value="">Select Witness</option>
+                                </select>
                             </div>
                         </div>
+                        
                     </div>
+
                     <!-- Submit Button -->
                     <div class="col-md-4 d-flex align-items-center justify-content-center mb-3">
                         <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
@@ -562,10 +552,12 @@
         $scope.loadCustomers = function (sid, hid) {
 
              if(id){
+                 hideLoader();
                  $scope.hDiv = true;
                  $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
+                    $scope.witnesslist = JSON.parse(docs.witnessJson);
                 $http.get('/LegalHeir/GetLegalHeir/' + docs.id).then(function (response) {
                         $scope.heirlist = response.data;
                     $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
@@ -732,6 +724,55 @@
             //console.log(dataString);
             }
          }
+
+         
+          $scope.fwitnessselect = function (fid,sid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+             
+              var result =  (fid == sid)
+               if(result)
+             {  
+                $scope.data.fwitness = undefined;
+                    Swal.fire({
+        title: 'Error!',
+        text: 'Same person can not be selected for multiple Witnesses.',
+        icon: 'error',
+        confirmButtonText: 'Try Again'
+    });
+                $scope.data.witness1name = '';
+                $scope.data.witness1address = '';
+               }
+               else{
+                   var witness1 = $scope.witnesslist.find(y => y.witnessname == fid);
+                   $scope.data.witness1name = witness1.witnessname;
+                   $scope.data.witness1address = witness1.witnessaddress;
+               }
+            }
+
+             $scope.switnessselect = function (fid,sid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+
+              var result =  (fid == sid)
+               if(result)
+             {
+                $scope.data.switness = undefined ;
+                    Swal.fire({
+        title: 'Error!',
+        text: 'Same person can not be selected for multiple Witnesses.',
+        icon: 'error',
+        confirmButtonText: 'Try Again'
+    });
+                $scope.data.witness2name = '';
+                $scope.data.witness2address = '';
+               }
+               else{
+                   var witness2 = $scope.witnesslist.find(y => y.witnessname == sid);
+                   $scope.data.witness2name = witness2.witnessname;
+                   $scope.data.witness2address = witness2.witnessaddress;
+               }
+            }
+            
+            
 
     $scope.navtogenerateform = function () {
         window.open('/Form/GenerateForm/'+id, '_self');

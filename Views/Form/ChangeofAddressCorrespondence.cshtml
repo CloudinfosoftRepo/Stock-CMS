@@ -293,8 +293,8 @@
     <p style="padding-left: 41pt; text-indent: 0pt; text-align: left">
       Holder(s) Signature(s)
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <h3 style="padding-left: 42pt; text-indent: 0pt; text-align: left; display:flex;justify-content:space-evenly">
+    <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
+    <h3 style="padding-left: 42pt; text-indent: 0pt; text-align: left; display:flex;justify-content:space-between">
             @* JYOTSNABEN G PATEL GHANSHYAMBHAI G PATEL *@
             <span>{{data.firstHolder}}</span>
             <span>{{data.secondHolder}}</span>
@@ -319,6 +319,7 @@
         $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -337,8 +338,8 @@
                    age : Age,
                    folioNo : result.folioNo,
                    newaddress : '',
-                   address : docs.addressAsPerAadhar,
-                   mobile: docs.mobile,
+                       mobile: result.firstHolderData.mobile,
+    address : result.firstHolderData.addressAsPerAadhar,
                    officename : result.company.rtaName,
                    officeaddress: result.company.rtaAddress,
                    unit: result.companyName,

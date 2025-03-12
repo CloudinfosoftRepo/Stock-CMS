@@ -245,7 +245,7 @@
     </div>
     <div id="printForm">
     <h1 style="padding-top: 3pt; text-indent: 0pt; text-align: center">
-            {{data.customerName}}
+            {{data.firstHolder}},{{data.secondHolder}},{{data.thirdHolder}}
     </h1>
     <h2 style="padding:0 150pt 0 150pt; text-indent: 0pt; text-align: center">
       @* 00, GEETA NAGAR SOCIETY, NEAR BHAGAT VADI, BODELI, DHOKALIYA, VADODARA, GUJARAT391135 *@ {{data.address}}
@@ -491,8 +491,8 @@
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <h2 style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-            @* MANAVKUMAR PARIKH *@ {{data.customerName}}
+    <h2 style="padding-left: 5pt; text-indent: 0pt; text-align: left; display: flex; justify-content: space-between;">
+            @* MANAVKUMAR PARIKH *@<b>{{data.firstHolder}}</b><b>{{data.secondHolder}}</b><b>{{data.thirdHolder}}</b>
     </h2>
     </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -512,6 +512,7 @@
         $scope.loadCustomers = function (sid,hid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -529,13 +530,16 @@
                    today: new Date(),
                    folioNo : result.folioNo,
                    qty : result.qty,
-                   address : heirs.addressAsPerAadhar,
-                   mobile: heirs.mobile,
+                       mobile: result.firstHolderData.mobile,
+    address : result.firstHolderData.addressAsPerAadhar,
                        officename : result.company.rtaName,
     officeaddress: result.company.rtaAddress,
     unit: result.companyName,
                    deceasedname:docs.nameAsPerDeathCerti,
                    dateofdemise: new Date(docs.dateOfDeath),
+                       firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
                 };
 
                 hideLoader();
@@ -571,6 +575,9 @@
     unit: obj.unit,
                    deceasedname: obj.deceasedname,
                    dateofdemise: new Date(obj.dateofdemise),
+                      firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                 };
                                 id = result.stockId;
 

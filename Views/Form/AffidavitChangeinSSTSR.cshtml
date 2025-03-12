@@ -2365,6 +2365,7 @@ border-bottom-style: solid;
         $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
                  var currentDate = new Date();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
@@ -2489,7 +2490,15 @@ border-bottom-style: solid;
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
-
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
                  var arr = angular.copy($scope.doc);
                  $scope.data.holders = JSON.stringify(arr,null,2);
 

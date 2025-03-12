@@ -200,31 +200,6 @@
                                 </select>
                             </div>
                         </div>
-
-                        <!-- Certificate Nos Input -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control search-orders" placeholder="Certificate Nos">
-                            </div>
-                        </div>
-
-                        <!-- Distinctive Nos Start Input -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control search-orders" placeholder="Distinctive Nos Start">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Distinctive Nos End Input -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control search-orders" placeholder="Distinctive Nos End">
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Submit Button -->
@@ -247,8 +222,8 @@
         text-align: left;
       "
     >
-            {{data.customerName}}
-        </h1>
+            {{data.firstHolder}},{{data.secondHolder}},{{data.thirdHolder}}
+        </h1>      
     <h2 style="margin-left: 12px; padding-right: 440px; text-indent: 0pt; text-align: left">
 {{data.address}}    </h2>
     <p
@@ -432,7 +407,7 @@
           </p>
         </td>
       </tr>
-      <tr style="height: 20pt">
+            <tr style="height: 20pt" ng-repeat="tmp in shares">
         <td
           style="
             width: 62pt;
@@ -450,7 +425,7 @@
             class="s9"
             style="padding-left: 1pt; text-indent: 0pt; text-align: center"
           >
-                        {{data.folioNo}}
+                        {{tmp.folioNo}}
           </p>
         </td>
         <td
@@ -486,7 +461,7 @@
             border-right-width: 1pt;
           "
         >
-                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{data.certificatenos}}<br /></p>
+                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{tmp.certificateNo}}<br /></p>
         </td>
         <td
           style="
@@ -501,7 +476,7 @@
             border-right-width: 1pt;
           "
         >
-                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{data.distinctiveNosStart}} - {{data.distinctiveNosEnd}}<br /></p>
+                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}<br /></p>
         </td>
         <td
           style="
@@ -516,469 +491,7 @@
             border-right-width: 1pt;
           "
         >
-                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{data.qty}}<br /></p>
-        </td>
-      </tr>
-      <tr style="height: 21pt">
-        <td
-          style="
-            width: 62pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 163pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 78pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 142pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 53pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-      </tr>
-      <tr style="height: 20pt">
-        <td
-          style="
-            width: 62pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 163pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 78pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 142pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 53pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-      </tr>
-      <tr style="height: 20pt">
-        <td
-          style="
-            width: 62pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 163pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 78pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 142pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 53pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-      </tr>
-      <tr style="height: 21pt">
-        <td
-          style="
-            width: 62pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 163pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 78pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 142pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 53pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-      </tr>
-      <tr style="height: 20pt">
-        <td
-          style="
-            width: 62pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 163pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 78pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 142pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 53pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-      </tr>
-      <tr style="height: 21pt">
-        <td
-          style="
-            width: 62pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 163pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 78pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 142pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
-        </td>
-        <td
-          style="
-            width: 53pt;
-            border-top-style: solid;
-            border-top-width: 1pt;
-            border-left-style: solid;
-            border-left-width: 1pt;
-            border-bottom-style: solid;
-            border-bottom-width: 1pt;
-            border-right-style: solid;
-            border-right-width: 1pt;
-          "
-        >
-          <p style="text-indent: 0pt; text-align: left"><br /></p>
+                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{tmp.actualQty}}<br /></p>
         </td>
       </tr>
     </table>
@@ -1005,13 +518,15 @@
   </p>
     <h3
       style="
-        padding-top: 7pt;
+        padding-top: 30pt;
         padding-left: 10pt;
         text-indent: 0pt;
         text-align: left;
+display: flex;
+justify-content: space-between;
       "
     >
-            {{data.customerName}}
+            <b>{{data.firstHolder}}</b><b>{{data.secondHolder}}</b><b>{{data.thirdHolder}}</b>
     </h3>
      </div>
     <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
@@ -1031,6 +546,7 @@
         // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
@@ -1040,20 +556,21 @@
                 $scope.data = {
                     docid: doc.id,
                     customerName : doc.name,
-                    mobile: doc.mobile,
-                    address : doc.addressAsPerAadhar,
+                    mobile: result.firstHolderData.mobile,
+                    address : result.firstHolderData.addressAsPerAadhar,
                     today: new Date(),
-                    certificatenos:'',
-                    distinctiveNosStart: '',
-                    distinctiveNosEnd:'',
+                    jsondata: result.stockJson,
                     qty: result.qty,
                     folioNo : result.folioNo,
-                        officename : result.company.rtaName,
-    officeaddress: result.company.rtaAddress,
-    unit: result.companyName,
+                    officename : result.company.rtaName,
+                    officeaddress: result.company.rtaAddress,
+                    unit: result.companyName,
+                    firstHolder :result.firstHolderName,
+                    secondHolder:result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
 
                 };
-
+                 $scope.shares = JSON.parse($scope.data.jsondata);
                 hideLoader();
                 }, function (error) {
                     console.error('Error loading Docs:', error);
@@ -1078,15 +595,16 @@
                     today: new Date(obj.today),
                     folioNo: obj.folioNo,
                     qty: obj.qty,
-                    certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    jsondata: obj.jsondata,
                         officename: obj.officename,
     officeaddress: obj.officeaddress,
     unit: obj.unit,
+       firstHolder:obj.firstHolder,
+    secondHolder:obj.secondHolder,
+    thirdHolder:obj.thirdHolder,
                 };
                                 id = result.stockId;
-
+                                 $scope.shares = JSON.parse($scope.data.jsondata);
                 checkData();
                 hideLoader();
             }, function (error) {
@@ -1130,6 +648,15 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Req Letter Exchange',

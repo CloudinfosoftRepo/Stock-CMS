@@ -19,7 +19,14 @@ namespace Stock_CMS.Repository
         public async Task<IEnumerable<DocDto>> GetDocById(long Id)
         {
             return await GetMany(x => x.Id == Id);
-        }  
+        }
+
+        public async Task<DocDto> GetOneDocById(long Id)
+        {
+            return await GetOne(x => x.Id == Id);
+        }
+
+
         public async Task<IEnumerable<DocDto>> GetdocByClientId(long Id)
         {
             return await GetMany(x => x.CustomerId == Id && x.IsActive == true);

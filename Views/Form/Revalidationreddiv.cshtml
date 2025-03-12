@@ -501,7 +501,7 @@
               text-align: left;
             "
           >
-                        @* VADODARA, 390007 *@ {{data.bankcity}}
+                        @* VADODARA, 390007 *@ {{data.bankcity}}, {{data.bankpincode}}
           </p>
         </td>
       </tr>
@@ -687,6 +687,7 @@
         $scope.loadCustomers = function (sid) {
 
              if(id){
+                 hideLoader();
              var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
@@ -711,7 +712,8 @@
                    branch: bank.branch,
                    accountno: bank.accountNo,
                    accounttype: bank.accountType,
-                   bankcity:bank.postalAddress,
+                   bankcity:bank.bankCity,
+                   bankpincode: bank.pinCode,
                    micrcode: bank.micrcode,
                    ifsccode: bank.ifsccode,
                 };
@@ -753,6 +755,7 @@
                    accountno: obj.accountno,
                    accounttype: obj.accounttype,
                    bankcity: obj.bankcity,
+                   bankpincode: obj.bankpincode,
                    micrcode: obj.micrcode,
                    ifsccode: obj.ifsccode,
                 };

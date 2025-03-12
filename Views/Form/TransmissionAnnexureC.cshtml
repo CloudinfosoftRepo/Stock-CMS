@@ -368,6 +368,10 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
+        .hr-border {
+            border-top: 2px solid black;
+        }
+
             .btn-primary:hover {
                 background-color: #0056b3;
                 transform: scale(1.05);
@@ -375,6 +379,7 @@
     </style>
   </head>
  <body style="padding: 5%;" ng-controller="FormController">
+
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
         <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
@@ -383,7 +388,7 @@
 
         <!-- Centered Heading -->
         <div class="col-md-10 text-center">
-            <h3>IEPF info</h3>
+            <h3>Transmission Annexure C</h3>
         </div>
     </div>
     <form name="gForm" ng-submit="genrateForm()">
@@ -391,28 +396,195 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                         <h4 class="card-title text-center mb-4" style="color:#003980;">Generate Form</h4>
-
                         <div class="row">
+                            <div class="col-md-2 mb-3">
+                                <div class="form-group">
+                                <input type="radio" ng-model="data.relation" value="Nominee" ng-change="loadNominee('Nominee',seletedId, heirId)" />Nominee
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <div class="form-group">
+                                <input type="radio" ng-model="data.relation" value="Legal Heir" ng-change="loadNominee('Legal Heir',seletedId, heirId)">Legal Heir
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                <input type="radio" ng-model="data.relation" value="Successor to the Estate of the deceased" ng-change="loadNominee('Legal Heir',seletedId, heirId)">Successor to the Estate of the deceased
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                <input type="radio" ng-model="data.relation" value="Administrator of the Estate of the deceased" ng-change="loadNominee('Legal Heir',seletedId, heirId)">Administrator of the Estate of the deceased
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
                             <!-- Select Customer Dropdown -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="seletedId" class="form-label">Select Customer</label>
-                                    <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadLegalheir(seletedId, heirId)">
                                         <option selected disabled value="">Select customer</option>
                                     </select>
                                 </div>
                             </div>
 
                             <!-- Select Heir Dropdown -->
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label for="heirId" class="form-label">Select Heir</label>
-                                    <select class="form-select" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
-                                        <option selected disabled value="">Select Heir</option>
-                                    </select>
-                                </div>
+                        <div class="col-md-4 mb-3" ng-show="data.relation != 'Nominee'">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadLegalheir(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
                             </div>
+                        </div>
+                    </div>
 
+                    <div class="row" ng-show="data.relation == 'Nominee'">
+                        <h6>
+                            Nominee Details
+                        </h6>
+                        <hr class="hr-border" />
+                        <!-- Nominee's Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="customerName">Nominee's Name</label>
+                                <input type="text" id="customerName" ng-model="data.customerName" class="form-control" placeholder="Nominee's Name" required />
+                            </div>
+                        </div>
+
+                        <!-- Nominee's Pan -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="pan">Nominee's Pan</label>
+                                <input type="text" id="pan" ng-model="data.pan" class="form-control" placeholder="Nominee's Pan" required />
+                            </div>
+                        </div>
+
+                        <!-- Nominee's Mobile -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="mobile">Nominee's Mobile</label>
+                                <input type="text" id="mobile" ng-model="data.mobile" class="form-control" placeholder="Nominee's Mobile" required />
+                            </div>
+                        </div>
+
+                        <!-- Nominee's Email -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="email">Nominee's Email</label>
+                                <input type="email" id="email" ng-model="data.email" class="form-control" placeholder="Nominee's Email" required />
+                            </div>
+                        </div>
+
+                        <!-- Nominee's Address -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="address">Nominee's Address</label>
+                                <textarea id="address" ng-model="data.address" class="form-control" placeholder="Nominee's Address" required></textarea>
+                            </div>
+                        </div>
+
+                         <!-- State -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="state">Nominee's State</label>
+                                <input type="text" id="state" ng-model="data.state" class="form-control" placeholder="Nominee's State" required />
+                            </div>
+                        </div>
+
+                         <!-- City -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="city">Nominee's City</label>
+                                <input type="text" id="city" ng-model="data.city" class="form-control" placeholder="Nominee's City" required />
+                            </div>
+                        </div>
+
+                        <!-- Pincode -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="pinCode">Nominee's Pincode</label>
+                                <input type="text" id="pinCode" ng-model="data.pinCode" class="form-control" placeholder="Nominee's Pincode" required />
+                            </div>
+                        </div>
+                        <br />
+                        </div>
+                    <div class="row" ng-show="data.relation == 'Nominee'">
+                        <h6>
+                            Bank Details
+                        </h6>
+                        <hr class="hr-border" />
+                        <!-- Bank Name -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="bankName">Nominee's Bank Name</label>
+                                <input type="text" id="bankName" ng-model="data.bankName" class="form-control" placeholder="Nominee's Bank Name" required />
+                            </div>
+                        </div>
+
+                         <!-- Account no -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="accountNo">Nominee's Account No</label>
+                                <input type="text" id="accountNo" ng-model="data.accountNo" class="form-control" placeholder="Nominee's Account No" required />
+                            </div>
+                        </div>
+
+                        <!-- IFSC Code -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="ifsccode">Nominee's IFSC Code</label>
+                                <input type="text" id="ifsccode" ng-model="data.ifsccode" class="form-control" placeholder="Nominee's IFSC Code" required />
+                            </div>
+                        </div>
+
+                        <!-- Account Type -->
+                        <div class="">
+                            <div class="form-group">
+                                <label for="ifsccode">Nominee's Account Type</label>
+                                <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="Savings" ng-change="loadCustomers()">SB 
+                                <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="Current" ng-change="loadCustomers()">Current
+                                <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="NRO" ng-change="loadCustomers()">NRO 
+                                <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="NRE" ng-change="loadCustomers()">NRE 
+                                <input ng-disabled="isPrint" type="radio" ng-model="data.accountType" value="FCNR" ng-change="loadCustomers()"> FCNR
+                            </div>
+                        </div>
+
+                        <!-- MICR Code -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="micrcode">Nominee's MICR Code</label>
+                                <input type="text" id="micrcode" ng-model="data.micrcode" class="form-control" placeholder="Nominee's MICR Code" required />
+                            </div>
+                        </div>
+
+                        <!-- Branch -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="branch">Nominee's Branch</label>
+                                <input type="text" id="branch" ng-model="data.branch" class="form-control" placeholder="Nominee's Branch" required />
+                            </div>
+                        </div>
+                        
+                        <!-- Bank City -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="bankcity">Nominee's Bank City</label>
+                                <input type="text" id="bankcity" ng-model="data.bankcity" class="form-control" placeholder="Nominee's Bank City" required />
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Pincode -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="bankPincode">Nominee's Bank Pincode</label>
+                                <input type="text" id="bankPincode" ng-model="data.bankPincode" class="form-control" placeholder="Nominee's BankPincode" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                             <!-- Country of Birth -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
@@ -420,9 +592,7 @@
                                     <input type="text" ng-model="data.countryofbirth" class="form-control" placeholder="Country of Birth">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
+                        
                             <!-- Place of Birth -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
@@ -438,7 +608,9 @@
                                     <input type="text" ng-model="data.nationality" class="form-control" placeholder="Nationality">
                                 </div>
                             </div>
+                    </div>
 
+                    <div class="row">
                             <!-- Tax Taking Country -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
@@ -446,9 +618,7 @@
                                     <input type="text" ng-model="data.taxcountry" class="form-control" placeholder="Tax Taking Country">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
+                       
                             <!-- Tax-Payer Identification Number -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
@@ -464,7 +634,9 @@
                                     <input type="text" ng-model="data.identitytype" class="form-control" placeholder="Identification Type">
                                 </div>
                             </div>
+                    </div>
 
+                    <div class="row">
                             <!-- Place of Form Submission -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
@@ -1734,7 +1906,7 @@
               text-align: left;
             "
           >
-            Address Line 2 <span class="s13">SANGMA ROAD, PADRA,</span>
+            Address Line 2 <span class="s13">@* SANGMA ROAD, PADRA, *@</span>
           </p>
         </td>
       </tr>
@@ -1761,9 +1933,9 @@
               text-align: left;
             "
           >
-            City: <span class="s13">VADODARA </span>State GUJARAT
-          </p>
-          <p
+                            City: <span class="s13">{{data.city }} </span>State {{data.state}}
+          </p>                                                                         
+          <p                                                                           
             class="s2"
             style="
               padding-right: 33pt;
@@ -1772,8 +1944,9 @@
               text-align: right;
             "
           >
-            PIN <span style="color: #d9d9d9">|</span
-            ><span class="s13">391440</span>
+            PIN <span style="color: #d9d9d9">|</span><span class="s13">
+                                {{data.pinCode}}
+                            </span>
           </p>
         </td>
       </tr>
@@ -2016,7 +2189,7 @@
               text-align: left;
             "
           >
-            City VADODARA
+                            City {{data.bankcity}}
           </p>
         </td>
         <td
@@ -2051,7 +2224,7 @@
               text-align: left;
             "
           >
-            PIN 390018
+                            PIN {{data.bankPincode}}
           </p>
         </td>
       </tr>
@@ -2061,7 +2234,7 @@
       style="padding-left: 12pt; text-indent: 0pt; text-align: left"
     >
                 Please attach &amp;<span class="s22">tick</span><span class="s23">✓</span><span class="s24"><input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.bankattachfile" value="Cheque" ng-change="loadCustomers()">  <span ng-if="isPrint" class="s18" ng-bind="data.bankattachfile === 'Cheque' ? '☑ ' : '☐ ' "></span> </span> Cancelled cheque with claimant’s name printed
-                <b> OR</b><span class="s24"><input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.bankattachfile" value="BankStatement" ng-change="loadCustomers()">  <span ng-if="isPrint" class="s18" ng-bind="data.bankattachfile === 'BankStatement' ? '☑ ' : '☐ ' "></span> </span><span class="s26"> </span> Claimant’s
+                <b> OR </b><span class="s24"><input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.bankattachfile" value="BankStatement" ng-change="loadCustomers()">  <span ng-if="isPrint" class="s18" ng-bind="data.bankattachfile === 'BankStatement' ? '☑ ' : '☐ ' "></span> </span><span class="s26"> </span> Claimant’s
       Bank Statement/Passbook (duly attested by the Bank Manager)
     </p>
     <h1
@@ -2947,16 +3120,32 @@
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
-    $scope.data = undefined;
+        // $scope.data.relation = "Legal Heir";
+    $scope.data = {
+    relation: "Legal Heir",
+    politicalrelation: "Neither (Not applicable)"};
               $scope.hDiv = true;
               var params = new URLSearchParams(window.location.search);
               var id = params.get('id');
               var id2 = params.get('id2');
+              $scope.doclist = {
+                  option1: false,
+                  option2: false,
+                  option3: false,
+                  option4: false,
+                  option5: false,
+                  option6: false,
+                  option7: false,
+                  option8: false,
+                  option9: false,
+                  option10: false,
+                  option11: false,
+                  option12: false,
+              };
               $scope.isPrint = id2 ? true : false
-
         var isProcessing = false;
 
-        // showLoader();
+        showLoader();
 
         $scope.radiocheck = function(val){
             if(val == 'option4'){
@@ -2979,69 +3168,118 @@
             $scope.loadCustomers();
         }
 
+        $scope.loadNominee = function(name,sid,hid) {
+            if(name == 'Nominee'){
+                $scope.clearFields();
+                $scope.loadCustomers(sid,hid);
+            }
+            if(name == 'Legal Heir'){
+                $scope.clearFields();
+                $scope.loadCustomers(sid,hid);
+            }
+        }
+
+        $scope.clearFields = function() {
+                $scope.data.customerName= null;
+                $scope.data.pan= null;
+                $scope.data.mobile= null;
+                $scope.data.email= null;
+                $scope.data.address= null;
+                $scope.data.state= null;
+                $scope.data.city= null;
+                $scope.data.pinCode= null;
+                $scope.data.bankName= null;
+                $scope.data.accountNo= null;
+                $scope.data.ifsccode= null;
+                $scope.data.accountType= null;
+                $scope.data.micrcode= null;
+                $scope.data.branch= null;
+                $scope.data.bankcity= null;
+                $scope.data.bankPincode= null;
+                $scope.heirId = null;
+                 document.getElementById('heirId').value = '';
+        }
+
+        $scope.loadLegalheir = function(id,hid){
+             $http.get('/LegalHeir/GetLegalHeir/' + id).then(function (response) {
+                $scope.heir =response.data;
+                $scope.heirs = response.data.find(x => x.id === hid??0);
+                $http.get('/doc/GetLegalHeirBank/'+ $scope.heirs.id).then(function (response) {
+                    $scope.bank = response.data[0];
+                     $scope.loadCustomers(id);
+                }, function (error) {
+                console.error('Error loading Bank Deatails:', error);
+                hideLoader();
+                });
+            }, function (error) {
+            console.error('Error loading legal Heir:', error);
+            hideLoader();
+            });
+           if($scope.data.relation == 'Nominee'){
+               $scope.loadCustomers(id);
+           }
+        }
+
                  // Load Customers
-         $scope.loadCustomers = function (sid,hid) {
+         $scope.loadCustomers = function (sid) {
              if(id){
+                 if($scope.data.taxcountry || $scope.data.taxidnumber ||  $scope.data.identitytype){
+                     $scope.data.taxresident = 'Yes ';
+                 }
+                 hideLoader();
                 $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                     var result = response.data;
                     $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                         $scope.docs = response.data;
-                        var doc = $scope.docs.find(x => x.id === sid);
-                        $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
-                            $scope.heir =response.data;
-                            var heirs = response.data.find(x => x.id === hid);
-                            $http.get('/doc/GetLegalHeirBank/'+ heirs.id).then(function (response) {
-                                var bank = response.data[0];
-                               
-                                $scope.data = {
-                                    docid: heirs.id,
-                                    customerName : heirs.nameAsPerAadhar,
-                                    rtaName: result.company.rtaName,
-                                    rtaAddress: result.company.rtaAddress,
-                                    companyName: result.companyName,
-                                    pan: heirs.pan,
-                                    kyc: $scope.data && $scope.data.kyc || 'KYC',
-                                    resident: $scope.data && $scope.data.resident || '',
-                                    relation: $scope.data && $scope.data.relation || '',
-                                    nameofdeacesed: doc.name,
-                                    dateofdeath: doc.dateOfDeath,
-                                    folioNo: result.folioNo,
-                                    qty: result.qty,
-                                    rate: result.rate,
-                                    mobile: heirs.mobile,
-                                    email: heirs.email,
-                                    address: heirs.addressAsPerAadhar,
-                                    bankName: bank.bankName,
-                                    accountNo: bank.accountNo,
-                                    ifsccode: bank.ifsccode,
-                                    accountType: bank.accountType,
-                                    micrcode: bank.micrcode,
-                                    branch: bank.branch,
-                                    bankattachfile: $scope.data && $scope.data.bankattachfile || '',
-                                    occupation: $scope.data && $scope.data.occupation || '',
-                                    politicalrelation: $scope.data && $scope.data.politicalrelation || '',
-                                    income: $scope.data && $scope.data.income || '',
-                                    countryofbirth: $scope.data && $scope.data.countryofbirth || 'INDIA',
-                                    placeofbirth: $scope.data && $scope.data.placeofbirth || '',
-                                    nationality: $scope.data && $scope.data.nationality || 'INDIAN',
-                                    taxresident: $scope.data && $scope.data.taxresident || '',
-                                    taxcountry: $scope.data && $scope.data.taxcountry || '',
-                                    taxidnumber: $scope.data && $scope.data.taxidnumber || '',
-                                    identitytype: $scope.data && $scope.data.identitytype || '',
-                                    place: $scope.data && $scope.data.place || 'Vadodara',
-                                    today: new Date(),
-                                };
+                        var doc = $scope.docs.find(x => x.id === sid??0);
 
-                                hideLoader();
-                            }, function (error) {
-                            console.error('Error loading Bank Deatails:', error);
-                            hideLoader();
-                            });
-                        }, function (error) {
-                        console.error('Error loading legal Heir:', error);
+                        $scope.data = {
+                            docid: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.id : doc.id,
+                            customerName : $scope.data.relation == 'Legal Heir' ? $scope.heirs.nameAsPerAadhar : '',
+                            rtaName: result.company.rtaName,
+                            rtaAddress: result.company.rtaAddress,
+                            companyName: result.companyName,
+                            pan: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.pan : '',
+                            kyc: $scope.data && $scope.data.kyc || 'KYC',
+                            resident: $scope.data && $scope.data.resident || '',
+                            relation: $scope.data && $scope.data.relation || '',
+                            nameofdeacesed: doc.name,
+                            dateofdeath: doc.dateOfDeath,
+                            folioNo: result.folioNo,
+                            qty: result.qty,
+                            rate: result.rate,
+                            mobile: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.mobile : '',
+                            email: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.email : '',
+                            address: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.addressAsPerAadhar : '',
+                            state: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.state : '',
+                            city: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.city : '',
+                            pinCode: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.pinCode : '',
+                            bankName: $scope.data.relation == 'Legal Heir' ?  $scope.bank.bankName : '',
+                            accountNo: $scope.data.relation == 'Legal Heir' ?  $scope.bank.accountNo : '',
+                            ifsccode: $scope.data.relation == 'Legal Heir' ?  $scope.bank.ifsccode : '',
+                            accountType: $scope.data.relation == 'Legal Heir' ?  $scope.bank.accountType : '',
+                            micrcode: $scope.data.relation == 'Legal Heir' ?  $scope.bank.micrcode : '',
+                            branch: $scope.data.relation == 'Legal Heir' ?  $scope.bank.branch : '',
+                            bankcity: $scope.data.relation == 'Legal Heir' ?  $scope.bank.bankCity : '',
+                            bankPincode: $scope.data.relation == 'Legal Heir' ?  $scope.bank.pinCode : '',
+                            bankattachfile: $scope.data && $scope.data.bankattachfile || '',
+                            occupation: $scope.data && $scope.data.occupation || '',
+                            politicalrelation: $scope.data && $scope.data.politicalrelation || 'Neither (Not applicable)',
+                            income: $scope.data && $scope.data.income || '',
+                            countryofbirth: $scope.data && $scope.data.countryofbirth || 'INDIA',
+                            placeofbirth: $scope.data && $scope.data.placeofbirth || '',
+                            nationality: $scope.data && $scope.data.nationality || 'INDIAN',
+                            taxresident: $scope.data && $scope.data.taxresident || '',
+                            taxcountry: $scope.data && $scope.data.taxcountry || '',
+                            taxidnumber: $scope.data && $scope.data.taxidnumber || '',
+                            identitytype: $scope.data && $scope.data.identitytype || '',
+                            place: $scope.data && $scope.data.place || 'Vadodara',
+                            today: new Date(),
+                        };
+
                         hideLoader();
-                        });
+                           
                     }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -3075,12 +3313,17 @@
                     mobile: obj.mobile,
                     email: obj.email,
                     address: obj.address,
+                    state: obj.state,
+                    city: obj.city,
+                    pinCode: obj.pinCode,
                     bankName: obj.bankName,
                     accountNo: obj.accountNo,
                     ifsccode: obj.ifsccode,
                     accountType: obj.accountType,
                     micrcode: obj.micrcode,
                     branch: obj.branch,
+                    bankcity: obj.bankcity,
+                    bankPincode: obj.bankPincode,
                     bankattachfile: obj.bankattachfile,
                     occupation: obj.occupation,
                     politicalrelation: obj.politicalrelation,

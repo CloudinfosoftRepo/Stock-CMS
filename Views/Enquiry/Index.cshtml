@@ -40,19 +40,20 @@
             <div class="container-xl">
                 <div class="row g-3 mb-4 align-items-center justify-content-between">
                     <!-- Left Side: Back Button and Title -->
-                    <div class="d-flex align-items-center col-md-6">
+                    <div class="d-flex align-items-center col-md-4">
                         <a asp-controller="Master" asp-action="Client" class="btn btn-custom me-3">
                             <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
                         </a>
                         <h1 class="app-page-title mb-0">Stock Management</h1>
                     </div>
 
-                    <div class="col-md-6 d-flex justify-content-end align-items-center">
+                    <div class="col-md-8 d-flex justify-content-end align-items-center">
                         <div class="d-flex gap-2">
                             <form class="table-search-form row gx-1 align-items-center mb-0">
                                 <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                             </form>
                             <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openStockModal()">Add New</button>
+                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openimportModal()">Import</button>
                             <button class="btn btn-custom"
                                     style="background-color:#003980;color:white"
                                     excel-export
@@ -108,11 +109,11 @@
                                         <td class="cell">{{ stock.secondHolderName }}</td>
                                         <td class="cell">{{ stock.thirdHolderName }}</td>
                                         <td class="cell">{{ stock.folioNo }}</td>
-                                        <td class="cell">{{ stock.clamStatus }}</td>
+                                        <td class="cell">{{ stock.claimStatus  }}</td>
                                     <td class="cell">{{ stock.actualQty }}</td>
                                     <td class="cell">{{ stock.qty }}</td>
                                     <td class="cell">{{ stock.rate }}</td>
-                                        <td class="cell">{{ stock.value }}</td>
+                                    <td class="cell">{{ stock.qty * stock.rate }}</td>
                                         <td class="cell">{{ stock.brokerage }}</td>
                                         <td class="cell">{{ stock.ptbf }}</td>
                                         <td class="cell">{{ stock.remarks }}</td>
@@ -127,7 +128,7 @@
                                                 <i class="bi bi-pencil"></i>
                                             </span>
                                       
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo)" title="add stock aquisition data">
+                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo)" title="Add stock aquisition data">
                                             <i class="bi bi-file-earmark-bar-graph"></i>
                                         </span>
                                    
@@ -149,6 +150,62 @@
                
             </div>
         </div>
+
+    <!-- upload Modal -->
+
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <div class="modal-dialog modal-xl" role="document">
+
+            <div class="modal-content">
+
+                <form ng-submit="uploadDoc()">
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">Upload Stocks</h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                    </div>
+
+                    <div class="modal-body">
+
+
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    <label for="docFile">Doc File</label>
+
+                                    <input type="file" id="docFile" class="form-control" file-model="docFile" ng-model="docFile" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="text-center m-2">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                        <button type="submit" class="btn" style="background-color:#003980;color:white">Upload</button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- Form Modal -->
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -207,13 +264,6 @@
                                 </div>
                             </div>
 
-                            <!-- Year of Share Aquisation -->
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label for="year">Year of Share Aquisation</label>
-                                    <input type="text" ng-model="jsonData.year" class="form-control" placeholder="Year of Share Aquisation" required />
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Add Button -->
@@ -243,7 +293,6 @@
                                 <th class="cell">Certificate No</th>
                                 <th class="cell">Distinctive Nos From</th>
                                 <th class="cell">Distinctive Nos To</th>
-                                <th class="cell">Year</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -254,7 +303,6 @@
                                 <td class="cell">{{ f.certificateNo }}</td>
                                 <td class="cell">{{ f.distinctiveNosFrom }}</td>
                                 <td class="cell">{{ f.distinctiveNosTo }}</td>
-                                <td class="cell">{{ f.year }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -348,8 +396,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="clamStatus">Claim Status</label>
-                                    <input type="text" id="clamStatus" ng-model="currentStock.clamStatus" class="form-control" placeholder="Claim Status" />
+                                    <label for="claimStatus">Claim Status</label>
+                                    <input type="text" id="claimStatus" ng-model="currentStock.claimStatus" class="form-control" placeholder="Claim Status" />
                                 </div>
                             </div>
                         </div>
@@ -464,7 +512,13 @@
                if(result)
              {  
                 $scope.currentStock.firstHolderId = undefined;
-                alert("Not Allowed");
+                // alert("Not Allowed");
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Same person can not be selected for multiple Holders.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
 
              
                }
@@ -478,7 +532,13 @@
              
              {
                 $scope.currentStock.secondHolderId = undefined;
-                alert("Not Allowed");
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Same person can not be selected for multiple Holders.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+                // alert("Not Allowed");
 
              }
               
@@ -491,8 +551,13 @@
                if(result)
              {  
                 $scope.currentStock.thirdHolderId = undefined;
-                alert("Not Allowed");
-
+                // alert("Not Allowed");
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Same person can not be selected for multiple Holders.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
                }
             }
 
@@ -661,6 +726,72 @@
                 }
                     
             };
+
+              $scope.openimportModal = function () {
+
+                  $scope.docFile= undefined;
+
+                document.getElementById('docFile').value = '';
+
+                $('#uploadModal').modal('show');
+
+            };
+
+
+
+            $scope.uploadDoc = function(){
+
+                if(id){
+
+                    var formData = new FormData();
+
+                    formData.append('customerId', id);
+
+                     if ($scope.docFile) formData.append('docFile', $scope.docFile);
+
+
+
+                     var url ='/Enquiry/UploadDoc';
+
+
+
+                    $http.post(url, formData, {
+
+                        headers: { 'Content-Type': undefined }
+
+                    }).then(function (response) {
+
+                        Swal.fire({
+
+                            title: response.data.success ? 'Success' : 'Error',
+
+                            text: response.data.success ? response.data.message : (response.data.message || 'An error occurred'),
+
+                            icon: response.data.success ? 'success' : 'error',
+
+                            confirmButtonText: 'OK'
+
+                        });
+
+                    isProcessing = false;
+
+                    if(response.data.success)
+
+                    {
+
+                        $scope.loadStocks();
+
+                        $scope.docFile = '';
+
+                        $('#uploadModal').modal('hide');
+
+                    }
+
+                    });
+
+                }
+
+            }
 
                      $scope.manageTrackingDoc = function (id) {
             window.open('/Enquiry/Tracking/' + id, '_self');

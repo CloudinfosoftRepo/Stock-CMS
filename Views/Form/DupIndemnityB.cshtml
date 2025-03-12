@@ -288,7 +288,7 @@
     </style>
 </head>
 
-<body style="padding-left: 15%;" ng-controller="FormController">
+<body style="padding-left: 1%;" ng-controller="FormController">
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
         <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
@@ -317,32 +317,6 @@
                             </div>
                         </div>
 
-                        <!-- Certificate Nos -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="certificatenos" class="form-label">Certificate Nos</label>
-                                <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
-                            </div>
-                        </div>
-
-                        <!-- Distinctive Nos Start -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
-                                <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <!-- Distinctive Nos End -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
-                                <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
-                            </div>
-                        </div>
-
                         <!-- Year of Share Acquisition -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -358,30 +332,28 @@
                                 <input type="text" ng-model="data.place" class="form-control" placeholder="Place">
                             </div>
                         </div>
+
                     </div>
 
                     <div class="row">
-                        <!-- 1st Witness Name -->
+                        <!-- Select Witness Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="witnessname" class="form-label">Name of 1st Witness</label>
-                                <input type="text" ng-model="data.witnessname" class="form-control" placeholder="Name of 1st Witness">
+                                <label for="fwitness" class="form-label">Select 1st Witness</label>
+                                <select class="form-select" ng-options=" x.witnessname as x.witnessname for x in witnesslist" ng-model="data.fwitness" ng-change="fwitnessselect(data.fwitness,data.switness)">
+                                    <option selected disabled value="">Select Witness</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- 2nd Witness Name -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="witnessname2" class="form-label">Name of 2nd Witness</label>
-                                <input type="text" ng-model="data.witnessname2" class="form-control" placeholder="Name of 2nd Witness">
-                            </div>
-                        </div>
 
-                        <!-- Pin Code -->
+                        <!-- Select Witness Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="pincode" class="form-label">Pin Code</label>
-                                <input type="text" ng-model="data.pincode" class="form-control" placeholder="Pin Code">
+                                <label for="switness" class="form-label">Select 2nd Witness</label>
+                                <select class="form-select" ng-options=" x.witnessname as x.witnessname for x in witnesslist" ng-model="data.switness" ng-change="switnessselect(data.fwitness,data.switness)">
+                                    <option selected disabled value="">Select Witness</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -494,12 +466,12 @@
                             <p class="s1">securities held</p>
                         </td>
                     </tr>
-                    <tr>
+                    <tr ng-repeat="tmp in shares">
                         <td class="s9">{{data.officename}}</td>
-                        <td>{{data.certificatenos}}</td>
-                        <td>{{data.distinctiveNosStart}} - {{data.distinctiveNosEnd}}</td>
-                        <td>{{data.folioNo}}</td>
-                        <td>{{data.qty}} shares, Face Value: ₹{{data.rate}} each</td>
+                        <td>{{tmp.certificateNo}}</td>
+                        <td>{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</td>
+                        <td>{{tmp.folioNo}}</td>
+                        <td>{{tmp.actualQty}} shares, Face Value: ₹{{data.rate}} each</td>
                     </tr>
                 </table>
 
@@ -525,10 +497,10 @@
                     That the above securities were acquired by me/us for valuable
                     consideration out of my/our own investment/funds against allotment in
                     Public Issue/allotment in Right Issue or acquired from the
-                    market/through inheritance in the year(s)
+                    market/through inheritance in the year(s) {{data.yearofshareaquisition}}.
                 </p>
                 <p style="padding-left: 48pt; text-indent: 0pt; text-align: left">
-                    @* ………… *@{{data.yearofshareaquisition}}.
+                    @* ………… *@
                 </p>
                 <p style="padding-top: 7pt; text-indent: 0pt; text-align: left">
                     <br />
@@ -561,7 +533,9 @@
                 @* Reva Patel *@ {{data.witnessname}}
             </span>
         </p>
-        <p style="padding-top: 3pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-top: 3pt;padding-left: 48pt; text-indent: 0pt; text-align: left">
+            Address: {{data.witness1address}}<br />
+        </p><br />
         <p class="s11"
            style="padding-left: 48pt; text-indent: 0pt; text-align: left">
             (Name and signature of the witness)
@@ -572,7 +546,9 @@
             And 2) Mr./Ms.
             <span class="s6">@* Reva Patel *@ {{data.witnessname2}} </span>
         </p>
-        <p style="padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p style="padding-top: 4pt;padding-left: 48pt; text-indent: 0pt; text-align: left">
+            Address: {{data.witness2address}}<br />
+        </p><br />
         <p class="s11"
            style="padding-left: 48pt; text-indent: 0pt; text-align: left">
             (Name and signature of the witness)
@@ -581,8 +557,8 @@
         <p style="text-indent: 0pt; text-align: left" />
         <p style="padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
         <p class="s13"
-           style="padding-left: 48pt; text-indent: 100pt; text-align: left">
-            #<span class="p">, have hereunto set their respective hands and seals this day of </span><span class="s6">{{data.date | date:'dd/MM/yyyy'}}</span>
+           style="padding-left: 48pt; text-indent: 0pt; text-align: left">
+            <span class="p">{{data.customerName}}</span>#<span class="p">, have hereunto set their respective hands and seals this day of </span><span class="s6">{{data.date | date:'dd/MM/yyyy'}}</span>
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p class="s14" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
@@ -670,7 +646,7 @@
         <br />
         on:
         <span class="s6">
-            {{data.date | date:'__/MM/yyyy'}}
+            @* {{data.date | date:'__/MM/yyyy'}} *@<u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
         </span>
         <p style="padding-top: 13pt; text-indent: 0pt; text-align: left"><br /></p>
         <p class="s16"
@@ -701,12 +677,14 @@
           // Load Customers
          $scope.loadCustomers = function (sid) {
              if(id){
+                 hideLoader();
                  $scope.hDiv = true;
             $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
                 $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
+                    $scope.witnesslist = JSON.parse(doc.witnessJson);
                       $http.get('/doc/GetBank/'+ doc.id).then(function (response) {
          var bank = response.data[0];
                 $scope.data = {
@@ -717,9 +695,7 @@
                     mobile: doc.mobile,
                     relationship: doc.relationship,
                     accountno:bank.accountNo,
-                    certificatenos:'',
-                    distinctiveNosStart: '',
-                    distinctiveNosEnd:'',
+                    jsondata: result.stockJson,
                     qty: result.qty,
                     rate: result.rate,
                     folioNo : result.folioNo,
@@ -733,10 +709,10 @@
                     date: new Date(),
                     witnessname: '',
                     witnessname2: '',
-                    pincode: '',
+                    pincode: doc.pinCode,
                     email: doc.email,
                 };
-
+                $scope.shares = JSON.parse($scope.data.jsondata);
                 hideLoader();
                                     }, function (error) {
         console.error('Error loading Bank Deatails:', error);
@@ -768,9 +744,7 @@
                     sonof: obj.sonof,
                     accountno: obj.accountno,
                     relationship: obj.relationship,
-                    certificatenos: obj.certificatenos,
-                    distinctiveNosStart: obj.distinctiveNosStart,
-                    distinctiveNosEnd: obj.distinctiveNosEnd,
+                    jsondata: obj.jsondata,
                     officename: obj.officename,
                     rta: obj.rta,
                     yearofshareaquisition: obj.yearofshareaquisition,
@@ -785,7 +759,7 @@
                     email: obj.email,
                 };
                                 id = result.stockId;
-
+                                $scope.shares = JSON.parse($scope.data.jsondata);
                 checkData();
                 hideLoader();
             }, function (error) {
@@ -794,6 +768,53 @@
             });
             }
         };
+
+        $scope.fwitnessselect = function (fid,sid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+
+              var result =  (fid == sid)
+               if(result)
+             {
+                $scope.data.fwitness = undefined;
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Same person can not be selected for multiple Witnesses.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+                $scope.data.witnessname = '';
+                $scope.data.witness1address = '';
+               }
+               else{
+                   var witness1 = $scope.witnesslist.find(y => y.witnessname == fid);
+                   $scope.data.witnessname = witness1.witnessname;
+                   $scope.data.witness1address = witness1.witnessaddress;
+               }
+            }
+
+             $scope.switnessselect = function (fid,sid) {
+               // var find1 = $scope.holderlist .find(x => x.id === fid);
+
+              var result =  (fid == sid)
+               if(result)
+             {
+                $scope.data.switness = undefined ;
+                 Swal.fire({
+                    title: 'Error!',
+                    text: 'Same person can not be selected for multiple Witnesses.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+                $scope.data.witnessname2 = '';
+                $scope.data.witness2address = '';
+               }
+               else{
+                   var witness2 = $scope.witnesslist.find(y => y.witnessname == sid);
+                   $scope.data.witnessname2 = witness2.witnessname;
+                   $scope.data.witness2address = witness2.witnessaddress;
+               }
+            }
+
             $scope.navtogenerateform = function () {
         window.open('/Form/GenerateForm/'+id, '_self');
     };
@@ -828,6 +849,15 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                  if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                return;
+                 }
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Dup Indemnity B',
