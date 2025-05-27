@@ -28,7 +28,7 @@
     .sticky-action {
         position: sticky;
         right: 0;
-        z-index: 2;
+        z-index: 1;
     }
 
     .nav-style{
@@ -65,7 +65,7 @@
                                 </div>
                             @if (add) { 
                                 <div class="col-auto">
-                                    <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openCustomerModal()">Add Client</button>
+                                    <button class="btn app-btn-primary" style="background-color:#51b37f;color:white" ng-click="openCustomerModal()">Add Client</button>
                                 </div>
                             }
                             </div>
@@ -95,42 +95,42 @@
                     <div class="app-card-body">
                         <div class="table-responsive">
                             <table class="table app-table-hover mb-0 text-left text-nowrap">
-                                <thead class="sticky-header">
+                                <thead >
                                     <tr>
-                                        <th class="cell">#</th>
-                                        <th class="cell">File No</th>
-                                        <th class="cell">Client Name</th>
-                                        <th class="cell">Mobile</th>
-                                        <th class="cell">Address</th>
-                                        <th class="cell">Reference</th>
-                                        <th class="cell">Contact Person</th>
-                                        <th class="cell">Contact Person's Mobile</th>
-                                        <th class="cell">Location</th>
-                                        <th class="cell">Created At</th>
-                                        <th class="cell">Created By</th>
-                                        <th class="cell">Updated At</th>
-                                        <th class="cell">Updated By</th>
-                                        <th class="cell sticky-action text-center">Action</th>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">File No</th>
+                                        <th class="text-center">Client Name</th>
+                                        <th class="text-center">Mobile</th>
+                                        <th class="text-center">Address</th>
+                                        <th class="text-center">Reference</th>
+                                        <th class="text-center">Contact Person</th>
+                                        <th class="text-center">Contact Person's Mobile</th>
+                                        <th class="text-center">Location</th>
+                                        <th class="text-center">Created At</th>
+                                        <th class="text-center">Created By</th>
+                                        <th class="text-center">Updated At</th>
+                                        <th class="text-center">Updated By</th>
+                                        <th class="text-center fixed-col">Action</th>
                                     @* <th ng-hide="search" class="cell sticky-action">C2C</th> *@
                                     @* <th class="cell sticky-action">Docs</th> *@
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="customer in customers | filter: searchQuery | filter:{isClient:search}">
-                                        <td class="cell">{{ $index + 1 }}</td>
-                                    <td class="cell">{{ customer.fileNo }}</td>
+                                        <td class="text-center">{{ $index + 1 }}</td>
+                                    <td class="text-center">{{ customer.fileNo }}</td>
                                     <td ng-click="manageClient(customer.id)" class="cell nav-style">{{ customer.customerName }}</td>
-                                        <td class="cell">{{ customer.mobile }}</td>
-                                        <td class="cell">{{ customer.address }}</td>
-                                    <td class="cell">{{ customer.reference }}</td>
-                                    <td class="cell">{{ customer.contactPersonName }}</td>
-                                    <td class="cell">{{ customer.contactPersonMobile }}</td>
-                                    <td class="cell">{{ customer.location }}</td>
-                                        <td class="cell">{{ customer.createdAt | date:'dd-MM-yyyy' }}</td>
-                                        <td class="cell">{{ customer.createdByName }}</td>
-                                        <td class="cell">{{ customer.updatedAt | date:'dd-MM-yyyy' }}</td>
-                                        <td class="cell">{{ customer.updatedByName }}</td>
-                                    <td class="cell sticky-action">
+                                        <td class="text-center">{{ customer.mobile }}</td>
+                                        <td class="text-center">{{ customer.address }}</td>
+                                    <td class="text-center">{{ customer.reference }}</td>
+                                    <td class="text-center">{{ customer.contactPersonName }}</td>
+                                    <td class="text-center">{{ customer.contactPersonMobile }}</td>
+                                    <td class="text-center">{{ customer.location }}</td>
+                                        <td class="text-center">{{ customer.createdAt | date:'dd-MM-yyyy' }}</td>
+                                        <td class="text-center">{{ customer.createdByName }}</td>
+                                        <td class="text-center">{{ customer.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                        <td class="text-center">{{ customer.updatedByName }}</td>
+                                    <td class="text-center fixed-col">
                                         @if (edit) { 
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCustomerModal(customer)"  title="Edit Client">
                                                 <i class="bi bi-pencil"></i>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" ng-disabled="processdone" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Client' }}</button>
+                        <button type="submit" class="btn" ng-disabled="processdone" style="background-color:#51b37f;color:white">{{ isEditing ? 'Save Changes' : 'Add Client' }}</button>
                     </div>
                 </form>
             </div>

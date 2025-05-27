@@ -32,7 +32,8 @@
 	<script defer src="~/assets/plugins/fontawesome/js/all.min.js"></script>
 
 	<!-- App CSS -->
-	<link id="theme-style" rel="stylesheet" href="~/assets/css/portal.css">
+    <link id="theme-style" rel="stylesheet" href="~/assets/css/portal.css">
+    <link href="~/assets/css/custom.css" rel="stylesheet" />
 	<link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
 	<link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet" />
 	<link href="~/assets/css/sweetalert2.min.css" rel="stylesheet" />
@@ -193,7 +194,7 @@
 							</div> *@<!--//app-utility-item-->
 
 							<div class="app-utility-item app-user-dropdown dropdown">
-								<a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="~/assets/images/men_avatar.png" alt="user profile"> @(userName)</a>
+								<a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="~/assets/images/profiles/avatar1.png" alt="user profile"> @(userName)</a>
 								<ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
 									@*	<li><a class="dropdown-item" href="account.html">Account</a></li>
 								 	<li><a class="dropdown-item" href="settings.html">Settings</a></li>
@@ -222,7 +223,7 @@
 	</div>
 	</header><!--//app-header-->
 
-	<div class="container">
+	<div class="">
 		<main role="main" class="pb-3">
 			<div class="app-wrapper"> 
 				@RenderBody()

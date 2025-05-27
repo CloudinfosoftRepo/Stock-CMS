@@ -39,7 +39,7 @@
                 <!-- Left Side: Back Button and Title -->
                 <div class="d-flex align-items-center col-md-6">
                     @* <a asp-controller="Enquiry" asp-action="Index" class="btn btn-custom me-3"> *@
-                    @*     <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i> *@
+                    @*     <i class="bi bi-arrow-left text-left" style="color:#51b37f;font-size:xx-large;"></i> *@
                     @* </a> *@
                     <h1 class="app-page-title mb-0">Generate Forms</h1>
                 </div>
@@ -61,9 +61,9 @@
                         <form class="table-search-form row gx-1 align-items-center mb-0">
                             <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                         </form>
-                        @* <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openStockModal()">Generate form</button> *@
+                        @* <button class="btn btn-custom " style="background-color:#51b37f;color:white" ng-click="openStockModal()">Generate form</button> *@
                         @* <button class="btn btn-custom" *@
-                        @*         style="background-color:#003980;color:white" *@
+                        @*         style="background-color:#51b37f;color:white" *@
                         @*         excel-export *@
                         @*         table-id="tblstock" *@
                         @*         file-name="Stock" *@
@@ -76,7 +76,7 @@
                         <select class="form-select w-auto" ng-options="f.id as f.formName for f in formlist" ng-model="seletedform">
                             <option selected disabled value="">Select Form</option>
                         </select>
-                        <button class="btn btn-custom" style="background-color:#003980;color:white; margin-left:15px;" ng-click="gotoform(seletedform)">Generate form</button>
+                        <button class="btn btn-custom" style="background-color:#51b37f;color:white; margin-left:15px;" ng-click="gotoform(seletedform)">Generate form</button>
                     </div>
                 </div>
             </div>

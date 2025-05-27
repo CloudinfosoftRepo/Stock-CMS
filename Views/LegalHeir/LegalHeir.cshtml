@@ -71,7 +71,7 @@
                 <!-- Left Side: Back Button and Title -->
                 <div class="d-flex align-items-center col-md-6">
                     <a ng-click="navtoStock()" class="btn btn-custom me-3">
-                        <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
+                        <i class="bi bi-arrow-left text-left" style="color:#51b37f;font-size:xx-large;"></i>
                     </a>
                     <h1 class="app-page-title mb-0">Legal Heir Management</h1>
                 </div>
@@ -82,10 +82,10 @@
                             <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                         </form>
                         @if (add) { 
-                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add Legal Heir</button>
+                        <button class="btn btn-custom " style="background-color:#51b37f;color:white" ng-click="openDocModal()">Add Legal Heir</button>
                         }
                         <button class="btn btn-custom"
-                                style="background-color:#003980;color:white"
+                                style="background-color:#51b37f;color:white"
                                 excel-export
                                 table-id="tbldoc"
                                 file-name="Doc"
@@ -447,7 +447,7 @@
 
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#51b37f;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
                     </div>
                 </form>
             </div>
@@ -586,8 +586,8 @@
 
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                @* <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditingBank ? 'Update' : 'Save' }}</button> *@
-                        <button type="submit" class="btn" ng-disabled="processdone" style="background-color:#003980;color:white">Save</button>
+                                @* <button type="submit" class="btn" style="background-color:#51b37f;color:white">{{ isEditingBank ? 'Update' : 'Save' }}</button> *@
+                        <button type="submit" class="btn" ng-disabled="processdone" style="background-color:#51b37f;color:white">Save</button>
                     </div>
                 </form>
             </div>

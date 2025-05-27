@@ -55,7 +55,7 @@
                             </div>
                             @if (add) { 
                             <div class="col-auto">
-                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openRtaModal()">Add Rta</button>
+                                    <button class="btn app-btn-primary" style="background-color:#51b37f;color:white" ng-click="openRtaModal()">Add Rta</button>
                             </div>
                             }
                         </div>
@@ -69,6 +69,7 @@
                         <table id="tblrta" class="table app-table-hover mb-0 text-left text-nowrap">
                             <thead>
                                 <tr>
+                                    <th class="cell">#</th>
                                     <th class="cell">Rta Name</th>
                                     <th class="cell">Rta Address</th>
                                     <th class="cell">Created At</th>
@@ -81,6 +82,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="rta in customers  | filter: searchQuery">
+                                    <td class="cell">{{ $index + 1}}</td>
                                     <td class="cell">{{ rta.rtaName }}</td>
                                     <td class="cell">{{ rta.rtaAddress }}</td>
                                     <td class="cell">{{ rta.createdAt | date:'dd-MM-yyyy' }}</td>
@@ -107,7 +109,7 @@
 
     <!-- Add/Edit Customer Modal -->
     <div class="modal fade" id="rtaModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <form ng-submit="saveRta()">
                     <div class="modal-header">
@@ -134,7 +136,7 @@
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Rta' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#51b37f;color:white">{{ isEditing ? 'Save Changes' : 'Add Rta' }}</button>
                     </div>
                 </form>
             </div>
