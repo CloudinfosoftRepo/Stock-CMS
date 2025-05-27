@@ -23,6 +23,8 @@ namespace Stock_CMS.Models
         public int? UpdatedBy { get; set; }
 
         public int Rtaid { get; set; }
+
+        public int? FaceValue { get; set; }
         [NotMapped]
         public string? RtaName { get; set; }
 

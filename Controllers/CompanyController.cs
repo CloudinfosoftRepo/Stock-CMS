@@ -10,15 +10,25 @@ namespace Stock_CMS.Controllers
         private readonly IRtaService _rtaService;
         private readonly ICompanyService _companyService;
         private readonly ILogger<MasterController> _logger;
-        public CompanyController(ILogger<MasterController> logger, IRtaService RtaService, ICompanyService CompanyService)
+        private readonly IPermissionService _permissionService;
+        public CompanyController(ILogger<MasterController> logger, IRtaService RtaService, ICompanyService CompanyService, IPermissionService permissionService)
         {
             _logger = logger;
             _rtaService = RtaService;
             _companyService = CompanyService;
+            _permissionService = permissionService;
         }
-        public IActionResult Rta()
+        public async Task<IActionResult> Rta()
         {
-            return View();
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 6);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -95,9 +105,17 @@ namespace Stock_CMS.Controllers
             }
         }
 
-        public IActionResult Company()
+        public async Task<IActionResult> Company()
         {
-            return View();
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 5);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]

@@ -114,6 +114,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -139,8 +151,18 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -156,7 +178,7 @@
                     </div>
                         <!-- Submit Button -->
                         <div class="col-md-4 text-center mt-4">
-                            <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                                 Generate Form
                             </button>
                         </div>
@@ -329,9 +351,10 @@ border-bottom-width: 1pt;
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p style="padding-left: 12pt; text-indent: 0pt; text-align: left; justify-content: space-evenly;display: flex;">
-        <span>{{data.firstHolder}}</span>
-            <span>{{data.secondHolder}}</span>
-            <span>{{data.thirdHolder}}</span>
+            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.secondHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.thirdHolder}}</span>
         </p>
         <p style="
         padding-top: 2pt;
@@ -352,7 +375,9 @@ border-bottom-width: 1pt;
             (Should be attested by Notary)
         </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 
 <script>
@@ -363,12 +388,13 @@ border-bottom-width: 1pt;
             var id = params.get('id');
             var id2 = params.get('id2');
             var isProcessing = false;
+            $scope.processdone = false;
 
         // showLoader();
 
         // Load Customers
 
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
              if(id){
                  hideLoader();
                  $scope.hDiv = true;
@@ -377,18 +403,33 @@ border-bottom-width: 1pt;
                        $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                $scope.data = {
-                    docid: docs.id,
-                   companyName : result.companyName,
-                   customerName: docs.name,
-                   mobile : docs.mobile,
-                   folioNo : result.folioNo,
-                   address : docs.addressAsPerAadhar,
-                   newAddress : '',
-                  firstHolder :result.firstHolderName,
-                   secondHolder:result.secondHolderName,
-                   thirdHolder: result.thirdHolderName,
-                };
+
+                   var isDeceased = !!docs?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
+
+               
 
                 hideLoader();
                     }, function (error) {
@@ -414,9 +455,11 @@ border-bottom-width: 1pt;
                    folioNo : obj.folioNo,
                    address : obj.address,
                    newAddress : obj.newAddress,
+                                   heirs: obj.heirs,
                 firstHolder:obj.firstHolder,
                 secondHolder:obj.secondHolder,
                 thirdHolder:obj.thirdHolder,
+                condition: obj.condition,
 
                 };
                       id = result.stockId;
@@ -426,6 +469,23 @@ border-bottom-width: 1pt;
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, heirlist,isDeceased) {
+                 $scope.data = {
+                    docid: holder.id,
+                   companyName : result.companyName,
+                   customerName: holder.name,
+                   mobile : holder.mobile,
+                   folioNo : result.folioNo,
+                   address : holder.addressAsPerAadhar,
+                   newAddress : '',
+                   heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                  firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
+                   condition: isDeceased,
+                };
             }
         };
 
@@ -446,6 +506,7 @@ border-bottom-width: 1pt;
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'ChangeOfAddress',
@@ -466,6 +527,7 @@ border-bottom-width: 1pt;
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -482,7 +544,7 @@ border-bottom-width: 1pt;
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -492,6 +554,7 @@ border-bottom-width: 1pt;
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -500,7 +563,7 @@ border-bottom-width: 1pt;
 
         //Function
         $scope.printDiv = function (divId) {
-            var css = '<style type="text/css">* { margin: 0; padding: 0; text-indent: 0; } p { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; margin: 0pt; } h2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s3 { color: black; font-family: Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s4 { color: black; font-family: Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s5 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } table, tbody { vertical-align: top; overflow: visible; }</style >  ';
+            var css = '<style type="text/css">* { margin: 0; padding: 0; text-indent: 0; } p { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; margin: 0pt; } h2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s3 { color: black; font-family: Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s4 { color: black; font-family: Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s5 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } table, tbody { vertical-align: top; overflow: visible; } @@media print {.hide-print {display: none !important;}} </style >  ';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

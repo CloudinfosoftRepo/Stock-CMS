@@ -97,6 +97,18 @@
         .document-table td:last-child {
           width: 5pt;
         }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
 <body style="padding-left: 10%;" ng-controller="FormController">
@@ -271,7 +283,7 @@
         </tbody>
     </table>
             <div ng-if="hDiv" class="text-center m-2 col-md-4">
-                <button type="submit" class="btn" style="background-color:#003980; color:white;">
+                <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980; color:white;">
                     Genrate Form
                 </button>
             </div>
@@ -281,7 +293,9 @@
         @* THIS IS T *@
     </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -302,7 +316,7 @@
            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
                 $scope.data = {
-                    docid: result.firstHolderId,
+                   docid: result.firstHolderId,
                    customerName : result.firstHolderName,
                    noofpans: 1,
                    noofaadhars: 1,
@@ -382,6 +396,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Documents List',
@@ -390,7 +405,7 @@
                  jsonString : jsonString,
                  IsActive : true,
                  ClientName: $scope.data.customerName,
-                  ClientId: $scope.data.docid,
+                 ClientId: $scope.data.docid,
 
              }
 
@@ -403,6 +418,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -419,7 +435,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -429,6 +445,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

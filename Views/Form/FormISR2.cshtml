@@ -117,6 +117,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
         </style>
     </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -141,35 +153,20 @@
                         <!-- Select Customer Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="seletedid" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Place of Document Submission -->
-                        <div class="col-md-4 mb-3">
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
                             <div class="form-group">
-                                <label for="place" class="form-label">First HolderName as per Cheque</label>
-                                <input type="text" ng-model="data.firstnameaspercheque" class="form-control" placeholder="First HolderName as per Cheque">
-                            </div>
-                        </div>
-
-                        <!-- Place of Document Submission -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="place" class="form-label">Second HolderName as per Cheque</label>
-                                <input type="text" ng-model="data.secondnameaspercheque" class="form-control" placeholder="Second HolderName as per Cheque">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Place of Document Submission -->
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="place" class="form-label">Third HolderName as per Cheque</label>
-                                <input type="text" ng-model="data.thirdnameaspercheque" class="form-control" placeholder="Third HolderName as per Cheque">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
                             </div>
                         </div>
 
@@ -181,9 +178,51 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                        <div class="form-group">
+                            <label for="place" class="form-label">Holder Mobile</label>
+                            <input type="text" ng-model="data.mobile" class="form-control" placeholder="Holder Mobile">
+                        </div>
+                    </div>
+
+                        <!-- Place of Document Submission 
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">First HolderName as per Cheque</label>
+                                <input type="text" ng-model="data.firstnameaspercheque" class="form-control" placeholder="First HolderName as per Cheque">
+                            </div>
+						</div>-->
+                  
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Holder Email</label>
+                                <input type="email" ng-model="data.email" class="form-control" placeholder="Holder Email">
+                            </div>
+                        </div>
+                </div>
+					<!--<div class="row">
+                         Place of Document Submission 
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Second HolderName as per Cheque</label>
+                                <input type="text" ng-model="data.secondnameaspercheque" class="form-control" placeholder="Second HolderName as per Cheque">
+                            </div>
+						</div>-->
+                    
+                        <!-- Place of Document Submission 
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Third HolderName as per Cheque</label>
+                                <input type="text" ng-model="data.thirdnameaspercheque" class="form-control" placeholder="Third HolderName as per Cheque">
+                            </div>
+						</div>
+
+
+					</div>-->
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center mt-4">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -230,7 +269,7 @@
                     "
                     colspan="2"
                 >
-                    <p style="text-indent: 0pt; text-align: left;">{{data.branch}}</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.bankname}}</p>
                 </td>
             </tr>
             <tr style="height: 14pt;">
@@ -473,7 +512,7 @@
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
                 </td>
             </tr>
-            <tr style="height: 68pt;">
+            <tr style="height: 54pt;">
                 <td
                     style="
                         width: 227pt;
@@ -545,7 +584,7 @@
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
                 </td>
             </tr>
-            <tr style="height: 125pt;">
+            <tr style="height: 110pt;">
                 <td
                     style="
                         width: 446pt;
@@ -803,7 +842,7 @@
                     <p style="text-indent: 0pt; text-align: left;"><br /></p>
                 </td>
             </tr>
-            <tr style="height: 59pt;">
+            <tr style="height: 50pt;">
                 <td style="width: 446pt; border-left-style: dotted; border-left-width: 1pt; border-bottom-style: dotted; border-bottom-width: 1pt; border-right-style: dotted; border-right-width: 1pt;" colspan="6">
                     <p class="s2" style="padding-top: 2pt; padding-left: 231pt; text-indent: 0pt; text-align: left;">Signature verified as recorded with the Bank</p>
                     <p class="s2" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">Seal of the Bank</p>
@@ -947,7 +986,9 @@
             </tr>
         </table>
          </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
     </body>
     <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -957,12 +998,13 @@
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
         // Load Customers
 
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
 
              if(id){
                  hideLoader();
@@ -974,38 +1016,34 @@
                  $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(docs.dob,docs.dateOfDeath);
-                     $http.get('/doc/GetBank/'+ docs.id).then(function (response) {
-                            var bank = response.data[0];
 
-                $scope.data = {
-                    docid: docs.id,
-                    branch: bank.branch,
-                    bankaddress: bank.postalAddress,
-                    bankphone: bank.phoneNo,
-                    bankemail: bank.bankEmail,
-                    accountno:bank.accountNo,
-                    accountopeningdate: new Date(bank.accountOpeningDate),
-                   customerName : docs.name,
-                   address : docs.addressAsPerAadhar,
-                   mobile: docs.mobile,
-                   email: docs.email,
-                   firstHolder :result.firstHolderName,
-                   secondHolder:result.secondHolderName,
-                   thirdHolder: result.thirdHolderName,
-                   place: 'Vadodara',
-                   date: new Date(),
-                   firstnameaspercheque: '',
-                   secondnameaspercheque: '',
-                   thirdnameaspercheque: '',
+                     var isDeceased = !!docs?.dateOfDeath;
 
-                };
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
 
                 hideLoader();
-                    }, function (error) {
-        console.error('Error loading Bank Deatails:', error);
-        hideLoader();
-    });
+                   
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -1023,6 +1061,7 @@
                 var obj = JSON.parse(result.jsonString);
                 $scope.data = {
                     docid: obj.docid,
+                    bankname: obj.bankname,
                     branch: obj.branch,
                     bankaddress: obj.bankaddress,
                     bankphone: obj.bankphone,
@@ -1041,6 +1080,8 @@
                    firstnameaspercheque: obj.firstnameaspercheque,
                    secondnameaspercheque: obj.secondnameaspercheque,
                    thirdnameaspercheque: obj.thirdnameaspercheque,
+                                       condition: obj.condition,
+
                 };
                                 id = result.stockId;
 
@@ -1051,6 +1092,47 @@
                 hideLoader();
             });
             }
+
+            function populateData(holder, result, heirlist,isDeceased) {
+                 var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
+
+                  var url = isDeceased ? '/doc/GetLegalHeirBank/'+ holder.id :  '/doc/GetBank/'+ holder.id;
+
+                     $http.get(url).then(function (response) {
+                            var bank = response.data[0];
+
+                $scope.data = {
+                    docid: holder.id,
+                    bankname: bank.bankName,
+                    branch: bank.branch,
+                    bankaddress: bank.postalAddress,
+                    bankphone: bank.phoneNo,
+                    bankemail: bank.bankEmail,
+                    accountno:bank.accountNo,
+                    accountopeningdate: bank.accountOpeningDate != null ? new Date(bank.accountOpeningDate) : '',
+                   customerName : holder.name,
+                   address : holder.addressAsPerAadhar,
+                   mobile:'',
+                   email: '',
+                   firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
+                   place: 'Vadodara',
+                   date: new Date(),
+                   firstnameaspercheque: bank.bankFirstHolder,
+                   secondnameaspercheque: bank.bankSecondHolder,
+                   thirdnameaspercheque: bank.bankThirdHolder,
+                                       condition: isDeceased,
+                                                          
+
+                };
+
+            }, function (error) {
+            console.error('Error loading Bank Deatails:', error);
+            hideLoader();
+            });
+            }
+
         };
 
                         function checkData() {
@@ -1101,6 +1183,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Form ISR 2',
@@ -1121,6 +1204,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -1137,7 +1221,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -1147,6 +1231,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

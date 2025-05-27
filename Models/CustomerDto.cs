@@ -6,7 +6,7 @@ namespace Stock_CMS.Models;
 
 public partial class CustomerDto
 {
-    public long Id { get; set; } = 0;
+    public long Id { get; set; }
 
     public string? CustomerName { get; set; }
 
@@ -23,7 +23,22 @@ public partial class CustomerDto
     public DateTime? UpdatedAt { get; set; }
 
     public int? UpdatedBy { get; set; }
-	[NotMapped]
+
+    public string? Reference { get; set; }
+
+    public string? ContactPersonName { get; set; }
+
+    public string? ContactPersonMobile { get; set; }
+
+    public string? FileNo { get; set; }
+
+    public string? Location { get; set; }
+
+    public string? FinancialYear { get; set; }
+
+    public string? DocumentJson { get; set; }
+
+    [NotMapped]
 	public string? CreatedByName { get; set; }
 	[NotMapped]
 	public string? UpdatedByName { get; set; }

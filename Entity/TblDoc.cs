@@ -73,6 +73,12 @@ public partial class TblDoc
 
     public string? NameAsPerCertificate { get; set; }
 
+    public string? UserName { get; set; }
+
+    public string? Password { get; set; }
+
+    public string? DpName { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
 
     public virtual ICollection<TblStock> TblStockFirstHolders { get; set; } = new List<TblStock>();

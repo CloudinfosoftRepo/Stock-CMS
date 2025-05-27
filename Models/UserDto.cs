@@ -64,6 +64,6 @@ namespace Stock_CMS.Models
         public int? ParentId { get; set; }
         public string ParentMenuName { get; set; }
         public string Icon { get; set; }
-        public List<Menudto> Menus { get; set; }
+        public List<MenuDto> Menus { get; set; }
     }
 }

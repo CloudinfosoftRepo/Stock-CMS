@@ -98,6 +98,19 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+
+        }
     </style>
 </head>
 <body style="padding: 5%;" ng-controller="FormsController">
@@ -123,14 +136,39 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="yearssinceaddresschange" class="form-label">Years Since Address Change</label>
+                                <input type="number" ng-model="data.yearssinceaddresschange" class="form-control" placeholder="Years Since Address Change">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Place of Form Submission</label>
+                                <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Form Submission">
+                            </div>
+                        </div>
+
                     </div>  
                     <div class="col-md-4 d-flex align-items-center justify-content-center mb-3">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -177,7 +215,7 @@
           ">
                     I {{data.customerName}}, am the sole shareholder of equity shares in Chambal
                     Fertilisers and Chemicals Limited under Folio no.{{data.folioNo}} (if shares hold in
-                physical folio) / DPID &amp; Client Id {{data.dpid}}, {{data.clientid}} (if shares hold
+                physical folio) / DPID &amp; Client Id {{data.dpid}}{{data.clientid}} (if shares hold
                 in demat account).
             </p>
             <p style="padding-top: 1pt; text-indent: 0pt; text-align: left">
@@ -206,7 +244,7 @@
                     Address in Client Master List : {{data.address}} <br />
                     Address in Aadhaar Card : {{data.aadharaddress}}<br />
                     Address in Voter id : {{data.voteraddress}}<br />
-                    Address in Records of the Company{{data.address}}
+                    Address in Records of the Company : {{data.address}}
             </p>
             <p style="
             padding-left: 41pt;
@@ -297,7 +335,9 @@
         DEPONENT
     </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+		<button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+	</div>
 </body>
 
 <script>
@@ -309,7 +349,7 @@
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
-
+        $scope.processdone = false;
         // showLoader();
 
         // Load Customers
@@ -337,39 +377,43 @@
 
                 // Load Customers
 
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
             
              if(id){
                  hideLoader();
-                 var currentDate = new Date();
-             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                 $scope.hDiv = true;
-            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                var currentDate = new Date();
+                var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                $scope.hDiv = true;
+                $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
                 var result = response.data;
                  $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(docs.dob,docs.dateOfDeath);
-                    
 
-                $scope.data = {
-                    docid: docs.id,
-                   customerName : docs.name,
-                   age : Age,
-                   relationship: docs.relationship,
-                   sonof: docs.relativesName,
-                   yearssinceaddresschange: 2,
-                   folioNo : result.folioNo,
-                   address : docs.addressAsPerAadhar,
-                   aadharaddress: docs.addressAsPerAadhar,
-                   voteraddress: docs.addressAsPerVoterId,
-                   dpid: docs.dpid,
-                   clientid: docs.clientId,
-                   day: currentDate.getDate(),
-                   month: monthsOfYear[currentDate.getMonth()],
-                   year: currentDate.getFullYear(),
-                   place:'Vadodara',
-                };
+                   var isDeceased = !!docs?.dateOfDeath;
+
+                if (isDeceased) {
+					$scope.heirId = null;
+                    $scope.legalheirlist = isDeceased;
+                    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+                    $scope.data = null;
+                    $scope.legalheirlist = isDeceased;
+                    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                }
 
                 hideLoader();
                 }, function (error) {
@@ -403,17 +447,41 @@
                     place: obj.place,
                     day:obj.day,
                     month:obj.month,
-                    year: obj.year
+                    year: obj.year,
+					condition: obj.condition,
                 };
                 id = result.stockId;
                checkData();
                 hideLoader();
-                    
-
             }, function (error) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, currentDate, monthsOfYear,isDeceased) {
+                                    var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
+
+
+                $scope.data = {
+                    docid: holder.id,
+                   customerName : holder.name,
+                   age : Age,
+                   relationship: holder.relationship,
+                   sonof: holder.relativesName,
+                   yearssinceaddresschange: 2,
+                   folioNo : result.folioNo,
+                   address : holder.address || holder.addressAsPerAadhar,
+                   aadharaddress: holder.addressAsPerAadhar,
+                   voteraddress: holder.addressAsPerVoterId,
+                   dpid: holder.dpid,
+                   clientid: holder.clientId,
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+                   place:'Vadodara',
+                   condition: isDeceased,
+                };
             }
         };
 
@@ -461,6 +529,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'AFFIDAVIT 003 COA',
@@ -481,6 +550,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -496,7 +566,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -506,6 +576,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -518,7 +589,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-            var css = '<style type="text/css"> * { margin: 0; padding: 0; text-indent: 0; } .p, p { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s2 { color: #f00; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt; } li { display: block; } #l1 { padding-left: 0pt; counter-reset: c1 1; } #l1 > li > *:first-child:before { counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } #l1 > li:first-child > *:first-child:before { counter-increment: c1 0; } </style>';
+            var css = '<style type="text/css"> * { margin: 0; padding: 0; text-indent: 0; } .p, p { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s2 { color: #f00; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt; } li { display: block; } #l1 { padding-left: 0pt; counter-reset: c1 1; } #l1 > li > *:first-child:before { counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } #l1 > li:first-child > *:first-child:before { counter-increment: c1 0; } @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

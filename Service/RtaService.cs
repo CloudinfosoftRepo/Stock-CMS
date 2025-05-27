@@ -91,7 +91,7 @@ namespace Stock_CMS.Service
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;
-            });
+            }).OrderBy(y => y.RtaName).ToList();
 
             return result;
         }

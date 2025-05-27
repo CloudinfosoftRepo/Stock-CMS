@@ -52,6 +52,11 @@ public partial class StockDto
 
     public string? NomineeJson { get; set; }
 
+    public bool? IsPaid { get; set; }
+
+    public int? FaceValue { get; set; }
+
+
     [NotMapped]
     public string? CompanyName { get; set; }
 
@@ -75,7 +80,7 @@ public partial class StockDto
     [NotMapped]
 	public bool IsClient { get; set; }
 
-	public virtual CustomerDto? Customer { get; set; }
+    public virtual CustomerDto? Customer { get; set; }
     public virtual CompanyDto? Company { get; set; }
     public virtual DocDto? FirstHolderData { get; set; }
     public virtual DocDto? SecondHolderData { get; set; }
@@ -84,10 +89,24 @@ public partial class StockDto
 
 }
 
+public class StocksDetailsDto
+{
+    public double? TotalAmount { get; set; }
+    public IEnumerable<StockDto> stocks { get; set; }
+}
+
 public class UploadStockDto
 {
     public long? CustomerId { get; set; }
 
     [NotMapped]
     public IFormFile? DocFile { get; set; }
+}
+
+public class StockJsonUploadDto
+{
+    public long Id { get; set; }
+
+    public string? JsonString { get; set; }
+
 }

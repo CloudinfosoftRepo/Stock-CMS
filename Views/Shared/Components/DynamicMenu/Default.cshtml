@@ -1,0 +1,164 @@
+﻿@using Stock_CMS.Models;
+@model List<MenuViewModel>;
+@{
+	var user = "";
+	var role = "";
+	try
+	{
+		user = Context.Request.Cookies["UserId"];
+		role = Context.Request.Cookies["Role"];
+	}
+	catch(Exception ex){
+
+	}
+}
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	// Function to set active state for clicked menu items (main and submenu items)
+	document.querySelectorAll('.nav-link').forEach(function(link) {
+	link.addEventListener('click', function(e) {
+	// Prevent the default behavior for submenu toggle links
+	if (link.classList.contains('submenu-toggle')) {
+	return;
+	}
+
+	// Remove 'active' class from all menu links
+	document.querySelectorAll('.nav-link').forEach(function(item) {
+	item.classList.remove('active');
+	});
+
+	// Add 'active' class to the clicked link
+	link.classList.add('active');
+
+	// Check if the clicked link is part of a submenu
+	if (link.closest('.submenu-list')) {
+	// If submenu item is clicked, set parent submenu as active as well
+	const parentSubmenu = link.closest('.submenu');
+	parentSubmenu.classList.add('active');
+
+	// Ensure the parent submenu is expanded (collapse behavior)
+	const submenuToggle = parentSubmenu.previousElementSibling;
+	if (submenuToggle && submenuToggle.classList.contains('submenu-toggle')) {
+	// Open the submenu if it's not already open
+	if (submenuToggle.getAttribute('aria-expanded') === 'false') {
+	submenuToggle.setAttribute('aria-expanded', 'true');
+	parentSubmenu.classList.add('show');
+	}
+	}
+	}
+	});
+	});
+
+	// Optionally, check the URL and set the active class based on the current page
+	const path = window.location.pathname;
+
+	// Dynamically set the active state when the page is loaded based on the URL
+	if (path.includes('Dashboard')) {
+	document.getElementById('Dashboard-link').classList.add('active');
+	} else if (path.includes('Permission')) {
+	document.getElementById('Permission-link').classList.add('active');
+	}else if (path.includes('Client')) {
+	document.getElementById('Client-link').classList.add('active');
+	} else if (path.includes('User')) {
+	document.getElementById('User-link').classList.add('active');
+	} else if (path.includes('Rta')) {
+	document.getElementById('Rta-link').classList.add('active');
+	// Ensure parent submenu is also active when an item inside is selected
+	const submenuMaster = document.getElementById('submenu-Master');
+	submenuMaster.classList.add('active');
+	// Make sure the submenu stays open
+	const submenuToggle = submenuMaster.previousElementSibling;
+	if (submenuToggle && submenuToggle.classList.contains('submenu-toggle')) {
+	submenuToggle.setAttribute('aria-expanded', 'true');
+	submenuMaster.classList.add('show');
+	}
+	} else if (path.includes('Company')) {
+	document.getElementById('Company-link').classList.add('active');
+	// Ensure parent submenu is also active when an item inside is selected
+	const submenuMaster = document.getElementById('submenu-Master');
+	submenuMaster.classList.add('active');
+	// Make sure the submenu stays open
+	const submenuToggle = submenuMaster.previousElementSibling;
+	if (submenuToggle && submenuToggle.classList.contains('submenu-toggle')) {
+	submenuToggle.setAttribute('aria-expanded', 'true');
+	submenuMaster.classList.add('show');
+	}
+	}
+	//  else if (path.includes('Form')) {
+	// document.getElementById('form-link').classList.add('active');
+	//  }
+	});
+
+</script>
+<nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
+	<ul class="app-menu list-unstyled accordion" id="menu-accordion">
+		@if (role == "Admin")
+		{
+
+			<li class="nav-item">
+				<a class="nav-link" id="Permission-link" asp-action="Index" asp-controller="Permission">
+					<span class="nav-icon">
+						<i class="bi bi-gear-fill"></i>
+					</span>
+					<span class="nav-link-text">Permissions</span>
+				</a>
+			</li>
+
+		}
+		@foreach (var menuGroup in Model)
+		{
+			// Check if the menu group has no ParentId (for top-level links like "Dashboard")
+			if (menuGroup.ParentId == 0)
+			{
+				@foreach (var submenu in menuGroup.Menus)
+				{
+					<li class="nav-item">
+						<a class="nav-link" asp-action="@submenu.Url.Split('/')[1]" asp-controller="@submenu.Url.Split('/')[0]" id="@submenu.Name-link">
+							<span class="nav-icon">
+								<i class="@submenu.Icon"></i> <!-- FontAwesome user icon for Client -->
+							</span>
+							<span class="nav-link-text">@submenu.Name</span>
+						</a>
+					</li>
+
+				}
+			}
+			else
+			{
+				// Render dropdown for menus with submenus
+
+				<li class="nav-item has-submenu">
+					<a class="nav-link submenu-toggle" href="#" id="@menuGroup.ParentMenuName-link" data-bs-toggle="collapse" data-bs-target="#submenu-@menuGroup.ParentMenuName" aria-expanded="false" aria-controls="submenu-@menuGroup.ParentMenuName">
+						<span class="nav-icon">
+							<i class="@menuGroup.Icon"></i> <!-- Bootstrap file icon for Master -->
+						</span>
+						<span class="nav-link-text">@menuGroup.ParentMenuName</span>
+						<span class="submenu-arrow">
+							<i class="bi bi-chevron-down"></i> <!-- Bootstrap chevron-down icon for submenu arrow -->
+						</span>
+					</a>
+					<div id="submenu-@menuGroup.ParentMenuName" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
+						<ul class="submenu-list list-unstyled">
+							@foreach (var submenu in menuGroup.Menus)
+							{
+								<li class="submenu-item">
+									<a class="nav-link" asp-action="@submenu.Url.Split('/')[1]" asp-controller="@submenu.Url.Split('/')[0]" id="@submenu.Name-link">
+										<i class="bi bi-dot"></i> <!-- Bootstrap dot icon for submenu items -->
+										<span>@submenu.Name</span>
+									</a>
+								</li>
+							}
+
+						</ul>
+					</div>
+				</li>
+
+                  
+                }
+            }
+
+          
+        </ul>
+        </nav>
+   

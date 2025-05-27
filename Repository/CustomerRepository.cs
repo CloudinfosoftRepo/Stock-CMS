@@ -32,6 +32,11 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(x => x.IsActive == true);
         }
+
+        public async Task<IEnumerable<CustomerDto>> GetCustomersById(long id)
+        {
+            return await GetMany(x => x.IsActive == true && x.Id == id);
+        }
         public async Task<IEnumerable<CustomerDto>> AddCustomer(IEnumerable<CustomerDto> data)
         {
             return await AddEntitiesNotMap(data);
@@ -51,6 +56,9 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(x => x.IsActive == true && x.IsClient == false);
         }
-
+        public async Task<IEnumerable<CustomerDto>> GetLastFileNoForFinancialYear(string financialYear)
+        {
+            return await GetMany(x => x.IsActive == true && x.FinancialYear == financialYear);
+        }
     }
 }

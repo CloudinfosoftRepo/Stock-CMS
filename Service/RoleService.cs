@@ -19,7 +19,6 @@ namespace Stock_CMS.Service
 
         public async Task<string> AddRole(RoleDto role, int flag)
         {
-
             List<RoleDto> list = new List<RoleDto>();
 
             if (flag == 0)

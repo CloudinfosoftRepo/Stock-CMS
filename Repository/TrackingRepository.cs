@@ -47,5 +47,15 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(x => x.IsActive == true && Ids.Contains(x.StockId));
         }
+
+        public async Task<IEnumerable<TrackingDto>> GetTrackingbyStockIdsAndSubmissionDate(long[] Ids)
+        {
+            return await GetMany(x => x.IsActive == true && Ids.Contains(x.StockId) && x.DateofSubmission.Value.Date <= DateTime.Now.Date);
+        }
+
+        public async Task<IEnumerable<TrackingDto>> GetTrackingbyStockIdAndFollowUpDate(long[] Ids)
+        {
+            return await GetMany(x => x.IsActive == true && Ids.Contains(x.StockId) && x.DateofFollowUp.Value.Date <= DateTime.Now.Date);
+        }
     }
 }

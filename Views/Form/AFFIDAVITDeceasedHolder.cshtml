@@ -100,6 +100,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -125,17 +137,17 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Select Heir Dropdown -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
                             <div class="form-group">
                                 <label for="heirId" class="form-label">Select Heir</label>
-                                <select class="form-select" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
@@ -151,7 +163,7 @@
                     </div>
                         <!-- Submit Button -->
                         <div class="col-md-4 d-flex align-items-center justify-content-center mb-3">
-                            <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                                 Generate Form
                             </button>
                         </div>
@@ -351,7 +363,9 @@
     </div>
         <p style="padding-left: 5pt; text-indent: 0pt; text-align: left" />
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -362,6 +376,7 @@
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
@@ -391,32 +406,34 @@
                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
-                     $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
-                    $scope.heir = response.data;
-                    var heirs = response.data.find(x => x.id === hid);
-                    var Age = $scope.calculateAge(heirs.dob,heirs.dateOfDeath);
-                    $scope.data = {
-                        docid: heirs.id,
-                       customerName : heirs.name,
-                       age : Age,
-                       relationship: heirs.relationWithDead,
-                       sonof: doc.name,
-                       deceasedholdername: doc.nameAsPerDeathCerti,
-                       address : heirs.addressAsPerAadhar,
-                       officename : result.companyName,
-                       placeofdeath: doc.placeOfDeath,
-                       place:'Vadodara',
-                       day: currentDate.getDate(),
-                       month: monthsOfYear[currentDate.getMonth()],
-                       year: currentDate.getFullYear(),
-                       
-                    };
+
+                   var isDeceased = !!doc?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result, currentDate, monthsOfYear,doc,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = doc;
+                    populateData(holder, result, currentDate, monthsOfYear,doc,isDeceased);
+                }
 
                     hideLoader();
-                     }, function (error) {
-                    console.error('Error loading Legal Heair:', error);
-                    hideLoader();
-                });
+                    
                  }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -446,7 +463,7 @@
                     day:obj.day,
                     month:obj.month,
                     year: obj.year,
-                   
+                   condition: obj.condition,
                 };
                       id = result.stockId;
                 checkData();
@@ -455,6 +472,27 @@
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+
+            function populateData(holder, result, currentDate, monthsOfYear,doc,isDeceased) {
+                var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
+                    $scope.data = {
+                        docid: holder.id,
+                       customerName : holder.name,
+                       age : Age,
+                       relationship: holder.relationWithDead,
+                       sonof: doc.name,
+                       deceasedholdername: doc.nameAsPerDeathCerti,
+                       address : holder.addressAsPerAadhar,
+                       officename : result.companyName,
+                       placeofdeath: doc.placeOfDeath,
+                       place:'Vadodara',
+                       day: currentDate.getDate(),
+                       month: monthsOfYear[currentDate.getMonth()],
+                       year: currentDate.getFullYear(),
+                       condition: isDeceased,
+                    };
             }
         };
 
@@ -506,6 +544,18 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                 if(!$scope.data.condition){
+					 Swal.fire({
+						 title: 'Error',
+						 text: 'Customer is still Alive',
+						 icon: 'error',
+						 confirmButtonText: 'OK'
+					 });
+					 return;
+                 }
+
+                 $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'AFFIDAVIT Deceased Holder',
@@ -526,6 +576,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -542,7 +593,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -552,6 +603,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -572,7 +624,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-            var css = '<style type="text/css">* {margin: 0; padding: 0; text-indent: 0;} h1 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt;} .p, p {color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; margin: 0pt;} .s1 {color: black; font-family: Calibri, sans-serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt;} .s2 {color: black; font-family: Arial, sans-serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt;} .s4 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 12pt;} li {display: block;} #l1 {padding-left: 0pt; counter-reset: c1 1;} #l1 > li > *:first-child:before {counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} #l1 > li:first-child > *:first-child:before {counter-increment: c1 0;}</style>';
+            var css = '<style type="text/css">* {margin: 0; padding: 0; text-indent: 0;} h1 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt;} .p, p {color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; margin: 0pt;} .s1 {color: black; font-family: Calibri, sans-serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt;} .s2 {color: black; font-family: Arial, sans-serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt;} .s4 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 12pt;} li {display: block;} #l1 {padding-left: 0pt; counter-reset: c1 1;} #l1 > li > *:first-child:before {counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} #l1 > li:first-child > *:first-child:before {counter-increment: c1 0;} @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

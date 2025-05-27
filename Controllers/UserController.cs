@@ -10,17 +10,20 @@ namespace Stock_CMS.Controllers
     {
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
+        private readonly IPermissionService _permissionService;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(ILogger<UserController> logger, IUserService userService, IRoleService roleService)
+        public UserController(ILogger<UserController> logger, IUserService userService, IRoleService roleService, IPermissionService permissionService)
         {
             _logger = logger;
              _userService = userService;
             _roleService = roleService;
+            _permissionService = permissionService;
         }
 
-        public IActionResult Users()
+        public async Task<IActionResult> Users()
         {
+            
             var role = Request.Cookies["Role"].ToString();
 
             if (role != "Admin")
@@ -28,8 +31,34 @@ namespace Stock_CMS.Controllers
                 // You can redirect to a different page or show an access denied message
                 return RedirectToAction("Client", "Master");
             }
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 3);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
 
-            return View();
+        }
+
+        public async Task<IActionResult> EditUser() 
+        {
+            var role = HttpContext.Request.Cookies["Role"];
+            if (role != "Admin")
+            {
+                return RedirectToAction("Client", "Master");
+            }
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 3);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -51,8 +80,23 @@ namespace Stock_CMS.Controllers
         {
             try
             {
-                var user = await _roleService.GetRole();
-                return Json(user);
+                var role = await _roleService.GetRole();
+                return Json(role.Where(x => x.Id != 1));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Json(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetRoles()
+        {
+            try
+            {
+                var role = await _roleService.GetRole();
+                return Json(role);
             }
             catch (Exception ex)
             {
@@ -145,6 +189,28 @@ namespace Stock_CMS.Controllers
             {
                 _logger.LogError(ex, "Error during Delete");
                 return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetUserById()
+        {
+            try
+            {
+                var role = HttpContext.Request.Cookies["Role"];
+                if (role != "Admin")
+                {
+                    return null;
+                }
+                var userId = int.Parse(HttpContext.Request.Cookies["UserId"]);
+
+                var user = await _userService.GetUserById(userId);
+                return Json(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Json(ex.Message);
             }
         }
     }

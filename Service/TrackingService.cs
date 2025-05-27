@@ -16,19 +16,24 @@ namespace Stock_CMS.Service
         private readonly IUserRepository _userRepository;
         private readonly FileUpload _fileUpload;
         private readonly IStockRepository _stockRepository;
+        private readonly NormalizeModel _normalizeModel;
 
-        public TrackingService(ITrackingRepository trackingRepository, IUserRepository userRepository, FileUpload fileUpload, IStockRepository stockRepository)
+        public TrackingService(ITrackingRepository trackingRepository, IUserRepository userRepository, FileUpload fileUpload, IStockRepository stockRepository, NormalizeModel normalizeModel)
         {
             _trackingRepository = trackingRepository;
             _userRepository = userRepository;
             _fileUpload = fileUpload;
             _stockRepository = stockRepository;
+            _normalizeModel = normalizeModel;
         }
 
         public async Task<long> AddTracking(TrackingDto data)
         {
             
             {
+                data.DateofFollowUp = _normalizeModel.ConvertToIST(data.DateofFollowUp);
+                data.DateofSubmission = _normalizeModel.ConvertToIST(data.DateofSubmission);
+
                 List<TrackingDto> dataList = new List<TrackingDto> { data };
 
 
@@ -91,6 +96,8 @@ namespace Stock_CMS.Service
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
                     data.IsActive = existingProduct.IsActive;
+                    data.DateofFollowUp = data.DateofFollowUp != null ? _normalizeModel.ConvertToIST(data.DateofFollowUp) : existingProduct.DateofFollowUp;
+                    data.DateofSubmission = data.DateofSubmission != null ? _normalizeModel.ConvertToIST(data.DateofSubmission) : existingProduct.DateofSubmission;
 
                     if (data != null)
                     {
@@ -159,9 +166,11 @@ namespace Stock_CMS.Service
         {
             var data = await _trackingRepository.GetTrackingbyStockId(Id);
 
-            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var track = data.OrderByDescending(x => x.CreatedAt).ToList();
+
+            var ids = track.Select(x => x.CreatedBy).Concat(track.Select(x => x.UpdatedBy)).Distinct().ToArray();
             var users = await _userRepository.GetUsersByIds(ids);
-            var result = data.Select(x =>
+            var result = track.Select(x =>
             {
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
@@ -177,7 +186,31 @@ namespace Stock_CMS.Service
             var result = await _trackingRepository.UpdateFormbyColumn(formDtos, ["IsActive", "UpdatedAt", "UpdatedBy"]);
             if (result.Any())
             {
-                return result.FirstOrDefault().Id;
+                var tracking = await _trackingRepository.GetTrackingbyStockId(result.FirstOrDefault().StockId);
+
+                var track = tracking.OrderByDescending(x => x.CreatedAt).ToList();
+
+                var stock = await _stockRepository.GetStockById(result.FirstOrDefault().StockId);
+
+                if (track.Count > 0)
+                {
+                    stock.ClaimStatus = track.FirstOrDefault().Status;
+                }
+                else
+                {
+                    stock.ClaimStatus = "Pending";
+                }
+
+                List<StockDto> updateList = new List<StockDto>() { stock };
+                var response = await _stockRepository.UpdateStock(updateList);
+                if (response.Any())
+                {
+                    return result.FirstOrDefault().Id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             else
             {

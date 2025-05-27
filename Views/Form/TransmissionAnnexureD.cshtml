@@ -223,6 +223,18 @@ table {
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -249,17 +261,17 @@ table {
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="seletedId" class="form-label">Select Customer</label>
-                                    <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                         <option selected disabled value="">Select customer</option>
                                     </select>
                                 </div>
                             </div>
 
                             <!-- Select Heir Dropdown -->
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-4 mb-3" ng-show="legalheirlist">
                                 <div class="form-group">
                                     <label for="heirId" class="form-label">Select Heir</label>
-                                    <select class="form-select" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
                                         <option selected disabled value="">Select Heir</option>
                                     </select>
                                 </div>
@@ -276,7 +288,7 @@ table {
 
                         <!-- Submit Button -->
                         <div class="col-md-4 text-center m-2">
-                            <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                            <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
                                 Generate Form
                             </button>
                         </div>
@@ -621,7 +633,9 @@ table {
     </p>
  </div>
     </form>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -637,6 +651,7 @@ table {
                   option2: false
               }
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
@@ -663,31 +678,36 @@ table {
                     $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                         $scope.docs = response.data;
                         var doc = $scope.docs.find(x => x.id === sid);
+
                         $http.get('/LegalHeir/GetLegalHeir/' + doc.id).then(function (response) {
                             $scope.heirlist = response.data;
-                            $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
-                                $scope.heir =response.data;
-                                var heirs = response.data.find(x => x.id === hid);
+                            
+                            var isDeceased = !!doc?.dateOfDeath;
 
-                                $scope.data = {
-                                    docid: heirs.id,
-                                    customerName : heirs.nameAsPerAadhar,
-                                    relationWithDead: heirs.relationWithDead,
-                                    sonof: doc.nameAsPerAadhar,
-                                    address: heirs.addressAsPerAadhar,
-                                    officename : result.companyName,
-                                    folioNo : result.folioNo,
-                                    qty: result.qty,
-                                    dateofdeath: doc.dateOfDeath,
-                                    place: $scope.data && $scope.data.place || 'Vadodara',
-                                    today: new Date(),
-                                };
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetLegalHeir/' + doc.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased,doc);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = doc;
+                    populateData(holder, result,$scope.heir,isDeceased,doc);
+                }
 
                                 hideLoader();
-                            }, function (error) {
-                            console.error('Error loading legal Heir:', error);
-                            hideLoader();
-                            });
                         }, function (error) {
                         console.error('Error loading Legal Heirs:', error);
                         hideLoader();
@@ -721,6 +741,7 @@ table {
                     dateofdeath: new Date(obj.dateofdeath),
                     place: obj.place,
                     today: new Date(obj.today),
+					condition: obj.condition,
                 };
                 $scope.radiochk = $scope.data.selectedoptions;
                 $scope.heirlist = $scope.data.heirs;
@@ -731,6 +752,23 @@ table {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, heirlist,isDeceased,doc) {
+                $scope.data = {
+                    docid: holder.id,
+                    customerName :holder.nameAsPerPan,
+                    relationWithDead: holder.relationWithDead,
+                    sonof: doc.name,
+                    address: holder.addressAsPerAadhar,
+                    officename : result.companyName,
+                    folioNo : result.folioNo,
+                    qty: result.qty,
+                    dateofdeath: doc.dateOfDeath,
+                    place: $scope.data && $scope.data.place || 'Vadodara',
+                    today: new Date(),
+                    condition: isDeceased,
+                };
             }
         };
 
@@ -751,6 +789,18 @@ table {
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                 if(!$scope.data.condition){
+                     Swal.fire({
+                         title: 'Error',
+                         text: 'Customer is still Alive',
+                         icon: 'error',
+                         confirmButtonText: 'OK'
+                     });
+                     return;
+                 }
+
+                 $scope.processdone = true;
                   var arr = angular.copy($scope.heirlist);
                  $scope.data.heirs = JSON.stringify(arr,null,2);
 
@@ -777,6 +827,7 @@ table {
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -792,7 +843,7 @@ table {
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -802,6 +853,7 @@ table {
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

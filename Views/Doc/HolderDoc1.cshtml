@@ -1,4 +1,9 @@
 ﻿<!DOCTYPE html>
+@{
+    var list = Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+}
 <html lang="en" ng-app="Stock-CMS">
 <head>
     <meta charset="UTF-8">
@@ -74,7 +79,9 @@ img {
                             <form class="table-search-form row gx-1 align-items-center mb-0">
                                 <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                             </form>
-                            <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add New</button>
+                        @if (add) { 
+                            <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add Document</button>
+                        }
                             <button class="btn btn-custom"
                                     style="background-color:#003980;color:white"
                                     excel-export
@@ -121,9 +128,11 @@ img {
                                     <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.updatedByName }}</td>
                                     <td class="cell sticky-action">
+                                @if (edit) { 
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)" title="Edit Documents">
                                             <i class="bi bi-pencil"></i>
                                         </span>
+                                }
                                     </td>
                                 </tr>
                             </tbody>
@@ -177,7 +186,7 @@ img {
                         </div>
                         <div class="text-center m-2">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
                         </div>
                     </form>
                 </div>
@@ -206,6 +215,7 @@ img {
         $scope.docs = [];
         $scope.isEditing = false;
         var isProcessing = false;
+            $scope.processdone = false;
 
          showLoader();
 
@@ -238,6 +248,7 @@ img {
                       
            if (id) 
                 {
+                        $scope.processdone = true;
                     if (isProcessing) return;
                     isProcessing = true;
             var formData = new FormData();
@@ -260,9 +271,11 @@ img {
                     icon: response.data.success ? 'success' : 'error',
                     confirmButtonText: 'OK'
                 });
+                    $scope.processdone = false;
                       isProcessing = false;
                           if(response.data.success)
                           {
+                                  $scope.processdone = false;
                 $scope.loadDocs();
                  $scope.currentHolderDoc.docFile = '';
                 $('#docModal').modal('hide');

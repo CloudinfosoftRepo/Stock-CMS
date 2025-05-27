@@ -246,6 +246,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -272,8 +284,18 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -285,7 +307,8 @@
                                 <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Form Submission">
                             </div>
                         </div>
-
+                    </div>
+                    <div class="row">
                         <!-- Letter Date -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -293,8 +316,7 @@
                                 <input type="date" ng-model="data.letterdate" class="form-control" placeholder="Letter Date">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    
                         <!-- Letter No -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -306,7 +328,7 @@
 
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
-                        <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -510,9 +532,11 @@
         text-align: left;
       "
     />
-    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify" ng-repeat="item in doc">
-            I/We {{ $index + 1 }} <u>{{item.name}}</u> {{data.relationship}}<u> {{item.relativesName}}</u>
-            aged <u>{{calculateAge(item.dob,item.dateOfDeath)}}</u>.<br />
+    <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify" >
+        <p ng-repeat="item in doc">
+            I/We {{ $index + 1 }} <u>{{item.name}}</u>S/d/o{{data.relationship}}<u> {{item.relativesName}}</u>
+			aged <u>{{calculateAge(item.dob,item.dateOfDeath)}}</u>.<br />
+		</p>
       <!--2<u>
         EVSV VEWV FSD </u
       >S/d/o<u>
@@ -2117,7 +2141,7 @@ border-bottom-style: solid;
           style="padding-left: 32pt; text-indent: -18pt; text-align: justify"
         >
           <span class="p">That</span>,
-                    <u>@* SHANTAGAURI GOSAI &amp; VINODGIRI GOSAI *@{{data.customerName}}</u>
+                    <u>@* SHANTAGAURI GOSAI &amp; VINODGIRI GOSAI *@{{data.certificateName}}</u>
           <span class="p">(name as recorded with the Company</span>  against the above folio) and
           <span class="s14"
             >@* SHANTABEN&nbsp; NARENDRAGIRI&nbsp; GOSAI&nbsp; &amp;&nbsp;
@@ -2341,7 +2365,9 @@ border-bottom-style: solid;
 
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left" />
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -2352,6 +2378,7 @@ border-bottom-style: solid;
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
@@ -2362,7 +2389,7 @@ border-bottom-style: solid;
 
     // Load Customers
 
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
 
              if(id){
                  hideLoader();
@@ -2375,26 +2402,33 @@ border-bottom-style: solid;
                  $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                $scope.data = {
-                    docid: docs.id,
-                   customerName : docs.name,
-                   address: docs.addressAsPerAadhar,
-                   companyName: result.companyName,
-                   companyAddress: result.company.companyAddress,
-                   qty: result.qty,
-                   jsondata: result.stockJson,
-                   panname: docs.nameAsPerPan,
-                   pan: docs.pan,
-                   letterno: '',
-                   letterdate: '',
-                   mobile: docs.mobile,
-                   email: docs.email,
-                   day: currentDate.getDate(),
-                   month: monthsOfYear[currentDate.getMonth()],
-                   year: currentDate.getFullYear(),
-                   place:'Vadodara',
-                };
-                $scope.shares = JSON.parse($scope.data.jsondata);
+
+                   var isDeceased = !!docs?.dateOfDeath;
+
+                if (isDeceased) {
+    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                }
+
+                
 
                 hideLoader();
                 }, function (error) {
@@ -2415,6 +2449,7 @@ border-bottom-style: solid;
                 $scope.data = {
                     docid: obj.docid,
                     customerName: obj.customerName,
+					certificateName: obj.certificateName,
                     holders: JSON.parse(obj.holders),
                     address: obj.address,
                     companyName: obj.companyName,
@@ -2430,7 +2465,8 @@ border-bottom-style: solid;
                     place: obj.place,
                     day:obj.day,
                     month:obj.month,
-                    year: obj.year
+                    year: obj.year,
+                    condition: obj.condition,
                 };
                 $scope.doc = $scope.data.holders;
                 $scope.shares = JSON.parse($scope.data.jsondata);
@@ -2444,6 +2480,31 @@ border-bottom-style: solid;
                 hideLoader();
             });
             }
+
+            function populateData(holder, result, currentDate, monthsOfYear,isDeceased) {
+                $scope.data = {
+                    docid: holder.id,
+                   customerName : holder.name,
+                   certificateName : holder.nameAsPerCertificate,
+                   address: holder.addressAsPerAadhar,
+                   companyName: result.companyName,
+                   companyAddress: result.company.companyAddress,
+                   qty: result.qty,
+                   jsondata: result.stockJson,
+                   panname: holder.nameAsPerPan,
+                   pan: holder.pan,
+                   letterno: '',
+                   letterdate: '',
+                   mobile: holder.mobile,
+                   email: holder.email,
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+                   place:'Vadodara',
+                   condition: isDeceased,
+                };
+              $scope.shares = JSON.parse($scope.data.jsondata);
+             }
         };
 
                 function checkData() {
@@ -2490,6 +2551,7 @@ border-bottom-style: solid;
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
                   if($scope.data.jsondata == undefined){
                      Swal.fire({
                             title: 'Error!',
@@ -2497,6 +2559,7 @@ border-bottom-style: solid;
                             icon: 'error',
                             confirmButtonText: 'Try Again'
                         });
+                        $scope.processdone = false;
                 return;
                  }
                  var arr = angular.copy($scope.doc);
@@ -2522,6 +2585,7 @@ border-bottom-style: solid;
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -2537,7 +2601,7 @@ border-bottom-style: solid;
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -2547,6 +2611,7 @@ border-bottom-style: solid;
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -2578,7 +2643,7 @@ border-bottom-style: solid;
 
         //Function
         $scope.printDiv = function (divId) {
-                    var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0;}.s1{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt;}h1{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;}.s2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt;}h2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt;}.s4{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:10pt;}.h3{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt;}.s6{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s7{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s8{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s9{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;}.s10{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s11{color:black;font-family:"Times New Roman",serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt;}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s14{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:10pt;}.s15{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,lower-roman)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}li{display:block;}#l2{padding-left:0pt;counter-reset:d1 1;}#l2>li>*:first-child:before{counter-increment:d1;content:counter(d1,lower-roman)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}#l2>li:first-child>*:first-child:before{counter-increment:d1 0;}li{display:block;}#l3{padding-left:0pt;counter-reset:e1 1;}#l3>li>*:first-child:before{counter-increment:e1;content:counter(e1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}#l3>li:first-child>*:first-child:before{counter-increment:e1 0;}table,tbody{vertical-align:top;overflow:visible;}</style>';
+                    var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0;}.s1{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt;}h1{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;}.s2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt;}h2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt;}.s4{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:10pt;}.h3{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt;}.s6{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s7{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s8{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s9{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt;}.s10{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s11{color:black;font-family:"Times New Roman",serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt;}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s14{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:10pt;}.s15{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,lower-roman)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}li{display:block;}#l2{padding-left:0pt;counter-reset:d1 1;}#l2>li>*:first-child:before{counter-increment:d1;content:counter(d1,lower-roman)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}#l2>li:first-child>*:first-child:before{counter-increment:d1 0;}li{display:block;}#l3{padding-left:0pt;counter-reset:e1 1;}#l3>li>*:first-child:before{counter-increment:e1;content:counter(e1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}#l3>li:first-child>*:first-child:before{counter-increment:e1 0;}table,tbody{vertical-align:top;overflow:visible;} @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

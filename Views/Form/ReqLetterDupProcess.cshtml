@@ -146,6 +146,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5% ;" ng-controller="FormController">
@@ -171,15 +183,41 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="selected" class="form-label">Select Certificate No</label>
+                                <select class="form-select" ng-options="s.certificateNo as s.certificateNo for s in shares" ng-model="selected" ng-change="AddSelectedShare(selected)">
+                                    <option selected disabled value="">Select Shares</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                {{message}}
                             </div>
                         </div>
                     </div>
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center mt-4">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -197,8 +235,14 @@
         text-align: left;
       "
     >
-            {{data.firstHolder}},{{data.secondHolder}},{{data.thirdHolder}}
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+				{{data.firstHolder}},{{data.secondHolder}},{{data.thirdHolder}}
+			</span>
+            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+				{{h}},
+			</span>
     </h1>
+            
     <p class="s1" style="padding:5px 370px 0px 5px; text-indent: 0pt; text-align: left">
       @* 114, BRAHMAN FALIYU, DEBHARI, KHEDA, VIRPUR, GUJARAT, 388260 *@ {{data.address}}
     </p>
@@ -349,9 +393,13 @@
           "
         >
           <p class="s5" style="text-indent: 0pt; text-align: center">
-                        {{data.firstHolder}} &emsp;
-                        {{data.secondHolder}}&emsp;
-                        {{data.thirdHolder}}
+                        <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                            {{data.firstHolder}} &emsp;
+                            {{data.secondHolder}} &emsp;
+                            {{data.thirdHolder}}
+                        </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                            {{h}} &emsp;
+                        </span>
           </p>
           <p
             class="s5"
@@ -388,7 +436,7 @@
             border-right-width: 1pt;
           "
         >
-                    <p class="s6" style="text-indent: 0pt; text-align: center">{{data.qty}}</p>
+                    <p class="s6" style="text-indent: 0pt; text-align: center">{{selectedSharesQty}}</p>
         </td>
       </tr>
     </table>
@@ -410,25 +458,50 @@
     </p>
     <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
     <p class="s8" style="padding-left: 5pt; text-indent: 0pt; text-align: left; display:flex; justify-content:space-between">
-            <b>{{data.firstHolder}}</b><b>{{data.secondHolder}}</b><b>{{data.thirdHolder}}</b>
+            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}}</b>
+            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.secondHolder}}</b>
+            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.thirdHolder}}</b>
+            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">  {{h}}</b>
     </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
           <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
         $scope.hDiv = true;
+          $scope.selected = null;
+         $scope.selectedSharesQty = 0;
             var params = new URLSearchParams(window.location.search);
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
+        $scope.AddSelectedShare = function(shr) {
+      if (shr) {
+        var sShare = $scope.shares.find(x => x.certificateNo === shr);
+
+        if (sShare) {
+          // Add the selected share to the selectedShares list
+          $scope.selectedSharesQty += sShare.actualQty;
+
+          // Remove the selected share from the available shares list
+          $scope.shares = $scope.shares.filter(x => x.certificateNo !== shr);
+
+          // Reset the selected model
+          $scope.selected = null;
+          $scope.message = shr + ' is Added';
+        }
+      }
+    };
 
         // Load Customers
 
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
 
              if(id){
                  hideLoader();
@@ -441,22 +514,30 @@
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
 
-                $scope.data = {
-                    docid: docs.id,
-                   customerName : docs.name,
-                   today: new Date(),
-                   folioNo : result.folioNo,
-                   qty : result.qty,
-                       mobile: result.firstHolderData.mobile,
-    address : result.firstHolderData.addressAsPerAadhar,
-                       officename : result.company.rtaName,
-    officeaddress: result.company.rtaAddress,
-    unit: result.companyName,
-                      firstHolder: result.firstHolderName,
-    secondHolder: result.secondHolderName,
-    thirdHolder: result.thirdHolderName,
+                     var isDeceased = !!docs?.dateOfDeath;
 
-                };
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
 
                 hideLoader();
                 }, function (error) {
@@ -488,7 +569,11 @@
                       firstHolder: obj.firstHolder,
     secondHolder: obj.secondHolder,
     thirdHolder: obj.thirdHolder,
+    condition: obj.condition,
+		heirs: obj.heirs,
+        selectedQty: obj.selectedQty,
                 };
+                $scope.selectedSharesQty = $scope.data.selectedQty;
                                 id = result.stockId;
 
                 checkData();
@@ -497,6 +582,30 @@
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, heirlist,isDeceased) {
+
+                $scope.data = {
+                    docid: holder.id,
+                   customerName : holder.name,
+                   today: new Date(),
+                   folioNo : result.folioNo,
+                   qty : result.qty,
+                   jsondata: result.stockJson,
+                    mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
+                    address : !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
+                    officename : result.company.rtaName,
+                    officeaddress: result.company.rtaAddress,
+                    unit: result.companyName,
+                    firstHolder: result.firstHolderName,
+                    secondHolder: result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                    condition: isDeceased,
+                    
+                };
+                $scope.shares = JSON.parse(result.stockJson);
             }
         };
 
@@ -534,6 +643,8 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
+                 $scope.data.selectedQty = $scope.selectedSharesQty;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Req Letter Dup Process',
@@ -554,6 +665,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -570,7 +682,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -580,6 +692,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -612,7 +725,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-                var css ='<style type="text/css">* { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 20pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 16pt; } .s2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } .s3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } h3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 11pt; } p { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt; } .h2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s4 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 11pt; } .s5 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s6 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s7 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s8 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } table, tbody { vertical-align: top; overflow: visible; }</style>';
+                var css ='<style type="text/css">* { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 20pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 16pt; } .s2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } .s3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } h3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 11pt; } p { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt; } .h2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s4 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 11pt; } .s5 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s6 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s7 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } .s8 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } table, tbody { vertical-align: top; overflow: visible; } @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

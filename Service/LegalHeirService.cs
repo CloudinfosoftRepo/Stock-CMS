@@ -3,6 +3,7 @@ using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Stock_CMS.Service
 {
@@ -11,21 +12,28 @@ namespace Stock_CMS.Service
         private readonly ILegalHeirRepository _legalHeirRepository;
         private readonly IUserRepository _userRepository;
         private readonly FileUpload _fileUpload;
+        private readonly NormalizeModel _normalizeModel;
+        private readonly IRelationMappingRepository _relationMappingRepository;
 
-
-        public LegalHeirService(ILegalHeirRepository legalHeirRepository, IUserRepository userRepository, FileUpload fileUpload)
+        public LegalHeirService(ILegalHeirRepository legalHeirRepository, IUserRepository userRepository, FileUpload fileUpload,NormalizeModel normalizeModel, IRelationMappingRepository relationMappingRepository)
         {
             _legalHeirRepository = legalHeirRepository;
             _userRepository = userRepository;
             _fileUpload = fileUpload;
+            _normalizeModel = normalizeModel;
+            _relationMappingRepository = relationMappingRepository;
         }
 
         public async Task<long> AddLegalHeir(LegalHeirDto data)
         {
-            var isExist = await _legalHeirRepository.GetLegalHeirByInfo(data);
-            if (isExist.Any()) { return -1; }
-            else
-            {
+            //var isExist = await _legalHeirRepository.GetLegalHeirByInfo(data);
+            //if (isExist.Any()) { return -1; }
+            //else
+            //{
+
+                data.DateOfDeath = _normalizeModel.ConvertToIST(data.DateOfDeath);
+                data.Dob = _normalizeModel.ConvertToIST(data.Dob);
+
                 List<LegalHeirDto> dataList = new List<LegalHeirDto> { data };
 
 
@@ -66,17 +74,17 @@ namespace Stock_CMS.Service
                 {
                     return 0;
                 }
-            }
+            //}
         }
         public async Task<Int32> UpdateLegalHeir(LegalHeirDto data)
         {
             var isExist = await _legalHeirRepository.GetLegalHeirById(data.Id);
-            var chk = await _legalHeirRepository.GetLegalHeirByAadhar(data.Aadhar);
-            bool isMatch = chk.Any(x => x.Aadhar == data.Aadhar && x.Id != data.Id);
-            if (isMatch)
-            {
-                return -1;
-            }
+            //var chk = await _legalHeirRepository.GetLegalHeirByAadhar(data.Aadhar);
+            //bool isMatch = chk.Any(x => x.Name == data.Name && x.Id != data.Id);
+            //if (isMatch)
+            //{
+            //    return -1;
+            //}
 
             if (isExist.Any())
             {
@@ -88,7 +96,8 @@ namespace Stock_CMS.Service
                     data.CreatedAt = existingProduct.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
-
+                    data.Dob = data.Dob != null ? _normalizeModel.ConvertToIST(data.Dob) : existingProduct.Dob;
+                    data.DateOfDeath = data.DateOfDeath != null ? _normalizeModel.ConvertToIST(data.DateOfDeath) : existingProduct.DateOfDeath;
 
 
                     if (data.AadharFile != null)
@@ -146,9 +155,10 @@ namespace Stock_CMS.Service
             }
 
         }
-        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByClientId(long id)
+
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByCustomerId(long id)
         {
-            var data = await _legalHeirRepository.GetLegalHeirByClientId(id);
+            var data = await _legalHeirRepository.GetLegalHeirByCustomerId(id);
 
             var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
             var users = await _userRepository.GetUsersByIds(ids);
@@ -158,6 +168,47 @@ namespace Stock_CMS.Service
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;
             });
+
+            return result;
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByCustomerIdWithoutLegalHeir(long id, long legalheirId)
+        {
+            var data = await _legalHeirRepository.GetLegalHeirByCustomerIdWithoutLegalHeir(id,legalheirId);
+
+            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var users = await _userRepository.GetUsersByIds(ids);
+            var result = data.Select(x =>
+            {
+                x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+                x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+                return x;
+            });
+
+            return result;
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByClientId(long id)
+        { 
+            var relation = await _relationMappingRepository.GetRelationMappingsByHolderId(id);
+
+            var legalHeirId = relation.Select(x => x.LegalHeirId).Distinct().ToArray();
+        
+            var data = await _legalHeirRepository.GetLegalHeirByLegalHeirIds(legalHeirId);
+
+            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var users = await _userRepository.GetUsersByIds(ids);
+            var result = data.Select(x =>
+            {
+                x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+                x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+                return x;
+            });
+
+            foreach (var item in result)
+            {
+                item.RelationWithDead = relation.Where(x => x.LegalHeirId == item.Id && x.HolderId == id).FirstOrDefault().RelationWithDead;
+            }
 
             return result;
         }
@@ -195,7 +246,10 @@ namespace Stock_CMS.Service
 
         public async Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByClientId(long id)
         {
-            var data = await _legalHeirRepository.GetClaimentLegalHeirByClientId(id);
+            var relation = await _relationMappingRepository.GetRelationMappingsByHolderId(id);
+
+            var legalHeirId = relation.Select(x => x.LegalHeirId).Distinct().ToArray();
+            var data = await _legalHeirRepository.GetClaimentLegalHeirByLegalHeirIds(legalHeirId);
 
             var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
             var users = await _userRepository.GetUsersByIds(ids);
@@ -206,6 +260,34 @@ namespace Stock_CMS.Service
                 return x;
             });
 
+            foreach (var item in result)
+            {
+                item.RelationWithDead = relation.Where(x => x.LegalHeirId == item.Id && x.HolderId == id).FirstOrDefault().RelationWithDead;
+            }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetNOCLegalHeirByLegalHeirIds(long id)
+        {
+            var relation = await _relationMappingRepository.GetRelationMappingsByHolderId(id);
+
+            var legalHeirId = relation.Select(x => x.LegalHeirId).Distinct().ToArray();
+            var data = await _legalHeirRepository.GetNOCLegalHeirByLegalHeirIds(legalHeirId);
+
+            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var users = await _userRepository.GetUsersByIds(ids);
+            var result = data.Select(x =>
+            {
+                x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+                x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+                return x;
+            });
+
+            foreach (var item in result)
+            {
+                item.RelationWithDead = relation.Where(x => x.LegalHeirId == item.Id && x.HolderId == id).FirstOrDefault().RelationWithDead;
+            }
 
             return result;
         }

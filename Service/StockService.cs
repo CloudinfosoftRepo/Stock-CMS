@@ -35,6 +35,7 @@ namespace Stock_CMS.Service
             //if (isExist.Any()) { return -1; }
             //else
             //{
+            data.ClaimStatus = "Enquiry";
                 List<StockDto> dataList = new List<StockDto> { data };
                 var result = await _StockRepository.AddStock(dataList);
                 if (result.Any())
@@ -109,20 +110,62 @@ namespace Stock_CMS.Service
             {
                 return -2;
             }
-
         }
-        public async Task<IEnumerable<StockDto>> GetStockByClientId(long  clientid)
+
+        public async Task<long> UpdateStockbyColumn(StockDto stock)
+        {
+            stock.IsPaid = true;
+
+            List<StockDto> stockDtos = new List<StockDto>() { stock };
+            var result = await _StockRepository.UpdateStockbyColumn(stockDtos, ["IsPaid", "UpdatedAt", "UpdatedBy"]);
+            if (result.Any())
+            {
+                return result.FirstOrDefault().Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public async Task<long> DeleteStockbyColumn(StockDto stock)
+        {
+            stock.IsActive = false;
+
+            List<StockDto> stockDtos = new List<StockDto>() { stock };
+            var result = await _StockRepository.UpdateStockbyColumn(stockDtos, ["IsActive", "UpdatedAt", "UpdatedBy"]);
+            if (result.Any())
+            {
+                return result.FirstOrDefault().Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public async Task<StocksDetailsDto> GetStockByClientId(long  clientid)
         {
             var data = await _StockRepository.GetStockByClientId(clientid);
 
-            var ids = data.Select(x => x.CreatedBy).Concat(data.Select(x => x.UpdatedBy)).Distinct().ToArray();
+            var stock = data.OrderBy(x => x.CompanyName).ToList();
+
+            var ids = stock.Select(x => x.CreatedBy).Concat(stock.Select(x => x.UpdatedBy)).Distinct().ToArray();
             var users = await _userRepository.GetUsersByIds(ids);
-            var result = data.Select(x =>
+            var Stocks = stock.Select(x =>
 			{
 				x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
 				x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
 				return x;
 			});
+
+            var total = Stocks.Sum(item => item.Qty * item.Rate);
+
+            var result = new StocksDetailsDto()
+            {
+                TotalAmount = total,
+                stocks = Stocks,
+            };
 
             //var companyid = result.Select(x => x?.CompanyId).Distinct().ToArray();
             //var company =  await _companyRepository.GetCompanyByIds(companyid);
@@ -297,6 +340,7 @@ namespace Stock_CMS.Service
                                             CreatedAt = DateTime.Now,
                                             CreatedBy = createdBy,
                                             IsActive = true,
+                                            IsPaid = false,
                                         };
                                         dataList.Add(newItem);
                                     }
@@ -396,15 +440,26 @@ namespace Stock_CMS.Service
         {
             var allstocks = await _StockRepository.GetStock();
 
+            var stockIds = allstocks.Where(y => y?.ClaimStatus.ToLower() == "follow up".ToLower()).Select(x => x.Id).ToArray();
+
+            var tracing = await _trackingRepository.GetTrackingbyStockIdAndFollowUpDate(stockIds);
+
+            var stockIdsList = tracing.Select(x => x.StockId).ToList();
+            var stocks = allstocks.Where(x => stockIdsList.Contains(x.Id));
+
             var result = new
             {
-                pending = allstocks.Where(x => x?.ClaimStatus.ToLower() == "pending").Count(),
-                followup = allstocks.Where(x => x.ClaimStatus.ToLower() == "follow up").Count(),
-                iepf = allstocks.Where(x => x.ClaimStatus.ToLower() == "iepf").Count(),
-                iprs = allstocks.Where(x => x.ClaimStatus.ToLower() == "iepf post receipt submit").Count(),
-                drf = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf form submitted").Count(),
-                demate = allstocks.Where(x => x.ClaimStatus.ToLower() == "demated").Count(),
-                completed = allstocks.Where(x => x.ClaimStatus.ToLower() == "completed").Count(),
+                pending = allstocks.Where(x => x?.ClaimStatus.ToLower() == "pending".ToLower()).Count(),
+                followup = stocks.Where(x => x.ClaimStatus.ToLower() == "follow up".ToLower()).Count(),
+                iepf = allstocks.Where(x => x.ClaimStatus.ToLower() == "IEPF Post Receipt Pending".ToLower()).Count(),
+                iprs = allstocks.Where(x => x.ClaimStatus.ToLower() == "IEPF".ToLower()).Count(),
+                iepfrejected = allstocks.Where(x => x.ClaimStatus.ToLower() == "iepf rejected".ToLower()).Count(),
+                drf = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf form submitted".ToLower()).Count(),
+                drfreject = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf rejected".ToLower()).Count(),
+                demate = allstocks.Where(x => x.ClaimStatus.ToLower() == "demated".ToLower()).Count(),
+                totalevel = allstocks.Where(x => x.ClaimStatus != "Enquiry").Sum(item => item.Qty * item.Rate),
+                unpaid = allstocks.Where(x => x.IsPaid == false || x.IsPaid == null).Sum(item => ((item.Qty * item.Rate) * item.Brokerage) / 100 ),
+                //unpaid = allstocks.Where(x => x.IsPaid == false).Sum(item => item.Qty * item.Rate),
             };
 
             return result;
@@ -422,35 +477,93 @@ namespace Stock_CMS.Service
                          select new
                          {
                              allstock.Id,
+                             allstock.CustomerName,
                              allstock.CompanyName,
                              allstock.FirstHolderName,
                              allstock.ClaimStatus,
                              allstock.FolioNo,
                              allstock.Qty,
-                             trackDate = tracing.Where(x => x.StockId == allstock.Id ).OrderByDescending(x => x.Id).Take(1).Select(x=>x.DateofSubmission)
-                        };
+                             process = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Process).FirstOrDefault(),
+                             trackDate = tracing.Where(x => x.StockId == allstock.Id ).OrderByDescending(x => x.Id).Take(1).Select(x=>x.DateofSubmission),
+                             srnno = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srnno).FirstOrDefault(),
+                             srndate = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srndate).FirstOrDefault(),
+                         };
 
             return result;
         }
 
         public async Task<dynamic> GetStocksByStatusName(string status)
         {
-            var allstocks = await _StockRepository.GetStocksByStatus(status);
+            IEnumerable<TrackingDto> tracing = new List<TrackingDto>();
+            var allStocks = await _StockRepository.GetStocksByStatus(status);
+            var result = new List<dynamic>(); 
 
-            var stockids = allstocks.Select(x => x.Id).ToArray();
-            var tracing = await _trackingRepository.GetTrackingbyStockIds(stockids);
+            var stockIds = allStocks.Select(x => x.Id).ToArray();
 
-            var result = from allstock in allstocks
+            if (status == "follow up")
+            {
+                tracing = await _trackingRepository.GetTrackingbyStockIdAndFollowUpDate(stockIds);
+
+                var stockIdsList = tracing.Select(x => x.StockId).ToList();
+                var stocks = allStocks.Where(x => stockIdsList.Contains(x.Id));
+
+                result.AddRange(from allStock in stocks
+                                select new
+                                {
+                                    allStock.Id,
+                                    allStock.CustomerName,
+                                    allStock.CompanyName,
+                                    allStock.FirstHolderName,
+                                    allStock.ClaimStatus,
+                                    allStock.FolioNo,
+                                    allStock.Qty,
+                                    process = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Process).FirstOrDefault(),
+                                    trackDate = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DateofFollowUp).FirstOrDefault() ?? allStock.CreatedAt,
+                                });
+            }
+            else
+            {
+                tracing = await _trackingRepository.GetTrackingbyStockIdsAndSubmissionDate(stockIds);
+
+                result.AddRange(from allStock in allStocks
+                                select new
+                                {
+                                    allStock.Id,
+                                    allStock.CustomerName,
+                                    allStock.CompanyName,
+                                    allStock.FirstHolderName,
+                                    allStock.ClaimStatus,
+                                    allStock.FolioNo,
+                                    allStock.Qty,
+                                    process = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Process).FirstOrDefault(),
+                                    trackDate = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DateofSubmission).FirstOrDefault() ?? allStock.CreatedAt,
+                                    srnno = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srnno).FirstOrDefault(),
+                                    srndate = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srndate).FirstOrDefault(),
+                                    dpname = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DpName).FirstOrDefault(),
+                                    dpidclientid = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DpIdClientId).FirstOrDefault(),
+                                });
+            }
+
+            return result;
+        }
+
+        public async Task<dynamic> GetUnpaidAmountByClient()
+        {
+            var allstocks = await _StockRepository.GetStock();
+
+            var clients = await _customerRepository.GetCustomer();
+
+            var amount = from client in clients
                          select new
                          {
-                             allstock.Id,
-                             allstock.CompanyName,
-                             allstock.FirstHolderName,
-                             allstock.ClaimStatus,
-                             allstock.FolioNo,
-                             allstock.Qty,
-                             trackDate = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DateofSubmission)
+                             client.Id,
+                             client.CustomerName,
+                             client.Mobile,
+                             client.Address,
+                             unpaid = allstocks.Where(x => (x.IsPaid == false || x.IsPaid == null) && x.CustomerId == client.Id).Sum(item => ((item.Qty * item.Rate) * item.Brokerage ?? 0) / 100)
                          };
+
+            var result = amount.OrderBy(y => y.CustomerName).ToList();
 
             return result;
         }

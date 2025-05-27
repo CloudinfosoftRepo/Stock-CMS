@@ -168,6 +168,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -192,9 +204,19 @@
                         <!-- Select Customer Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="seletedid" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -206,7 +228,9 @@
                                 <input type="text" ng-model="data.natureofsecurity" class="form-control" placeholder="Nature of Security">
                             </div>
                         </div>
+                    </div>
 
+                    <div class="row">
                         <!-- Nominee's Name -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -214,9 +238,7 @@
                                 <input type="text" ng-model="data.nomineename" class="form-control" placeholder="Nominee's Name">
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
+                    
                         <!-- Nominee's Address -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -233,7 +255,9 @@
                                 <input type="date" ng-model="data.dob" class="form-control" placeholder="Nominee's DOB">
                             </div>
                         </div>
+                    </div>
 
+                    <div class="row">
                         <!-- Nominee's Relationship -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -241,9 +265,7 @@
                                 <input type="text" ng-model="data.relationship" class="form-control" placeholder="Relationship">
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
+                   
                         <!-- Nominee's Name of Relative -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -260,8 +282,9 @@
                             </div>
                         </div>
 
-                   
+                    </div>
 
+                    <div class="row">
                         <!-- Occupation -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -269,9 +292,7 @@
                                 <input type="text" ng-model="data.occupation" class="form-control" placeholder="Occupation">
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
+                   
                         <!-- Nationality -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -287,7 +308,8 @@
                                 <input type="text" ng-model="data.relation" class="form-control" placeholder="Relationship with the security holder">
                             </div>
                         </div>
-                    
+                    </div>
+                    <div class="row">
                         <!-- Witness's Name -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -295,8 +317,7 @@
                                 <input type="text" ng-model="data.witnessname" class="form-control" placeholder="Witness's Name">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                   
 
                         <!-- Witness Address -->
                         <div class="col-md-4 mb-3">
@@ -309,7 +330,7 @@
                     </div>
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center mt-4">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -391,11 +412,13 @@
       "
     >
       I/We
-            <span class="s3">
+            <span class="s3" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
                 {{data.firstHolder}},
                 {{data.secondHolder}},
                 {{data.thirdHolder}}
-            </span>the holder(s) of the securities particulars of which are given hereunder
+            </span><span class="s3" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                {{h}}
+            </span> the holder(s) of the securities particulars of which are given hereunder
       wish to make nomination and do here by nominate the following persons in
       whom shall vest, all the rights in respect of such securities in the event
       of my/our death.
@@ -818,10 +841,13 @@
     >
             Name of the Security Holder(s) Signature Witness with  Name and address
     </p>
-        <p style="text-indent: 0pt; text-align: left">
+        <p style="text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
             {{data.firstHolder}},
             {{data.secondHolder}},
             {{data.thirdHolder}}
+        </p>
+        <p style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+            {{h}}
         </p>
     <p
       class="s5"
@@ -836,7 +862,9 @@
             @* B-204, RATNADEEP APPARTMENT VADODARA, 390025 *@ {{data.witnessaddress}}
   </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -847,11 +875,12 @@
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
          // Load Customers
-         $scope.loadCustomers = function (sid) {
+         $scope.loadCustomers = function (sid,hid) {
              if(id){
                  hideLoader();
                  $scope.hDiv = true;
@@ -866,35 +895,32 @@
                 $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
-                    var year = new Date(doc.dob).getFullYear();
-                    var month = new Date(doc.dob).getMonth();
-                    var day = new Date(doc.dob).getDate();
-                $scope.data = {
-                    docid: doc.id,
-                    customerName : doc.name,
-                    officename : result.companyName,
-                    nomineename: '',
-                    address : '',
-                    dob: '',
-                    sonof: '',
-                    relationship: '',
-                    email: '',
-                    relation:'',
-                    natureofsecurity: 'Equity',
-                    jsondata: result.stockJson,
-                    qty: result.qty,
-                    folioNo : result.folioNo,
-                    officeaddress: result.company.companyAddress,
-                       firstHolder :result.firstHolderName,
-    secondHolder:result.secondHolderName,
-    thirdHolder: result.thirdHolderName,
-                    occupation: '',
-                    nationality: 'INDIAN',
-                    majordate: new Date(year + 18,month,day),
-                    witnessaddress:'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
-                    witnessname:'Shreyash Chhagani',
-                };
-                $scope.shares = JSON.parse($scope.data.jsondata);
+
+                      var isDeceased = !!doc?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = doc;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
+
                 hideLoader();
                 }, function (error) {
                     console.error('Error loading Docs:', error);
@@ -935,6 +961,8 @@
                     majordate: new Date(obj.majordate),
                     witnessname: obj.witnessname,
                     witnessaddress: obj.witnessaddress,
+					condition: obj.condition,
+					heirs: obj.heirs,
                 };
                                 id = result.stockId;
     $scope.shares = JSON.parse($scope.data.jsondata);
@@ -945,6 +973,40 @@
                 hideLoader();
             });
             }
+
+             function populateData(holder, result, heirlist,isDeceased) {
+                                    var year = new Date(holder.dob).getFullYear();
+                    var month = new Date(holder.dob).getMonth();
+                    var day = new Date(holder.dob).getDate();
+                $scope.data = {
+                    docid: holder.id,
+                    customerName : holder.name,
+                    officename : result.companyName,
+                    nomineename: '',
+                    address : '',
+                    dob: '',
+                    sonof: '',
+                    relationship: '',
+                    email: '',
+                    relation:'',
+                    natureofsecurity: 'Equity',
+                    jsondata: result.stockJson,
+                    qty: result.qty,
+                    folioNo : result.folioNo,
+                    officeaddress: result.company.companyAddress,
+                       firstHolder :result.firstHolderName,
+    secondHolder:result.secondHolderName,
+    thirdHolder: result.thirdHolderName,
+                    occupation: '',
+                    nationality: 'INDIAN',
+                    majordate: new Date(year + 18,month,day),
+                    witnessaddress:'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
+                    witnessname:'Shreyash Chhagani',
+                    condition: isDeceased,
+                    heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                };
+                $scope.shares = JSON.parse($scope.data.jsondata);
+             }
         };
 
             $scope.navtogenerateform = function () {
@@ -981,6 +1043,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
                   if($scope.data.jsondata == undefined){
                      Swal.fire({
                             title: 'Error!',
@@ -988,6 +1051,7 @@
                             icon: 'error',
                             confirmButtonText: 'Try Again'
                         });
+                        $scope.processdone = false;
                 return;
                  }
              let jsonString = JSON.stringify($scope.data, null, 2);
@@ -1010,6 +1074,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -1026,7 +1091,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -1036,6 +1101,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -1067,7 +1133,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-                        var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}.h1,h1{color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s1{color:#231f20;font-family:Calibri,sans-serif;font-style:italic;font-weight:bold;text-decoration:none;font-size:11pt}.s2{color:#231f20;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:11pt}p{color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;margin:0pt}.s3{color:#231f20;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:11pt}.s4{color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s5{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:"("counter(c1,decimal)") ";color:black;font-style:normal;font-weight:normal;text-decoration:none}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}#l2{padding-left:0pt;counter-reset:c2 1}#l2>li>*:first-child:before{counter-increment:c2;content:"("counter(c2,lower-latin)") ";color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}#l2>li:first-child>*:first-child:before{counter-increment:c2 0}#l3{padding-left:0pt}#l3>li>*:first-child:before{content:"· ";color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}#l4{padding-left:0pt}#l4>li>*:first-child:before{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}table,tbody{vertical-align:top;overflow:visible}</style>';
+                        var css ='<style type="text/css">*{margin:0;padding:0;text-indent:0}.h1,h1{color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s1{color:#231f20;font-family:Calibri,sans-serif;font-style:italic;font-weight:bold;text-decoration:none;font-size:11pt}.s2{color:#231f20;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:11pt}p{color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;margin:0pt}.s3{color:#231f20;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:11pt}.s4{color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s5{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:"("counter(c1,decimal)") ";color:black;font-style:normal;font-weight:normal;text-decoration:none}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}#l2{padding-left:0pt;counter-reset:c2 1}#l2>li>*:first-child:before{counter-increment:c2;content:"("counter(c2,lower-latin)") ";color:#231f20;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}#l2>li:first-child>*:first-child:before{counter-increment:c2 0}#l3{padding-left:0pt}#l3>li>*:first-child:before{content:"· ";color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}#l4{padding-left:0pt}#l4>li>*:first-child:before{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}table,tbody{vertical-align:top;overflow:visible} @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

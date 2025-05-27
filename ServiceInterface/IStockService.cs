@@ -11,7 +11,11 @@ namespace Stock_CMS.ServiceInterface
 
         Task<Int32> UpdateStockJson(long id, string jsonString, int updatedBy);
 
-        Task<IEnumerable<StockDto>> GetStockByClientId(long clientid);
+        Task<long> UpdateStockbyColumn(StockDto stock);
+
+        Task<long> DeleteStockbyColumn(StockDto stock);
+
+        Task<StocksDetailsDto> GetStockByClientId(long clientid);
         Task<StockDto> GetStockById(long id);
 
         Task<IEnumerable<DocDto>> GetHolderByStockId(long id);
@@ -25,5 +29,7 @@ namespace Stock_CMS.ServiceInterface
         Task<dynamic> GetStocksByStatus();
 
         Task<dynamic> GetStocksByStatusName(string status);
+
+        Task<dynamic> GetUnpaidAmountByClient();
     }
 }

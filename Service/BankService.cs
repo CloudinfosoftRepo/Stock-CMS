@@ -1,4 +1,5 @@
-﻿using Stock_CMS.Models;
+﻿using Stock_CMS.Common;
+using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
@@ -9,11 +10,12 @@ namespace Stock_CMS.Service
     {
         private readonly IBankRepository _bankRepository;
         private readonly IUserRepository _userRepository;
-
-        public BankService(IBankRepository bankRepository, IUserRepository userRepository)
+        private readonly NormalizeModel _normalizeModel;
+        public BankService(IBankRepository bankRepository, IUserRepository userRepository,NormalizeModel normalizeModel)
         {
             _bankRepository = bankRepository;
             _userRepository = userRepository;
+            _normalizeModel = normalizeModel;
         }
 
         public async Task<IEnumerable<BankDto>> GetBankByClientId(long clientid)
@@ -47,11 +49,14 @@ namespace Stock_CMS.Service
         }
 
         public async Task<long> AddBank(BankDto data)
+
         {
             var isExist = await _bankRepository.GetBankByClientId(data.ClientId ?? 0);
             if (isExist.Any()) { return -1; }
             else
             {
+                data.AccountOpeningDate = _normalizeModel.ConvertToIST(data.AccountOpeningDate);
+
                 List<BankDto> dataList = new List<BankDto> { data };
                 var result = await _bankRepository.AddBank(dataList);
                 if (result.Any())
@@ -71,6 +76,8 @@ namespace Stock_CMS.Service
             if (isExist.Any()) { return -1; }
             else
             {
+                data.AccountOpeningDate = _normalizeModel.ConvertToIST(data.AccountOpeningDate);
+
                 List<BankDto> dataList = new List<BankDto> { data };
                 var result = await _bankRepository.AddBank(dataList);
                 if (result.Any())
@@ -102,6 +109,7 @@ namespace Stock_CMS.Service
                 data.UpdatedBy = data.UpdatedBy;
                 data.UpdatedAt = DateTime.Now;
                 data.IsActive = dataFirst.IsActive;
+                data.AccountOpeningDate = data.AccountOpeningDate != null ? _normalizeModel.ConvertToIST(data.AccountOpeningDate) : dataFirst.AccountOpeningDate;
 
                 List<BankDto> updateList = new List<BankDto> { data };
                 var result = await _bankRepository.UpdateBank(updateList);
@@ -139,6 +147,7 @@ namespace Stock_CMS.Service
                 data.UpdatedBy = data.UpdatedBy;
                 data.UpdatedAt = DateTime.Now;
                 data.IsActive = dataFirst.IsActive;
+                data.AccountOpeningDate = data.AccountOpeningDate != null ? _normalizeModel.ConvertToIST(data.AccountOpeningDate) : dataFirst.AccountOpeningDate;
 
                 List<BankDto> updateList = new List<BankDto> { data };
                 var result = await _bankRepository.UpdateBank(updateList);

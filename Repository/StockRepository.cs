@@ -43,6 +43,11 @@ namespace Stock_CMS.Repository
             return await UpdateEntities(data);
         }
 
+        public async Task<IEnumerable<StockDto>> UpdateStockbyColumn(IEnumerable<StockDto> data, string[] columns)
+        {
+            return await UpdateEntitiesArray(data, columns);
+        }
+
         public async Task<IEnumerable<StockDto>> GetStocksByStatus(string status)
         {
             return await GetMany(x => x.IsActive == true && x.ClaimStatus.ToLower() == status);

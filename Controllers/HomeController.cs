@@ -16,12 +16,13 @@ namespace Stock_CMS.Controllers
 		private readonly IUserService _user;
 		private readonly IRoleService _role;
 		private static readonly ILog _logger = LogManager.GetLogger(typeof(HomeController));
+		private readonly IPermissionService _permissionService;
 
-
-		public HomeController(IUserService userService, IRoleService role)
+		public HomeController(IUserService userService, IRoleService role,IPermissionService permissionService)
 		{
 			_user = userService;
 			_role = role;
+			_permissionService = permissionService;
 		}
 
 
@@ -210,7 +211,7 @@ namespace Stock_CMS.Controllers
 				return View("Error");
 			}
 		}
-		public IActionResult Dashboard()
+		public async Task<IActionResult> Dashboard()
 		{
 			var cookieValue = Request.Cookies["UserId"];
 
@@ -224,8 +225,16 @@ namespace Stock_CMS.Controllers
 				//ViewBag.CookieValue = cookieValue;
 				return View("Index");
 			}
-			return View();
-		}
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 1);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
+        }
 		[HttpPost]
 		public async Task<string> ForgotPassword(string email)
 		{

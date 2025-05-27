@@ -10,6 +10,7 @@ namespace Stock_CMS.RepositoryInterface
         Task<IEnumerable<StockDto>> GetStock();
         Task<IEnumerable<StockDto>> AddStock(IEnumerable<StockDto> data);
         Task<IEnumerable<StockDto>> UpdateStock(IEnumerable<StockDto> data);
+        Task<IEnumerable<StockDto>> UpdateStockbyColumn(IEnumerable<StockDto> data, string[] columns);
         Task<IEnumerable<StockDto>> GetStockByClientId(long Id);
 
         Task<IEnumerable<StockDto>> GetStockByinfo(long Id, long componyId, string folioNo);

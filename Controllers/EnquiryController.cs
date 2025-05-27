@@ -12,18 +12,28 @@ namespace Stock_CMS.Controllers
 		private readonly IStockService _StockService;
 		private readonly ILogger<EnquiryController> _logger;
         private readonly ITrackingService _TrackingService;
+        private readonly IPermissionService _permissionService;
 
-		public EnquiryController(ILogger<EnquiryController> logger, IStockService StockService,ITrackingService trackingService)
+		public EnquiryController(ILogger<EnquiryController> logger, IStockService StockService,ITrackingService trackingService,IPermissionService permissionService)
 		{
 			_logger = logger;
 			_StockService = StockService;
             _TrackingService = trackingService;
+            _permissionService = permissionService;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
-		}
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 2);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
+        }
 
 		[HttpGet]
 		public async Task<ActionResult> GetStocks(long id)
@@ -121,9 +131,9 @@ namespace Stock_CMS.Controllers
 		}
 
         [HttpPost]
-        public async Task<JsonResult> UpdateStockJson(long id, string jsonString)
+        public async Task<JsonResult> UpdateStockJson([FromBody]StockJsonUploadDto data)
         {
-            if (id < 1 && string.IsNullOrEmpty(jsonString))
+            if (data.Id < 1 && string.IsNullOrEmpty(data.JsonString))
             {
                 return Json(new { success = false, message = "Values cannot be Empty" });
             }
@@ -131,11 +141,40 @@ namespace Stock_CMS.Controllers
             try
             {
                 var userId = HttpContext.Request.Cookies["UserId"];
-                var result = await _StockService.UpdateStockJson(id, jsonString, int.Parse(userId));
+                var result = await _StockService.UpdateStockJson(data.Id, data.JsonString, int.Parse(userId));
                 string message = result == -2 ? "No record Found." :
                    result == -1 ? "Stock already exists." :
                    result == 0 ? "Failed to update Stock." :
                    "Stock updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteStockbyColumn([FromBody] StockDto stock)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                stock.UpdatedBy = int.Parse(userId);
+                stock.UpdatedAt = DateTime.Now;
+                var result = await _StockService.DeleteStockbyColumn(stock);
+                string message = result == -2 ? "No record Found." :
+                  result == -1 ? "Client already exists." :
+                  result == 0 ? "Failed to update Client." :
+                  "Convert to Client successfully.";
                 bool success = result > 0;
                 return Json(new { success = success, message = message });
             }
@@ -176,9 +215,17 @@ namespace Stock_CMS.Controllers
 
         }
 
-        public IActionResult Tracking()
+        public async Task<IActionResult> Tracking()
         {
-            return View();
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 2);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]

@@ -1,0 +1,467 @@
+﻿<html lang="en" ng-app="Stock-CMS">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Documents List</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 18pt;
+        }
+
+        p {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 14pt;
+            margin: 0pt;
+        }
+
+        a {
+            color: #0462c1;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 14pt;
+        }
+
+        h2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        table,
+        tbody {
+            vertical-align: top;
+            overflow: visible;
+        }
+
+        .document-table {
+            border-collapse: collapse;
+            margin-left: 5.5pt;
+        }
+
+            .document-table th,
+            .document-table td {
+                border: 1px solid;
+                padding: 4px;
+            }
+
+            .document-table th {
+                text-align: left;
+            }
+
+            .document-table td:first-child {
+                width: 193pt;
+            }
+
+            .document-table td:nth-child(2) {
+                width: 95pt;
+                text-indent: 14pt;
+            }
+
+            .document-table td:last-child {
+                width: 5pt;
+            }
+    </style>
+</head>
+<body style="padding-left: 10%;" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Documents List</h3>
+        </div>
+    </div>
+    <div id="printForm">
+        <h1 style="
+        padding-left: 95pt;
+        text-indent: 0pt;
+        line-height: 22pt;
+        text-align: center;
+      ">
+            Dear Money Financial Services
+        </h1>
+        <p style="
+        padding-left: 95pt;
+        text-indent: 0pt;
+        line-height: 17pt;
+        text-align: center;
+      ">
+            GF 12 Narayan Angan,
+        </p>
+        <p style="padding-left: 95pt; text-indent: 0pt; text-align: center">
+            Opp. Ananya Girls Hostel, Narayan School Road, NH 8 Waghodia Road,
+            Vadodara,
+        </p>
+        <p style="padding-left: 132pt; text-indent: 0pt; text-align: center">
+            M. No. 9428171249 / 9737567070
+        </p>
+        <p style="text-indent: 0pt; text-align: left" />
+        <p style="text-indent: 0pt; text-align: left" />
+        <p style="padding-left: 125pt; text-indent: 0pt; text-align: center">
+            <a href="mailto:dearmoneywm@gmail.com"
+               style="
+          color: black;
+          font-family: Calibri, sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          text-decoration: none;
+          font-size: 14pt;
+        "
+               target="_blank">Email ID: </a><a href="mailto:dearmoneywm@gmail.com" target="_blank">dearmoneywm@gmail.com</a>
+        </p>
+        <p style="padding-top: 16pt; text-indent: 0pt; text-align: left"><br /></p>
+        <h2 style="padding-left: 121pt; text-indent: 0pt; text-align: center">
+            Compulsory Requirement Documents
+        </h2>
+        <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
+        <form name="gForm" ng-submit="genrateForm()">
+            <table class="document-table">
+                <thead>
+                    <tr>
+                        <th>Claimant's Documents</th>
+                        <th>No of Documents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PAN Card</td>
+                        <td ng-if="!subid"> <input type="number" ng-model="data.noofpans" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.noofpans}}</td>
+                    </tr>
+                    <tr>
+                        <td>Adhar Card (Both Side)</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.noofaadhars" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.noofaadhars}}</td>
+                    </tr>
+                    <tr>
+                        <td>Cancel Cheque (Name Printed) (Nationalised Bank)</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.cancelcheque" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.cancelcheque}}</td>
+                    </tr>
+                    <tr>
+                        <td>Passport Size Photo (Latest)</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.passportphoto" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.passportphoto}}</td>
+                    </tr>
+                    <tr>
+                        <td>Client Master List (CML) (DP Details)</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.cml" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.cml}}</td>
+                    </tr>
+                    <tr>
+                        <td>Nominee PAN Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.npans" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.npans}}</td>
+                    </tr>
+                    <tr>
+                        <td>Nominee Adhar Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.naadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.naadhar}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2">Transmission</td>
+                    </tr>
+
+                    <tr>
+                        <td>Legal Heirs Certificate (Pedhi Nama)</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.legalheircerti" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.legalheircerti}}</td>
+                    </tr>
+                    <tr>
+                        <td>Death Certificate – Deceased Holder</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.deathcerti" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.deathcerti}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2">Other Legal Heirs As per Pedhi Nama</td>
+                    </tr>
+                    <tr>
+                        <td>PAN Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.legalheirpan" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.legalheirpan}}</td>
+                    </tr>
+                    <tr>
+                        <td>Adhar Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.legalheiraadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.legalheiraadhar}}</td>
+                    </tr>
+                    <tr>
+                        <td>Passport Size Photo</td>
+                        <td ng-if="!subid">
+                            <input type="number" ng-model="data.legalheirphoto" class="form-control search-orders">
+                        </td>
+                        <td ng-if="subid">{{data.legalheirphoto}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2">Witness -1 (Other Than Family Members)</td>
+                    </tr>
+                    <tr>
+                        <td>PAN Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness1pan" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness1pan}}</td>
+                    </tr>
+                    <tr>
+                        <td>Adhar Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness1aadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness1aadhar}}</td>
+                    </tr>
+                    <tr>
+                        <td>Passport Size Photo</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness1photo" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness1photo}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2">Witness -2 (Other Than Family Members)</td>
+                    </tr>
+                    <tr>
+                        <td>PAN Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness2pan" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness2pan}}</td>
+                    </tr>
+                    <tr>
+                        <td>Adhar Card</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness2aadhar" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness2aadhar}}</td>
+                    </tr>
+                    <tr>
+                        <td>Passport Size Photo</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.witness2photo" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.witness2photo}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-if="hDiv" class="text-center m-2 col-md-4">
+                <button ng-if="!subid" ng-disabled="processdone" type="submit" class="btn" style="background-color:#003980; color:white;">
+                    Genrate Form
+                </button>
+            </div>
+        </form>
+        <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
+        <p class="s3" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
+            @* THIS IS T *@
+        </p>
+    </div>
+    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+</body>
+<script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
+        $scope.customers = [];
+        $scope.data = undefined;
+            $scope.hDiv = true;
+            // var params = new URLSearchParams(window.location.search);
+            // var id = params.get('id');
+            // var id2 = params.get('id2');
+            var path = window.location.pathname;
+                   var segments = path.split('/');
+                   var id = segments[segments.length - 1];
+        var isProcessing = false;
+                    $scope.processdone = false;
+
+
+        // showLoader();
+
+         // Load Customers
+         $scope.loadCustomers = function () {
+             if(id){
+           $http.get('/Master/GetCustomersById/'+id).then(function (response) {
+                $scope.result = response.data[0];
+                $scope.subid = $scope.result.documentJson;
+                var obj = JSON.parse($scope.result.documentJson);
+                if(!$scope.subid){
+                $scope.data = {
+                   noofpans: 1,
+                   noofaadhars: 1,
+                   cancelcheque: 1,
+                   passportphoto: 1,
+                   cml:1,
+                   npans: 1,
+                   naadhar: 1,
+                   legalheircerti: 1,
+                   deathcerti: 1,
+                   legalheirpan: 1,
+                   legalheiraadhar: 1,
+                   legalheirphoto: 1,
+                   witness1pan:1,
+                   witness1aadhar:1,
+                   witness1photo:1,
+                   witness2pan:1,
+                   witness2aadhar:1,
+                   witness2photo:1,
+                };
+                }
+                else{
+                    $scope.data = {
+                    noofpans: obj.noofpans,
+                    noofaadhars: obj.noofaadhars,
+                    cancelcheque: obj.cancelcheque,
+                    passportphoto: obj.passportphoto,
+                    cml: obj.cml,
+                    npans: obj.npans,
+                    naadhar : obj.naadhar,
+                    legalheircerti: obj.legalheircerti,
+                    deathcerti: obj.deathcerti,
+                    legalheirpan: obj.legalheirpan,
+                    legalheiraadhar: obj.legalheiraadhar,
+                    legalheirphoto: obj.legalheirphoto,
+                    witness1pan: obj.witness1pan,
+                    witness1aadhar: obj.witness1aadhar,
+                    witness1photo: obj.witness1photo,
+                    witness2pan: obj.witness2pan,
+                    witness2aadhar: obj.witness2aadhar,
+                    witness2photo: obj.witness2photo,
+                };
+                                checkData();
+                }
+                hideLoader();
+            }, function (error) {
+                console.error('Error loading customers:', error);
+                hideLoader();
+            });
+            }
+        };
+
+        function checkData() {
+        if ($scope.data !== undefined) {
+            // Delay the printDiv execution until the next digest cycle
+            $timeout(function() {
+                $scope.printDiv('printForm');
+            }, 0);  // 0 delay to ensure it runs after the view update
+        } else {
+            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
+        }
+    }
+
+        //Genrate Form
+         $scope.genrateForm = function () {
+              $scope.processdone = false;
+
+             let jsonString = JSON.stringify($scope.data, null, 2);
+
+             $scope.result.documentJson = jsonString;
+
+             const url = '/Master/UpdateCustomer/';
+
+                $http.post(url, $scope.result).then(function (response) {
+                    if (response.data.success) {
+                        // Swal.fire({
+                        //     title: 'Success',
+                        //     text: response.data.message || 'Operation successful!',
+                        //     icon: 'success',
+                        //     confirmButtonText: 'OK'
+                        // });
+                      $scope.processdone = true;
+                        $scope.loadCustomers();
+                    } else {
+                         Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while generating document List.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                    }
+                    $scope.processdone = false;
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.processdone = false;
+                    isProcessing = false;
+                });
+            //console.log(dataString);
+         }
+
+          $scope.navtogenerateform = function () {
+        window.open('/Master/Client', '_self');
+    };
+
+        // Load Customers
+        // $scope.loadCustomers = function () {
+        //     $http.get('/Master/GetCustomers').then(function (response) {
+        //         $scope.customers = response.data[0];
+        //         hideLoader();
+        //     }, function (error) {
+        //         console.error('Error loading customers:', error);
+        //         hideLoader();
+        //     });
+        // };
+
+        // $scope.loadDocs = function () {
+        //     if (true) {
+        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+        //             $scope.docs = response.data;
+        //             hideLoader();
+        //         }, function (error) {
+        //             console.error('Error loading Docs:', error);
+        //             hideLoader();
+        //         });
+        //     }
+        // };
+
+        //Function
+        $scope.printDiv = function (divId) {
+            var css = '<style type="text/css">* { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 18pt; } p { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 14pt; margin: 0pt; } a { color: #0462c1; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 14pt; } h2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 14pt; } .s1 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } .s3 { color: black; font-family: Calibri, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } table, tbody { vertical-align: top; overflow: visible; } .document-table { border-collapse: collapse; margin-left: 5.5pt; } .document-table th, .document-table td { border: 1px solid; padding: 4px; } .document-table th { text-align: left; } .document-table td:first-child { width: 193pt; } .document-table td:nth-child(2) { width: 95pt; text-indent: 14pt; } .document-table td:last-child { width: 5pt; }</style>';
+            var innerContents = document.getElementById(divId).innerHTML;
+            var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+            popupWinindow.document.open();
+            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 10%;" onload="window.print()">' + innerContents + '</html>');
+            popupWinindow.document.close();
+        };
+        //Initialize
+        $scope.loadCustomers();
+        // $scope.loadDocs();
+    });
+</script>
+</html>

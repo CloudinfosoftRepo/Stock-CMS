@@ -1,4 +1,10 @@
 ﻿<!DOCTYPE html>
+@{
+    var list = Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+    bool delete = list?.Any(x => x.Action.ToUpper() == "DELETE" && x.IsEnabled) ?? false;
+}
 <html lang="en" ng-app="Stock-CMS">
 <head>
     <meta charset="UTF-8">
@@ -75,7 +81,9 @@
                         <form class="table-search-form row gx-1 align-items-center mb-0">
                             <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                         </form>
-                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add New</button>
+                        @if (add) { 
+                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openDocModal()">Add Legal Heir</button>
+                        }
                         <button class="btn btn-custom"
                                 style="background-color:#003980;color:white"
                                 excel-export
@@ -110,7 +118,7 @@
                                     <th class="cell">PINCODE</th>
                                     <th class="cell">Email</th>
                                     <th class="cell">Claiment/NOC</th>
-                                    <th class="cell">Relationship with Dead</th>
+                                    @* <th class="cell">Relationship with Dead</th> *@
                                     <th class="cell">Dead/Alive</th>
                                     <th class="cell">Death Certificate</th>
                                     <th class="cell">Name As Per DeathCerti</th>
@@ -159,7 +167,7 @@
                                     <td class="cell">{{ doc.pinCode }}</td>
                                     <td class="cell">{{ doc.email }}</td>
                                     <td class="cell">{{ doc.isClaiment ? 'Claiment' : 'NOC' }}</td>
-                                    <td class="cell">{{ doc.relationWithDead }}</td>
+                                    @* <td class="cell">{{ doc.relationWithDead }}</td> *@
                                     <td class="cell">{{ doc.isDead ? 'Dead' : 'Alive' }}</td>
                                     <td class="cell" ng-click="openimageModal(doc.deathCertiUrl)">
                                         <div class="">
@@ -177,11 +185,11 @@
                                     <td class="cell">{{ doc.createdByName }}</td>
                                     <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.updatedByName }}</td>
-                                    <td class="cell sticky-action">
-                                        <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openBankModal(doc.id)" title="Bank Details">
+                                    <td class="cell sticky-action" >
+                                            <span class="btn-sm app-btn" ng-show="doc.isClaiment" style="color:black;font-size:large" ng-click="openBankModal(doc.id)" title="Bank Details">
                                             <i class="bi bi-bank"></i>
                                         </span>
-                                    
+                                @if (edit) { 
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)" title="Edit Legal Heir">
                                             <i class="bi bi-pencil"></i>
                                         </span>
@@ -189,10 +197,12 @@
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="manageHolderDoc(doc.id)" title="Add Additional Documents">
                                             <i class="bi bi-file-earmark-text"></i>
                                         </span>
-                                
+                                }
+                                @if(delete) {
                                         <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteLegalHeir(doc)" title="Delete Legal Heir">
                                             <i class="bi bi-trash"></i>
                                         </span>
+                                }
                                     </td>
                                 @*    <td class="cell">
                                             <span hidden ng-click="deleteDoc(doc.id)" class="btn-sm app-btn" style="color:green;font-size:large">
@@ -238,72 +248,6 @@
                     </div>
                     <div class="modal-body modal-dialog-scrollable">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="name">Legal Heir Name</label>
-                                    <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="nameAsPerCertificate">Name As Per Certificate</label>
-                                    <input type="text" id="nameAsPerCertificate" ng-model="currentDoc.nameAsPerCertificate" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="dob">Date of Birth</label>
-                                    <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="mobile">Mobile</label>
-                                    <input type="text" id="mobile" ng-model="currentDoc.mobile" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" ng-model="currentDoc.email" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="state">State</label>
-                                    <input type="text" id="state" ng-model="currentDoc.state" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="city">City</label>
-                                    <input type="text" id="city" ng-model="currentDoc.city" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="pinCode">PINCODE</label>
-                                    <input type="text" id="pinCode" ng-model="currentDoc.pinCode" class="form-control" required />
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="relationWithDead">Relationship With the Dead</label>
-                                    <input type="text" id="relationWithDead" ng-model="currentDoc.relationWithDead" class="form-control" required />
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Dead</label><br />
-                                    <label class="radio-inline">
-                                        <input type="checkbox" ng-model="currentDoc.isDead" /> Dead
-                                    </label>
-                                </div>
-                            </div>
 
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -316,21 +260,115 @@
                                     </label>
                                 </div>
                             </div>
+                            </div>
+                            <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Legal Heir Name</label>
+                                    <input type="text" id="name" ng-model="currentDoc.name" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="nameAsPerCertificate">Name As Per Certificate</label>
+                                    <input type="text" id="nameAsPerCertificate" ng-model="currentDoc.nameAsPerCertificate" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" ng-model="currentDoc.dob" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group" >
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" id="mobile" ng-model="currentDoc.mobile" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" ng-model="currentDoc.email" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" ng-model="currentDoc.state" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" ng-model="currentDoc.city" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="pinCode">PINCODE</label>
+                                    <input type="text" id="pinCode" ng-model="currentDoc.pinCode" class="form-control"  />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <!--<div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="relationWithDead">Relationship With the Dead</label>
+                                    <input type="text" id="relationWithDead" ng-model="currentDoc.relationWithDead" class="form-control" required />
+                                </div>
+							</div>-->
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Dead</label><br />
+                                    <label class="radio-inline">
+                                        <input type="checkbox" ng-model="currentDoc.isDead" /> Dead
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="userName">IEPF UserName</label>
+                                    <input type="text" id="userName" ng-model="currentDoc.userName" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="password">IEPF Password</label>
+                                    <input type="text" id="password" ng-model="currentDoc.password" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="dpid">DP Id</label>
+                                    <input type="text" id="dpid" ng-model="currentDoc.dpid" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group">
+                                    <label for="clientId">Client Id</label>
+                                    <input type="text" id="clientId" ng-model="currentDoc.clientId" class="form-control" />
+                                </div>
+                            </div>
                         </div>
                         <br />
                         <div class="row">
                             <h6>PAN Details </h6>
                             <hr class="hr-border" />
-                            <div class="col-md-4">
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
                                 <div class="form-group">
                                     <label for="pan">Pan Number</label>
-                                    <input type="text" id="pan" ng-model="currentDoc.pan" class="form-control" placeholder="Enter Pan Number" required />
+                                    <input type="text" id="pan" ng-model="currentDoc.pan" class="form-control" placeholder="Enter Pan Number"  />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
                                 <div class="form-group">
                                     <label for="nameAsPerPan">Name As Per Pan</label>
-                                    <input type="text" id="nameAsPerPan" ng-model="currentDoc.nameAsPerPan" class="form-control" placeholder="Enter Name As Per Pan" required />
+                                    <input type="text" id="nameAsPerPan" ng-model="currentDoc.nameAsPerPan" class="form-control" placeholder="Enter Name As Per Pan"  />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -347,22 +385,22 @@
                                 Aadhar Details
                             </h6>
                             <hr class="hr-border" />
-                            <div class="col-md-4">
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
                                 <div class="form-group">
                                     <label for="aadhar">Aadhar Number</label>
-                                    <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number" required />
+                                    <input type="text" id="aadhar" ng-model="currentDoc.aadhar" class="form-control" placeholder="Enter Aadhar Number"  />
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
+                            <div class="col-md-4" ng-show="status == 'Claiment'">
+                                <div class="form-group" >
                                     <label for="nameAsPerAadhar">Name As Per Aadhar</label>
-                                    <input type="text" id="nameAsPerAadhar" ng-model="currentDoc.nameAsPerAadhar" class="form-control" placeholder="Enter Name As Per Aadhar" required />
+                                    <input type="text" id="nameAsPerAadhar" ng-model="currentDoc.nameAsPerAadhar" class="form-control" placeholder="Enter Name As Per Aadhar"  />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="addressAsPerAadhar">Address As Per Aadhar</label>
-                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar" required></textarea>
+                                    <textarea id="addressAsPerAadhar" ng-model="currentDoc.addressAsPerAadhar" class="form-control" placeholder="Address As Per Aadhar" ></textarea>
 
                                 </div>
                             </div>
@@ -409,7 +447,7 @@
 
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
                     </div>
                 </form>
             </div>
@@ -461,19 +499,37 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="phoneNo">Bank Phone</label>
-                                    <input type="text" id="phoneNo" ng-model="currentBank.phoneNo" class="form-control" required />
+                                    <input type="text" id="phoneNo" ng-model="currentBank.phoneNo" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="bankEmail">Bank Email</label>
-                                    <input type="email" id="bankEmail" ng-model="currentBank.bankEmail" class="form-control" required />
+                                    <input type="email" id="bankEmail" ng-model="currentBank.bankEmail" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="nameAsPerBankAccount">Name As Per BankAccount</label>
                                     <input type="text" id="nameAsPerBankAccount" ng-model="currentBank.nameAsPerBankAccount" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankFirstHolder">BankAccount First Holder</label>
+                                    <input type="text" id="bankFirstHolder" ng-model="currentBank.bankFirstHolder" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankSecondHolder">BankAccount Second Holder</label>
+                                    <input type="text" id="bankSecondHolder" ng-model="currentBank.bankSecondHolder" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankThirdHolder">BankAccount Third Holder</label>
+                                    <input type="text" id="bankThirdHolder" ng-model="currentBank.bankThirdHolder" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -503,34 +559,35 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="micrcode">MICR Code</label>
-                                    <input type="text" id="micrcode" ng-model="currentBank.micrcode" class="form-control" required />
+                                    <input type="text" id="micrcode" ng-model="currentBank.micrcode" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="bankManagerName">Bank Manager Name</label>
-                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control"  />
+                                    <input type="text" id="bankManagerName" ng-model="currentBank.bankManagerName" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="employeeCode">Employee Code</label>
-                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control"  />
+                                    <input type="text" id="employeeCode" ng-model="currentBank.employeeCode" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="bankMangerEmail">Bank Manger's Email</label>
-                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control"  />
+                                    <input type="email" id="bankMangerEmail" ng-model="currentBank.bankMangerEmail" class="form-control" />
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 @* <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditingBank ? 'Update' : 'Save' }}</button> *@
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">Save</button>
+                        <button type="submit" class="btn" ng-disabled="processdone" style="background-color:#003980;color:white">Save</button>
                     </div>
                 </form>
             </div>
@@ -558,6 +615,7 @@
             $scope.docs = [];
             $scope.isEditing = false;
             var isProcessing = false;
+            $scope.processdone = false;
 
              showLoader();
 
@@ -582,7 +640,7 @@
                 $scope.isEditing = !!doc;
                 $scope.currentDoc = doc ? angular.copy(doc) : {};
                 $scope.status = doc ? doc.isClaiment ? 'Claiment' : doc.isNoc ? 'NOC' : 'Claiment': 'Claiment';
-                        $scope.currentDoc.dob = doc ?  new Date(doc.dob) : undefined;
+                        $scope.currentDoc.dob = doc ? doc.dob ? new Date(doc.dob) : undefined : undefined;
                         $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : undefined : undefined;
                         $scope.currentDoc.panFile = undefined;
                         $scope.currentDoc.aadharFile= undefined;
@@ -596,6 +654,7 @@
             };
 
             $scope.saveDoc = function () {
+                $scope.processdone = true;
                 $scope.currentDoc.isDead = $scope.currentDoc.dateOfDeath ? true : false;
                            if($scope.currentDoc.dateOfDeath && $scope.currentDoc.dob > $scope.currentDoc.dateOfDeath){
 
@@ -605,6 +664,29 @@
                                 icon: 'error',
                                 confirmButtonText: 'Try Again'
                             });
+                            $scope.processdone = false;
+                               return;
+                           }
+
+                           if($scope.currentDoc.clientId && $scope.currentDoc.clientId.length !== 8 ){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Client Id should be 8 digits long.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                               return;
+                           }
+
+                            if($scope.currentDoc.dpid && $scope.currentDoc.dpid.length !== 8 ){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'DP Id should be 8 digits long.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
                                return;
                            }
                            
@@ -614,27 +696,32 @@
                         isProcessing = true;
                 var formData = new FormData();
                     formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
-                    formData.append('docId', $scope.isEditing ? $scope.currentDoc.docId : id);
+                    formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
+                    // formData.append('docId', $scope.isEditing ? $scope.currentDoc.docId : id);
                     formData.append('name', $scope.currentDoc.name);
-                    formData.append('nameAsPerCertificate', $scope.currentDoc.nameAsPerCertificate);
-                    formData.append('mobile', $scope.currentDoc.mobile);
-                    formData.append('pan', $scope.currentDoc.pan);
-                    formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan);
-                    formData.append('aadhar', $scope.currentDoc.aadhar);
-                    formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar);
-                    formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar);
-                    formData.append('dob', $scope.currentDoc.dob.toISOString().split('T')[0]);
-                    formData.append('email', $scope.currentDoc.email);
+                    formData.append('nameAsPerCertificate', $scope.currentDoc.nameAsPerCertificate ? $scope.currentDoc.nameAsPerCertificate : '');
+                    formData.append('mobile', $scope.currentDoc.mobile ? $scope.currentDoc.mobile : '');
+                    formData.append('pan', $scope.currentDoc.pan ? $scope.currentDoc.pan : '');
+                    formData.append('nameAsPerPan', $scope.currentDoc.nameAsPerPan ? $scope.currentDoc.nameAsPerPan : '');
+                    formData.append('aadhar', $scope.currentDoc.aadhar ? $scope.currentDoc.aadhar : '');
+                    formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar ? $scope.currentDoc.nameAsPerAadhar :'');
+                    formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar ? $scope.currentDoc.addressAsPerAadhar : '');
+                    formData.append('dob', $scope.currentDoc.dob ? $scope.currentDoc.dob.toISOString().split('T')[0] : '');
+                    formData.append('email', $scope.currentDoc.email ? $scope.currentDoc.email : '');
                     formData.append('isClaiment', $scope.status == 'Claiment' ? true : false);
                     formData.append('isNoc', $scope.status == 'NOC' ? true : false);
-                    formData.append('relationWithDead', $scope.currentDoc.relationWithDead);
+                    formData.append('relationWithDead', $scope.currentDoc.relationWithDead ? $scope.currentDoc.relationWithDead :'');
                     formData.append('isDead', $scope.currentDoc.isDead ? true : false);
                     formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString().split('T')[0] : '');
                     formData.append('nameAsPerDeathCerti',  $scope.currentDoc.nameAsPerDeathCerti ?? '');
                     formData.append('placeOfDeath',  $scope.currentDoc.placeOfDeath ?? '');
-                    formData.append('state', $scope.currentDoc.state);
-                    formData.append('city', $scope.currentDoc.city);
-                    formData.append('pinCode', $scope.currentDoc.pinCode);
+                    formData.append('state', $scope.currentDoc.state ? $scope.currentDoc.state :'');
+                    formData.append('city', $scope.currentDoc.city ? $scope.currentDoc.city :'');
+                    formData.append('pinCode', $scope.currentDoc.pinCode ? $scope.currentDoc.pinCode : '');
+                    formData.append('userName', $scope.currentDoc.userName ? $scope.currentDoc.userName : '' );
+                    formData.append('password', $scope.currentDoc.password ? $scope.currentDoc.password  : '');
+                    formData.append('clientId', $scope.currentDoc.clientId ? $scope.currentDoc.clientId : '');
+                    formData.append('dpid', $scope.currentDoc.dpid ? $scope.currentDoc.dpid : '');
 
                 if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
                 if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
@@ -654,6 +741,7 @@
                         icon: response.data.success ? 'success' : 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                           isProcessing = false;
                     $scope.loadDocs();
                             $scope.currentDoc.panFile ='';
@@ -710,7 +798,7 @@
                     {
                     $http.get('/doc/GetLegalHeirBank/'+ docid).then(function (response) {
                         $scope.currentBank = response.data[0];
-                        $scope.currentBank.accountOpeningDate = $scope.currentBank ?  new Date($scope.currentBank.accountOpeningDate) : {}
+                        $scope.currentBank.accountOpeningDate = $scope.currentBank ? $scope.currentBank.accountOpeningDate ? new Date($scope.currentBank.accountOpeningDate) : undefined : undefined
                     hideLoader();
                 }, function (error) {
                     console.error('Error loading Bank Deatails:', error);
@@ -723,11 +811,12 @@
                 $scope.saveBank = function () {
                 if (id)
                 {
+                    $scope.processdone = true;
                     if (isProcessing) return;
                     isProcessing = true;
                     $scope.currentBank.clientId = 0;
                     $scope.currentBank.LegalHeirId = $scope.docid2;
-                    $scope.currentBank.accountOpeningDate = $scope.currentBank.accountOpeningDate.toISOString().split('T')[0]
+                    $scope.currentBank.accountOpeningDate = $scope.currentBank.accountOpeningDate ? $scope.currentBank.accountOpeningDate : null;
 
                         const url = $scope.currentBank.id ? `/doc/updateBank1/${$scope.currentBank.id}` : '/doc/createBank1';
                     $http.post(url, $scope.currentBank).then(function (response) {
@@ -738,6 +827,7 @@
                                 icon: response.data.success ? 'success' : 'error',
                                 confirmButtonText: 'OK'
                             });
+                            $scope.processdone = false;
                                     isProcessing = false;
                                 $scope.loadDocs();
                                     $('#bankModal').modal('hide');
@@ -748,6 +838,7 @@
                                 icon: 'error',
                                 confirmButtonText: 'Try Again'
                             });
+                            $scope.processdone = false;
                                 isProcessing = false;
                         }
                         isProcessing = false;
@@ -758,6 +849,7 @@
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         isProcessing = false;
                     });
                 }

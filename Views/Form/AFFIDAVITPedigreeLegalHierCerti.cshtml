@@ -174,6 +174,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
 
@@ -202,17 +214,17 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId,heirId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Select Heir Dropdown -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
                             <div class="form-group">
                                 <label for="heirId" class="form-label">Select Heir</label>
-                                <select class="form-select" ng-options="g.id as g.name for g in heirs" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId,heirId)">
                                     <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
@@ -260,7 +272,7 @@
 
                     <!-- Submit Button -->
                     <div class="col-md-4 d-flex align-items-center justify-content-center mb-3">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -287,9 +299,9 @@
         line-height: 200%;
         text-align: justify;
       ">
-            I the undersigned@*  PRAVIN GORDHANBHAI PATEL *@{{data.customerName}} Age – @* 79 *@ {{data.age}}years, Occupation:{{data.occupation}}
+            I the undersigned @*  PRAVIN GORDHANBHAI PATEL *@{{data.customerName}} Age – @* 79 *@ {{data.age}} years, Occupation: {{data.occupation}}
             @* Retired *@, Residing at: @* 99, ASUTOSH NAGAR SOCIETY, KARELIBAUG, VADODARA,
-        GUJARAT – 390018 *@{{data.address}}<span class="s2">.</span>
+        GUJARAT – 390018 *@ {{data.address}} <span class="s2">.</span>
         </p>
         <p style="
         padding-left: 27pt;
@@ -517,7 +529,9 @@
             Signature.
         </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 <script>
       angular.module('Stock-CMS', [])
@@ -544,6 +558,7 @@
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
@@ -560,32 +575,33 @@
                     $scope.witnesslist = JSON.parse(docs.witnessJson);
                 $http.get('/LegalHeir/GetLegalHeir/' + docs.id).then(function (response) {
                         $scope.heirlist = response.data;
+
+                        var arr = angular.copy($scope.heirlist);
+                   var isDeceased = !!docs?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
                     $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
-                    $scope.heirs = response.data;
-                    var heir = response.data.find(x => x.id === hid);
-                    var arr = angular.copy($scope.heirlist);
-                $scope.data = {
-                    docid: heir.id,
-                       customerName : heir.name,
-                   age :  $scope.calculateAge(heir.dob,heir.dateOfDeath),
-                   sonof: docs.name,
-                   occupation: '',
-                   dateofdeath: docs.dateOfDeath,
-                   address : heir.addressAsPerAadhar,
-                   heirlist: JSON.stringify(arr, null, 2),
-                   place:'Vadodara',
-                   today: new Date(),
-                   witness1name:'',
-                   witness1address: '',
-                   witness2name:'',
-                   witness2address: '',
-                };
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder ,docs,arr,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, docs,arr,isDeceased);
+                }
 
                 hideLoader();
-                }, function (error) {
-                    console.error('Error loading Legal Heair:', error);
-                    hideLoader();
-                });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -616,6 +632,7 @@
                   witness1address: obj.witness1address,
                   witness2name:obj.witness2name,
                   witness2address: obj.witness2address,
+                  condition: obj.condition,
                 };
                 $scope.heirlist =  $scope.data.heirlist
                 id = result.stockId;
@@ -627,6 +644,26 @@
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder,docs,arr,isDeceased) {
+                $scope.data = {
+                    docid: holder.id,
+                       customerName : holder.name,
+                   age :  $scope.calculateAge(holder.dob,holder.dateOfDeath),
+                   sonof: docs.name,
+                   occupation: '',
+                   dateofdeath: docs.dateOfDeath,
+                   address : holder.addressAsPerAadhar,
+                   heirlist: JSON.stringify(arr, null, 2),
+                   place:'Vadodara',
+                   today: new Date(),
+                   witness1name:'',
+                   witness1address: '',
+                   witness2name:'',
+                   witness2address: '',
+                   condition: isDeceased,
+                };
             }
         };
 
@@ -674,6 +711,18 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                 if(!$scope.data.condition){
+                     Swal.fire({
+                         title: 'Error',
+                         text: 'Customer is still Alive',
+                         icon: 'error',
+                         confirmButtonText: 'OK'
+                     });
+                     return;
+                 }
+                 $scope.processdone = true;
+
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'AFFIDAVIT Pedigree Legal Hier Certi',
@@ -694,6 +743,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -709,7 +759,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -719,6 +769,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -803,7 +854,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-            var css = '<style type="text/css">*{margin:0;padding:0;text-indent:0;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;margin:0pt;}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}table,tbody{vertical-align:top;overflow:visible;}.styled-table{border-collapse:collapse;margin-left:27.5pt;}.column{border:1pt solid black;padding:8pt;text-align:left;}.name{width:95pt;}.age{width:68pt;}.relationship{width:81pt;text-align:center;}.status{width:74pt;}.photo{width:85pt;}.text{margin:0;padding:0;}.text-left{padding-left:23pt;text-indent:-2pt;}.text-center{text-align:center;padding-left:3pt;}.text-indent{text-indent:10pt;}</style>';
+            var css = '<style type="text/css">*{margin:0;padding:0;text-indent:0;}.p,p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;margin:0pt;}.s2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.s4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:8pt;vertical-align:4pt;}.s5{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}li{display:block;}#l1{padding-left:0pt;counter-reset:c1 1;}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,decimal)". ";color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}#l1>li:first-child>*:first-child:before{counter-increment:c1 0;}table,tbody{vertical-align:top;overflow:visible;}.styled-table{border-collapse:collapse;margin-left:27.5pt;}.column{border:1pt solid black;padding:8pt;text-align:left;}.name{width:95pt;}.age{width:68pt;}.relationship{width:81pt;text-align:center;}.status{width:74pt;}.photo{width:85pt;}.text{margin:0;padding:0;}.text-left{padding-left:23pt;text-indent:-2pt;}.text-center{text-align:center;padding-left:3pt;}.text-indent{text-indent:10pt;} @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

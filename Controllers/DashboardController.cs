@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
 
 namespace Stock_CMS.Controllers
@@ -9,17 +10,27 @@ namespace Stock_CMS.Controllers
         private readonly ICustomerService _customerService;
         private readonly ILogger<DashboardController> _logger;
         private readonly IStockService _stockService;
+        private readonly IPermissionService _permissionService;
 
-        public DashboardController(ICustomerService customerService, ILogger<DashboardController> logger, IStockService stockService)
+        public DashboardController(ICustomerService customerService, ILogger<DashboardController> logger, IStockService stockService, IPermissionService permissionService)
         {
             _customerService = customerService;
             _logger = logger;
             _stockService = stockService;
+            _permissionService = permissionService;
         }
 
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            return View();
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 1);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -96,6 +107,24 @@ namespace Stock_CMS.Controllers
                 });
             }
 
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetUnpaidAmountByClient()
+        {
+            try
+            {
+                var customers = await _stockService.GetUnpaidAmountByClient();
+                return Json(customers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

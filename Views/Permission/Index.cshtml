@@ -1,0 +1,368 @@
+﻿
+<style>
+    .card-title {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        /* max-width: 1200px; */
+        margin: 20px auto;
+    }
+
+    .submenu-btn {
+        background-color: #c0c1c1;
+        border: none;
+        color: black;
+        font-size: 0.95rem;
+        padding: 5px 10px;
+        margin-right: 10px; /* Space between buttons */
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        text-transform: capitalize;
+        cursor: pointer;
+    }
+
+        /* Hover and Active States */
+        .submenu-btn:hover {
+            background-color: #787d83;
+            color: white;
+        }
+
+        .submenu-btn.active {
+            background-color: #787d83;
+            color: white;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+
+    .action-group {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: flex-start;
+        margin-left: 1rem;
+    }
+
+    .dropdown-menu {
+        max-height: 300px; /* Limit height if there are many items */
+        overflow-y: auto; /* Enable scrolling */
+    }
+
+    .nav-link {
+        padding: 10px;
+        text-decoration: none; /* Optional: remove underline */
+    }
+
+        .nav-link:hover {
+            background-color: #edfdf6; /* Example: Change background color on hover */
+            color: #007bff; /* Example: Change text color on hover */
+            cursor: pointer; /* Optional: Change cursor to a pointer */
+        }
+
+</style>
+<div ng-app="Stock-CMS" ng-controller="permissionCntrl" ng-init="fillAllDataList();">
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-2 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-4">
+                    <a ng-if="RoleFlag != true" ng-click="active = true;GetRoles()" class="btn btn-custom me-3">
+                        <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
+                    </a>
+                    <h1 class="app-page-title mb-0">Role Permissions</h1>
+                </div>
+                <div class="col-md-4">
+                    <form class="table-search-form row gx-1 align-items-center">
+                        <div class="col-md-4">
+                            <input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search">
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+
+        @* For Users *@
+        <div class="app-card app-card-orders-table shadow-sm mb-5" ng-if="UserFlag == true">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table class="table app-table-hover mb-0 text-left text-nowrap">
+                        <thead class="sticky-header">
+                            <tr>
+
+                                <th class="text-center">
+                                    Sr No.
+                                </th>
+                                <th class="text-center">
+                                    Name
+                                </th>
+                                <th class="text-center">
+                                    Branch
+                                </th>
+                                <th class="text-center">
+                                    Role
+                                </th>
+                                <th class="text-center">
+                                    Email
+                                </th>
+                                <th class="text-center">
+                                    Contact No.
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-click="UserwisePerm(ud)" ng-repeat="ud in user | dynamicFilter:searchQuery:['name','email']">
+                                <td class="text-center">
+                                    {{$index + 1}}
+                                </td>
+                                <td class="text-center" ng-bind="ud.name"></td>
+                                <td class="text-center" ng-bind="ud.branch"></td>
+                                <td class="text-center" ng-bind="ud.roleName"></td>
+                                <td class="text-center" ng-bind="ud.email"></td>
+                                <td class="text-center" ng-bind="ud.contactNo"></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @* For Roles *@
+        <div class="app-card app-card-orders-table shadow-sm mb-5" ng-if="RoleFlag == true">
+            <div class="app-card-body">
+                <div class="table-responsive">
+                    <table class="table app-table-hover mb-0 text-left text-nowrap">
+                        <thead class="sticky-header">
+                            <tr>
+
+                                <th class="text-left">
+                                    Sr No.
+                                </th>
+                                <th class="text-left">
+                                    Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-click="RolewisePerm(ud)" ng-repeat="ud in role | dynamicFilter:searchQuery:['name']">
+                                <td class="text-left">
+                                    {{$index + 1}}
+                                </td>
+                                <td class="text-left" ng-bind="ud.name"></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-0" ng-if="MenuFlag == true">
+            <div class="row ">
+
+                <div class="" ng-repeat="ud in menu | filter:{$:searchQuery}">
+
+                    <ul style="padding-left:0px !important; margin-bottom:0px !important">
+                        <li class="nav-item dropdown sidebar-nav" style="list-style:none">
+                            <a class="nav-link collapsed" data-bs-target="#{{ud.parentName || 'Main'}}" data-bs-toggle="collapse" href="#" style="padding:10px;">
+                                <h5>{{$index + 1}}. {{ ud.parentName || 'Main' }}</h5>
+                            </a>
+                            <ul id="{{ud.parentName || 'Main'}}" class="nav-content collapse" style="padding-left:2rem !important">
+
+                                <li ng-repeat="i in ud.items | filter:{$:searchQuery}">
+                                    <h6 style="font-weight:bold">{{ i.name }}</h6>
+                                    <div class="action-group">
+                                        <div ng-repeat="x in i.actionList">
+                                            <label for="{{x.action}}">
+                                                <input type="checkbox" name="{{x.action}}" ng-model="x.isEnabled" ng-change="PermissionUpdate(i.id, i.actionList)" />
+                                                {{ x.action }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+
+    var app = angular.module('Stock-CMS', []);
+    app.controller('permissionCntrl', function ($scope, $compile, $http, $window, $filter) {
+
+        $scope.fillAllDataList = function () {
+            //$scope.GetMenuMaster();
+            $scope.GetRoles();
+                                hideLoader();
+            //$scope.GetRoles();
+            $scope.type = "Role";
+        };
+
+        //$scope.GetMenuMaster = function () {
+        //    $http({
+        //        method: 'GET',
+        //        url: '/Permission/GetMenuMaster',
+        //        headers: {
+        //            'Content-Type': 'application/json; charset=utf-8',
+        //            'dataType': 'json'
+        //        },
+        //        data: {}
+        //    }).then(function (response) {
+        //        //$scope.menuMaster = response.data;
+
+        //    }, function myError(response) {
+        //        $window.alert(response.data);
+        //    })
+        //};
+
+        $scope.GetMenuByUser = function () {
+            if ($scope.UserId != undefined && $scope.UserId > 0) {
+                $http({
+                    method: 'POST',
+                    url: '/Permission/GetMenuByUser?UserId=' + $scope.UserId,
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'dataType': 'json'
+                    },
+                    data: {}
+                }).then(function (response) {
+                    $scope.menu = response.data;
+                }, function myError(response) {
+                    $window.alert(response.data);
+                })
+            }
+        };
+
+        $scope.GetMenuByRole = function () {
+            if ($scope.RoleId != undefined && $scope.RoleId > 0) {
+                $http({
+                    method: 'POST',
+                    url: '/Permission/GetMenuByRole?RoleId=' + $scope.RoleId,
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'dataType': 'json'
+                    },
+                    data: {}
+                }).then(function (response) {
+                    $scope.menu = response.data;
+                }, function myError(response) {
+                    $window.alert(response.data);
+                })
+            }
+        };
+
+        $scope.GetUser = function () {
+            $http({
+                method: 'POST',
+                url: '/Home/GetUsers?status=' + true,
+            }).then(function (response) {
+                $scope.user = response.data;
+                $scope.RoleFlag = false;
+                $scope.UserFlag = true;
+                $scope.MenuFlag = false;
+                $scope.type = "User";
+                $scope.name = undefined;
+            }, function myError(response) {
+                $window.alert(response.data);
+            })
+        };
+
+        $scope.GetRoles = function () {
+            $http({
+                method: 'GET',
+                url: '/User/GetRoles',
+            }).then(function (response) {
+                $scope.role = response.data;
+                $scope.RoleFlag = true;
+                $scope.UserFlag = false;
+                $scope.MenuFlag = false;
+                $scope.type = "Role";
+                $scope.name = undefined
+            }, function myError(response) {
+                $window.alert(response.data);
+            })
+        };
+
+        $scope.UserwisePerm = function (user) {
+            $scope.menuMaster = undefined;
+
+            $scope.RoleFlag = false;
+            $scope.UserFlag = false;
+            $scope.MenuFlag = true;
+            $scope.name = "/" + user.name;
+            $scope.UserId = user.id;
+            $scope.RoleId = undefined;
+
+            $scope.GetMenuByUser();
+
+        };
+
+        $scope.RolewisePerm = function (role) {
+            $scope.menuMaster = undefined;
+
+            $scope.RoleFlag = false;
+            $scope.UserFlag = false;
+            $scope.MenuFlag = true;
+            $scope.name = "/" + role.name;
+            $scope.UserId = undefined;
+            $scope.RoleId = role.id;
+
+            $scope.GetMenuByRole();
+        };
+
+        $scope.PermissionUpdate = function (menuId, actionList) {
+
+            var reducedJson = []
+            actionList.forEach(x => {
+                var item = { action: x.action, isEnabled: x.isEnabled };
+                reducedJson.push(item);
+            })
+
+            var perm = {
+                userId: $scope.UserId,
+                roleId: $scope.RoleId,
+                menuId: menuId,
+                actions: JSON.stringify(reducedJson)
+            }
+
+            $http({
+                method: 'POST',
+                url: '/Permission/UpdatePermission',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'dataType': 'json'
+                },
+                data: perm
+            }).then(function (response) {
+                if (response.data.status == true) {
+                    toast(response.data.message);
+                }
+                else {
+                    toast(response.data.message);
+                }
+            }, function (response) {
+                alert(response.data);
+            });
+        }
+    });
+
+        $scope.navtoPermission = function () {
+                window.open('/Permission', '_self');
+        };
+    hideLoader();
+
+</script>

@@ -19,5 +19,7 @@ public partial class TblRole
 
     public int? UpdatedBy { get; set; }
 
+    public virtual ICollection<TblPermission> TblPermissions { get; set; } = new List<TblPermission>();
+
     public virtual ICollection<TblUser> TblUsers { get; set; } = new List<TblUser>();
 }

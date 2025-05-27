@@ -10,5 +10,7 @@ namespace Stock_CMS.RepositoryInterface
         Task<RoleDto> GetRoleByName(string name);
         Task<IEnumerable<RoleDto>> GetRoles();
 
+        Task<IEnumerable<RoleDto>> GetFilteredRole();
+
     }
 }

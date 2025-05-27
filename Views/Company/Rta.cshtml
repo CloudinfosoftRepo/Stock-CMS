@@ -1,4 +1,9 @@
 ﻿<!DOCTYPE html>
+@{
+    var list = Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+}
 <html lang="en" ng-app="Stock-CMS">
 <head>
     <meta charset="UTF-8">
@@ -48,9 +53,11 @@
                                     </div>
                                 </form>
                             </div>
+                            @if (add) { 
                             <div class="col-auto">
-                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openRtaModal()">Add New</button>
+                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openRtaModal()">Add Rta</button>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -81,9 +88,11 @@
                                     <td class="cell">{{ rta.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ rta.updatedByName }}</td>
                                     <td class="cell sticky-action">
+                                        @if (edit) { 
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openRtaModal(rta)" title="Edit Rta">
                                             <i class="bi bi-pencil"></i>
                                         </span>
+                                        }
                                     </td>
                                 </tr>
                             </tbody>
@@ -125,7 +134,7 @@
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Rta' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Rta' }}</button>
                     </div>
                 </form>
             </div>
@@ -138,6 +147,7 @@
             $scope.currentRta = {};
             $scope.isEditing = false;
             var isProcessing = false;
+            $scope.processdone = false;
 
             showLoader();
 
@@ -165,6 +175,7 @@
 
             // Save Customer
             $scope.saveRta = function () {
+                $scope.processdone = true;
                 if (isProcessing) return;
                 isProcessing = true;
                 const url = $scope.isEditing ? '/Company/UpdateRta/' + $scope.currentRta.id : '/Company/CreateRta';
@@ -176,6 +187,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         $scope.loadRta();
                         $('#rtaModal').modal('hide');
                     } else {
@@ -185,6 +197,7 @@
                             icon: 'error',
                             confirmButtonText: 'Try Again'
                         });
+                        $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -194,6 +207,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             };

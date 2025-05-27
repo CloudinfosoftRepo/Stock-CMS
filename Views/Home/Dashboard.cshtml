@@ -12,13 +12,29 @@
  *@
 
 <!DOCTYPE html>
+@{
+	var list = Model as IEnumerable<ActionItem>;
+	bool unpaid = list?.Any(x => x.Action.ToUpper() == "UNPAID" && x.IsEnabled) ?? false;
+}
 <html lang="en" ng-app="Stock-CMS">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
 </head>
+<style>
 
+	.nav-link {
+	padding: 10px;
+	text-decoration: none; /* Optional: remove underline */
+	}
+
+	.nav-link:hover {
+	background-color: #edfdf6; /* Example: Change background color on hover */
+	color: #007bff; /* Example: Change text color on hover */
+	cursor: pointer; /* Optional: Change cursor to a pointer */
+	}
+</style>
 <body ng-controller="dashboardCtrl">
 	<div class="app-content pt-3 p-md-3 p-lg-4">
 		<div class="container-xl">
@@ -32,7 +48,7 @@
 			</div>
 
 			<div class="row g-4 mb-4">
-				<div class="col-6 col-lg-3" ng-click="navtocustomer()">
+				<div class="col-6 col-lg-3 nav-link" ng-click="navtocustomer()">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Enquiries</h4>
@@ -42,7 +58,7 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3">
+				<div class="col-6 col-lg-3 nav-link">
 					<div class="app-card app-card-stat shadow-sm h-100" ng-click="openFormModal('pending')">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Pending</h4>
@@ -52,7 +68,7 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3">
+				<div class="col-6 col-lg-3 nav-link">
 					<div class="app-card app-card-stat shadow-sm h-100" ng-click="openFormModal('follow up')">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Follow Up</h4>
@@ -62,10 +78,10 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3">
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf post receipt pending')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">IEPF</h4>
+							<h4 class="stats-type mb-1">IEPF Post Receipt Pending</h4>
 							<div class="stats-figure">{{data.iepf}}</div>
 							<div class="stats-meta">New</div>
 						</div><!--//app-card-body-->
@@ -74,18 +90,28 @@
 				</div><!--//col-->
 			</div>
 
-			<div class="row g-4 mb-4">
-				<div class="col-6 col-lg-3">
+			<div class="row g-4 mb-4" >
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">IEPF Post Receipt Submit</h4>
+							<h4 class="stats-type mb-1">IEPF</h4>
 							<div class="stats-figure">{{data.iprs}}</div>
 							<div class="stats-meta">New</div>
 						</div><!--//app-card-body-->
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3">
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf rejected')">
+					<div class="app-card app-card-stat shadow-sm h-100">
+						<div class="app-card-body p-3 p-lg-4">
+							<h4 class="stats-type mb-1">IEPF Rejected</h4>
+							<div class="stats-figure">{{data.iepfrejected}}</div>
+							<div class="stats-meta">New</div>
+						</div><!--//app-card-body-->
+						<a class="app-card-link-mask" href="#"></a>
+					</div><!--//app-card-->
+				</div><!--//col-->
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('drf form submitted')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">DRF Form Submitted</h4>
@@ -95,7 +121,20 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3">
+
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('drf rejected')">
+					<div class="app-card app-card-stat shadow-sm h-100">
+						<div class="app-card-body p-3 p-lg-4">
+							<h4 class="stats-type mb-1">DRF Rejected</h4>
+							<div class="stats-figure">{{data.drfreject}}</div>
+							<div class="stats-meta">New</div>
+						</div><!--//app-card-body-->
+						<a class="app-card-link-mask" href="#"></a>
+					</div><!--//app-card-->
+				</div><!--//col-->
+			</div>
+			<div class="row g-4 mb-4">
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('demated')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Demated</h4>
@@ -105,53 +144,75 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3">
+				
+			
+				<div class="col-6 col-lg-3 nav-link">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">Completed</h4>
-							<div class="stats-figure">{{data.completed}}</div>
+							<h4 class="stats-type mb-1">Total Evaluation</h4>
+							<div class="stats-figure" format-to-crore="data.totalevel"></div>
 							<div class="stats-meta">New</div>
 						</div><!--//app-card-body-->
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
+				@if (unpaid)
+				{
+					<div class="col-6 col-lg-3 nav-link" ng-click="loadUnpaidAmount()">
+					<div class="app-card app-card-stat shadow-sm h-100">
+						<div class="app-card-body p-3 p-lg-4">
+							<h4 class="stats-type mb-1">Total Unpaid Amount</h4>
+							<div class="stats-figure" format-to-lakh="data.unpaid"></div>
+							<div class="stats-meta">New</div>
+						</div><!--//app-card-body-->
+						<a class="app-card-link-mask" href="#"></a>
+					</div><!--//app-card-->
+				</div><!--//col-->
+			}
 			</div>
-
 			<div class="row g-4 mb-4">
 				<div class="col-24 col-lg-12">
-					<h5>IEPF recicipt pending</h5>
-                    <div class="table-responsive">
-                        <table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th class="cell">#</th>
-                                    <th class="cell">Company Name</th>
-                                    <th class="cell">FirstHolder Name</th>
+					<h5>IEPF</h5>
+					<div class="table-responsive">
+						<table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
+							<thead>
+								<tr>
+									<th class="cell">#</th>
+									<th class="cell">Customer Name</th>
+									<th class="cell">Company Name</th>
+									<th class="cell">SRN No</th>
+									<th class="cell">FirstHolder Name</th>
 									<th class="cell">Folio No</th>
 									<th class="cell">Claim Status</th>
 									<th class="cell">Qty</th>
-									<th class="cell">date</th>
+									<th class="cell">SRN Date</th>
+									<th class="cell">Process</th>
+									<th class="cell">Date</th>
 									<th class="cell">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+								</tr>
+							</thead>
+							<tbody>
 								<tr ng-repeat="tmp in stocks">
 									<td class="cell">{{ $index + 1 }}</td>
+									<td class="cell">{{tmp.customerName}}</td>
 									<td class="cell">{{tmp.companyName}}</td>
+									<td class="cell">{{tmp.srnno}}</td>
 									<td class="cell">{{tmp.firstHolderName}}</td>
 									<td class="cell">{{tmp.folioNo}}</td>
 									<td class="cell">{{tmp.claimStatus}}</td>
 									<td class="cell">{{tmp.qty}}</td>
+									<td class="cell">{{tmp.srndate | date:'dd-MM-yyyy'}}</td>
+									<td class="cell">{{tmp.process}}</td>
 									<td class="cell">{{tmp.trackDate[0] | date:'dd-MM-yyyy'}}</td>
 									<td class="cell">
 										<span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="gototraking(tmp.id)" title="Go To Traking">
 											<i class="bi bi-file-earmark-text"></i>
 										</span>
 									</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div><!--//col-->
 			</div>
 
@@ -163,7 +224,7 @@
 
 <!-- Form Modal -->
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" style="max-width:75%" role="document">
+	<div class="modal-dialog" style="max-width:85%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button class="btn btn-custom"
@@ -171,34 +232,99 @@
 						excel-export
 						table-id="formdata"
 						file-name="stock"
-						sheet-name="Sheet1"
+						sheet-name={{header}}
 						file-type="xlsx">
 					Export
 				</button>
 			</div>
 			<div class="m-2">
 				<!-- Stock List Table -->
-				<table id="formdata" class="table table-bordered table-striped table-hover mb-0 text-left">
+				<table id="formdata" class="table table-bordered table-hover mb-0 text-left">
 					<thead class="sticky-header">
 						<tr>
 							<th class="cell">#</th>
+							<th class="cell">Customer Name</th>
 							<th class="cell">Company Name</th>
+							<th class="cell" ng-show="openIepf">SRN No</th>
 							<th class="cell">FirstHolder Name</th>
 							<th class="cell">Folio No</th>
 							<th class="cell">Claim Status</th>
 							<th class="cell">Qty</th>
+							<th class="cell" ng-show="openIepf">SRN Date</th>
+							<th class="cell" ng-show="openDrf">DP Name</th>
+							<th class="cell" ng-show="openDrf">DP ID &Client ID</th>
+							<th class="cell">Process</th>
 							<th class="cell">Date</th>
+							<th class="cell">Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="f in formList">
 							<td class="cell">{{ $index + 1 }}</td>
+							<td class="cell">{{f.customerName}}</td>
 							<td class="cell">{{f.companyName}}</td>
+							<td class="cell" ng-show="openIepf">{{f.srnno}}</td>
 							<td class="cell">{{f.firstHolderName}}</td>
 							<td class="cell">{{f.folioNo}}</td>
 							<td class="cell">{{f.claimStatus}}</td>
 							<td class="cell">{{f.qty}}</td>
-							<td class="cell">{{f.trackDate[0] | date:'dd-MM-yyyy'}}</td>
+							<td class="cell" ng-show="openIepf">{{f.srndate | date:'dd-MM-yyyy'}}</td>
+							<td class="cell" ng-show="openDrf">{{f.dpname}}</td>
+							<td class="cell" ng-show="openDrf">{{f.dpidclientid}}</td>
+							<td class="cell">{{f.process}}</td>
+							<td class="cell">{{f.trackDate | date:'dd-MM-yyyy'}}</td>
+							<td class="cell">
+								<span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="gototraking(f.id)" title="Go To Traking">
+									<i class="bi bi-file-earmark-text"></i>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="unpaidModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="max-width:75%" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<!--<button class="btn btn-custom"
+						style="background-color:#003980;color:white"
+						excel-export
+						table-id="formdata"
+						file-name="stock"
+						sheet-name="Sheet1"
+						file-type="xlsx">
+					Export
+				</button>-->
+			</div>
+			<div class="m-2">
+				<!-- Stock List Table -->
+				<table id="formdata" class="table table-bordered table-hover mb-0 text-left">
+					<thead class="sticky-header">
+						<tr>
+							<th class="cell">#</th>
+							<th class="cell">Customer Name</th>
+							<th class="cell">Mobile</th>
+							<th class="cell">Address</th>
+							<th class="cell">Unpaid Amount</th>
+							<th class="cell">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="f in unpaidData">
+							<td class="cell">{{ $index + 1 }}</td>
+							<td class="cell">{{f.customerName}}</td>
+							<td class="cell">{{f.mobile}}</td>
+							<td class="cell">{{f.address}}</td>
+							<td class="cell">{{f.unpaid}}</td>
+							<td class="cell">
+								<span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="gotoStocks(f.id)" title="Go To Stocks">
+									<i class="bi bi-file-earmark-text"></i>
+								</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -209,10 +335,60 @@
 
 <script>
 
-    var app = angular.module('Stock-CMS', []);
+	var app = angular.module('Stock-CMS', []);
 
-    app.controller('dashboardCtrl', function ($scope, $http, $window) {
-        hideLoader();
+		app.directive('formatToCrore', function() {
+	  return {
+		restrict: 'A',  // Attribute directive
+		scope: {
+		  value: '=formatToCrore'  // Bind to the value passed in the attribute
+		},
+		link: function(scope, element) {
+
+		  // Function to format the value into crore
+		  function formatToCrore(value) {
+			if (value) {
+			  let croreValue = value / 10000000;  // Convert to crore
+			  return croreValue.toFixed(4) + ' cr'; // Format with 2 decimal places
+			}
+			return '0 cr';  // Return 0 cr if value is falsy
+		  }
+
+		  // Watch the value and update the formatted value
+		  scope.$watch('value', function(newValue) {
+			element.text(formatToCrore(newValue));  // Set the formatted value to the element's text
+		  });
+		}
+	  };
+	});
+
+	app.directive('formatToLakh', function() {
+	  return {
+		restrict: 'A',  // Attribute directive
+		scope: {
+		  value: '=formatToLakh'  // Bind to the value passed in the attribute
+		},
+		link: function(scope, element) {
+
+		  // Function to format the value into crore
+		  function formatToLakh(value) {
+			if (value) {
+			  let croreValue = value / 100000;  // Convert to crore
+			  return croreValue.toFixed(2) + ' lakh'; // Format with 2 decimal places
+			}
+			return '0 lakh';  // Return 0 cr if value is falsy
+		  }
+
+		  // Watch the value and update the formatted value
+		  scope.$watch('value', function(newValue) {
+			element.text(formatToLakh(newValue));  // Set the formatted value to the element's text
+		  });
+		}
+	  };
+	});
+
+	app.controller('dashboardCtrl', function ($scope, $http, $window) {
+		hideLoader();
 		$scope.formList = [];
 
 		$scope.loadCustomerCount = function () {
@@ -235,6 +411,18 @@
 			});
 		};
 
+
+		$scope.loadUnpaidAmount = function () {
+			$http.get('/Dashboard/GetUnpaidAmountByClient').then(function (response) {
+			$scope.unpaidData = response.data;
+			hideLoader();
+			}, function (error) {
+				console.error('Error loading Docs:', error);
+				hideLoader();
+			});
+			$('#unpaidModal').modal('show');
+		};
+
 		$scope.loadStockByStatsu = function () {
 			$http.get('/Dashboard/GetStocksByStatus').then(function (response) {
 			$scope.stocks = response.data;
@@ -249,7 +437,14 @@
 			window.open('/Enquiry/Tracking/' + id, '_self');
 		}
 
+		$scope.gotoStocks = function (id){
+			window.open('/Enquiry/Index/' + id, '_self');
+		}
+
 		$scope.openFormModal = function (val) {
+			$scope.header = val;
+			$scope.openIepf = val.toLowerCase() == 'iepf'.toLowerCase() || val.toLowerCase() == 'iepf rejected'.toLowerCase() || val.toLowerCase() == 'iepf post receipt pending'.toLowerCase() ? true : false;
+			$scope.openDrf = val.toLowerCase() == 'drf form submitted'.toLowerCase() || val.toLowerCase() == 'drf rejected'.toLowerCase()  ? true : false;
 			$http.get('/Dashboard/GetStocksByStatusName/?val=' + val).then(function (response) {
 			$scope.formList = response.data;
 			hideLoader();
@@ -270,7 +465,7 @@
 		$scope.loadCustomerCount();
 		$scope.loadStockCount();
 		$scope.loadStockByStatsu();
-    });
+	});
 </script>
 </html>
 

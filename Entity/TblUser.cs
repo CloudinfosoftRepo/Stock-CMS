@@ -30,4 +30,6 @@ public partial class TblUser
     public int? UpdatedBy { get; set; }
 
     public virtual TblRole Role { get; set; } = null!;
+
+    public virtual ICollection<TblPermission> TblPermissions { get; set; } = new List<TblPermission>();
 }

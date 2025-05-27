@@ -122,6 +122,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5% ;" ng-controller="FormController">
@@ -148,8 +160,18 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -161,7 +183,8 @@
                                 <input type="text" ng-model="data.warrentno" class="form-control search-orders" placeholder="Warrent No">
                             </div>
                         </div>
-
+                    </div>
+                    <div class="row">
                         <!-- Date Of Warrent -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -169,8 +192,7 @@
                                 <input type="date" ng-model="data.dateofwarrent" class="form-control search-orders" placeholder="Date Of Warrent">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    
                         <!-- Amount -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -182,7 +204,7 @@
 
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -664,7 +686,9 @@
       Date:<span class="s8"> {{data.today | date:'__/MM/yyyy'}}</span>
     </p>
      </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
   <script>
         angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -674,6 +698,7 @@
             var id = params.get('id');
             var id2 = params.get('id2');
             var isProcessing = false;
+            $scope.processdone = false;
 
             // showLoader();
 
@@ -684,7 +709,7 @@
             }
 
              // Load Customers
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
 
              if(id){
                  hideLoader();
@@ -695,35 +720,35 @@
                  $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                      $http.get('/doc/GetBank/'+ docs.id).then(function (response) {
-         var bank = response.data[0];
-                $scope.data = {
-                    docid: docs.id,
-                   customerName : docs.name,
-                   today: new Date(),
-                   folioNo : result.folioNo,
-                   qty : result.qty,
-    officename : result.company.rtaName,
-    officeaddress: result.company.rtaAddress,
-                   warrentno:'',
-                   dateofwarrent:'',
-                   amount:'',
-                   bankname:bank.bankName,
-                   branch: bank.branch,
-                   accountno: bank.accountNo,
-                   accounttype: bank.accountType,
-                   bankcity:bank.bankCity,
-                   bankpincode: bank.pinCode,
-                   micrcode: bank.micrcode,
-                   ifsccode: bank.ifsccode,
-                };
+
+                     var isDeceased = !!docs?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
+                      
 
              
                 hideLoader();
-                                    }, function (error) {
-        console.error('Error loading Bank Deatails:', error);
-        hideLoader();
-    });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -758,6 +783,7 @@
                    bankpincode: obj.bankpincode,
                    micrcode: obj.micrcode,
                    ifsccode: obj.ifsccode,
+				   condition: obj.condition,
                 };
                                 id = result.stockId;
 
@@ -767,6 +793,40 @@
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, heirlist,isDeceased) {
+
+                  var url = isDeceased ? '/doc/GetLegalHeirBank/'+ holder.id :  '/doc/GetBank/'+ holder.id;
+
+                $http.get(url).then(function (response) {
+         var bank = response.data[0];
+                $scope.data = {
+                    docid: holder.id,
+                   customerName : holder.name,
+                   today: new Date(),
+                   folioNo : result.folioNo,
+                   qty : result.qty,
+                    officename : result.company.rtaName,
+                    officeaddress: result.company.rtaAddress,
+                   warrentno:'',
+                   dateofwarrent:'',
+                   amount:'',
+                   bankname:bank.bankName,
+                   branch: bank.branch,
+                   accountno: bank.accountNo,
+                   accounttype: bank.accountType,
+                   bankcity:bank.bankCity,
+                   bankpincode: bank.pinCode,
+                   micrcode: bank.micrcode,
+                   ifsccode: bank.ifsccode,
+                   condition: isDeceased,
+                };
+
+                }, function (error) {
+                    console.error('Error loading Bank Deatails:', error);
+                    hideLoader();
+                });
             }
         };
 
@@ -804,6 +864,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Revalidation red div',
@@ -824,6 +885,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -840,7 +902,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -850,6 +912,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

@@ -89,5 +89,11 @@ public static class ConfigureServices
 
         services.AddTransient<ITrackingService, TrackingService>();
         services.AddTransient<ITrackingRepository, TrackingRepository>();
+
+        services.AddTransient<IMenuRepository, MenuRepository>();
+        services.AddTransient<IPermissionService, PermissionService>(); 
+        services.AddTransient<IPermissionRepository, PermissionRepository>();
+
+        services.AddTransient<IRelationMappingRepository, RelationMappingRepository>();
     }
 }

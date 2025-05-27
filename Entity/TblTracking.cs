@@ -33,5 +33,17 @@ public partial class TblTracking
 
     public string? ResponseUrl { get; set; }
 
+    public DateTime? DateofFollowUp { get; set; }
+
+    public string? Remark { get; set; }
+
+    public string? Srnno { get; set; }
+
+    public DateTime? Srndate { get; set; }
+
+    public string? DpName { get; set; }
+
+    public string? DpIdClientId { get; set; }
+
     public virtual TblStock Stock { get; set; } = null!;
 }

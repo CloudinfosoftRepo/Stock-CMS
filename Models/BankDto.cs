@@ -52,6 +52,12 @@ namespace Stock_CMS.Models
 
         public string? NameAsPerBankAccount { get; set; }
 
+        public string? BankFirstHolder { get; set; }
+
+        public string? BankSecondHolder { get; set; }
+
+        public string? BankThirdHolder { get; set; }
+
         [NotMapped]
         public string? CreatedByName { get; set; }
         [NotMapped]

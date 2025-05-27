@@ -1,4 +1,5 @@
-﻿using Stock_CMS.Common;
+﻿using System.Security;
+using Stock_CMS.Common;
 using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
@@ -10,10 +11,14 @@ namespace Stock_CMS.Service
     {
         public readonly IUserRepository _user;
         public readonly IRoleRepository _roleRepository;
-        public UserService(IUserRepository user, IRoleRepository roleRepository)
+        public readonly IMenuRepository _menuRepository;
+        public readonly IPermissionRepository _permissionRepository;
+        public UserService(IUserRepository user, IRoleRepository roleRepository,IMenuRepository menuRepository,IPermissionRepository permissionRepository)
         {
             _user = user;
             _roleRepository = roleRepository;
+            _menuRepository = menuRepository;
+            _permissionRepository = permissionRepository;
         }
         public async Task<IEnumerable<UserDto>> Login(string userName, string passWord)
         {
@@ -175,6 +180,32 @@ namespace Stock_CMS.Service
                 var result = await _user.AddUsers(dataList);
                 if (result.Any())
                 {
+                    var userId = result.FirstOrDefault().Id;
+                    var createdBy = result.FirstOrDefault().CreatedBy;
+                    var roleId = result.FirstOrDefault().RoleId;
+                    var permissions = await _permissionRepository.GetPermissionByRoleId(roleId);
+                    if (permissions != null && permissions.Any())
+                    {
+                        permissions.ToList().ForEach(x => { x.Id = 0; x.UserId = result.FirstOrDefault().Id; x.CreatedAt = DateTime.Now; x.CreatedBy = createdBy; });
+                        var permResult = await _permissionRepository.AddPermission(permissions);
+                    }
+                    else
+                    {
+                        var menu = await _menuRepository.GetMenu();
+                        List<PermissionDto> perms = new List<PermissionDto>();
+                        menu.ToList().ForEach(x =>
+                        {
+                            PermissionDto item = new PermissionDto();
+                            item.MenuId = x.Id;
+                            item.UserId = userId;
+                            item.RoleId = roleId;
+                            item.IsActive = true;
+                            item.CreatedAt = DateTime.Now;
+                            item.CreatedBy = createdBy;
+                            perms.Add(item);
+                        });
+                        var permResult = await _permissionRepository.AddPermission(perms);
+                    }
                     return result.FirstOrDefault().Id;
                 }
                 else
@@ -200,6 +231,7 @@ namespace Stock_CMS.Service
                 var existingProduct = isExist.FirstOrDefault();
                 if (existingProduct != null)
                 {
+                    data.RoleId = data.RoleId == 0 ? existingProduct.RoleId : data.RoleId;
                     data.CreatedBy = existingProduct.CreatedBy;
                     data.CreatedAt = existingProduct.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
@@ -211,7 +243,59 @@ namespace Stock_CMS.Service
                 var result = await _user.UpdateUser(updateList);
                 if (result.Any())
                 {
+                    var userId = result.FirstOrDefault().Id;
+                    var roleId = result.FirstOrDefault().RoleId;
+                    var updatedBy = result.FirstOrDefault().UpdatedBy;
+
+                    var permissions = await _permissionRepository.GetPermissionsByUser(result.FirstOrDefault().Id);
+
+                    var menu = await _menuRepository.GetMenu();
+                    // check if any new menu is added
+                    if (permissions.Count() != menu.Count())
+                    {
+                        var menuIds = menu.Select(x => x.Id).ToArray();
+                        var permissionIds = permissions.Select(x => x.MenuId ?? 0).Distinct().ToArray();
+                        var newMenu = menu.Where(x => !permissionIds.Contains(x.Id)).ToList();
+
+                        var createdBy = result.FirstOrDefault().CreatedBy;
+
+                        List<PermissionDto> newperms = new List<PermissionDto>();
+                        newMenu.ToList().ForEach(x =>
+                        {
+                            PermissionDto item = new PermissionDto();
+                            item.MenuId = x.Id;
+                            item.UserId = userId;
+                            item.RoleId = roleId;
+                            item.IsActive = true;
+                            item.CreatedAt = DateTime.Now;
+                            item.CreatedBy = createdBy;
+                            newperms.Add(item);
+                        });
+                        var newpermsResult = await _permissionRepository.AddPermission(newperms);
+
+                    }
+                    // update role for each page for this user
+                    else if (permissions.Count() == menu.Count() && data.RoleId != existingProduct.RoleId)
+                    {
+
+                        var roleWisePerms = await _permissionRepository.GetPermissionByRoleId(result.FirstOrDefault().RoleId);
+                        var updatedperms = from userPerms in permissions
+                                           join newperm in roleWisePerms on userPerms.MenuId equals newperm.MenuId
+                                           select new PermissionDto()
+                                           {
+                                               Id = userPerms.Id,
+                                               MenuId = userPerms.MenuId,
+                                               UserId = userPerms.UserId,
+                                               RoleId = newperm.RoleId,
+                                               IsActive = true,
+                                               Actions = newperm.Actions,
+                                               UpdatedAt = DateTime.Now,
+                                               UpdatedBy = updatedBy,
+                                           };
+                        var newpermsResult = await _permissionRepository.UpdatePermission(updatedperms);
+                    }
                     return 1;
+                  
                 }
                 else
                 {

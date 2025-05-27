@@ -7,6 +7,10 @@ using EFCore.BulkExtensions;
 using Stock_CMS.Entity;
 using Microsoft.EntityFrameworkCore;
 using log4net;
+using Stock_CMS.Models;
+using System.Collections;
+using Stock_CMS.Common;
+using Stock_CMS.Entity;
 
 namespace Stock_CMS.Common
 {
@@ -21,7 +25,7 @@ namespace Stock_CMS.Common
         //private readonly ILogger<EfRepository<T, TModel>>  _logger;
 
 
-        public EfRepository( StockCmsContext dbContext, IMapper mapper)
+        public EfRepository(StockCmsContext dbContext, IMapper mapper)
         {
            
             _dbContext = dbContext;
@@ -187,6 +191,177 @@ namespace Stock_CMS.Common
                 return Enumerable.Empty<TModel>();
             }
         }
+        protected async Task<IEnumerable<TModel>> AddOrUpdateEntities(IEnumerable<TModel> models)
+        {
+            try
+            {
+                var entities = _mapper.Map<IEnumerable<T>>(models);
+
+                foreach (var entity in entities)
+                {
+                    var entityEntry = _dbContext.Entry(entity);
+                    var keyProperty = entityEntry.Metadata.FindPrimaryKey()?.Properties.FirstOrDefault();
+
+                    if (keyProperty == null)
+                        throw new InvalidOperationException("Entity must have a primary key.");
+
+                    var entityId = entityEntry.Property(keyProperty.Name).CurrentValue;
+                    var existing = await _dbContext.Set<T>().FindAsync(entityId);
+
+                    if (existing != null)
+                    {
+                        // Update scalar properties
+                        _dbContext.Entry(existing).CurrentValues.SetValues(entity);
+
+                        // Handle navigations
+                        await AttachNavigationPropertiesAsync(entity, existing);
+                    }
+                    else
+                    {
+                        // Attach any existing foreign objects in this new entity
+                        await AttachNavigationPropertiesAsync(entity, null);
+
+                        await _dbContext.AddAsync(entity);
+                    }
+                }
+
+                await _dbContext.SaveChangesAsync();
+
+                return _mapper.Map<IEnumerable<T>, IEnumerable<TModel>>(entities);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+                return Enumerable.Empty<TModel>();
+            }
+        }
+        protected async Task<PagedResult<TModel>> GetManyPaged(
+Expression<Func<T, bool>> predicate,
+PaginationSpecification pagination = null)
+        {
+            try
+            {
+                var query = _dbContext.Set<T>().Where(predicate);
+                query = AllIncludes().Aggregate(query, (current, include) => current.Include(include));
+
+                int totalRecords = await query.CountAsync().ConfigureAwait(false);
+                int pageNumber = 1;
+                int pageSize = totalRecords;
+
+                if (pagination != null)
+                {
+                    if (pagination.TotalNeeded)
+                        pagination.TotalRecords = totalRecords;
+
+                    query = query.Skip(pagination.NumberToSkip).Take(pagination.NumberToTake);
+                    pageNumber = pagination.NumberToSkip / pagination.NumberToTake + 1;
+                    pageSize = pagination.NumberToTake;
+                }
+
+                var entities = await query.ToArrayAsync().ConfigureAwait(false);
+                var models = entities.Any() ? _mapper.Map<T[], TModel[]>(entities) : Array.Empty<TModel>();
+
+                return new PagedResult<TModel>(models, totalRecords, pageNumber, pageSize);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message);
+                return new PagedResult<TModel>(Enumerable.Empty<TModel>(), 0, 1, 0);
+            }
+        }
+
+        public async Task<IEnumerable<TModel>> ListWithExpressionAsync<TKey>(IOrderSpecification<T, TKey> orderSpec, Expression<Func<T, bool>> predicate)
+        {
+            //var queryableResultWithIncludes = spec.Includes
+            //    .Aggregate(context.Set<T>().AsQueryable(),
+            //    (current, include) => current.Include(include));
+
+            //var secondaryResult = spec.IncludeStrings
+            //    .Aggregate(queryableResultWithIncludes,
+            //        (current, include) => current.Include(include));
+
+            //var result = secondaryResult.Where(spec.Criteria);
+
+            var result = _dbContext.Set<T>().Where(predicate);
+
+            if (orderSpec.SortDescending)
+                result = result.OrderByDescending(orderSpec.SortBy).Take(1);
+            else
+                result = result.OrderBy(orderSpec.SortBy).Take(1);
+
+            //pageSpec.TotalRecords = result.Count();
+
+            //result = result
+            //    .Skip(pageSpec.NumberToSkip)
+            //    .Take(pageSpec.NumberToTake);
+
+            var data = await result.ToArrayAsync().ConfigureAwait(false);
+
+            return data.Any() ? _mapper.Map<T[], TModel[]>(data) : Enumerable.Empty<TModel>();
+        }
+
+        //Helper Function
+        private async Task AttachNavigationPropertiesAsync(T entity, T existingEntity)
+        {
+            var navProps = _dbContext.Entry(entity).Navigations.ToList();
+
+            foreach (var nav in navProps)
+            {
+                var navValue = nav.CurrentValue;
+
+                if (navValue == null) continue;
+
+                if (nav.Metadata.IsCollection)
+                {
+                    var elementType = nav.Metadata.ClrType.GenericTypeArguments.FirstOrDefault();
+                    if (elementType == null) continue;
+
+                    var typedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
+
+                    foreach (var item in (IEnumerable<object>)navValue)
+                    {
+                        var itemEntry = _dbContext.Entry(item);
+                        var keyProperty = itemEntry.Metadata.FindPrimaryKey()?.Properties.FirstOrDefault();
+                        var itemKey = keyProperty?.PropertyInfo?.GetValue(item);
+
+                        var tracked = itemKey != null
+                            ? await _dbContext.FindAsync(elementType, itemKey)
+                            : null;
+
+                        typedList.Add(tracked ?? item);
+                    }
+
+                    if (existingEntity != null)
+                    {
+                        _dbContext.Entry(existingEntity).Navigation(nav.Metadata.Name).CurrentValue = typedList;
+                    }
+                    else
+                    {
+                        nav.CurrentValue = typedList;
+                    }
+                }
+
+                else
+                {
+                    // Handle reference
+                    var refEntry = _dbContext.Entry(navValue);
+                    var refKey = refEntry.Metadata.FindPrimaryKey()?.Properties.FirstOrDefault()?.PropertyInfo?.GetValue(navValue);
+
+                    var existingRef = refKey != null
+                        ? await _dbContext.FindAsync(navValue.GetType(), refKey)
+                        : null;
+
+                    if (existingEntity != null)
+                    {
+                        _dbContext.Entry(existingEntity).Navigation(nav.Metadata.Name).CurrentValue = existingRef ?? navValue;
+                    }
+                    else
+                    {
+                        nav.CurrentValue = existingRef ?? navValue;
+                    }
+                }
+            }
+        }
 
 
         //OLD
@@ -297,6 +472,69 @@ namespace Stock_CMS.Common
 
             var result = await secondaryResult.Where(spec.Criteria).ToListAsync();
             return _mapper.Map<T[], TModel[]>(result.ToArray());
+        }
+        public async Task<IEnumerable<T>> ListAsyncT<T>(
+ISpecification<T> spec,
+PaginationSpecification pageSpec,
+DbContext context,
+IMapper mapper,
+List<FilterRule> filters,
+Expression<Func<T, bool>> searchExpression,
+string sortColumn,
+bool sortDescending
+) where T : class
+        {
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(context.Set<T>().AsQueryable(),
+                    (current, include) => current.Include(include));
+
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            // Search
+            if (searchExpression != null)
+            {
+                secondaryResult = secondaryResult.Where(searchExpression);
+            }
+
+            // Dynamic filters
+            var filterExpression = FilterHelper.BuildFilterExpression<T>(filters);
+            if (filterExpression != null)
+            {
+                secondaryResult = secondaryResult.Where(filterExpression);
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(sortColumn))
+            {
+                var property = typeof(T).GetProperty(sortColumn);
+                if (property != null)
+                {
+                    var parameter = Expression.Parameter(typeof(T), "x");
+                    var propertyAccess = Expression.Property(parameter, property);
+                    var orderByExpression = Expression.Lambda(propertyAccess, parameter);
+
+                    var methodName = sortDescending ? "OrderByDescending" : "OrderBy";
+                    var resultExpression = Expression.Call(typeof(Queryable), methodName,
+                        new Type[] { typeof(T), property.PropertyType },
+                        secondaryResult.Expression,
+                        Expression.Quote(orderByExpression));
+
+                    secondaryResult = secondaryResult.Provider.CreateQuery<T>(resultExpression);
+                }
+            }
+
+            // Apply spec criteria
+            var result = secondaryResult.Where(spec.Criteria);
+
+            // Total records
+            pageSpec.TotalRecords = pageSpec.TotalNeeded ? result.Count() : 0;
+
+            // Pagination
+            return await result.Skip(pageSpec.NumberToSkip)
+                               .Take(pageSpec.NumberToTake)
+                               .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> ListAsyncRaw(ISpecification<T> spec, DbContext context)

@@ -18,7 +18,7 @@ namespace Stock_CMS.Repository
 
         public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByInfo(LegalHeirDto data)
         {
-            return await GetMany(x => x.IsActive == true && x.Aadhar == data.Aadhar);
+            return await GetMany(x => x.IsActive == true && x.Name == data.Name);
         }
         public async Task<IEnumerable<LegalHeirDto>> AddLegalHeir(IEnumerable<LegalHeirDto> data)
         {
@@ -33,6 +33,11 @@ namespace Stock_CMS.Repository
             return await GetMany(x => x.Id == Id && x.IsActive == true);
         }
 
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByIds(long?[] ids)
+        {
+            return await GetMany(x => ids.Contains(x.Id));
+        }
+
         public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByAadhar(string aadhar)
         {
             return await GetMany(x => x.Aadhar == aadhar && x.IsActive == true);
@@ -43,9 +48,34 @@ namespace Stock_CMS.Repository
             return await GetMany(x => x.DocId == Id && x.IsActive ==true);
         }
 
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByCustomerId(long Id)
+        {
+            return await GetMany(x => x.CustomerId == Id && x.IsActive == true);
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByCustomerIdWithoutLegalHeir(long Id, long legalheirId)
+        {
+            return await GetMany(x => x.CustomerId == Id && x.IsActive == true && x.Id != legalheirId);
+        }
+
         public async Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByClientId(long Id)
         {
             return await GetMany(x => x.DocId == Id && x.IsClaiment == true && x.IsActive == true);
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetClaimentLegalHeirByLegalHeirIds(long?[] Id)
+        {
+            return await GetMany(x => Id.Contains(x.Id) && x.IsClaiment == true && x.IsActive == true);
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetNOCLegalHeirByLegalHeirIds(long?[] Id)
+        {
+            return await GetMany(x => Id.Contains(x.Id) && x.IsNoc == true && x.IsActive == true);
+        }
+
+        public async Task<IEnumerable<LegalHeirDto>> GetLegalHeirByLegalHeirIds(long?[] Id)
+        {
+            return await GetMany(x => Id.Contains(x.Id) && x.IsActive == true);
         }
 
         public async Task<IEnumerable<LegalHeirDto>> UpdateLegalHeirbyColumn(IEnumerable<LegalHeirDto> data, string[] columns)

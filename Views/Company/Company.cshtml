@@ -1,4 +1,9 @@
 ﻿<!DOCTYPE html>
+@{
+    var list = Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+}
 <html lang="en" ng-app="Stock-CMS">
 <head>
     <meta charset="UTF-8">
@@ -44,9 +49,11 @@
                                     </div>
                                 </form>
                             </div>
+                            @if(add){
                             <div class="col-auto">
-                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openCompanyModal()">Add New</button>
+                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openCompanyModal()">Add Company</button>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -63,6 +70,7 @@
                                     <th class="cell">Company PinCode</th>
                                     <th class="cell">Rta Name</th>
                                     <th class="cell">Rta Address</th>
+                                    <th class="cell">Face Value</th>
                                     <th class="cell">Created At</th>
                                     <th class="cell">Created By</th>
                                     <th class="cell">Updated At</th>
@@ -77,14 +85,17 @@
                                     <td class="cell">{{ company.companyPinCode }}</td>
                                     <td class="cell">{{ company.rtaName }}</td>
                                     <td class="cell">{{ company.rtaAddress }}</td>
+                                    <td class="cell">{{ company.faceValue }}</td>
                                     <td class="cell">{{ company.createdAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ company.createdByName }}</td>
                                     <td class="cell">{{ company.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ company.updatedByName }}</td>
                                     <td class="cell sticky-action">
+                                        @if(edit){
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCompanyModal(company)" title="Edit Company">
                                             <i class="bi bi-pencil"></i>
                                         </span>
+                                        }
                                     </td>
                                 </tr>
                             </tbody>
@@ -142,11 +153,20 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="faceValue" class="form-label">Face Value</label>
+                                    <select class="form-select" ng-options="f.facevalue as f.facevalue for f in facevaluelist" ng-model="currentCompany.faceValue" required>
+                                        <option selected disabled value="">Select Face Value</option>
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Company' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Company' }}</button>
                     </div>
                 </form>
             </div>
@@ -160,6 +180,20 @@
             $scope.currentCompany = {};
             $scope.isEditing = false;
             var isProcessing = false;
+            $scope.processdone = false;
+
+                    $scope.facevaluelist = [
+            { id: 1, facevalue: 1 },
+            { id: 2, facevalue: 2 },
+            { id: 3, facevalue: 3 },
+            { id: 4, facevalue: 4 },
+            { id: 5, facevalue: 5 },
+            { id: 6, facevalue: 6 },
+            { id: 7, facevalue: 7 },
+            { id: 8, facevalue: 8 },
+            { id: 9, facevalue: 9 },
+            { id: 10, facevalue: 10 },
+        ];
 
             // Load Customers and RTAs
             $scope.loadCompany = function () {
@@ -199,6 +233,7 @@
 
             // Save Company
             $scope.saveCompany = function () {
+                $scope.processdone = true;
             if (isProcessing) return;
             isProcessing = true;
             console.log($scope.currentCompany); // Debugging the company object
@@ -211,6 +246,7 @@
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     $scope.loadCompany();
                     $('#companyModal').modal('hide');
                 } else {
@@ -220,6 +256,7 @@
                         icon: 'error',
                         confirmButtonText: 'Try Again'
                     });
+                    $scope.processdone = false;
                 }
                 isProcessing = false;
             }, function (error) {
@@ -229,6 +266,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
+                $scope.processdone = false;
                 isProcessing = false;
             });
         };

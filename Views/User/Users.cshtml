@@ -1,6 +1,12 @@
-﻿
+﻿@{
+    var list =  Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+    bool delete = list?.Any(x => x.Action.ToUpper() == "DELETE" && x.IsEnabled) ?? false;
+
+}
 <!DOCTYPE html>
-<html lang="en" ng-app="Stock-CMS">
+<html lang="en" ng-app="Stock-CMS" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,31 +14,31 @@
 </head>
 <style>
     .sticky-header {
-        position: sticky;
-        top: 0;
-        background-color: #fff; /* Ensures that the header has a solid background */
-        z-index: 1; /* Makes sure the header stays on top of the content */
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Ensures that the header has a solid background */
+    z-index: 1; /* Makes sure the header stays on top of the content */
     }
 
     .table-responsive {
-        max-height: 500px; /* Set a fixed height to make the table scrollable */
-        overflow-y: auto;
+    max-height: 500px; /* Set a fixed height to make the table scrollable */
+    overflow-y: auto;
     }
 
     .sticky-action {
-        position: sticky;
-        right: 0;
-        z-index: 2;
+    position: sticky;
+    right: 0;
+    z-index: 2;
     }
 
     .nav-style {
-        color: blue !important;
+    color: blue !important;
     }
 
-        .nav-style:hover {
-            cursor: pointer;
-            text-decoration: underline;
-        }
+    .nav-style:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    }
 
 </style>
 <body ng-controller="ClientController">
@@ -57,9 +63,11 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-auto">
-                                <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openUserModal()">Add New User</button>
-                            </div>
+                            @if(add){
+                                <div class="col-auto">
+                                    <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openUserModal()">Add User</button>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -99,13 +107,18 @@
                                     <td class="cell">{{ u.updatedAt | date:'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ u.updatedByName }}</td>
                                     <td class="cell sticky-action">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openUserModal(u)" title="Edit User">
-                                            <i class="bi bi-pencil"></i>
-                                        </span>
-
-                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteUser(u)" title="Delata User">
-                                            <i class="bi bi-trash"></i>
-                                        </span>
+                                        @if (edit)
+                                        {
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openUserModal(u)" title="Edit User">
+                                                <i class="bi bi-pencil"></i>
+                                            </span>
+                                        }
+                                        @if (delete)
+                                        {
+                                            <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteUser(u)" title="Delete User">
+                                                <i class="bi bi-trash"></i>
+                                            </span>
+                                        }
                                     </td>
                                 </tr>
                             </tbody>
@@ -177,7 +190,7 @@
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add User' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add User' }}</button>
                     </div>
                 </form>
             </div>
@@ -190,6 +203,7 @@
             $scope.currentUser = {};
             $scope.isEditing = false;
             var isProcessing = false;
+            $scope.processdone = false;
 
             showLoader();
 
@@ -224,6 +238,7 @@
 
             // Save Customer
             $scope.saveUser = function () {
+                $scope.processdone = true;
                 if (isProcessing) return;
                 isProcessing = true;
                 const url = $scope.isEditing ? '/User/UpdateUser/' + $scope.currentUser.id : '/User/CreateUsers';
@@ -235,6 +250,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         $scope.loadUsers();
                         $('#userModal').modal('hide');
                     } else {
@@ -244,6 +260,7 @@
                             icon: 'error',
                             confirmButtonText: 'Try Again'
                         });
+                        $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -253,6 +270,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             };

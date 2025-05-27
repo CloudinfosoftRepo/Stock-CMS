@@ -25,6 +25,20 @@ public partial class TblCustomer
 
     public bool IsClient { get; set; }
 
+    public string? Reference { get; set; }
+
+    public string? ContactPersonName { get; set; }
+
+    public string? ContactPersonMobile { get; set; }
+
+    public string? FileNo { get; set; }
+
+    public string? Location { get; set; }
+
+    public string? FinancialYear { get; set; }
+
+    public string? DocumentJson { get; set; }
+
     public virtual ICollection<TblDoc> TblDocs { get; set; } = new List<TblDoc>();
 
     public virtual ICollection<TblStock> TblStocks { get; set; } = new List<TblStock>();

@@ -98,6 +98,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -122,9 +134,19 @@
                         <!-- Select Customer Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="seletedid" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -136,7 +158,8 @@
                                 <input type="text" ng-model="surity.suretyname" class="form-control" placeholder="Surety Name">
                             </div>
                         </div>
-
+                    </div>
+                    <div class="row">
                         <!-- Age -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -144,8 +167,7 @@
                                 <input type="text" ng-model="surity.age" class="form-control" placeholder="Age">
                             </div>
                         </div>
-                        </div>
-                    <div class="row">
+                       
                         <!-- Surety Address -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -161,7 +183,8 @@
                                 <input type="text" ng-model="surity.knowtheapplicant" class="form-control" placeholder="Know The Applicant in Years">
                             </div>
                         </div>
-
+                    </div>
+                    <div class="row">
                         <!-- Business Address -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -169,8 +192,7 @@
                                 <textarea id="bussinessaddress" ng-model="surity.bussinessaddress" class="form-control" placeholder="Business Address"></textarea>
                             </div>
                         </div>
-                        </div>
-                    <div class="row">
+                       
                         <!-- PAN No -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
@@ -265,7 +287,7 @@
 
                 <!-- Generate Form Button -->
                 <div class="text-center m-2 col-md-4">
-                    <button type="submit" class="btn btn-primary" ng-click="genrateForm()" style="background-color:#003980; color:white; border-radius: 5px;">
+                    <button type="submit" ng-disabled="processdone" class="btn btn-primary" ng-click="genrateForm()" style="background-color:#003980; color:white; border-radius: 5px;">
                         Generate Form
                     </button>
                 </div>
@@ -300,7 +322,7 @@
                     {{s.suretyaddress}}
       </u>
                 (residential address of Surety No.{{ $index+1 }}) know the applicant(s) for last
-                <u>{{ s.knowtheapplicant}}</u>years and having business address at  <u>
+                <u>{{ s.knowtheapplicant}}</u> years and having business address at  <u>
                     {{s.bussinessaddress}}
             </u>
                 (official address of Surety No.{{ $index+1 }}), having PAN Card No.<u>
@@ -553,7 +575,9 @@
             <u>{{data.month}} </u><span class="p"> </span>{{data.year}}.
     </h1>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
 <script>
             angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -567,6 +591,7 @@
                 $scope.incomesource = "Employed";
                 $scope.btnhide = id2 === null ? true : false;
                 var isProcessing = false;
+                $scope.processdone = false;
 
                 // showLoader();
 
@@ -583,7 +608,7 @@
             }
 
                 // Load Customers
-         $scope.loadCustomers = function (sid) {
+         $scope.loadCustomers = function (sid,hid) {
          if(id){
              hideLoader();
              var currentDate = new Date();
@@ -594,15 +619,31 @@
             $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                  $scope.docs = response.data;
                 var doc = $scope.docs.find(x => x.id === sid);
-                var arr = angular.copy($scope.surityList);
-            $scope.data = {
-                docid: doc.id,
-                customerName: doc.name,
-                surity: JSON.stringify(arr, null, 2),
-                day: currentDate.getDate(),
-                month: monthsOfYear[currentDate.getMonth()],
-                year: currentDate.getFullYear(),
-            };
+
+                 var isDeceased = !!doc?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = doc;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
 
             hideLoader();
             }, function (error) {
@@ -626,7 +667,8 @@
                 surity : JSON.parse(obj.surity),
                 day: obj.day,
                 month:obj.month,
-                year:obj.year
+                year:obj.year,
+                condition: obj.condition,
             };  
             $scope.surityList =  $scope.data.surity;
                             id = result.stockId;
@@ -637,6 +679,19 @@
             console.error('Error loading customers:', error);
             hideLoader();
         });
+        }
+
+        function populateData(holder, result, heirlist,isDeceased) {
+             var arr = angular.copy($scope.surityList);
+            $scope.data = {
+                docid: holder.id,
+                customerName: holder.name,
+                surity: JSON.stringify(arr, null, 2),
+                day: currentDate.getDate(),
+                month: monthsOfYear[currentDate.getMonth()],
+                year: currentDate.getFullYear(),
+                condition: isDeceased,
+            };
         }
     };
 
@@ -664,9 +719,11 @@
 
     //Genrate Form
      $scope.genrateForm = function () {
+
           var arr = angular.copy($scope.surityList);
                       $scope.data.surity = JSON.stringify(arr, null, 2);
          if(id){
+             $scope.processdone = true;
          let jsonString = JSON.stringify($scope.data, null, 2);
          var data ={
              formName : 'Surety Affidavi',
@@ -687,6 +744,7 @@
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     // $scope.loadCustomers();
                     window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -703,7 +761,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                 }
                 isProcessing = false;
             }, function (error) {
@@ -713,6 +771,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
+                $scope.processdone = false;
                 isProcessing = false;
             });
         //console.log(dataString);

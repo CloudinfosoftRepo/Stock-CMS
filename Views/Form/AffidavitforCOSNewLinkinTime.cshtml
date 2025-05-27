@@ -184,6 +184,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -210,8 +222,18 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in doc" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -227,7 +249,7 @@
 
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
-                        <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -421,7 +443,9 @@
       </li>
     </ol>
     </div>
-        <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
   <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -432,13 +456,14 @@
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
 
                 // Load Customers
 
-        $scope.loadCustomers = function (sid) {
+        $scope.loadCustomers = function (sid,hid) {
 
              if(id){
                  hideLoader();
@@ -450,29 +475,32 @@
                  $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
                     $scope.doc = response.data;
                     var docs = $scope.doc.find(x => x.id === sid);
-                    var Age = $scope.calculateAge(docs.dob,docs.dateOfDeath);
 
+                   var isDeceased = !!docs?.dateOfDeath;
 
-                $scope.data = {
-                    docid: docs.id,
-                   customerName : docs.name,
-                   age : Age,
-                   relationship: docs.relationship,
-                   sonof: docs.relativesName,
-                   folioNo : result.folioNo,
-                   address : result.addressAsPerAadhar,
-                   qty: result.qty,
-                   officename : result.companyName,
-                    jsondata: result.stockJson,
-                   place: 'Vadodara',
-                   day: currentDate.getDate(),
-                   month: monthsOfYear[currentDate.getMonth()],
-                   year: currentDate.getFullYear(),
-              firstHolder :result.firstHolderName,
-                   secondHolder:result.secondHolderName,
-                   thirdHolder: result.thirdHolderName,
-                };
-                $scope.shares = JSON.parse($scope.data.jsondata);
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = docs;
+                    populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                }
+
                 hideLoader();
                 }, function (error) {
                     console.error('Error loading Docs:', error);
@@ -507,6 +535,7 @@
                     firstHolder:obj.firstHolder,
                     secondHolder:obj.secondHolder,
                     thirdHolder:obj.thirdHolder,
+                    condition: obj.condition,
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
                       id = result.stockId;
@@ -516,6 +545,35 @@
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, currentDate, monthsOfYear,isDeceased) {
+                var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
+
+
+                $scope.data = {
+                    docid: holder.id,
+                   customerName : holder.name,
+                   age : Age,
+                   relationship: holder.relationship,
+                   sonof: holder.relativesName,
+                   folioNo : result.folioNo,
+                   address : result.addressAsPerAadhar,
+                   qty: result.qty,
+                   officename : result.companyName,
+                    jsondata: result.stockJson,
+                   place: 'Vadodara',
+                   day: currentDate.getDate(),
+                   month: monthsOfYear[currentDate.getMonth()],
+                   year: currentDate.getFullYear(),
+              firstHolder :result.firstHolderName,
+                   secondHolder:result.secondHolderName,
+                   thirdHolder: result.thirdHolderName,
+                   condition: isDeceased,
+                };
+
+                                $scope.shares = JSON.parse($scope.data.jsondata);
+
             }
         };
 
@@ -566,6 +624,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
                  if($scope.data.jsondata == undefined){
                      Swal.fire({
                             title: 'Error!',
@@ -573,6 +632,7 @@
                             icon: 'error',
                             confirmButtonText: 'Try Again'
                         });
+                        $scope.processdone = false;
                 return;
                  }
              let jsonString = JSON.stringify($scope.data, null, 2);
@@ -595,6 +655,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                                                 window.open(response.data.data.url + response.data.data.id,'_self')
 
@@ -611,7 +672,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -621,6 +682,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -652,7 +714,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-            var css = '<style type="text/css"> * { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s1 { color: black; font-family: "Times New Roman", serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 12pt; } .p, p { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; margin: 0pt; } .s3 { color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .h2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s4 { color: #202024; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } li { display: block; } #l1 { padding-left: 0pt; counter-reset: c1 1; } #l1 > li > *:first-child:before { counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l1 > li:first-child > *:first-child:before { counter-increment: c1 0; } #l2 { padding-left: 0pt; counter-reset: d1 1; } #l2 > li > *:first-child:before { counter-increment: d1; content: counter(d1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l2 > li:first-child > *:first-child:before { counter-increment: d1 0; } .bordered-table { width: 100%; border: 1px solid black; border-collapse: collapse; } .bordered-table th { border: 1px solid black; padding: 8px; text-align: left; background-color: #f2f2f2; } .bordered-table td { border: 1px solid black; padding: 8px; text-align: left; } .no-border-table { width: 100%; border-collapse: collapse; } .no-border-table td { padding: 8px; text-align: justify; } .cell-text { padding-left: 5pt; text-indent: 0pt; } .empty-row { height: 20px; }</style>';
+            var css = '<style type="text/css"> * { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s1 { color: black; font-family: "Times New Roman", serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 12pt; } .p, p { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; margin: 0pt; } .s3 { color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .h2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s4 { color: #202024; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } li { display: block; } #l1 { padding-left: 0pt; counter-reset: c1 1; } #l1 > li > *:first-child:before { counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l1 > li:first-child > *:first-child:before { counter-increment: c1 0; } #l2 { padding-left: 0pt; counter-reset: d1 1; } #l2 > li > *:first-child:before { counter-increment: d1; content: counter(d1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l2 > li:first-child > *:first-child:before { counter-increment: d1 0; } .bordered-table { width: 100%; border: 1px solid black; border-collapse: collapse; } .bordered-table th { border: 1px solid black; padding: 8px; text-align: left; background-color: #f2f2f2; } .bordered-table td { border: 1px solid black; padding: 8px; text-align: left; } .no-border-table { width: 100%; border-collapse: collapse; } .no-border-table td { padding: 8px; text-align: justify; } .cell-text { padding-left: 5pt; text-indent: 0pt; } .empty-row { height: 20px; } @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

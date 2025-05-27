@@ -63,6 +63,20 @@ namespace Stock_CMS.Models
         public string? PinCode { get; set; }
 
         public string? NameAsPerCertificate { get; set; }
+
+        public string? UserName { get; set; }
+
+        public string? Password { get; set; }
+
+        public string? Dpid { get; set; }
+
+        public string? ClientId { get; set; }
+
+        public long? ParentId { get; set; }
+
+        public long? CustomerId { get; set; }
+        public string? DpName { get; set; }
+
         [NotMapped]
         public IFormFile? PanFile { get; set; }
         [NotMapped]
@@ -73,5 +87,6 @@ namespace Stock_CMS.Models
         public string? CreatedByName { get; set; }
         [NotMapped]
         public string? UpdatedByName { get; set; }
+
     }
 }

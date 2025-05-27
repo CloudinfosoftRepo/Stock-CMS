@@ -376,6 +376,18 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
   </head>
  <body style="padding: 5%;" ng-controller="FormController">
@@ -424,7 +436,7 @@
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadLegalheir(seletedId, heirId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadLegalheir(seletedId, heirId)">
                                         <option selected disabled value="">Select customer</option>
                                     </select>
                                 </div>
@@ -450,7 +462,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="customerName">Nominee's Name</label>
-                                <input type="text" id="customerName" ng-model="data.customerName" class="form-control" placeholder="Nominee's Name" required />
+                                <input type="text" id="customerName" ng-model="data.customerName" class="form-control" placeholder="Nominee's Name"  />
                             </div>
                         </div>
 
@@ -458,7 +470,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="pan">Nominee's Pan</label>
-                                <input type="text" id="pan" ng-model="data.pan" class="form-control" placeholder="Nominee's Pan" required />
+                                <input type="text" id="pan" ng-model="data.pan" class="form-control" placeholder="Nominee's Pan"  />
                             </div>
                         </div>
 
@@ -466,7 +478,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="mobile">Nominee's Mobile</label>
-                                <input type="text" id="mobile" ng-model="data.mobile" class="form-control" placeholder="Nominee's Mobile" required />
+                                <input type="text" id="mobile" ng-model="data.mobile" class="form-control" placeholder="Nominee's Mobile"  />
                             </div>
                         </div>
 
@@ -474,7 +486,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="email">Nominee's Email</label>
-                                <input type="email" id="email" ng-model="data.email" class="form-control" placeholder="Nominee's Email" required />
+                                <input type="email" id="email" ng-model="data.email" class="form-control" placeholder="Nominee's Email"  />
                             </div>
                         </div>
 
@@ -482,7 +494,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="address">Nominee's Address</label>
-                                <textarea id="address" ng-model="data.address" class="form-control" placeholder="Nominee's Address" required></textarea>
+                                <textarea id="address" ng-model="data.address" class="form-control" placeholder="Nominee's Address" ></textarea>
                             </div>
                         </div>
 
@@ -490,7 +502,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="state">Nominee's State</label>
-                                <input type="text" id="state" ng-model="data.state" class="form-control" placeholder="Nominee's State" required />
+                                <input type="text" id="state" ng-model="data.state" class="form-control" placeholder="Nominee's State"  />
                             </div>
                         </div>
 
@@ -498,7 +510,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="city">Nominee's City</label>
-                                <input type="text" id="city" ng-model="data.city" class="form-control" placeholder="Nominee's City" required />
+                                <input type="text" id="city" ng-model="data.city" class="form-control" placeholder="Nominee's City"  />
                             </div>
                         </div>
 
@@ -506,7 +518,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="pinCode">Nominee's Pincode</label>
-                                <input type="text" id="pinCode" ng-model="data.pinCode" class="form-control" placeholder="Nominee's Pincode" required />
+                                <input type="text" id="pinCode" ng-model="data.pinCode" class="form-control" placeholder="Nominee's Pincode"  />
                             </div>
                         </div>
                         <br />
@@ -520,7 +532,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="bankName">Nominee's Bank Name</label>
-                                <input type="text" id="bankName" ng-model="data.bankName" class="form-control" placeholder="Nominee's Bank Name" required />
+                                <input type="text" id="bankName" ng-model="data.bankName" class="form-control" placeholder="Nominee's Bank Name"  />
                             </div>
                         </div>
 
@@ -528,7 +540,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="accountNo">Nominee's Account No</label>
-                                <input type="text" id="accountNo" ng-model="data.accountNo" class="form-control" placeholder="Nominee's Account No" required />
+                                <input type="text" id="accountNo" ng-model="data.accountNo" class="form-control" placeholder="Nominee's Account No"  />
                             </div>
                         </div>
 
@@ -536,7 +548,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="ifsccode">Nominee's IFSC Code</label>
-                                <input type="text" id="ifsccode" ng-model="data.ifsccode" class="form-control" placeholder="Nominee's IFSC Code" required />
+                                <input type="text" id="ifsccode" ng-model="data.ifsccode" class="form-control" placeholder="Nominee's IFSC Code"  />
                             </div>
                         </div>
 
@@ -556,7 +568,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="micrcode">Nominee's MICR Code</label>
-                                <input type="text" id="micrcode" ng-model="data.micrcode" class="form-control" placeholder="Nominee's MICR Code" required />
+                                <input type="text" id="micrcode" ng-model="data.micrcode" class="form-control" placeholder="Nominee's MICR Code"  />
                             </div>
                         </div>
 
@@ -564,7 +576,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="branch">Nominee's Branch</label>
-                                <input type="text" id="branch" ng-model="data.branch" class="form-control" placeholder="Nominee's Branch" required />
+                                <input type="text" id="branch" ng-model="data.branch" class="form-control" placeholder="Nominee's Branch"  />
                             </div>
                         </div>
                         
@@ -572,7 +584,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="bankcity">Nominee's Bank City</label>
-                                <input type="text" id="bankcity" ng-model="data.bankcity" class="form-control" placeholder="Nominee's Bank City" required />
+                                <input type="text" id="bankcity" ng-model="data.bankcity" class="form-control" placeholder="Nominee's Bank City"  />
                             </div>
                         </div>
                         
@@ -580,7 +592,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="bankPincode">Nominee's Bank Pincode</label>
-                                <input type="text" id="bankPincode" ng-model="data.bankPincode" class="form-control" placeholder="Nominee's BankPincode" required />
+                                <input type="text" id="bankPincode" ng-model="data.bankPincode" class="form-control" placeholder="Nominee's BankPincode"  />
                             </div>
                         </div>
                     </div>
@@ -610,8 +622,8 @@
                             </div>
                     </div>
 
-                    <div class="row">
-                            <!-- Tax Taking Country -->
+                    <!--<div class="row">
+                             Tax Taking Country 
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="taxcountry" class="form-label">Tax Taking Country</label>
@@ -619,7 +631,7 @@
                                 </div>
                             </div>
                        
-                            <!-- Tax-Payer Identification Number -->
+                             Tax-Payer Identification Number 
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="taxidnumber" class="form-label">Tax-Payer Identification Number</label>
@@ -627,14 +639,14 @@
                                 </div>
                             </div>
 
-                            <!-- Identification Type -->
+                             Identification Type 
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="identitytype" class="form-label">Identification Type</label>
                                     <input type="text" ng-model="data.identitytype" class="form-control" placeholder="Identification Type">
                                 </div>
                             </div>
-                    </div>
+				</div>-->
 
                     <div class="row">
                             <!-- Place of Form Submission -->
@@ -646,12 +658,12 @@
                             </div>
                         </div>
 
-                        <!-- Submit Button -->
+                        <!-- Submit Button 
                         <div class="col-md-4 text-center m-2">
-                            <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
                                 Generate Form
                             </button>
-                        </div>
+					</div>-->
                 </div>
             </div>
         </div>
@@ -686,7 +698,7 @@
       >
       </span>
     </p>
-    <p style="padding-top: 3pt; text-indent: 0pt; text-align: left"><br /></p>
+    <p style="padding-top: 3pt; text-indent: 0pt; text-align: left"></p>
     <p
       class="s3"
       style="padding-left: 24pt; text-indent: 0pt; text-align: left"
@@ -2710,10 +2722,7 @@
             font-weight: normal;
             text-decoration: none;
             font-size: 12pt;
-          "
-          ></span
-        ><span
-          style="
+          "><span ng-if="isPrint" class="s8" ng-bind="data.nominee === 'yesnomination' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.nominee" value="yesnomination" ng-change="loadCustomers()"></span><span style="
             color: #1f4e78;
             font-family: 'Times New Roman', serif;
             font-style: normal;
@@ -2756,9 +2765,9 @@
             font-weight: normal;
             text-decoration: none;
             font-size: 12pt;
-          "
-          ></span
-        >I/We <b>DO NOT </b>wish to make a nomination.
+          ">
+                        <span ng-if="isPrint" class="s8" ng-bind="data.nominee === 'nonomination' ? '☑  ' : '☐  ' "></span> <input ng-show="!isPrint" ng-disabled="isPrint" type="radio" ng-model="data.nominee" value="nonomination" ng-change="loadCustomers()">
+      </span>I/We <b>DO NOT </b>wish to make a nomination.
         <span
           style="
             color: #006fbf;
@@ -3114,8 +3123,16 @@
       >
     </h1>
     </div>
+        <!-- Submit Button -->
+        <div class="col-md-4 text-center m-2">
+            <button  ng-if="hDiv" type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                Generate Form
+            </button>
+        </div>
     </form>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-show="isPrint" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -3144,6 +3161,7 @@
               };
               $scope.isPrint = id2 ? true : false
         var isProcessing = false;
+        $scope.processdone = false;
 
         showLoader();
 
@@ -3201,7 +3219,20 @@
         }
 
         $scope.loadLegalheir = function(id,hid){
-             $http.get('/LegalHeir/GetLegalHeir/' + id).then(function (response) {
+
+            var doc = $scope.docs.find(x => x.id === id??0);
+              var isDeceased = !!doc?.dateOfDeath;
+
+                if (!isDeceased && ($scope.data.relation == 'Legal Heir' || $scope.data.relation == 'Successor to the Estate of the deceased' || $scope.data.relation == 'Administrator of the Estate of the deceased')) {
+                     Swal.fire({
+                        title: 'Error',
+                        text: 'Select customer with legal heir.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
+             $http.get('/LegalHeir/GetClaimentLegalHeir/' + id).then(function (response) {
                 $scope.heir =response.data;
                 $scope.heirs = response.data.find(x => x.id === hid??0);
                 $http.get('/doc/GetLegalHeirBank/'+ $scope.heirs.id).then(function (response) {
@@ -3270,12 +3301,13 @@
                             countryofbirth: $scope.data && $scope.data.countryofbirth || 'INDIA',
                             placeofbirth: $scope.data && $scope.data.placeofbirth || '',
                             nationality: $scope.data && $scope.data.nationality || 'INDIAN',
-                            taxresident: $scope.data && $scope.data.taxresident || '',
-                            taxcountry: $scope.data && $scope.data.taxcountry || '',
-                            taxidnumber: $scope.data && $scope.data.taxidnumber || '',
+                            // taxresident: $scope.data && $scope.data.taxresident || '',
+                            // taxcountry: $scope.data && $scope.data.taxcountry || '',
+                            // taxidnumber: $scope.data && $scope.data.taxidnumber || '',
                             identitytype: $scope.data && $scope.data.identitytype || '',
                             place: $scope.data && $scope.data.place || 'Vadodara',
                             today: new Date(),
+                            nominee: $scope.data && $scope.data.nominee || '',
                         };
 
                         hideLoader();
@@ -3331,13 +3363,14 @@
                     countryofbirth: obj.countryofbirth,
                     placeofbirth: obj.placeofbirth,
                     nationality: obj.nationality,
-                    taxresident: obj.taxresident,
-                    taxcountry: obj.taxcountry,
-                    taxidnumber: obj.taxidnumber,
+                    // taxresident: obj.taxresident,
+                    // taxcountry: obj.taxcountry,
+                    // taxidnumber: obj.taxidnumber,
                     identitytype: obj.identitytype,
                     place: obj.place,
                     today: new Date(obj.today),
                     docattach: JSON.parse(obj.docattach),
+					nominee: obj.nominee,
                 };
                 $scope.doclist = $scope.data.docattach;
                 id = result.stockId;
@@ -3367,6 +3400,7 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
                   var arr = angular.copy($scope.doclist);
                  $scope.data.docattach= JSON.stringify(arr,null,2);
              let jsonString = JSON.stringify($scope.data, null, 2);
@@ -3389,6 +3423,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -3404,7 +3439,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -3414,6 +3449,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

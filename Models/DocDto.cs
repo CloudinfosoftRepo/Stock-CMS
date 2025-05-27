@@ -74,6 +74,11 @@ public partial class DocDto
 
     public string? NameAsPerCertificate { get; set; }
 
+    public string? UserName { get; set; }
+
+    public string? Password { get; set; }
+
+    public string? DpName { get; set; }
     [NotMapped]
 	public IFormFile? PanFile { get; set; }
 	[NotMapped]

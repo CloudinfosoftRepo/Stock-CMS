@@ -205,9 +205,21 @@
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
-<body style="padding-left: 10%;" ng-controller="FormController">
+<body style="padding-left: 5%;" ng-controller="FormController">
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
         <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
@@ -231,17 +243,17 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Select Heir Dropdown -->
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
                             <div class="form-group">
                                 <label for="heirId" class="form-label">Select Heir</label>
-                                <select class="form-select" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in noc" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
@@ -259,7 +271,7 @@
 
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
-                        <button type="submit" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
                     </div>
@@ -296,7 +308,8 @@
     <p style="padding-top: 5pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 26pt; text-indent: 0pt; text-align: justify">
         I / We,
-            <span class="s5" ng-repeat="item in heirlist">{{item.name}} </span><span class="s6"> </span>the legal heir(s) of late Mr. / Ms<span class="s5">
+            @* <span class="s5" ng-repeat="item in heirlist">{{item.name}} </span> *@
+            <span class="s5">{{data.customerName}} </span><span class="s6"> </span>the legal heir(s) of late Mr. / Ms<span class="s5">
             ,@* JHMGNFBD *@{{data.sonof}}
         </span><u>(</u>name of the deceased holder) declare as follows –
     </p>
@@ -373,7 +386,7 @@
                     <td class="age" style="font-weight: 600;">Age</td>
                     <td class="relationship" style="font-weight: 600;">Relationship with the Deceased</td>
                 </tr>
-                    <tr ng-repeat="tmp in heir">
+                    <tr ng-repeat="tmp in claimentlist">
                         <td class="index-column">{{ $index + 1 }}){{tmp.name}}</td>
                         <td class="empty-cell">{{tmp.addressAsPerAadhar}}</td>
                         <td class="empty-cell">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
@@ -389,7 +402,9 @@
         <li data-list-text="(iv)">
             <p style="padding-left: 40pt; text-indent: -15pt; text-align: justify">
                 That I / We
-                    <span class="s5" ng-repeat="item in heirlist">{{item.name}} </span>are the legal heir(s) of the deceased holder, apart from the
+                    @* <span class="s5" ng-repeat="item in noc">{{item.name}} </span> *@
+                    <span class="s5">{{data.customerName}} </span>
+                    are the legal heir(s) of the deceased holder, apart from the
                 Claimant(s)who has/ have applied for transmission of the aforesaid
                 securities and our details are as follows:
             </p>
@@ -404,7 +419,7 @@
                     <td class="relation" style="font-weight: 600;">Relation with the Deceased</td>
                 </tr>
 
-                    <tr ng-repeat="tmp in heirlist">
+                    <tr ng-repeat="tmp in noc">
                         <td class="index-column">{{ $index + 1 }}){{tmp.name}}</td>
                         <td class="empty-cell">{{tmp.addressAsPerAadhar}}</td>
                         <td class="empty-cell">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
@@ -436,14 +451,21 @@
         <li data-list-text="(v)">
             <p style="padding-left: 40pt; text-indent: -15pt; text-align: justify">
                 I / we
-                    <span class="s5" ng-repeat="item in heirlist">{{item.name + ' '}}  </span>hereby declare that, I / we
-                    <span class="s5" ng-repeat="item in heirlist">
+                    @* <span class="s5" ng-repeat="item in noc">{{item.name + ' '}}  </span> *@
+                    <span class="s5">{{data.customerName}}  </span>hereby declare that, I / we
+                    @* <span class="s5" ng-repeat="item in noc">
                         {{item.name + ' '}}
+                    </span> *@
+                    <span class="s5" >
+                        {{data.customerName}}
                     </span>
                 do not desire to make any claim in respect of the title to the aforesaid securities held by the deceased and I /
                 we
-                    <span class="s5" ng-repeat="item in heirlist">
+                    @* <span class="s5" ng-repeat="item in noc">
                         {{item.name + ' '}}
+                    </span> *@
+                    <span class="s5" >
+                        {{data.customerName}}
                     </span>hereby wilfully relinquish &amp; renounce all my /our rights in
                 respect of the aforesaid securities and shall have no legal claim upon
                 said securities in future.
@@ -455,23 +477,28 @@
         <li data-list-text="(vi)">
             <p style="padding-left: 40pt; text-indent: -15pt; text-align: justify">
                 Accordingly, I / we
-                    <span class="s5" ng-repeat="item in heirlist">{{item.name + ' '}} </span>declare that I / we
-                    <u ng-repeat="item in heirlist">
+                    @* <span class="s5" ng-repeat="item in noc">{{item.name + ' '}} </span> *@
+                    <span class="s5" >{{data.customerName}} </span>declare that I / we
+                    @* <u ng-repeat="item in noc">
                         {{item.name + ' '}}
+                    </u> *@
+                    <u >
+                        {{data.customerName}}
                     </u>
                 <span class="p">have NO OBJECTION WHATSOEVER in</span>
                 <span class="s5">
                         @* BESVED6515B  5ES30 *@{{data.officename}}
                 </span><span class="s6"> </span>(Name of the Company) transmitting the
                 aforesaid securities in favour of the Claimant(s) Mr. / Ms.
-                    <span class="s5">{{data.customerName}} </span>.
+                    <span class="s5" ng-repeat="item in claimentlist">{{item.name + ' '}} </span>.
             </p>
             <p style="text-indent: 0pt; text-align: left"><br /></p>
         </li>
         <li data-list-text="(vii)">
             <p style="padding-left: 40pt; text-indent: -15pt; text-align: justify">
                 I / we
-                    <span class="s5" ng-repeat="item in heirlist">{{item.name + ' '}} </span>hereby state that whatever is stated herein above are true to the
+                    @* <span class="s5" ng-repeat="item in noc ">{{item.name + ' '}} </span> *@
+                    <span class="s5">{{data.customerName}}  </span>hereby state that whatever is stated herein above are true to the
                 best of my/our knowledge and nothing has been concealed therein.
             </p>
         </li>
@@ -482,7 +509,7 @@
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p class="s7"
-           style="padding-left: 149pt; text-indent: 0pt; text-align: left" ng-repeat="item in heirlist | filter: myFilter">
+           style="padding-left: 149pt; text-indent: 0pt; text-align: left" ng-repeat="item in noc | filter: myFilter">
         {{ $index + 1}})
             {{item.name}}
     </p>
@@ -532,7 +559,9 @@
     </div>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left" />
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -544,6 +573,7 @@
               var id2 = params.get('id2');
               $scope.isPrint = id2 ? true : false;
         var isProcessing = false;
+        $scope.processdone = false;
 
         // showLoader();
 
@@ -604,26 +634,38 @@
                         $http.get('/LegalHeir/GetLegalHeir/' + doc.id).then(function (response) {
                             $scope.heirlist = response.data;
                             $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
-                                $scope.heir =response.data;
-                                var heirs = response.data.find(x => x.id === hid);
+                            $scope.claimentlist = response.data;
 
-                                $scope.data = {
-                                    docid: heirs.id,
-                                    customerName : heirs.nameAsPerAadhar,
-                                    sonof: doc.nameAsPerAadhar,
-                                    officename : result.companyName,
-                                    folioNo : result.folioNo,
-                                    qty: result.qty,
-                                    dateofdeath: doc.dateOfDeath,
-                                    place: 'Vadodara',
-                                    today: new Date(),
-                                };
+                            var isDeceased = !!doc?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+                    $scope.legalheirlist = isDeceased;
+                    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetNOCLegalHeir/' + doc.id).then(function (response) {
+                        $scope.noc = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased,doc);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                        } else {
+                            $scope.heirId = null;
+                            $scope.data = null;
+                            $scope.legalheirlist = isDeceased;
+                            document.getElementById('heirId').value = '';
+                            var holder = doc;
+                            populateData(holder, result,$scope.heir,isDeceased,doc);
+                        }
 
                                 hideLoader();
-                            }, function (error) {
-                            console.error('Error loading legal Heir:', error);
-                            hideLoader();
-                            });
+                                  }, function (error) {
+                        console.error('Error loading Legal Heirs:', error);
+                        hideLoader();
+                        });
                         }, function (error) {
                         console.error('Error loading Legal Heirs:', error);
                         hideLoader();
@@ -655,9 +697,12 @@
                     claiment: JSON.parse(obj.claiment),
                     place: obj.place,
                     today: new Date(obj.today),
+					condition: obj.condition,
+					noc: JSON.parse(obj.noc),
                 };
                 $scope.heirlist = $scope.data.heirs;
-                $scope.heir = $scope.data.claiment;
+                $scope.claimentlist = $scope.data.claiment;
+				$scope.noc = $scope.data.noc;
 
                 id = result.stockId;
                 checkData();
@@ -667,20 +712,50 @@
                 hideLoader();
             });
             }
+
+            function populateData(holder, result, heirlist,isDeceased,doc) {
+                $scope.data = {
+                    docid: holder.id,
+                    customerName : holder.nameAsPerAadhar,
+                    sonof: doc.nameAsPerAadhar,
+                    officename : result.companyName,
+                    folioNo : result.folioNo,
+                    qty: result.qty,
+                    dateofdeath: doc.dateOfDeath,
+                    place: 'Vadodara',
+                    today: new Date(),
+                    condition: isDeceased,
+                };
+            }
         };
 
             $scope.myFilter = function (item) {
-                return item != data.customerName;
+                return item.name != $scope.data.customerName;
             };
 
          //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                  if(!$scope.data.condition){
+                     Swal.fire({
+                         title: 'Error',
+                         text: 'Customer is still Alive',
+                         icon: 'error',
+                         confirmButtonText: 'OK'
+                     });
+                     return;
+                 }
+
+                 $scope.processdone = true;
                   var arr = angular.copy($scope.heirlist);
                  $scope.data.heirs = JSON.stringify(arr,null,2);
 
-                 var arr1 = angular.copy($scope.heir);
+                 var arr1 = angular.copy($scope.claimentlist);
                  $scope.data.claiment = JSON.stringify(arr1,null,2);
+
+                  var arr1 = angular.copy($scope.noc);
+                 $scope.data.noc = JSON.stringify(arr1,null,2);
 
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
@@ -702,6 +777,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -717,7 +793,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -727,6 +803,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

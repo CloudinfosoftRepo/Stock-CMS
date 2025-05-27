@@ -1,4 +1,11 @@
 ﻿<!DOCTYPE html>
+@{
+    var list = Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+    bool delete = list?.Any(x => x.Action.ToUpper() == "DELETE" && x.IsEnabled) ?? false;
+
+}
 <html lang="en" ng-app="Stock-CMS">
 
 <head>
@@ -8,108 +15,122 @@
 </head>
 <style>
     .sticky-header {
-        position: sticky;
-        top: 0;
-        background-color: #fff; /* Ensures that the header has a solid background */
-        z-index: 1; /* Makes sure the header stays on top of the content */
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Ensures that the header has a solid background */
+    z-index: 1; /* Makes sure the header stays on top of the content */
     }
 
     .table-responsive {
-        max-height: 500px; /* Set a fixed height to make the table scrollable */
-        overflow-y: auto;
+    max-height: 500px; /* Set a fixed height to make the table scrollable */
+    overflow-y: auto;
     }
 
     .iframe-container {
-        position: relative;
-        width: 100%; /* Make the container take up 100% of the available width */
-        height: 0;
-        padding-bottom: 56.25%; /* Aspect ratio of 16:9 (for example) */
-        overflow: hidden;
+    position: relative;
+    width: 100%; /* Make the container take up 100% of the available width */
+    height: 0;
+    padding-bottom: 56.25%; /* Aspect ratio of 16:9 (for example) */
+    overflow: hidden;
     }
 
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+    .iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    }
 
     .sticky-action {
-        position: sticky;
-        right: 0;
-        z-index: 2;
+    position: sticky;
+    right: 0;
+    z-index: 2;
     }
 </style>
 <body ng-controller="StockController">
 
-        <div class="app-content pt-3 p-md-3 p-lg-4">
-            <div class="container-xl">
-                <div class="row g-3 mb-4 align-items-center justify-content-between">
-                    <!-- Left Side: Back Button and Title -->
-                    <div class="d-flex align-items-center col-md-6">
+    <div class="app-content pt-3 p-md-3 p-lg-4">
+        <div class="container-xl">
+            <div class="row g-3 mb-2 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-6">
                     <a ng-click="navtoStock()" class="btn btn-custom me-3">
-                            <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
-                        </a>
+                        <i class="bi bi-arrow-left text-left" style="color:#003980;font-size:xx-large;"></i>
+                    </a>
                     <h1 class="app-page-title mb-0">Tracking Management</h1>
-                    </div>
-
-                    <div class="col-md-6 d-flex justify-content-end align-items-center">
-                        <div class="d-flex gap-2">
-                            <form class="table-search-form row gx-1 align-items-center mb-0">
-                                <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
-                            </form>
-                        <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openTrackingModal()">Add New</button>
-                            <button class="btn btn-custom"
-                                    style="background-color:#003980;color:white"
-                                    excel-export
-                                table-id="tbltracking"
-                                file-name="Tracking"
-                                    sheet-name="Sheet1"
-                                    file-type="xlsx">
-                                Export
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="app-card app-card-orders-table shadow-sm mb-5">
-                    <div class="app-card-body">
-                        <div class="table-responsive">
+                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                    <div class="d-flex gap-2">
+                        <form class="table-search-form row gx-1 align-items-center mb-0">
+                            <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
+                        </form>
+                        @if (add) { 
+                            <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openTrackingModal()">Add Tracking</button>
+                        }
+                        <button class="btn btn-custom"
+                        style="background-color:#003980;color:white"
+                        excel-export
+                        table-id="tbltracking"
+                        file-name="Tracking"
+                        sheet-name="Sheet1"
+                        file-type="xlsx">
+                            Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-2 align-items-center justify-content-between">
+                <!-- Left Side: Back Button and Title -->
+                <div class="d-flex align-items-center col-md-6">
+                    <h6>Company Name: {{ stocks.companyName }}</h6>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-end align-items-center">
+                    <h6>Folio No: {{ stocks.folioNo }} </h6>
+                </div>
+            </div>
+
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
                         <table id="tbltracking" class="table app-table-hover mb-0 text-left text-nowrap">
-                                <thead class="sticky-header">
-                                    <tr>
-                                        <th class="cell">#</th>
+                            <thead class="sticky-header">
+                                <tr>
+                                    <th class="cell">#</th>
                                     <th class="cell">Date of Submission</th>
-                                        <th class="cell">Company Name</th>
-                                        <th class="cell">Customer</th>
-                                        <th class="cell">Folio No</th>
-                                        
-                                        <th class="cell">Current Quantity</th>
-                                        
-                                        <th class="cell">Process</th>
-                                        <th class="cell">Send To</th>
-                                        <th class="cell">Tracking Id</th>
+                                    <th class="cell">Company Name</th>
+                                    <th class="cell">Customer</th>
+                                    <th class="cell">Folio No</th>
+
+                                    <th class="cell">Current Quantity</th>
+
+                                    <th class="cell">Process</th>
+                                    <th class="cell">Send To</th>
+                                    <th class="cell">Tracking Id</th>
                                     <th class="cell">Send File </th>
                                     <th class="cell">Response File </th>
                                     <th class="cell">Status</th>
-                                       
-                                        <th class="cell">Created At</th>
-                                        <th class="cell">Created By</th>
-                                        <th class="cell">Updated At</th>
-                                        <th class="cell">Updated By</th>
+                                    <th class="cell">Remark</th>
+
+                                    <th class="cell">Created At</th>
+                                    <th class="cell">Created By</th>
+                                    <th class="cell">Updated At</th>
+                                    <th class="cell">Updated By</th>
                                     <th class="cell sticky-action text-center">Action</th>
                                     @* <th class="cell">Delete</th> *@
                                     @* <th class="cell">Claim Status</th> *@
                                     @* <th class="cell">Remarks</th> *@
                                     @* <th class="cell">Active</th> *@
-                                        @* <th class="cell">Genarate Form</th> *@
+                                    @* <th class="cell">Genarate Form</th> *@
                                     @* <th class="cell">Doc Upload</th> *@
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <tr ng-repeat="track in track | filter: searchQuery">
-                                        <td class="cell">{{ $index + 1 }}</td>
+                                    <td class="cell">{{ $index + 1 }}</td>
                                     <td class="cell">{{ track.dateofSubmission | date:'dd-MM-yy'}}</td>
                                     <td class="cell">{{ track.companyName }}</td>
                                     <td class="cell">{{ track.customerName }}</td>
@@ -131,19 +152,24 @@
                                         </div>
                                     </td>
                                     <td class="cell">{{ track.status}}</td>
-                                   
+                                    <td class="cell">{{ track.remark}}</td>
+
                                     <td class="cell">{{ track.createdAt | date:'dd-MM-yy' }}</td>
                                     <td class="cell">{{ track.createdByName }}</td>
                                     <td class="cell">{{ track.updatedAt | date:'dd-MM-yy' }}</td>
                                     <td class="cell">{{ track.updatedByName }}</td>
                                     <td class="cell sticky-action">
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openTrackingModal(track)" title="Edit Tracking">
+                                        @if (edit) { 
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openTrackingModal(track)" title="Edit Tracking">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-                                    
-                                        <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteTracking(track)" title="Delete Tracking">
-                                            <i class="bi bi-trash"></i>
-                                        </span>
+                                        }
+                                        @if (delete)
+                                        {
+                                            <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteTracking(track)" title="Delete Tracking">
+                                                <i class="bi bi-trash"></i>
+                                            </span>
+                                        }
                                     </td>
                                     @* <td class="cell">{{ track.remarks }}</td> *@
                                     @* <td class="cell">{{ track.isActive ? 'Yes' : 'No' }}</td> *@
@@ -168,6 +194,8 @@
             </div>
         </div>
 
+
+
     <!-- Preview Model-->
     <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -190,63 +218,102 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="dateofSubmission" class="form-label">Date of Submission</label>
+                                    <label for="dateofSubmission" class="form-label">Date of Process</label>
                                     <input type="date" id="dateofSubmission" ng-model="currentStock.dateofSubmission" class="form-control">
                                 </div>
                             </div>
-                        
-                            <div class="col-md-4">
+
+                            <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="process">Process</label>
+                                    <label for="process" class="form-label">Process</label>
                                     <select class="form-select" ng-options="f.process as f.process for f in processlist" ng-model="currentStock.process" required>
                                         <option selected disabled value="">Select Process</option>
                                     </select>
                                 </div>
                             </div>
-                        
-                            <div class="col-md-4">
-                                 <div class="form-group">
-                                     <label for="status">Status</label>
-                                    @* <textarea ng-model="currentStock.status" class="form-control" placeholder="Status"></textarea> *@
-                                    <select class="form-select" ng-options="f.status as f.status for f in statuslist" ng-model="currentStock.status" required>
-                                        <option selected disabled value="">Select Status</option>
-                                    </select>
-                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
+
+
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="sendTo">Send To</label>
+                                    <label for="sendTo" class="form-label">Send To</label>
                                     <input type="text" id="sendTo" ng-model="currentStock.sendTo" class="form-control" placeholder="Send To" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="trackingId">Tracking Id</label>
+                                    <label for="trackingId" class="form-label">Tracking Id</label>
                                     <input type="text" id="trackingId" ng-model="currentStock.trackingId" class="form-control" placeholder="Tracking Id" />
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="sendFile">Send File</label>
-                                    <input type="file" id="sendFile" class="form-control"/>
+                                    <label for="status" class="form-label">Status</label>
+                                    @* <textarea ng-model="currentStock.status" class="form-control" placeholder="Status"></textarea> *@
+                                    <select class="form-select" ng-options="f.status as f.status for f in statuslist" ng-model="currentStock.status" required>
+                                        <option selected disabled value="">Select Status</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3" ng-show="currentStock.status == 'Follow Up'">
+                                <div class="form-group">
+                                    <label for="dateofFollowUp" class="form-label">Date of Follow Up</label>
+                                    <input type="date" id="dateofFollowUp" ng-model="currentStock.dateofFollowUp" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="responseFile">Response File</label>
+                                    <label for="sendFile" class="form-label">Send File</label>
+                                    <input type="file" id="sendFile" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="responseFile" class="form-label">Response File</label>
                                     <input type="file" id="responseFile" class="form-control" />
                                 </div>
                             </div>
                         </div>
-                       
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="remark">Remark</label>
+                                    <textarea id="remark" ng-model="currentStock.remark" class="form-control" placeholder="Remark"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'||currentStock.status == 'IEPF Rejected'|| currentStock.status == 'IEPF Post Receipt Pending'">
+                                <div class="form-group">
+                                    <label for="srnno" class="form-label">SR No</label>
+                                    <input type="text" id="srnno" ng-model="currentStock.srnno" class="form-control" placeholder="SR No" />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'||currentStock.status == 'IEPF Rejected'|| currentStock.status == 'IEPF Post Receipt Pending'">
+                                <div class="form-group">
+                                    <label for="srndate" class="form-label">SR Date</label>
+                                    <input type="date" id="srndate" ng-model="currentStock.srndate" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-show="currentStock.status == 'DRF Form Submitted' ||  currentStock.status == 'DRF Rejected'">
+                                <div class="form-group">
+                                    <label for="dpName" class="form-label">DP Name</label>
+                                    <input type="text" id="dpName" ng-model="currentStock.dpName" class="form-control" placeholder="Dp Name" />
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-show="currentStock.status == 'DRF Form Submitted' ||  currentStock.status == 'DRF Rejected'">
+                                <div class="form-group">
+                                    <label for="dpIdClientId" class="form-label">DPId & ClientId</label>
+                                    <input type="text" id="dpIdClientId" ng-model="currentStock.dpIdClientId" class="form-control" placeholder="DPId & ClientId" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Tracking' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Tracking' }}</button>
                     </div>
                 </form>
             </div>
@@ -260,6 +327,7 @@
             $scope.currentStock = {};
             $scope.isEditing = false;
             var isProcessing = false;
+            $scope.processdone = false;
 
             showLoader();
 
@@ -267,21 +335,33 @@
             var segments = path.split('/');
             var id = segments[segments.length - 1];
 
-                    $scope.processlist = [
-            { id: 1, process: 'Transmission' },
-            { id: 2, process: 'Duplicate' },
-            { id: 3, process: 'Exchange Shares' },
-            { id: 4, process: 'Objection & Suspense Procedure' }
+         $scope.processlist = [
+            { id: 1, process: 'Req for EL with KYC' },
+            { id: 2, process: 'Req for Duplicate shares process with KYC' },
+            { id: 3, process: 'Req for Transmission with KYC' },
+            { id: 4, process: 'Exchange Share Certificates' },
+            { id: 5, process: 'Unclaimed Suspense Account (ESCROW)' },
+            { id: 6, process: 'Final IEPF' },
+            { id: 7, process: 'Final IEPF with Duplicate Shares' },
+            { id: 8, process: 'Final IEPF with Transmission' },
+            { id: 9, process: 'Final IEPF with Duplicate and Transmission' },
+            { id: 10, process: 'Final Duplicate Shares Procedure' },
+            { id: 11, process: 'Final Transmission Procedure' },
+            { id: 12, process: 'Discrepancies' },
+            { id: 13, process: 'Change of Name' },
+            { id: 14, process: 'Final Duplicate with Transmission' },
+            { id: 15, process: 'Others...' }
         ];
 
         $scope.statuslist = [
             { id: 1, status: 'Pending' },
             { id: 2, status: 'Follow Up' },
-            { id: 3, status: 'IEPF' },
-            { id: 4, status: 'IEPF Post Receipt Submit' },
-            { id: 5, status: 'DRF Form Submitted' },
-            { id: 6, status: 'Demated' },
-            { id: 7, status: 'Completed' }
+            { id: 3, status: 'IEPF Post Receipt Pending' },
+            { id: 4, status: 'IEPF' },
+            { id: 5, status: 'IEPF Rejected' },
+            { id: 6, status: 'DRF Form Submitted' },
+            { id: 7, status: 'DRF Rejected' },
+            { id: 8, status: 'Demated' },
         ];
 
             // Load Tracking
@@ -421,7 +501,9 @@
                 $scope.isEditing = !!track;
                 $scope.currentStock = track ? angular.copy(track) : {};
                 $scope.currentStock.dateofSubmission = track ?  new Date(track.dateofSubmission) : undefined
-
+                $scope.currentStock.dateofFollowUp = track ?  new Date(track.dateofFollowUp) : undefined
+                $scope.currentStock.srndate = track ?  new Date(track.srndate) : undefined
+                $scope.setdpId($scope.isEditing,track)
                   document.getElementById('sendFile').value = '';
                 document.getElementById('responseFile').value = '';
                 $('#trackingModal').modal('show');
@@ -431,10 +513,40 @@
             //     window.open('/Form/GenerateForm/' + id, '_blank');
             // };
 
+
+            // Set dpId
+			$scope.setdpId = function (edit,obj) {
+                if (($scope.currentStock.status == "DRF Form Submitted" || $scope.currentStock.status == "DRF Rejected") && edit) {
+                    $scope.currentStock.dpName = obj ? obj.dpName : undefined;
+                    $scope.currentStock.dpIdClientId = obj ? obj.dpIdClientId : undefined;
+				}
+                else{
+                    var data =  $scope.stocks.firstHolderData;
+					if(data && !data.dateOfDeath)
+					{
+						$scope.currentStock.dpName = data.dpName;
+                        $scope.currentStock.dpIdClientId = data.dpid + data.clientId;
+					}
+					else{
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + data.id).then(function (response) {
+                        $scope.heir = response.data;
+						var legalheir = response.data[0];
+                        $scope.currentStock.dpName = legalheir.dpName;
+                        $scope.currentStock.dpIdClientId = legalheir.dpid + legalheir.clientId;
+                         hideLoader();
+                }, function (error) {
+                    console.error('Error loading stocks:', error);
+                    hideLoader();
+                });
+					}
+                }
+			};
+
             // Save Tracking
             $scope.saveTracking = function () {
                 if (id) 
                 {
+                    $scope.processdone = true;
                     if (isProcessing) return;
                     isProcessing = true;
                       var sendFile = $('#sendFile')[0];
@@ -444,6 +556,8 @@
                       var clientresponse = responseFile.files[0];
 
                        $scope.currentStock.stockId = id;
+                       $scope.currentStock.dateofFollowUp = $scope.currentStock.status == "Follow Up" ? $scope.currentStock.dateofFollowUp : null;
+                       $scope.currentStock.srndate = ($scope.currentStock.status == "IEPF" || $scope.currentStock.status == 'IEPF Rejected'|| $scope.currentStock.status == 'IEPF Post Receipt Pending') ? $scope.currentStock.srndate : null;
                         var formData = new FormData();
                         formData.append('clientSend', clientSend);
                         formData.append('clientresponse', clientresponse);
@@ -464,6 +578,7 @@
                                 icon: 'success',
                                 confirmButtonText: 'OK'
                             });
+                            $scope.processdone = false;
                             $scope.loadTracking();
                              document.getElementById('sendFile').value = '';
                 document.getElementById('responseFile').value = '';
@@ -475,6 +590,7 @@
                                 icon: 'error',
                                 confirmButtonText: 'Try Again'
                             });
+                            $scope.processdone = false;
                         }
                         isProcessing = false;
                     }, function (error) {
@@ -484,6 +600,7 @@
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         isProcessing = false;
                     });
                 }

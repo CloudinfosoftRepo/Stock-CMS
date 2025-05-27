@@ -89,7 +89,7 @@ namespace Stock_CMS.Service
             var users = await _userRepository.GetUsersByIds(ids);
             var rta = await _rtaRepository.GetRta();
 
-            var result = from c in data
+            var company = from c in data
                          join r in rta on c.Rtaid equals r.Id 
                          join cb in users on c.CreatedBy equals cb.Id into cbGroup
                          from cb in cbGroup.DefaultIfEmpty()
@@ -109,7 +109,10 @@ namespace Stock_CMS.Service
                              RtaName = r.RtaName,
                              Rtaid = r.Id,
                              IsActive = c.IsActive,
+                             FaceValue = c.FaceValue,
                          };
+
+            var result = company.OrderBy(x => x.CompanyName).ToList();
 
             return result;
         }

@@ -51,6 +51,10 @@ public partial class TblStock
 
     public string? NomineeJson { get; set; }
 
+    public bool? IsPaid { get; set; }
+
+    public int? FaceValue { get; set; }
+
     public virtual TblCompany? Company { get; set; }
 
     public virtual TblCustomer? Customer { get; set; }

@@ -1,4 +1,11 @@
 ﻿<!DOCTYPE html>
+@{
+    var list = Model as IEnumerable<ActionItem>;
+    bool edit = list?.Any(x => x.Action.ToUpper() == "EDIT" && x.IsEnabled) ?? false;
+    bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
+    bool delete = list?.Any(x => x.Action.ToUpper() == "DELETE" && x.IsEnabled) ?? false;
+    bool cell = list?.Any(x => x.Action.ToUpper() == "CELL" && x.IsEnabled) ?? false;
+}
 <html lang="en" ng-app="Stock-CMS">
 
 <head>
@@ -52,8 +59,12 @@
                             <form class="table-search-form row gx-1 align-items-center mb-0">
                                 <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                             </form>
-                            <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openStockModal()">Add New</button>
+                            @if(add){
+                            <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openStockModal()">Add Stock</button>
                         <button class="btn btn-custom " style="background-color:#003980;color:white" ng-click="openimportModal()">Import</button>
+                            @* <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openRtaModal()">Add RTA</button> *@
+                        <button class="btn app-btn-primary" style="background-color:#003980;color:white" ng-click="openCompanyModal()">Add Company</button>
+                        }
                             <button class="btn btn-custom"
                                     style="background-color:#003980;color:white"
                                     excel-export
@@ -84,8 +95,13 @@
                                         <th class="cell">Actual Quantity</th>
                                         <th class="cell">Current Quantity</th>
                                     <th class="cell">Current Rate</th>
+                                    <th class="cell">Face Value</th>
                                         <th class="cell">Value</th>
+                                    @if (cell){
                                         <th class="cell">Brokerage</th>
+                                        <th class="cell">Brokerage Amount</th>
+                                        <th class="cell">Paid</th>
+                                    }
                                         <th class="cell">Process to be Followed</th>
                                         <th class="cell">Remarks</th>
                                         <th class="cell">Processed</th>
@@ -101,7 +117,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="stock in stocks | filter: searchQuery">
+                                <tr ng-repeat="stock in stocks.stocks | filter: searchQuery">
                                         <td class="cell">{{ $index + 1 }}</td>
                                     <td ng-click="manageTrackingDoc(stock.id)" class="cell nav-style">{{ stock.companyName }}</td>
                                     <td class="cell">{{ stock.customerName }}</td>
@@ -113,8 +129,13 @@
                                     <td class="cell">{{ stock.actualQty }}</td>
                                     <td class="cell">{{ stock.qty }}</td>
                                     <td class="cell">{{ stock.rate }}</td>
+                                    <td class="cell">{{ stock.faceValue }}</td>
                                     <td class="cell">{{ stock.qty * stock.rate }}</td>
-                                        <td class="cell">{{ stock.brokerage }}</td>
+                                    @if (cell){
+                                    <td class="cell" >{{ stock.brokerage }}</td>
+                                    <td class="cell" >{{ stock.brokerage * (stock.qty * stock.rate) / 100 }}</td>
+                                    <td class="cell" >{{ stock.isPaid ? 'Paid' : 'UnPaid' }}</td>
+                                    }
                                         <td class="cell">{{ stock.ptbf }}</td>
                                         <td class="cell">{{ stock.remarks }}</td>
                                         <td class="cell">{{ stock.isProcessed ? 'Yes' : 'No' }}</td>
@@ -124,17 +145,28 @@
                                         <td class="cell">{{ stock.updatedAt | date:'dd-MM-yy' }}</td>
                                         <td class="cell">{{ stock.updatedByName }}</td>
                                     <td class="cell sticky-action">
+                                        @if(edit){
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openStockModal(stock)" title="Edit stock">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-                                      
-                                        <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo)" title="Add stock aquisition data">
+
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large;" ng-style="{opacity: stock.isPaid ? '1' : '0.2'}" ng-click="paymentdone(stock)" title="Payment Status">
+                                                <i class="bi bi-patch-check"></i>
+                                            </span>
+                                        
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo,stock.qty)" title="Add stock aquisition data">
                                             <i class="bi bi-file-earmark-bar-graph"></i>
                                         </span>
-                                   
+                                        }
                                         <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="navtogenerateform(stock.id)" title="Generate form">
                                             <i class="bi bi-file-earmark-plus"></i>
                                         </span>
+                                        @if (delete)
+                                        {
+                                            <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteStock(stock)" title="Delete Tracking">
+                                                <i class="bi bi-trash"></i>
+                                            </span>
+                                        }
                                         </td> 
                                         @* <td class="cell">
                                             <span ng-hide="!stock.isClient" class="btn-sm app-btn" style="color:green;font-size:large">
@@ -142,6 +174,40 @@
                                             </span>
                                         </td> *@
                                     </tr>
+                                <tr>
+                                    <td class="cell"></td>
+                                    <td class="cell">Total</td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell">{{ stocks.totalAmount }}</td>
+                                    @if (cell){
+                                    <td class="cell" ></td>
+                                    <td class="cell" ></td>
+                                    <td class="cell"></td>
+                                    }
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    <td class="cell"></td>
+                                    @* <td class="cell">
+                                            <span ng-hide="!stock.isClient" class="btn-sm app-btn" style="color:green;font-size:large">
+                                                <i class="bi bi-upload"></i>
+                                            </span>
+                                        </td> *@
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -152,7 +218,6 @@
         </div>
 
     <!-- upload Modal -->
-
     <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
 
         <div class="modal-dialog modal-xl" role="document">
@@ -195,7 +260,7 @@
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">Upload</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">Upload</button>
 
                     </div>
 
@@ -214,7 +279,7 @@
                 <form name="gForm">
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ isEditing ? 'Edit Stock' : 'Add Stock' }}</h5>
+                        <h5 class="modal-title">Add Stock</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -233,7 +298,7 @@
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="qty">Actual Quantity</label>
-                                    <input type="number" id="qty" ng-model="jsonData.actualQty" class="form-control" placeholder="Quantity" required />
+                                    <input type="number" id="qty" disabled ng-model="jsonData.actualQty" class="form-control" placeholder="Quantity"  />
                                 </div>
                             </div>
                             <!-- Certificate No -->
@@ -247,12 +312,11 @@
 
                         <div class="row">
 
-
                             <!-- Distinctive No From -->
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="rate">Distinctive No From</label>
-                                    <input type="text" step="0.01" ng-model="jsonData.distinctiveNosFrom" class="form-control" placeholder="Distinctive No From" required />
+                                    <input type="text" ng-model="jsonData.distinctiveNosFrom" class="form-control" ng-change="calculateqty()" placeholder="Distinctive No From" required />
                                 </div>
                             </div>
 
@@ -260,7 +324,7 @@
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="rate">Distinctive No To</label>
-                                    <input type="text" step="0.01" ng-model="jsonData.distinctiveNosTo" class="form-control" placeholder="Distinctive No To" required />
+                                    <input type="text" ng-model="jsonData.distinctiveNosTo" class="form-control" ng-change="calculateqty()"  placeholder="Distinctive No To" required />
                                 </div>
                             </div>
 
@@ -277,8 +341,8 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button ng-click="SaveStockJson()" class="btn" style="background-color:#003980; color:white">
-                            {{ isEditing ? 'Save Changes' : 'Add Stock' }}
+                        <button ng-click="SaveStockJson()" ng-disabled="processdone" class="btn" style="background-color:#003980; color:white">
+                            Add Stock
                         </button>
                     </div>
                 </form>
@@ -296,7 +360,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="f in stockList">
+                            <tr ng-repeat="f in stockList" ng-click="editstockJson(f,$index)">
                                 <td class="cell">{{ $index + 1 }}</td>
                                 <td class="cell">{{ currentStockfolioNo }}</td>
                                 <td class="cell">{{ f.actualQty }}</td>
@@ -332,7 +396,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyName">Company Name</label>
-                                    <select class="form-select" ng-options="f.id as f.companyName for f in companylist" ng-model="currentStock.companyId" required>
+                                    <select class="form-select" ng-options="f.id as f.companyName for f in companylist" ng-model="currentStock.companyId" ng-change="setFaceValue(currentStock.companyId)" required>
                                         <option selected disabled value="">Select Company</option>
                                     </select>
                                 </div>
@@ -399,7 +463,7 @@
                                     <label for="claimStatus">Claim Status</label>
                                     <input type="text" id="claimStatus" ng-model="currentStock.claimStatus" class="form-control" placeholder="Claim Status" />
                                 </div>
-                            </div>
+							</div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
@@ -428,7 +492,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="process" class="form-label">Face Value</label>
+                                    <select class="form-select" ng-options="f.facevalue as f.facevalue for f in facevaluelist" ng-model="currentStock.faceValue" required>
+                                        <option selected disabled value="">Select Face Value</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="brokerage">Brokerage</label>
@@ -443,6 +515,8 @@
                                     <textarea type="text" id="ptbf" ng-model="currentStock.ptbf" class="form-control" placeholder="PTBF"></textarea>
                                 </div>
                             </div>
+                            </div>
+                            <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="remarks">Remarks</label>
@@ -454,7 +528,100 @@
                     </div>
                     <div class="text-center m-2">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Stock' }}</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Stock' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal fade" id="rtaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveRta()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Rta' : 'Add Rta' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rtaName">Rta Name</label>
+                                    <input type="text" id="rtaName" ng-model="currentRta.rtaName" class="form-control" placeholder="Rta Name" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rtaAddress">Rta Address</label>
+                                    <input type="text" id="rtaAddress" ng-model="currentRta.rtaAddress" class="form-control" placeholder="Address" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Rta' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveCompany()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Company' : 'Add Company' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="companyName">Company Name</label>
+                                    <input type="text" id="companyName" ng-model="currentCompany.companyName" class="form-control" placeholder="Company Name" required />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="companyAddress">Company Address</label>
+                                    <textarea id="companyAddress" ng-model="currentCompany.companyAddress" class="form-control" placeholder="Company Address"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="companyPinCode">Company PinCode</label>
+                                    <input type="text" id="companyPinCode" ng-model="currentCompany.companyPinCode" class="form-control" placeholder="PinCode" required />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rtaid">Select RTA</label>
+                                    <select id="rtaid" class="form-select" ng-model="currentCompany.rtaid" ng-options="rta.id as rta.rtaName for rta in rtas" required>
+                                        <option value="" disabled selected>Select RTA</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#003980;color:white">{{ isEditing ? 'Save Changes' : 'Add Company' }}</button>
                     </div>
                 </form>
             </div>
@@ -469,12 +636,26 @@
             $scope.currentStock = {};
             $scope.isEditing = false;
             var isProcessing = false;
+            $scope.processdone = false;
 
             showLoader();
 
              var path = window.location.pathname;
             var segments = path.split('/');
             var id = segments[segments.length - 1];
+
+         $scope.facevaluelist = [
+            { id: 1, facevalue: 1 },
+            { id: 2, facevalue: 2 },
+            { id: 3, facevalue: 3 },
+            { id: 4, facevalue: 4 },
+            { id: 5, facevalue: 5 },
+            { id: 6, facevalue: 6 },
+            { id: 7, facevalue: 7 },
+            { id: 8, facevalue: 8 },
+            { id: 9, facevalue: 9 },
+            { id: 10, facevalue: 10 },
+        ];
 
             // Load Stocks
             $scope.loadStocks = function () {
@@ -504,6 +685,7 @@
                  }
 
             };
+
 
             $scope.fistholderselect = function (fid,sid,tid) {
                // var find1 = $scope.holderlist .find(x => x.id === fid);
@@ -598,26 +780,73 @@
                 window.open('/Form/GenerateForm/' + id, '_blank');
             };
 
+$scope.calculateqty = function() {
+    var from = parseInt($scope.jsonData.distinctiveNosFrom, 10);
+    var to = parseInt($scope.jsonData.distinctiveNosTo, 10);
 
-            $scope.addStockData = function(isv) {
+    if (!isNaN(from) && !isNaN(to) && from <= to) {
+        $scope.jsonData.actualQty = (to - from + 1);
+    } else {
+        $scope.jsonData.actualQty = '';
+    }
+};
+
+        $scope.addStockData = function(isv) {
+            var from = parseInt($scope.jsonData.distinctiveNosFrom, 10);
+            var to = parseInt($scope.jsonData.distinctiveNosTo, 10);
+
+            if (!isNaN(from) && !isNaN(to) && from > to) {
+                        alert('Please Distinctive No To must be equal or greater than Distinctive No From');
+                        $scope.jsonData.actualQty = '';
+                        return;
+            }
             if (isv) {
+                let totalQty = $scope.stockList.reduce((sum, stock) => sum + stock.actualQty, 0);
 
-                $scope.stockList.push($scope.jsonData);
+                if ($scope.isEditing) {
+                    const editingStock = $scope.stockList.find(stock => stock.folioNo === $scope.jsonData.folioNo);
+                    if (editingStock) {
+                        totalQty -= editingStock.actualQty;
+                    }
+                }
 
-                $scope.jsonData = {};
+                totalQty += $scope.jsonData.actualQty;
 
-                console.log('Stock data added:', $scope.stockList);
+                if (totalQty > $scope.Quantity) {
+                    alert('The total quantity cannot exceed the allowed Quantity');
+                    return;
+                }
+
+                if ($scope.isEditing) {
+                    const index = $scope.stockList.findIndex(stock => stock.folioNo === $scope.jsonData.folioNo);
+                    if (index !== -1) {
+                     $scope.Sum -= $scope.stockList[index].actualQty;
+
+                    $scope.stockList[index] = angular.copy($scope.jsonData);
+
+                    $scope.Sum += $scope.jsonData.actualQty;
+                    } else {
+                        console.log('Stock not found for editing');
+                    }
+                } else {
+                    $scope.stockList.push(angular.copy($scope.jsonData));
+                    $scope.Sum += $scope.jsonData.actualQty;
+                }
+
+                $scope.jsonData = {}; 
+                $scope.isEditing = false; 
             } else {
                 alert('Please fill in the required fields');
             }
-        }
+        };
 
                        // Open Modal
-        $scope.openFormModal = function (id,folioNo) {
+        $scope.openFormModal = function (id,folioNo,qty) {
             $scope.currentStockId = id;
             $scope.currentStockfolioNo = folioNo;
+            $scope.Quantity = qty;
 
-            var data = $scope.stocks.find(c => c.id === id).stockJson;
+            var data = $scope.stocks.stocks.find(c => c.id === id).stockJson;
             if(data){
             $scope.stockList = JSON.parse(data);
             }
@@ -628,29 +857,41 @@
             $('#formModal').modal('show');
         };
 
+        $scope.editstockJson = function (stockdata,i){
+             $scope.isEditing = true;
+            $scope.jsonData = angular.copy(stockdata);
+        }
+
         $scope.SaveStockJson = function() {
+            $scope.processdone = true;
             if (isProcessing) return;
-            if ($scope.stockList.length < 2) {
-             Swal.fire({
-                        title: 'Error!',
-                        text:  'Please Add Atlest 2 Records',
-                        icon: 'error',
-                        confirmButtonText: 'Try Again'
-                    });
-                isProcessing = false;
-                return;
-            };
+            // if ($scope.stockList.length < 2) {
+            //  Swal.fire({
+            //             title: 'Error!',
+            //             text:  'Please Add Atlest 2 Records',
+            //             icon: 'error',
+            //             confirmButtonText: 'Try Again'
+            //         });
+            //     isProcessing = false;
+            //     return;
+            // };
             isProcessing = true;
            $scope.stockList[0].folioNo = $scope.currentStockfolioNo;
             $scope.stockList.forEach(item => delete item["$$hashKey"]);
             let jsonString = JSON.stringify($scope.stockList, null, 2);
 
+            var stockdata = {
+                        id: $scope.currentStockId,
+                        jsonString: jsonString
+            }
 
-            const url = '/Enquiry/UpdateStockJson?id=' + $scope.currentStockId + '&jsonString=' + encodeURIComponent(jsonString);
+
+            const url = '/Enquiry/UpdateStockJson';
 
             $http({
                 method: 'POST',
                 url: url,
+                                data:stockdata,
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -662,6 +903,7 @@
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     $scope.loadStocks();
                     $scope.stockList = [];
                     $('#formModal').modal('hide');
@@ -672,6 +914,7 @@
                         icon: 'error',
                         confirmButtonText: 'Try Again'
                     });
+                    $scope.processdone = false;
                 }
                 isProcessing = false;
             }, function(error) {
@@ -681,6 +924,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
+                $scope.processdone = false;
                 isProcessing = false;
             });
         };
@@ -689,6 +933,7 @@
             $scope.saveStock = function () {
                 if (id) 
                 {
+                    $scope.processdone = true;
                     if (isProcessing) return;
                     isProcessing = true;
                     $scope.currentStock.customerId = id;
@@ -703,6 +948,7 @@
                                 icon: 'success',
                                 confirmButtonText: 'OK'
                             });
+                            $scope.processdone = false;
                             $scope.loadStocks();
                             $('#stockModal').modal('hide');
                         } else {
@@ -712,6 +958,7 @@
                                 icon: 'error',
                                 confirmButtonText: 'Try Again'
                             });
+                            $scope.processdone = false;
                         }
                         isProcessing = false;
                     }, function (error) {
@@ -721,6 +968,7 @@
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         isProcessing = false;
                     });
                 }
@@ -742,7 +990,7 @@
             $scope.uploadDoc = function(){
 
                 if(id){
-
+                    $scope.processdone = true;
                     var formData = new FormData();
 
                     formData.append('customerId', id);
@@ -772,13 +1020,13 @@
                             confirmButtonText: 'OK'
 
                         });
-
+                        $scope.processdone = false;
                     isProcessing = false;
 
                     if(response.data.success)
 
                     {
-
+                        $scope.processdone = false;
                         $scope.loadStocks();
 
                         $scope.docFile = '';
@@ -797,7 +1045,170 @@
             window.open('/Enquiry/Tracking/' + id, '_self');
         };
 
+        //Rta Data
+        // Load Customers
+            $scope.loadRta = function () {
+                $http.get('/Company/GetRta').then(function (response) {
+                    $scope.rtas  = response.data;
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading rta:', error);
+                    hideLoader();
+                });
+            };
+
+             // Open Modal
+            $scope.openRtaModal = function () {
+                $('#rtaModal').modal('show');
+            };
+
+
+         // Save Customer
+            $scope.saveRta = function () {
+                $scope.processdone = true;
+                if (isProcessing) return;
+                isProcessing = true;
+                const url = '/Company/CreateRta';
+                $http.post(url, $scope.currentRta).then(function (response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.processdone = false;
+                        $scope.loadRta();
+                        $('#rtaModal').modal('hide');
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message || 'There was an issue adding the rta.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                        $scope.processdone = false;
+                    }
+                    isProcessing = false;
+                }, function (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.processdone = false;
+                    isProcessing = false;
+                });
+            };
+
+            //Company Data
+            // Open Modal
+            $scope.openCompanyModal = function () {
+                $('#companyModal').modal('show');
+            };
+
+             // Save Company
+            $scope.saveCompany = function () {
+                $scope.processdone = true;
+            if (isProcessing) return;
+            isProcessing = true;
+            const url = '/Company/CreateCompany';
+            $http.post(url, $scope.currentCompany).then(function (response) {
+                if (response.data.success) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.data.message || 'Operation successful!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.processdone = false;
+                    $scope.loadcompany();
+                    $('#companyModal').modal('hide');
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.data.message || 'There was an issue adding the company.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                    $scope.processdone = false;
+                }
+                isProcessing = false;
+            }, function (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                $scope.processdone = false;
+                isProcessing = false;
+            });
+        };
+
+        $scope.paymentdone = function(stock) {
+            // Swal.fire({
+            //         title: 'Are you sure?',
+            //         text: "You won't be able to revert this!",
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonText: 'Yes, delete it!',
+            //         cancelButtonText: 'No, keep it'
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+                    if(stock.claimStatus == "Demated"){
+                        $http.post('/Enquiry/UpdateStockbyColumn', stock).then(function (response) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: response.data.message || 'Operation successful!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.loadStocks();
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Please first Finish the stock Processes.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    }
+                //     }
+                // });
+        }
+
+                 $scope.deleteStock = function (docId) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, keep it'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                    $http.post('/Enquiry/DeleteStockbyColumn', docId).then(function (response) {
+                                Swal.fire({
+                                    title: response.data.success ? 'Deleted!' : 'Error',
+                                    text: response.data.success ? 'The Stock has been deleted.' : 'An error occurred.',
+                                    icon: response.data.success ? 'success' : 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                                        $scope.loadStocks();
+                            });
+                        }
+                    });
+                };
+
+                $scope.setFaceValue = function (Id) {
+                     $scope.currentStock.faceValue = $scope.companylist.find(x => x.id === Id).faceValue;
+                }
+
             // Initial Load
+            $scope.loadRta();
             $scope.loadStocks();
             $scope.loadcompany();
             $scope.loadholder();

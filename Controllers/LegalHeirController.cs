@@ -9,19 +9,65 @@ namespace Stock_CMS.Controllers
     {
         private readonly ILegalHeirService _legalHeirService;
         private readonly ILogger<LegalHeirController> _logger;
+        private readonly IPermissionService _permissionService;
 
-        public LegalHeirController(ILegalHeirService legalHeirService, ILogger<LegalHeirController> logger)
+        public LegalHeirController(ILegalHeirService legalHeirService, ILogger<LegalHeirController> logger, IPermissionService permissionService)
         {
             _legalHeirService = legalHeirService;
             _logger = logger;
+            _permissionService = permissionService;
         }
 
-        public IActionResult LegalHeir()
+        public async Task<IActionResult> LegalHeir()
         {
-            return View();
+            var userId = int.Parse(Request.Cookies["UserId"]);
+            var perm = await _permissionService.GetPermissionsByUserMenu(userId, 2);
+            var actionlist = perm != null && perm.Any() && perm.FirstOrDefault().ActionList != null ? perm.FirstOrDefault().ActionList : null;
+            if (actionlist != null && actionlist.Any(x => x.Action.ToUpper() == "VIEW" && x.IsEnabled == true))
+            {
+                //IEnumerable<ActionItem> ViewBag.ActionList = perm.FirstOrDefault().ActionList;
+                return View(perm.FirstOrDefault().ActionList);
+            }
+            return View("~/Views/Shared/Error.cshtml");
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetLegalHeirByCustomerId(long id)
+        {
+            try
+            {
+                var Docs = await _legalHeirService.GetLegalHeirByCustomerId(id);
+                return Json(Docs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
 
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetLegalHeirByCustomerIdWithoutLegalHeir(long id, long legalheirId)
+        {
+            try
+            {
+                var Docs = await _legalHeirService.GetLegalHeirByCustomerIdWithoutLegalHeir(id, legalheirId);
+                return Json(Docs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
 
         [HttpGet]
         public async Task<ActionResult> GetLegalHeir(long id)
@@ -154,6 +200,25 @@ namespace Stock_CMS.Controllers
             try
             {
                 var Docs = await _legalHeirService.GetClaimentLegalHeirByClientId(id);
+                return Json(Docs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetNOCLegalHeir(long id)
+        {
+            try
+            {
+                var Docs = await _legalHeirService.GetNOCLegalHeirByLegalHeirIds(id);
                 return Json(Docs);
             }
             catch (Exception ex)

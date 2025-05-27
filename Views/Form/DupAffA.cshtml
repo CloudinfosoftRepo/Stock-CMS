@@ -195,6 +195,19 @@ td:nth-child(5), td:nth-child(6) {
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
+
     </style>
   </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -219,9 +232,19 @@ td:nth-child(5), td:nth-child(6) {
                         <!-- Select Customer Dropdown -->
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
-                                <label for="seletedid" class="form-label">Select Customer</label>
-                                <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedid" ng-change="loadCustomers(seletedid)">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
                                     <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
                                 </select>
                             </div>
                         </div>
@@ -234,9 +257,25 @@ td:nth-child(5), td:nth-child(6) {
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="selected" class="form-label">Select Certificate No</label>
+                                <select class="form-select" ng-options="s.certificateNo as s.certificateNo for s in shares" ng-model="selected" ng-change="AddSelectedShare(selected)">
+                                    <option selected disabled value="">Select Shares</option>
+                                </select>
+                            </div>
+						</div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                {{message}}
+                            </div>
+                        </div>
+                        </div>
                         <!-- Submit Button -->
                         <div class="col-md-4 text-center mt-4">
-                            <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                                 Generate Form
                             </button>
                         </div>
@@ -310,10 +349,12 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           That I/We,
-                    <span class="s4">
+                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
                         {{data.firstHolder}},
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
+                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                        {{h}}
                     </span><span class="s6"> </span>(“all the shareholders”) hold the following
           (number of) securities under Folio no.
           <span class="s4">{{data.folioNo}} </span><span class="s6"> </span>in  <span class="s4">
@@ -341,7 +382,7 @@ td:nth-child(5), td:nth-child(6) {
             <td>From</td>
             <td>To</td>
           </tr>
-                    <tr ng-repeat="tmp in shares">
+                    <tr ng-repeat="tmp in selectedShares">
                         <td>@* 1) *@ {{data.officename}}</td>
                         <td>{{tmp.folioNo}}</td>
                         <td>{{tmp.actualQty}}</td>
@@ -364,11 +405,13 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           I/We
-          <span class="s4">
+                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
                         {{data.firstHolder}},
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
-                    </span>further swear / solemnly declare that I/ we
+                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                        {{h}}
+                    </span> further swear / solemnly declare that I/ we
           am/are applying for issue of duplicate certificate(s) to me/us on the
           ground that the original security(ies) certificate(s) has/have been
           misplaced / not found by me/us, despite a diligent search made by
@@ -381,10 +424,12 @@ td:nth-child(5), td:nth-child(6) {
       <li data-list-text="3.">
         <p style="padding-left: 43pt; text-indent: -14pt; text-align: justify">
           I/We
-          <span class="s4">
+                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
                         {{data.firstHolder}},
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
+                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                        {{h}}
                     </span> further swear/solemnly declare that the said securities are not sold or pledged or
             deposited by way of security to any person/company.
         </p>
@@ -401,10 +446,12 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           I/We
-          <span class="s4">
+                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
                         {{data.firstHolder}},
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
+                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                        {{h}}
                     </span><span class="s6"> </span>hereby further swear / solemnly declare that
           if, after the duplicate share certificate(s) is / are issued to us as
           aforesaid, the original security(ies) certificate(s) is / are at any
@@ -430,10 +477,12 @@ td:nth-child(5), td:nth-child(6) {
           "
         >
           I/We
-          <span class="s4">
+                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
                         {{data.firstHolder}},
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
+                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                        {{h}}
                     </span><span class="s6"> </span>am/are making the above solemn declaration
           on oath with full knowledge of the fact that in the event the original
           security (ies) certificate(s) issued is /are found, recovered and
@@ -601,22 +650,43 @@ td:nth-child(5), td:nth-child(6) {
       Notary &amp; Regn. No.
     </p>
      </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
   </body>
     <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
         $scope.customers = [];
          $scope.data = undefined;
+         $scope.selected = null;
+         $scope.selectedShares = [];
             $scope.hDiv = true;
             var params = new URLSearchParams(window.location.search);
             var id = params.get('id');
             var id2 = params.get('id2');
         var isProcessing = false;
+        $scope.processdone = false;
 
-        // showLoader();
+    $scope.AddSelectedShare = function(shr) {
+      if (shr) {
+        var sShare = $scope.shares.find(x => x.certificateNo === shr);
+
+        if (sShare) {
+          // Add the selected share to the selectedShares list
+          $scope.selectedShares.push(sShare);
+
+          // Remove the selected share from the available shares list
+          $scope.shares = $scope.shares.filter(x => x.certificateNo !== shr);
+
+          // Reset the selected model
+          $scope.selected = null;
+          $scope.message = shr + ' is Added';
+        }
+      }
+    };
 
          // Load Customers
-         $scope.loadCustomers = function (sid) {
+         $scope.loadCustomers = function (sid,hid) {
              if(id){
                  hideLoader();
                  $scope.hDiv = true;
@@ -625,31 +695,34 @@ td:nth-child(5), td:nth-child(6) {
                 $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
-                      $http.get('/doc/GetBank/'+ doc.id).then(function (response) {
-         var bank = response.data[0];
-                $scope.data = {
-                    docid: doc.id,
-                    customerName : doc.name,
-                    address : doc.addressAsPerAadhar,
-                    sonof: doc.relativesName,
-                    relationship: doc.relationship,
-                    accountno:bank.accountNo,
-                    jsondata: result.stockJson,
-                    qty: result.qty,
-                    folioNo : result.folioNo,
-                    officename : result.companyName,
-                       firstHolder :result.firstHolderName,
-    secondHolder:result.secondHolderName,
-    thirdHolder: result.thirdHolderName,
-                    place:'Vadodara',
-                    date: new Date(),
-                };
-                $scope.shares = JSON.parse($scope.data.jsondata);
+
+                    var isDeceased = !!doc?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = doc;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
+
+                
                 hideLoader();
-                                    }, function (error) {
-        console.error('Error loading Bank Deatails:', error);
-        hideLoader();
-    });
                 }, function (error) {
                     console.error('Error loading Docs:', error);
                     hideLoader();
@@ -675,13 +748,17 @@ td:nth-child(5), td:nth-child(6) {
                     accountno: obj.accountno,
                     relationship: obj.relationship,
                     jsondata: obj.jsondata,
+                    selectedshareslist: obj.selectedshareslist, 
                     officename: obj.officename,
+                    heirs: obj.heirs,
                        firstHolder:obj.firstHolder,
     secondHolder:obj.secondHolder,
     thirdHolder:obj.thirdHolder,
                     place: obj.place,
                     date: new Date(obj.date),
+                    condition: obj.condition,
                 };
+				$scope.selectedShares = JSON.parse($scope.data.selectedshareslist);
                 $scope.shares = JSON.parse($scope.data.jsondata);
                       id = result.stockId;
                 checkData();
@@ -690,6 +767,29 @@ td:nth-child(5), td:nth-child(6) {
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, heirlist,isDeceased) {
+                 $scope.data = {
+                    docid: holder.id,
+                    customerName : holder.name,
+                    address : holder.addressAsPerAadhar,
+                    sonof: holder.relativesName,
+                    relationship: holder.relationship,
+                    accountno:holder.pan,
+                    jsondata: result.stockJson,
+                    qty: result.qty,
+                    folioNo : result.folioNo,
+                    officename : result.companyName,
+                    heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                    firstHolder :result.firstHolderName,
+                    secondHolder:result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    place:'Vadodara',
+                    date: new Date(),
+                    condition: isDeceased,
+                };
+                $scope.shares = JSON.parse($scope.data.jsondata);
             }
         };
 
@@ -723,6 +823,7 @@ td:nth-child(5), td:nth-child(6) {
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+                 $scope.processdone = true;
                   if($scope.data.jsondata == undefined){
                      Swal.fire({
                             title: 'Error!',
@@ -730,8 +831,10 @@ td:nth-child(5), td:nth-child(6) {
                             icon: 'error',
                             confirmButtonText: 'Try Again'
                         });
+                        $scope.processdone = false;
                 return;
                  }
+                 $scope.data.selectedshareslist= JSON.stringify($scope.selectedShares);
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={
                  formName : 'Dup Aff-A',
@@ -752,6 +855,7 @@ td:nth-child(5), td:nth-child(6) {
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -767,7 +871,7 @@ td:nth-child(5), td:nth-child(6) {
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -777,6 +881,7 @@ td:nth-child(5), td:nth-child(6) {
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);

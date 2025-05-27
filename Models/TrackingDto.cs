@@ -26,6 +26,24 @@ namespace Stock_CMS.Models
 
         public int? UpdatedBy { get; set; }
 
+        public long StockId { get; set; }
+
+        public string? SendUrl { get; set; }
+
+        public string? ResponseUrl { get; set; }
+
+        public DateTime? DateofFollowUp { get; set; }
+
+        public string? Remark { get; set; }
+
+        public string? Srnno { get; set; }
+
+        public DateTime? Srndate { get; set; }
+
+        public string? DpName { get; set; }
+
+        public string? DpIdClientId { get; set; }
+
         [NotMapped]
         public string? CreatedByName { get; set; }
         [NotMapped]
@@ -41,11 +59,6 @@ namespace Stock_CMS.Models
 
         [NotMapped]
         public double? Qty { get; set; }
-        public long StockId { get; set; }
-        public string? SendUrl { get; set; }
-
-        public string? ResponseUrl { get; set; }
-        [NotMapped]
         public IFormFile? SendFile { get; set; }
         [NotMapped]
         public IFormFile? ResponseFile { get; set; }

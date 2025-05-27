@@ -31,6 +31,12 @@ public partial class StockCmsContext : DbContext
 
     public virtual DbSet<TblLegalHeir> TblLegalHeirs { get; set; }
 
+    public virtual DbSet<TblMenu> TblMenus { get; set; }
+
+    public virtual DbSet<TblPermission> TblPermissions { get; set; }
+
+    public virtual DbSet<TblRelationMapping> TblRelationMappings { get; set; }
+
     public virtual DbSet<TblRole> TblRoles { get; set; }
 
     public virtual DbSet<TblRtaCompany> TblRtaCompanies { get; set; }
@@ -42,7 +48,7 @@ public partial class StockCmsContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-=> optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
+   => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,6 +69,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.BankEmail)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.BankFirstHolder)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.BankManagerName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -70,6 +79,12 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.BankName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.BankSecondHolder)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.BankThirdHolder)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Branch)
@@ -128,12 +143,31 @@ public partial class StockCmsContext : DbContext
             entity.ToTable("Tbl_Customer");
 
             entity.Property(e => e.Address).IsUnicode(false);
+            entity.Property(e => e.ContactPersonMobile)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ContactPersonName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.CustomerName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.DocumentJson).IsUnicode(false);
+            entity.Property(e => e.FileNo)
+                .HasMaxLength(25)
+                .IsUnicode(false);
+            entity.Property(e => e.FinancialYear)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.Location)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.Mobile)
                 .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Reference)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
@@ -164,6 +198,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.Dob)
                 .HasColumnType("datetime")
                 .HasColumnName("DOB");
+            entity.Property(e => e.DpName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Dpid)
                 .HasMaxLength(15)
                 .IsUnicode(false)
@@ -201,6 +238,9 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.PinCode)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -217,6 +257,9 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(25)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UserName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.VoterIdUrl)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -292,6 +335,9 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.City)
                 .HasMaxLength(25)
                 .IsUnicode(false);
+            entity.Property(e => e.ClientId)
+                .HasMaxLength(15)
+                .IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DateOfDeath).HasColumnType("datetime");
             entity.Property(e => e.DeathCertiUrl)
@@ -300,6 +346,13 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.Dob)
                 .HasColumnType("datetime")
                 .HasColumnName("DOB");
+            entity.Property(e => e.DpName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Dpid)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("DPId");
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -331,6 +384,9 @@ public partial class StockCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.PinCode)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -342,6 +398,69 @@ public partial class StockCmsContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.State)
                 .HasMaxLength(25)
+                .IsUnicode(false);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UserName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TblMenu>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_TBL_Menu_Master");
+
+            entity.ToTable("TBL_Menu");
+
+            entity.Property(e => e.Actions).IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Icon)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Url)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TblPermission>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_TBL_Permission_Master");
+
+            entity.ToTable("TBL_Permission");
+
+            entity.Property(e => e.Actions).IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.MenuId).HasColumnName("Menu_Id");
+            entity.Property(e => e.RoleId).HasColumnName("Role_Id");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UserId).HasColumnName("User_Id");
+
+            entity.HasOne(d => d.Menu).WithMany(p => p.TblPermissions)
+                .HasForeignKey(d => d.MenuId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TBL_Permission_TBL_Menu");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.TblPermissions)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TBL_Permission_TBL_Role");
+
+            entity.HasOne(d => d.User).WithMany(p => p.TblPermissions)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TBL_Permission_TBL_User");
+        });
+
+        modelBuilder.Entity<TblRelationMapping>(entity =>
+        {
+            entity.ToTable("Tbl_RelationMapping");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.RelationWithDead)
+                .HasMaxLength(20)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
@@ -425,10 +544,18 @@ public partial class StockCmsContext : DbContext
             entity.ToTable("Tbl_Tracking");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DateofFollowUp).HasColumnType("datetime");
             entity.Property(e => e.DateofSubmission).HasColumnType("datetime");
+            entity.Property(e => e.DpIdClientId)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.DpName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Process)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.Remark).IsUnicode(false);
             entity.Property(e => e.ResponseUrl)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -438,6 +565,13 @@ public partial class StockCmsContext : DbContext
             entity.Property(e => e.SendUrl)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.Srndate)
+                .HasColumnType("datetime")
+                .HasColumnName("SRNDate");
+            entity.Property(e => e.Srnno)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("SRNNo");
             entity.Property(e => e.Status).IsUnicode(false);
             entity.Property(e => e.TrackingId)
                 .HasMaxLength(100)

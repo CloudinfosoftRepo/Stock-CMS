@@ -37,5 +37,9 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(x => x.IsActive == true);
         }
+        public async Task<IEnumerable<RoleDto>> GetFilteredRole()
+        {
+            return await GetMany(x => x.IsActive == true && x.Name != "Admin");
+        }
     }
 }

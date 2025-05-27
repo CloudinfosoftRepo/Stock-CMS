@@ -43,6 +43,12 @@ namespace Stock_CMS.AutoMapper
      .ForMember(dest => dest.Qty, opt => opt.MapFrom(src => src.Stock.Qty))
     .ReverseMap();
 
+            CreateMap<TblMenu, MenuDto>().ReverseMap();
+            CreateMap<TblPermission, PermissionDto>().ReverseMap();
+
+            CreateMap<TblRelationMapping, RelationMappingDto>().ReverseMap();
+
+
         }
     }
 }

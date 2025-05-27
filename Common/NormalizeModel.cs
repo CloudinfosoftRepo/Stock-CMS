@@ -18,6 +18,17 @@ namespace Stock_CMS.Common
             return number == null ? 0 : number;
         }
 
+        public DateTime? ConvertToIST(DateTime? utcDateTime)
+        {
+            if (utcDateTime.HasValue)
+            {
+                TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+                DateTime utcDate = utcDateTime.Value;
+                return TimeZoneInfo.ConvertTimeFromUtc(utcDate, istTimeZone);
+            }
+            return null;
+        }
+
         public DocDto FilterDoc(DocDto doc) 
         {
             doc.DeathCertiUrl = NormalizeString(doc.DeathCertiUrl);

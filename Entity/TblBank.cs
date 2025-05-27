@@ -52,4 +52,10 @@ public partial class TblBank
     public string? PinCode { get; set; }
 
     public string? NameAsPerBankAccount { get; set; }
+
+    public string? BankFirstHolder { get; set; }
+
+    public string? BankSecondHolder { get; set; }
+
+    public string? BankThirdHolder { get; set; }
 }

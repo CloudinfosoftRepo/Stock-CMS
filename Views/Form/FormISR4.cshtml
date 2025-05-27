@@ -262,10 +262,81 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
+        .myTable {
+            border-collapse: collapse;
+            margin-left: 56px;
+            min-width: 750px;
+        }
+
+            /* Cell styles */
+            .myTable td {
+                border: 1px solid #babdbf;
+                padding: 3pt;
+            }
+
+            /* Header row styles */
+            .myTable tr:first-child td {
+                font-weight: bold; /* Or use a class for header cells */
+            }
+
+            /* Column width adjustments */
+            .myTable td:nth-child(1) {
+                width: 104pt;
+            }
+
+            .myTable td:nth-child(2) {
+                width: 108pt;
+            }
+
+            .myTable td:nth-child(3) {
+                width: 99pt;
+            }
+
+            .myTable td:nth-child(4) {
+                width: 71pt;
+            }
+
+            .myTable td:nth-child(5) {
+                width: 95pt;
+            }
+
+            /* Text alignment and indentation */
+            .myTable p {
+                margin: 0;
+                text-align: left;
+            }
+
+            .myTable td:nth-child(3) p {
+                padding-right: 36pt;
+            }
+
+            /* Line height */
+            .myTable p {
+                line-height: 114%;
+            }
+
+
+        .bold {
+            font-weight: bold;
+        }
+
+
             .btn-primary:hover {
                 background-color: #0056b3;
                 transform: scale(1.05);
             }
+
+        .mybtn {
+            background-color: #003980 !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
 <body style="padding: 5%;" ng-controller="FormController">
@@ -288,47 +359,64 @@
                         <h4 class="card-title text-center mb-4" style="color:#003980;">Generate Form</h4>
 
                         <div class="row">
-                            <!-- Select Customer Dropdown -->
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label for="seletedId" class="form-label">Select Customer</label>
-                                    <select class="form-select" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId)">
-                                        <option selected disabled value="">Select customer</option>
-                                    </select>
-                                </div>
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
                             </div>
+                        </div>
 
-                            <!-- Certificate Nos -->
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3" ng-show="doclist.option2">
+                            <div class="form-group">
+                                <label for="unclaimedqty" class="form-label">Unclaimed Quantity</label>
+                                <input type="text" ng-model="data.unclaimedqty" class="form-control" ng-change="loadCustomers(seletedId)" placeholder="Unclaimed Quantity">
+                            </div>
+                        </div>
+
+                            <!-- Certificate Nos 
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="certificatenos" class="form-label">Certificate Nos</label>
                                     <input type="text" ng-model="data.certificatenos" class="form-control" placeholder="Certificate Nos">
                                 </div>
-                            </div>
+						</div>-->
 
-                            <!-- Distinctive Nos Start -->
+                            <!-- Distinctive Nos Start 
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="distinctiveNosStart" class="form-label">Distinctive Nos Start</label>
                                     <input type="text" ng-model="data.distinctiveNosStart" class="form-control" placeholder="Distinctive Nos Start">
                                 </div>
-                            </div>
+						</div>-->
                         </div>
                         <div class="row">
-                            <!-- Distinctive Nos End -->
+                            <!-- Distinctive Nos End 
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
                                     <label for="distinctiveNosEnd" class="form-label">Distinctive Nos End</label>
                                     <input type="text" ng-model="data.distinctiveNosEnd" class="form-control" placeholder="Distinctive Nos End">
                                 </div>
-                            </div>
+						</div>-->
                         </div>
-                    <!-- Submit Button -->
+                    <!-- Submit Button 
                     <div class="col-md-4 text-center mt-4">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
                             Generate Form
                         </button>
-                    </div>
+					</div>-->
                        
                 </div>
             </div>
@@ -360,7 +448,7 @@
                     <p style="padding-top: 5pt; padding-left: 64pt; text-indent: -21pt; line-height: 129%; text-align: justify;">
                         Demat Account No. (If available):
                         <u>
-@* 46485446858456845 *@{{data.dpid}}
+									@* 46485446858456845 *@{{data.dpid}}{{data.clientid}}
                         </u>
                         Provide Client Master List (<b>CML</b>) of your Demat Account from the Depository Participant*
                     </p>
@@ -420,9 +508,13 @@
                                         border-right-style: dotted;
                                         border-right-width: 1pt;
                                     ">
-                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">{{data.firstHolderpan}}
+                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;" ng-show="!legalheirlist">
+                                            {{data.firstHolderpan}}
                                             <br />{{data.secondHolderpan}}
                                             <br />{{data.thirdHolderpan}}
+                                            <br />Nomination / Declaration to Opt-out</p>
+                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;" ng-show="legalheirlist">
+                                            <br />{{data.legelheirpan}}
                                             <br />Nomination / Declaration to Opt-out</p>
                             </td>
                             <td style="
@@ -641,7 +733,7 @@
                                     <span ng-if="isPrint" class="s8" ng-bind="requests.option9 ? '☑' : '☐'"></span>
 
                                     <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="requests.option9" value="option9">
-                                    <span class="s9">Transposition </span><span class="s14">(Mention the new order of holders here)</span> <span class="s9">{{data.firstHolder}} &amp; {{data.secondHolder}} &amp; {{data.thirdHolder}}</span>
+                                    <span class="s9">Transposition </span><span class="s14">(Mention the new order of holders here)</span> <span class="s9">@* {{data.firstHolder}} &amp; {{data.secondHolder}} &amp; {{data.thirdHolder}} *@</span>
                                 </p>
                     </td>
                 </tr>
@@ -733,12 +825,46 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                                <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">1. {{data.firstHolder}} </p>
-                                <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">2. {{data.secondHolder}}</p>
-                                <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">3. {{data.thirdHolder}}</p>
+                                <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                            <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">1. {{data.firstHolder}} </p>
+                            <p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">2. {{data.secondHolder}}</p>
+							<p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">3. {{data.thirdHolder}}</p>
+							</span>
+                                <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+									<p class="s9" style="padding-top: 7pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">{{$index + 1}}. {{h.name}}</p>
+                            </span>
                     </td>
                 </tr>
-                <tr style="height: 15pt;">
+                        <tr style="height: 44pt;">
+                            <td style="
+                                width: 164pt;
+                                border-top-style: solid;
+                                border-top-width: 1pt;
+                                border-left-style: solid;
+                                border-left-width: 1pt;
+                                border-bottom-style: solid;
+                                border-bottom-width: 1pt;
+                                border-right-style: solid;
+                                border-right-width: 1pt;
+                            ">
+                                <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;">Number &amp; Face value of securities</p>
+
+                            </td>
+                            <td style="
+                                width: 281pt;
+                                border-top-style: solid;
+                                border-top-width: 1pt;
+                                border-left-style: solid;
+                                border-left-width: 1pt;
+                                border-bottom-style: solid;
+                                border-bottom-width: 1pt;
+                                border-right-style: solid;
+                                border-right-width: 1pt;
+                            ">
+                                <p style="text-indent: 0pt; text-align: left;">{{data.qty}} &amp; &#8377 {{data.faceValue}}</p>
+                            </td>
+                        </tr>
+                <!--<tr style="height: 15pt;">
                     <td style="
                                 width: 164pt;
                                 border-top-style: solid;
@@ -765,10 +891,10 @@
                             ">
                                 <p style="text-indent: 0pt; text-align: left;">{{data.certificatenos}}</p>
                     </td>
-                </tr>
+						</tr>-->
             </table>
             <p style="text-indent: 0pt; text-align: left;"><br /></p>
-            <table style="border-collapse: collapse; margin-left: 48.924pt;" cellspacing="0">
+            <!--<table style="border-collapse: collapse; margin-left: 48.924pt;" cellspacing="0">
                 <tr style="height: 15pt;">
                     <td style="
                                 width: 164pt;
@@ -823,10 +949,29 @@
                                 border-right-style: solid;
                                 border-right-width: 1pt;
                             ">
-                        <p style="text-indent: 0pt; text-align: left;">{{data.qty}} &amp; &#8377 {{data.rate}}</p>
+                                <p style="text-indent: 0pt; text-align: left;">{{data.qty}} &amp; &#8377 {{data.faceValue}}</p>
                     </td>
                 </tr>
-            </table>
+					</table>-->
+                    <table class="myTable ">
+                        <tr>
+                            <td>
+                                <p class="bold">Certificate No.**</p>
+                            </td>
+                            <td>
+                                <p class="bold">Distinctive No.**</p>
+                            </td>
+                            <td>
+                                <p class="bold">No. and Face value of</p>
+                                <p class="bold">securities held</p>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="tmp in shares">
+                            <td>{{tmp.certificateNo}}</td>
+                            <td>{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</td>
+                            <td>{{tmp.actualQty}} shares, FV:  {{data.faceValue}}</td>
+                        </tr>
+                    </table>
             <p style="padding-left: 43pt; text-indent: 0pt; text-align: left;">** Wherever applicable / whichever details are available</p>
         </li>
         <li data-list-text="D.">
@@ -873,7 +1018,7 @@
                                         border-right-style: solid;
                                         border-right-width: 1pt;
                                     ">
-                                        <p class="s9" style="padding-top: 2pt; padding-left: 115pt; padding-right: 2pt; text-indent: -13pt; text-align: right;">{{data.qty}}(in numbers) <br /> {{data.qtyinwords}}(in words)</p>
+                                        <p class="s9" style="padding-top: 2pt; padding-left: 115pt; padding-right: 2pt; text-indent: -13pt; text-align: right;">{{data.unclaimedqty}} (in numbers) <br /> {{data.qtyinwords}} (in words)</p>
                             </td>
                         </tr>
                     </table>
@@ -930,7 +1075,8 @@
     <p class="s16" style="padding-left: 50pt; text-indent: 0pt; text-align: left;">Provide / attach original securities certificate(s) <u>for request for item numbers III to VIII above.</u></p>
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;"><br /></p>
     <h3 style="padding-left: 43pt; text-indent: 0pt; line-height: 107%; text-align: left;">Declaration<span class="p">: All the above facts stated are true and correct to best of my / our knowledge and belief.</span></h3>
-    <table style="border-collapse: collapse; margin-left: 6.05pt;" cellspacing="0">
+            <div ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+        <table style="border-collapse: collapse; margin-left: 6.05pt;" cellspacing="0">
         <tr style="height: 15pt;">
             <td style="
                         width: 114pt;
@@ -1172,7 +1318,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolderpincode}}
             </td>
             <td style="
                         width: 143pt;
@@ -1185,7 +1331,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.secondHolderpincode}}
             </td>
             <td style="
                         width: 107pt;
@@ -1198,13 +1344,90 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.thirdHolderpincode}}
             </td>
         </tr>
-    </table>
+				</table>
     </div>
+            <div ng-show="data.condition" ng-class="{'hide-print': !data.condition}" >
+                <table style="border-collapse: collapse; margin-left: 6.05pt;" cellspacing="0">
+                    <tr style="height: 15pt;">
+                        <td style="
+                width: 114pt;
+                border-top-style: dotted;
+                border-top-width: 1pt;
+                border-left-style: dotted;
+                border-left-width: 1pt;
+                border-bottom-style: dotted;
+                border-bottom-width: 1pt;
+                border-right-style: dotted;
+                border-right-width: 1pt;
+            ">
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                        </td>
+                        <td colspan="3" style="
+                width: 441pt;
+                border-top-style: dotted;
+                border-top-width: 1pt;
+                border-left-style: dotted;
+                border-left-width: 1pt;
+                border-bottom-style: dotted;
+                border-bottom-width: 1pt;
+                border-right-style: dotted;
+                border-right-width: 1pt;
+            ">
+                            <p class="s18" style="padding-left: 25pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Claiment</p>
+                        </td>
+                    </tr>
+
+                    <tr style="height: 45pt;" ng-repeat="h in data.heirs">
+                        <td style="width: 114pt; border: 1pt dotted;">
+                            <p class="s13" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Signature</p>
+                        </td>
+                        <td style="width: 191pt; border: 1pt dotted;">
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>
+                        </td>
+                    </tr>
+
+                    <tr style="height: 21pt;" ng-repeat="h in data.heirs">
+                        <td style="width: 114pt; border: 1pt dotted;">
+                            <p class="s13" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Name</p>
+                        </td>
+                        <td colspan="3" style="width: 441pt; border: 1pt dotted;">
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{ h.name }}
+                        </td>
+                    </tr>
+
+                    <tr style="height: 42pt;" ng-repeat="h in data.heirs">
+                        <td style="width: 114pt; border: 1pt dotted;">
+                            <p class="s13" style="padding-left: 5pt; text-indent: 0pt; line-height: 14pt; text-align: left;">Full address</p>
+                        </td>
+                        <td colspan="3" style="width: 441pt; border: 1pt dotted;">
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{ h.address }}
+                        </td>
+                    </tr>
+
+                    <tr style="height: 14pt;" ng-repeat="h in data.heirs">
+                        <td style="width: 114pt; border: 1pt dotted;">
+                            <p class="s13" style="padding-left: 5pt; text-indent: 0pt; line-height: 13pt; text-align: left;">PIN</p>
+                        </td>
+                        <td colspan="3" style="width: 441pt; border: 1pt dotted;">
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{ h.pincode }}
+                        </td>
+                    </tr>
+                </table>
+    </div>
+    </div>
+        <!-- Submit Button -->
+        <div class="col-md-4 text-center mt-4">
+            <button  ng-if="hDiv" type="submit"  ng-disabled="processdone" class="btn btn-primary px-4" style="background-color:#003980; color:white; border-radius: 5px;">
+                Generate Form
+            </button>
+        </div>
     </form>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-show="isPrint" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
@@ -1238,11 +1461,13 @@
 
               $scope.isPrint = id2 ? true : false
         var isProcessing = false;
+        $scope.processdone = false;
+        $scope.unclaimed = 0
 
         // showLoader();
 
          // Load Customers
-         $scope.loadCustomers = function (sid) {
+         $scope.loadCustomers = function (sid,hid) {
              if(id){
                  hideLoader();
                 $scope.hDiv = true;
@@ -1251,30 +1476,32 @@
                     $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                         $scope.docs = response.data;
                         var doc = $scope.docs.find(x => x.id === sid);
-                        $scope.data = {
-                            docid: doc.id,
-                            customerName : doc.nameAsPerAadhar,
-                            today: new Date(),
-                            dpid: doc.dpid,
-                            firstHolderpan: result.firstHolderData ? result.firstHolderData.pan : '',
-                            secondHolderpan: result.secondHolderData ? result.secondHolderData.pan : '',
-                            thirdHolderpan: result.thirdHolderData ? result.thirdHolderData.pan : '',
-                            companyName: result.companyName,
-                            folioNo: result.folioNo,
-                            firstHolder :result.firstHolderName,
-                            secondHolder:result.secondHolderName,
-                            thirdHolder: result.thirdHolderName,
-                            certificatenos: $scope.data && $scope.data.certificatenos || '',
-                            distinctiveNosStart:  $scope.data && $scope.data.distinctiveNosStart || '',
-                            distinctiveNosEnd: $scope.data && $scope.data.distinctiveNosEnd || '',
-                            qty: result.qty,
-                            rate: result.rate,
-                            qtyinwords: $scope.numberToWords(result.qty),
-                            firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
-                            secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
-                            thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
-                        };
 
+                         var isDeceased = !!doc?.dateOfDeath;
+
+                if (isDeceased) {
+                    $scope.heirId = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+                        $scope.heir = response.data;
+                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var holder = heirs;
+
+                        populateData(holder, result,$scope.heir,isDeceased);
+                    }, function (error) {
+                        console.error('Error loading legal heir data:', error);
+                        hideLoader();
+                    });
+                } else {
+                    $scope.heirId = null;
+    $scope.data = null;
+    $scope.legalheirlist = isDeceased;
+    document.getElementById('heirId').value = '';
+                    var holder = doc;
+                    populateData(holder, result,$scope.heir,isDeceased);
+                }
+                       
                     hideLoader();
                     }, function (error) {
                     console.error('Error loading Docs:', error);
@@ -1296,12 +1523,15 @@
                     customerName: obj.customerName,
                     today: new Date(obj.today),
                     dpid: obj.dpid,
+                    clientid: obj.clientid,
                     firstHolderpan: obj.firstHolderpan,
                     secondHolderpan: obj.secondHolderpan,
                     thirdHolderpan: obj.thirdHolderpan,
+					legelheirpan: obj.legelheirpan,
                     requestlist:JSON.parse(obj.requestlist),
                     companyName: obj.companyName,
                     folioNo: obj.folioNo,
+                    jsondata: obj.jsondata,
                     firstHolder:obj.firstHolder,
                     secondHolder:obj.secondHolder,
                     thirdHolder:obj.thirdHolder,
@@ -1315,7 +1545,15 @@
                     firstHolderaddress:obj.firstHolderaddress,
                     secondHolderaddress:obj.secondHolderaddress,
                     thirdHolderaddress:obj.thirdHolderaddress,
+                        firstHolderpincode: obj.firstHolderpincode,
+    secondHolderpincode: obj.secondHolderpincode,
+    thirdHolderpincode: obj.thirdHolderpincode,
+                    faceValue: obj.faceValue,
+                    unclaimedqty: obj.unclaimedqty,
+                    condition: obj.condition,
+					heirs: obj.heirs,
                 };
+                $scope.shares = JSON.parse($scope.data.jsondata);
                     $scope.requests = $scope.data.requestlist;
                 $scope.doclist = $scope.data.docattach;
                 id = result.stockId;
@@ -1325,6 +1563,43 @@
                 console.error('Error loading customers:', error);
                 hideLoader();
             });
+            }
+
+            function populateData(holder, result, heirlist,isDeceased) {
+                 $scope.data = {
+                            docid: holder.id,
+                            customerName : holder.nameAsPerAadhar,
+                            today: new Date(),
+                            dpid: holder.dpid,
+                            clientid: holder.clientId,
+                            firstHolderpan: result.firstHolderData ? result.firstHolderData.pan : '',
+                            secondHolderpan: result.secondHolderData ? result.secondHolderData.pan : '',
+                            thirdHolderpan: result.thirdHolderData ? result.thirdHolderData.pan : '',
+							legelheirpan: holder.pan,
+                            companyName: result.companyName,
+                            folioNo: result.folioNo,
+                            firstHolder :result.firstHolderName,
+                            secondHolder:result.secondHolderName,
+                            thirdHolder: result.thirdHolderName,
+                            certificatenos: $scope.data && $scope.data.certificatenos || '',
+                            distinctiveNosStart:  $scope.data && $scope.data.distinctiveNosStart || '',
+                            distinctiveNosEnd: $scope.data && $scope.data.distinctiveNosEnd || '',
+                            qty: result.qty,
+                            rate: result.rate,
+                            unclaimedqty: $scope.data && $scope.data.unclaimedqty || '',
+                            qtyinwords: $scope.numberToWords($scope.data && $scope.data.unclaimedqty || ''),
+                            firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
+                            secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
+                            thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
+                            firstHolderpincode: result.firstHolderData ? result.firstHolderData.pinCode : '',
+                            secondHolderpincode: result.secondHolderData ? result.secondHolderData.pinCode : '',
+                            thirdHolderpincode: result.thirdHolderData ? result.thirdHolderData.pinCode : '',
+                            faceValue: result.faceValue,
+                             jsondata: result.stockJson,
+							 condition: isDeceased,
+                             heirs: isDeceased ? heirlist.map(h => ({ name: h.name, address: h.addressAsPerAadhar, pincode: h.pinCode })) : [],
+                        };
+                         $scope.shares = JSON.parse($scope.data.jsondata);
             }
         };
 
@@ -1395,7 +1670,17 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
-
+                 $scope.processdone = true;
+                 if($scope.data.jsondata == undefined){
+                     Swal.fire({
+                            title: 'Error!',
+                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                        $scope.processdone = false;
+                return;
+                 }
             var arr = angular.copy($scope.requests);
             $scope.data.requestlist = JSON.stringify(arr,null,2);
 
@@ -1422,6 +1707,7 @@
                             icon: 'success',
                             confirmButtonText: 'OK'
                         });
+                        $scope.processdone = false;
                         // $scope.loadCustomers();
                         window.open(response.data.data.url + response.data.data.id,'_self')
                     } else {
@@ -1437,7 +1723,7 @@
                              window.open(response.data.message, '_self');
                          }
                  });
-
+                 $scope.processdone = false;
                     }
                     isProcessing = false;
                 }, function (error) {
@@ -1447,6 +1733,7 @@
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
+                    $scope.processdone = false;
                     isProcessing = false;
                 });
             //console.log(dataString);
@@ -1482,7 +1769,7 @@
 
         //Function
         $scope.printDiv = function (divId) {
-                    var css ='<style type="text/css"> *{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:15pt}h3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s4{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.a{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s7{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s9{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s12{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s15{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s16{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s18{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s19{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}#l2{padding-left:0pt}#l2>li>*:first-child:before{color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}#l3{padding-left:0pt}#l3>li>*:first-child:before{color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}table,tbody{vertical-align:top;overflow:visible}.ng-hide{display:none} </style>';
+                    var css ='<style type="text/css"> *{margin:0;padding:0;text-indent:0}h1{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:15pt}h3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt}.s4{color:black;font-family:Wingdings;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.a{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s7{color:#0462c1;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s9{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s11{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s12{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:20pt}.s13{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s15{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt}.s16{color:black;font-family:Calibri,sans-serif;font-style:italic;font-weight:normal;text-decoration:none;font-size:12pt}.s18{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}.s19{color:black;font-family:"Bookshelf Symbol 7";font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}li{display:block}#l1{padding-left:0pt;counter-reset:c1 1}#l1>li>*:first-child:before{counter-increment:c1;content:counter(c1,upper-latin)". ";color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:12pt}#l1>li:first-child>*:first-child:before{counter-increment:c1 0}#l2{padding-left:0pt}#l2>li>*:first-child:before{color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}#l3{padding-left:0pt}#l3>li>*:first-child:before{color:black;font-family:Symbol,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}table,tbody{vertical-align:top;overflow:visible}.ng-hide{display:none} .myTable { border-collapse: collapse;margin-left: 56px;min-width: 650px;}.myTable td {border: 1px solid #babdbf;padding: 3pt;}.myTable tr:first-child td {font-weight: bold;}.myTable td:nth-child(1) {width: 104pt;}.myTable td:nth-child(2) {width: 108pt;}.myTable td:nth-child(3) {width: 99pt;}.myTable td:nth-child(4) {width: 71pt;}.myTable td:nth-child(5) {width: 95pt;}.myTable p {margin: 0;text-align: left;}.myTable td:nth-child(3) p {padding-right: 36pt;}.myTable p {line-height: 114%;} @@media print {.hide-print {display: none !important;}}</style>';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();
