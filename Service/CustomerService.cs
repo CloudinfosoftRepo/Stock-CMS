@@ -125,7 +125,21 @@ namespace Stock_CMS.Service
 			var result = await _customerRepository.UpdateCustomerbyColumn(customerDtos, ["IsClient", "UpdatedAt", "UpdatedBy", "FileNo"]);
             if (result.Any())
             {
-                return result.FirstOrDefault().Id;
+                var clientId = result.FirstOrDefault().Id;
+                var stock = await _stockRepository.GetStockByClientId(clientId);
+                foreach (var item in stock)
+                {
+                    item.ClaimStatus = "Pending";
+                }
+                var updatestock = await _stockRepository.UpdateStock(stock);
+                if (updatestock.Any())
+                {
+                    return clientId;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             else
             {
