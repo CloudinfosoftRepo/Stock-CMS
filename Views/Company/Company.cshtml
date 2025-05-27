@@ -122,7 +122,7 @@
                         <div class="row">
                         
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyName">Company Name</label>
                                     <input type="text" id="companyName" ng-model="currentCompany.companyName" class="form-control" placeholder="Company Name" required />
@@ -130,23 +130,22 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyAddress">Company Address</label>
                                     <textarea id="companyAddress" ng-model="currentCompany.companyAddress" class="form-control" placeholder="Company Address"></textarea>
 
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                        
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyPinCode">Company PinCode</label>
                                     <input type="text" id="companyPinCode" ng-model="currentCompany.companyPinCode" class="form-control" placeholder="PinCode" required />
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="rtaid">Select RTA</label>
                                     <select id="rtaid" class="form-select" ng-model="currentCompany.rtaid"  ng-options="rta.id as rta.rtaName for rta in rtas" required>

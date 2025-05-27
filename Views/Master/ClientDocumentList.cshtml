@@ -106,12 +106,24 @@
             .document-table td:last-child {
                 width: 5pt;
             }
+
+        .mybtn {
+            background-color: #51b37f !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
     </style>
 </head>
 <body style="padding-left: 10%;" ng-controller="FormController">
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
-        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+        <a class="col-md-1 text-start" style="font-size:35px;color:#51b37f" ng-click="navtogenerateform()">
             <i class="bi bi-arrow-left"></i>
         </a>
 
@@ -290,7 +302,9 @@
             @* THIS IS T *@
         </p>
     </div>
-    <button class="btn btn-store" ng-click="printDiv('printForm')">Print</button>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
 </body>
 <script>
     angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {

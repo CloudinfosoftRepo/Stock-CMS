@@ -226,8 +226,9 @@
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" style="max-width:85%" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button class="btn btn-custom"
+			<div class="modal-header justify-content-between">
+				<h3>{{header}}</h3>
+				<button class="btn btn-custom justify-content-end"
 						style="background-color:#51b37f;color:white"
 						excel-export
 						table-id="formdata"
@@ -239,8 +240,11 @@
 			</div>
 			<div class="m-2">
 				<!-- Stock List Table -->
-				<table id="formdata" class="table table-bordered table-hover mb-0 text-left">
-					<thead class="sticky-header">
+				<div class="app-card app-card-orders-table shadow-sm mb-5">
+					<div class="app-card-body">
+						<div class="table-responsive">
+							<table id="Statusdata" class="table app-table-hover mb-0 text-left text-nowrap">
+								<thead class="sticky-header">
 						<tr>
 							<th class="cell">#</th>
 							<th class="cell">Customer Name</th>
@@ -281,6 +285,9 @@
 						</tr>
 					</tbody>
 				</table>
+                        </div><!--//table-responsive-->
+                    </div><!--//app-card-body-->
+                </div><!--//app-card-->
 			</div>
 		</div>
 	</div>
@@ -290,6 +297,7 @@
 	<div class="modal-dialog" style="max-width:75%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
+				<h3>Total Unpaid Amount</h3>
 				<!--<button class="btn btn-custom"
 						style="background-color:#51b37f;color:white"
 						excel-export
@@ -302,7 +310,10 @@
 			</div>
 			<div class="m-2">
 				<!-- Stock List Table -->
-				<table id="formdata" class="table table-bordered table-hover mb-0 text-left">
+				<div class="app-card app-card-orders-table shadow-sm mb-5">
+					<div class="app-card-body">
+						<div class="table-responsive">
+							<table id="evaluationdata" class="table app-table-hover mb-0 text-left text-nowrap">
 					<thead class="sticky-header">
 						<tr>
 							<th class="cell">#</th>
@@ -328,6 +339,9 @@
 						</tr>
 					</tbody>
 				</table>
+                        </div><!--//table-responsive-->
+                    </div><!--//app-card-body-->
+                </div><!--//app-card-->
 			</div>
 		</div>
 	</div>

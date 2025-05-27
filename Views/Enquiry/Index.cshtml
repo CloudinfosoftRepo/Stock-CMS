@@ -220,7 +220,7 @@
     <!-- upload Modal -->
     <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
 
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-sm" role="document">
 
             <div class="modal-content">
 
@@ -240,7 +240,7 @@
 
                         <div class="row">
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
 
                                 <div class="form-group">
 
@@ -348,7 +348,10 @@
                 </form>
                 <div class="m-2">
                     <!-- Stock List Table -->
-                    <table class="table table-bordered table-striped table-hover mb-0 text-left">
+                    <div class="app-card app-card-orders-table shadow-sm mb-5">
+                        <div class="app-card-body">
+                            <div class="table-responsive">
+                                <table class="table app-table-hover mb-0 text-left text-nowrap">
                         <thead class="sticky-header">
                             <tr>
                                 <th class="cell">#</th>
@@ -370,14 +373,17 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
+        </div>
         </div>
     </div>
 
     <!-- Add/Edit Stock Modal -->
     <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" style="max-width:75%" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <form ng-submit="saveStock()">
                     <div class="modal-header">
@@ -573,7 +579,7 @@
 
     <!-- Add/Edit Customer Modal -->
     <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <form ng-submit="saveCompany()">
                     <div class="modal-header">
@@ -584,7 +590,7 @@
                         <div class="row">
 
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyName">Company Name</label>
                                     <input type="text" id="companyName" ng-model="currentCompany.companyName" class="form-control" placeholder="Company Name" required />
@@ -592,27 +598,35 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyAddress">Company Address</label>
                                     <textarea id="companyAddress" ng-model="currentCompany.companyAddress" class="form-control" placeholder="Company Address"></textarea>
 
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                 
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="companyPinCode">Company PinCode</label>
                                     <input type="text" id="companyPinCode" ng-model="currentCompany.companyPinCode" class="form-control" placeholder="PinCode" required />
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="rtaid">Select RTA</label>
                                     <select id="rtaid" class="form-select" ng-model="currentCompany.rtaid" ng-options="rta.id as rta.rtaName for rta in rtas" required>
                                         <option value="" disabled selected>Select RTA</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="faceValue" class="form-label">Face Value</label>
+                                    <select class="form-select" ng-options="f.facevalue as f.facevalue for f in facevaluelist" ng-model="currentCompany.faceValue" required>
+                                        <option selected disabled value="">Select Face Value</option>
                                     </select>
                                 </div>
                             </div>

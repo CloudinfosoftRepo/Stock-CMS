@@ -16,19 +16,19 @@
     .sticky-header {
         position: sticky;
         top: 0;
-        background-color: #fff; /* Ensures that the header has a solid background */
-        z-index: 1; /* Makes sure the header stays on top of the content */
+        background-color: #fff;
+        z-index: 1;
     }
 
     .table-responsive {
-        max-height: 500px; /* Set a fixed height to make the table scrollable */
+        max-height: 500px;
         overflow-y: auto;
     }
 
     .sticky-action {
         position: sticky;
         right: 0;
-        z-index: 1;
+        z-index: 2;
     }
 
     .nav-style{
@@ -97,40 +97,40 @@
                             <table class="table app-table-hover mb-0 text-left text-nowrap">
                                 <thead >
                                     <tr>
-                                        <th class="text-center">#</th>
-                                        <th class="text-center">File No</th>
-                                        <th class="text-center">Client Name</th>
-                                        <th class="text-center">Mobile</th>
-                                        <th class="text-center">Address</th>
-                                        <th class="text-center">Reference</th>
-                                        <th class="text-center">Contact Person</th>
-                                        <th class="text-center">Contact Person's Mobile</th>
-                                        <th class="text-center">Location</th>
-                                        <th class="text-center">Created At</th>
-                                        <th class="text-center">Created By</th>
-                                        <th class="text-center">Updated At</th>
-                                        <th class="text-center">Updated By</th>
-                                        <th class="text-center fixed-col">Action</th>
+                                        <th class="cell">#</th>
+                                        <th class="cell">File No</th>
+                                        <th class="cell">Client Name</th>
+                                        <th class="cell">Mobile</th>
+                                        <th class="cell">Address</th>
+                                        <th class="cell">Reference</th>
+                                        <th class="cell">Contact Person</th>
+                                        <th class="cell">Contact Person's Mobile</th>
+                                        <th class="cell">Location</th>
+                                        <th class="cell">Created At</th>
+                                        <th class="cell">Created By</th>
+                                        <th class="cell">Updated At</th>
+                                        <th class="cell">Updated By</th>
+                                    <th class="cell sticky-action">Action</th>
                                     @* <th ng-hide="search" class="cell sticky-action">C2C</th> *@
                                     @* <th class="cell sticky-action">Docs</th> *@
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="customer in customers | filter: searchQuery | filter:{isClient:search}">
-                                        <td class="text-center">{{ $index + 1 }}</td>
-                                    <td class="text-center">{{ customer.fileNo }}</td>
+                                        <td class="cell">{{ $index + 1 }}</td>
+                                    <td class="cell">{{ customer.fileNo }}</td>
                                     <td ng-click="manageClient(customer.id)" class="cell nav-style">{{ customer.customerName }}</td>
-                                        <td class="text-center">{{ customer.mobile }}</td>
-                                        <td class="text-center">{{ customer.address }}</td>
-                                    <td class="text-center">{{ customer.reference }}</td>
-                                    <td class="text-center">{{ customer.contactPersonName }}</td>
-                                    <td class="text-center">{{ customer.contactPersonMobile }}</td>
-                                    <td class="text-center">{{ customer.location }}</td>
-                                        <td class="text-center">{{ customer.createdAt | date:'dd-MM-yyyy' }}</td>
-                                        <td class="text-center">{{ customer.createdByName }}</td>
-                                        <td class="text-center">{{ customer.updatedAt | date:'dd-MM-yyyy' }}</td>
-                                        <td class="text-center">{{ customer.updatedByName }}</td>
-                                    <td class="text-center fixed-col">
+                                        <td class="cell">{{ customer.mobile }}</td>
+                                        <td class="cell">{{ customer.address }}</td>
+                                    <td class="cell">{{ customer.reference }}</td>
+                                    <td class="cell">{{ customer.contactPersonName }}</td>
+                                    <td class="cell">{{ customer.contactPersonMobile }}</td>
+                                    <td class="cell">{{ customer.location }}</td>
+                                        <td class="cell">{{ customer.createdAt | date:'dd-MM-yyyy' }}</td>
+                                        <td class="cell">{{ customer.createdByName }}</td>
+                                        <td class="cell">{{ customer.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                        <td class="cell">{{ customer.updatedByName }}</td>
+                                    <td class="text-center sticky-action">
                                         @if (edit) { 
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openCustomerModal(customer)"  title="Edit Client">
                                                 <i class="bi bi-pencil"></i>
