@@ -279,13 +279,13 @@
                             </div>
                         </div>
 
-                        <!-- Signed Submit Date -->
+                        <!-- Signed Submit Date 
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="singnedsubmitdate" class="form-label">Signed Submit Date</label>
                                 <input type="date" ng-model="data.singnedsubmitdate" class="form-control" placeholder="Signed Submit Date">
                             </div>
-                        </div>
+                        </div>-->
 
                         <!-- Place of Submission -->
                         <div class="col-md-4 mb-3">
@@ -343,7 +343,9 @@
     </h1>
     <p style="padding-left: 6pt; text-indent: 0pt; text-align: left">
         I/We,
-            <span class="s5">@* RTADVYG CSACC *@{{data.customerName}} </span>do hereby solemnly affirm and state on oath as follows:
+            @* <span class="s5">@* RTADVYG CSACC {{data.customerName}} </span> *@
+
+            <span class="s5" ng-repeat="h in data.heirs">@* RTADVYG CSACC *@{{h.name + ' And '}} </span>do hereby solemnly affirm and state on oath as follows:
     </p>
     <p style="
         padding-top: 5pt;
@@ -461,7 +463,7 @@
             <td style="width: 183pt; border: 1px solid #a6a8ab;">
                     <p style="text-align: left;">{{ $index + 1 }}){{tmp.name}}</p>
             </td>
-                <td style="width: 184pt; border: 1px solid #a6a8ab;">{{tmp.addressAsPerAadhar}}</td>
+                <td style="width: 184pt; border: 1px solid #a6a8ab;">{{ !tmp.addressAsPerAadhar ?  'Deceased' : tmp.addressAsPerAadhar}}</td>
                 <td style="width: 35pt; text-align:center; border: 1px solid #a6a8ab;">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
                 <td style="width: 86pt; border: 1px solid #a6a8ab;">{{tmp.relationWithDead}}</td>
         </tr>
@@ -498,7 +500,7 @@
     <p style="padding-left: 18pt; text-indent: 0pt; text-align: center">OR</p>
     <p style="padding-left: 6pt; text-indent: 0pt; text-align: justify">
         That the aforesaid deceased holder died on
-            <span class="s5">@* CGVHBAWC *@{{data.dateofdeath | date:'dd/MM/yyyy'}} </span>, without registering any nominee, leaving behind him/her the following
+            <span class="s5">@* CGVHBAWC *@@* {{data.dateofdeath | date:'dd/MM/yyyy'}} *@ <u>&emsp;&emsp;&emsp;&emsp;&emsp;</u> </span>, without registering any nominee, leaving behind him/her the following
         persons as the only surviving legal heirs, according to the laws of
         testamentary succession.
     </p>
@@ -519,21 +521,21 @@
             </td>
         </tr>
 
-        <!-- Row 1 -->
-            <tr style="height: 21pt" ng-repeat="tmp in heir">
+            <!-- Row 1-->
+            <tr style="height: 21pt" >
             <td style="width: 148pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
-                    <p class="s2" style="text-indent: 0pt; text-align: left">{{ $index + 1 }}){{tmp.name}}</p>
+                    <p class="s2" style="text-indent: 0pt; text-align: left"></p>
             </td>
             <td style="width: 163pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
-                    <p style="text-indent: 0pt; text-align: left">{{tmp.addressAsPerAadhar}}</p>
+                    <p style="text-indent: 0pt; text-align: left"></p>
             </td>
             <td style="width: 28pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
-                    <p style="text-indent: 0pt; text-align: center">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</p>
+                    <p style="text-indent: 0pt; text-align: center"></p>
             </td>
             <td style="width: 142pt; border-top: solid 1pt #a6a8ab; border-left: solid 1pt #a6a8ab; border-bottom: solid 1pt #a6a8ab; border-right: solid 1pt #a6a8ab;">
-                    <p style="text-indent: 0pt; text-align: left">{{tmp.relationWithDead}}</p>
+                    <p style="text-indent: 0pt; text-align: left"></p>
             </td>
-        </tr>
+            </tr>
 
         <!-- Row 2
         <tr style="height: 20pt">
@@ -657,14 +659,14 @@
     <p style="
         padding-top: 1pt;
         padding-left: 6pt;
-        text-indent: 276pt;
+        /* text-indent: 276pt; */
         line-height: 108%;
         text-align: justify;
       ">
             {{data.customerName}}
             <span class="s10">#</span>, have hereunto set their respective hands and
         seals this day of
-            <span class="s9">@* 12/185/1650 *@{{data.singnedsubmitdate | date:'dd/MM/yyyy'}} </span><span style="color: #a6a6a6">. </span>Signed and delivered by the said
+            <span class="s9">@* 12/185/1650 *@@* {{data.singnedsubmitdate | date:'dd/MM/yyyy'}} *@<u>&emsp;&emsp;&emsp;&emsp;&emsp;</u> </span><span style="color: #a6a6a6">. </span>Signed and delivered by the said
         legal heir/s.
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
@@ -902,6 +904,7 @@
                     place: obj.place,
                     today: new Date(obj.today),
 					condition: obj.condition,
+                    heirs: obj.heirs,
                 };
                 $scope.heirlist = $scope.data.heirs;
                 $scope.heir = $scope.data.claiment;
@@ -934,6 +937,9 @@
                     place: 'Vadodara',
                     today: new Date(),
                     condition: isDeceased,
+                    heirs: isDeceased ? heirlist.map(h => ({ name: h.name})) : [],
+
+
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
             }

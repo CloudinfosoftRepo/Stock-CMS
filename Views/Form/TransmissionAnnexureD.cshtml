@@ -439,7 +439,7 @@ table {
           behind him/her, the following persons as the only surviving heirs as per the
           Succession Certificate/ Legal Heirship Certificate(or its equivalent
           certificate)/Court Decree dated
-          <span class="s5">@* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@{{data.dateofdeath | date:'dd/MM/yyyy'}} </span><span class="s6"> </span>/ according to the Law of Intestate
+                        <span class="s5"> <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>@* {{data.dateofdeath | date:'dd/MM/yyyy'}}*@ </span><span class="s6"> </span> according to the Law of Intestate
           Succession by which he/she was governed at the time of his/her death
           and without registering any nominee. *
         </p>
@@ -457,7 +457,7 @@ table {
                         <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="radiochk.option2" ng-change="radiocheck('option2')">
           That the aforesaid deceased holder died leaving behind the following persons as the legatees as per the Will/ Probated Will/ Letter of
       Administration dated
-      <span class="s5">@* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@{{data.dateofdeath | date:'dd/MM/yyyy'}} </span>and without registering any nominee. *
+                        <span class="s5"> <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u> @*{{data.dateofdeath | date:'dd/MM/yyyy'}}*@ </span>and without registering any nominee. *
         </p>
       </li>
     </ul>
@@ -483,7 +483,7 @@ table {
       <!-- Row 1 -->
         <tr ng-repeat="tmp in heirlist">
                     <td class="name-col number-col">{{ $index + 1 }}) {{tmp.name}}</td>
-                    <td class="wide-col empty-cell">{{tmp.addressAsPerAadhar}}</td>
+                    <td class="wide-col empty-cell">{{!tmp.addressAsPerAadhar ?  'Deceased' : tmp.addressAsPerAadhar}}</td>
                     <td class="short-col empty-cell">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
                     <td class="relation-col empty-cell">{{tmp.relationWithDead}}</td>
       </tr>

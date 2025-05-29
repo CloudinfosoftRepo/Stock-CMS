@@ -224,7 +224,7 @@
         /* padding-left: 181pt; */
         text-indent: 0pt;
         line-height: 22pt;
-        text-align: right;
+        text-align: left;
       "
     >
             {{data.customerName}}
@@ -232,21 +232,21 @@
     <p
       class="s1"
       style="
-        padding-left: 280pt;
-        text-indent: 31pt;
+        /* padding-left: 280pt; */
+        /* text-indent: 31pt; */
         line-height: 106%;
-        text-align: right;
+        text-align: left;
       "
     >
       {{data.address}}
     </p>
     <p
       class="s1"
-      style="text-indent: 0pt; line-height: 16pt; text-align: right"
+      style="text-indent: 0pt; line-height: 16pt; text-align: left"
     >
       M. No. {{data.mobile}}
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    @* <p style="text-indent: 0pt; text-align: left"><br /></p> *@
     <hr style="border-top: 2px solid #000;">
 
     <p
@@ -294,13 +294,13 @@
     <h3 style="text-indent: 0pt; text-align: center">
       SUB: Change of Name in Share Certificate.
     </h3>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
+    @* <p style="text-indent: 0pt; text-align: left"><br /></p> *@
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
       Dear sir / madam,
     </p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
       I am exsting shareholder of the company i.e.
-      <span class="s6">{{data.officename}} </span>I had acquired shares of the
+            <span class="s6">{{data.companyrtaname}} </span>I had acquired shares of the
       company in the year<span class="s3"> </span>and I have been a shareholder
       ever since I want to bring to your notice that my
     </p>
@@ -450,7 +450,7 @@
       of my name change:
     </p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
-      (1) Gazette (2) Pan Card and Aadhar Card
+      (1) Gazette (2) Pan Card and Aadhar Card (3) Marriage Certificate
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">
@@ -560,6 +560,8 @@
                     address:obj.address,
                     mobile: obj.mobile,
                     officename: obj.officename,
+                    officename: obj.officename,
+                    companyrtaname: obj.companyrtaname,
                     officeaddress: obj.officeaddress,
                     unit: obj.unit,
                     clientid:obj.clientid,
@@ -587,7 +589,8 @@
                    folioNo : result.folioNo,
                    mobile: holder.mobile,
                    address : holder.addressAsPerAadhar,
-                   officename : result.company.rtaName,
+                   officename :  result.company.rtaName,
+                   companyrtaname : result.company.companyName + '/' + result.company.rtaName,
                    officeaddress: result.company.rtaAddress,
                    unit: result.companyName,
                    date:new Date(),

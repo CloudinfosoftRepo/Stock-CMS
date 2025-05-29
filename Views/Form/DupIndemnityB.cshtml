@@ -549,7 +549,7 @@
                 <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
                     I/We hereby jointly and severely agree and undertake to indemnify and
                     keep indemnified, saved, defended, harmless, the aforesaid<u>
-                        @* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. *@ {{data.rta}}
+                        @* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. *@ {{data.officename}} / {{data.rta}}
                     </u>
                     <span class="p">
                         (Name of the Company/RTA) and its successors and assigns for all time
@@ -597,7 +597,7 @@
         <p style="padding-top: 4pt; text-indent: 0pt; text-align: left"><br /></p>
         <p class="s13"
            style="padding-left: 48pt; text-indent: 0pt; text-align: left">
-            <span class="p">{{data.customerName}}</span>#<span class="p">, have hereunto set their respective hands and seals this day of </span><span class="s6">{{data.date | date:'dd/MM/yyyy'}}</span>
+            <span class="p">{{data.customerName}}</span>#<span class="p">, have hereunto set their respective hands and seals this day of </span><span class="s6">@* {{data.date | date:'dd/MM/yyyy'}} *@ <u>&emsp;&emsp;&emsp;&emsp;</u></span>
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p class="s14" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
@@ -616,15 +616,15 @@
                     <table border="0">
                         <tr>
                             <td>Tel No:</td>
-                            <td>{{data.mobile}}</td>
+                            <td>@* {{data.mobile}} *@</td>
                         </tr>
                         <tr>
                             <td>Email:</td>
-                            <td>{{data.email}}</td>
+                            <td>@* {{data.email}} *@</td>
                         </tr>
                         <tr>
                             <td>Date:</td>
-                            <td>{{data.date | date:'dd/MM/yyyy'}}</td>
+                            <td>@* {{data.date | date:'dd/MM/yyyy'}} *@</td>
                         </tr>
                     </table>
                 </div>

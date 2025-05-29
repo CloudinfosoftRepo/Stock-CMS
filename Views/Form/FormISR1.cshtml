@@ -565,7 +565,7 @@
                   </table>
 
                     <p style="text-indent: 0pt; text-align: left;">@* {{data.stock}} *@<br /></p>
-                    <table class="myTable ">
+                    <table class="myTable " ng-show="!(shares.length === 1 && shares[0].certificateNo == 0)">
                         <tr>
                             <td>
                                 <p class="bold">Certificate No.**</p>
@@ -837,7 +837,7 @@
         </table>
         <p style="text-indent: 0pt; text-align: left;"><br /></p>
         <table style="border-collapse: collapse; margin-left: 43.274pt;" cellspacing="0">
-            <tr style="height: 268pt;">
+            <tr style="height: 230pt;">
                 <td
                     style="
                         width: 17pt;

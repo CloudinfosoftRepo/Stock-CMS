@@ -508,12 +508,12 @@
                                         border-right-style: dotted;
                                         border-right-width: 1pt;
                                     ">
-                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;" ng-show="!legalheirlist">
+                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;" ng-show="!data.condition">
                                             {{data.firstHolderpan}}
                                             <br />{{data.secondHolderpan}}
                                             <br />{{data.thirdHolderpan}}
                                             <br />Nomination / Declaration to Opt-out</p>
-                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;" ng-show="legalheirlist">
+                                        <p class="s9" style="padding-left: 5pt; text-indent: 0pt; line-height: 15pt; text-align: left;" ng-show="data.condition">
                                             <br />{{data.legelheirpan}}
                                             <br />Nomination / Declaration to Opt-out</p>
                             </td>
@@ -742,7 +742,7 @@
         </li>
         <li data-list-text="C.">
             <h3 style="padding-left: 71pt; text-indent: -28pt; text-align: left;">I / We are enclosing certificate(s) as detailed below**:</h3>
-            <table style="border-collapse: collapse; margin-left: 48.924pt;" cellspacing="0">
+                    <table style="border-collapse: collapse; margin-left: 48.924pt;" cellspacing="0" >
                 <tr style="height: 22pt;">
                     <td style="
                                 width: 164pt;
@@ -953,7 +953,7 @@
                     </td>
                 </tr>
 					</table>-->
-                    <table class="myTable ">
+                    <table class="myTable " ng-show="!(shares.length === 1 && shares[0].certificateNo == 0)">
                         <tr>
                             <td>
                                 <p class="bold">Certificate No.**</p>
@@ -983,7 +983,7 @@
 
                                 <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option1" value="option1"> <span class="p">Duplicate securities certificate</span>
                             </p>
-                    <p style="text-indent: 0pt; text-align: left;"><br /></p>
+                    @* <p style="text-indent: 0pt; text-align: left;"><br /></p> *@
                 </li>
                 <li data-list-text="">
                             <p class="s15" style="padding-left: 78pt; text-indent: -27pt; text-align: left;">
@@ -991,7 +991,7 @@
 
                                 <input ng-show="!isPrint" ng-disabled="isPrint" type="checkbox" ng-model="doclist.option2" value="option2"> <span class="p">Claim from Unclaimed Suspense Account</span>
                             </p>
-                    <p style="padding-top: 4pt; text-indent: 0pt; text-align: left;"><br /></p>
+                    @* <p style="padding-top: 4pt; text-indent: 0pt; text-align: left;"><br /></p> *@
                     <table style="border-collapse: collapse; margin-left: 92.705pt;" cellspacing="0">
                         <tr style="height: 35pt;">
                             <td style="
@@ -1071,7 +1071,7 @@
             </ul>
         </li>
     </ol>
-    <p style="padding-top: 2pt; text-indent: 0pt; text-align: left;"><br /></p>
+    @* <p style="padding-top: 2pt; text-indent: 0pt; text-align: left;"><br /></p> *@
     <p class="s16" style="padding-left: 50pt; text-indent: 0pt; text-align: left;">Provide / attach original securities certificate(s) <u>for request for item numbers III to VIII above.</u></p>
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;"><br /></p>
     <h3 style="padding-left: 43pt; text-indent: 0pt; line-height: 107%; text-align: left;">Declaration<span class="p">: All the above facts stated are true and correct to best of my / our knowledge and belief.</span></h3>

@@ -713,8 +713,7 @@
         text-align: left;
       "
     >
-                {{data.rtaName}}
-      The Listed Issuer/RTA,
+                The Listed Issuer/RTA, {{data.companyName}}/{{data.rtaName}}
     </h2>
     <p
       class="s3"
@@ -773,8 +772,9 @@
               line-height: 12pt;
               text-align: left;
             "
-          >
-            Mr./Ms. {{data.customerName}}
+                           >
+                            Mr./Ms. <span ng-show="data.relation != 'Nominee'" ng-repeat="h in data.heirs">{{h.name + ' & ' }} </span>
+                            <span ng-show="data.relation == 'Nominee'" >{{data.customerName}} </span>
           </p>
         </td>
       </tr>
@@ -890,7 +890,9 @@
             "
           >
             <span class="s5">[Multiple PAN may be entered] </span>PAN
-            (Claimant(s)/Guardian): <u>{{data.pan}}</u> |
+                            (Claimant(s)/Guardian): <u><span ng-show="data.relation != 'Nominee'" ng-repeat="h in data.heirs">{{h.pan + ' & '}} </span>
+                                <span ng-show="data.relation == 'Nominee'">{{data.pan}} </span>
+                            </u> |
             Acknowledgment attached KYC form attached
           </p>
         </td>
@@ -2837,7 +2839,7 @@
       "
     >
       I/We undertake to keep
-      <span class="s37">@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}} &nbsp; </span>(Name of the
+                <span class="s37">@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}/{{data.rtaName}} &nbsp; </span>(Name of the
       Company) / its RTA informed about any changes/modification to the above
       information in future and also under take to provide any other additional
       information as may be required by the RTAs.
@@ -2851,10 +2853,10 @@
       "
     >
       I/We hereby authorize
-      <span class="s37">&nbsp;@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}&nbsp; </span>(Name
+                <span class="s37">&nbsp;@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}/{{data.rtaName}}&nbsp; </span>(Name
       of the Company) and its RTA to provide/ share any of the information
       provided by me/us including my holdings in the
-      <span class="s37">&nbsp;@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}&nbsp; </span>(Name
+                <span class="s37">&nbsp;@* CAPLIN POINT LABORATORIES LTD *@{{data.companyName}}/{{data.rtaName}}&nbsp; </span>(Name
       of the Company) to any
     </p>
     <p
@@ -3308,6 +3310,8 @@
                             place: $scope.data && $scope.data.place || 'Vadodara',
                             today: new Date(),
                             nominee: $scope.data && $scope.data.nominee || '',
+                            heirs: $scope.data?.relation != 'Nominee' ? $scope.heir.map(h => ({ name: h.name, pan: h.pan })) : [],
+
                         };
 
                         hideLoader();
@@ -3371,6 +3375,7 @@
                     today: new Date(obj.today),
                     docattach: JSON.parse(obj.docattach),
 					nominee: obj.nominee,
+                    heirs: obj.heirs,
                 };
                 $scope.doclist = $scope.data.docattach;
                 id = result.stockId;

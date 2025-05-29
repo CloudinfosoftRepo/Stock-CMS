@@ -509,9 +509,8 @@
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p class="s7"
-           style="padding-left: 149pt; text-indent: 0pt; text-align: left" ng-repeat="item in noc | filter: myFilter">
-        {{ $index + 1}})
-            {{item.name}}
+           style="padding-left: 149pt; text-indent: 0pt; text-align: left" >
+            1) {{data.customerName}}
     </p>
     <p style="padding-top: 8pt; text-indent: 0pt; text-align: left"><br /></p>
     <div class="textbox"
@@ -535,7 +534,7 @@
           margin: 6px;
         ">
             We<span class="s10">
-                    @* FBSD5 BDSBD *@&emsp;&emsp;&emsp;&emsp;
+                    @* FBSD5 BDSBD &emsp;&emsp;&emsp;&emsp;*@{{data.customerName}}
             </span><span class="s11"> </span>hereby solemnly affirm and state that what is
             stated herein above is true to our knowledge and nothing has been
             concealed therein and that we are competent to contract and entitled to
@@ -716,8 +715,8 @@
             function populateData(holder, result, heirlist,isDeceased,doc) {
                 $scope.data = {
                     docid: holder.id,
-                    customerName : holder.nameAsPerAadhar,
-                    sonof: doc.nameAsPerAadhar,
+                    customerName : holder.nameAsPerPan,
+                    sonof: doc.name,
                     officename : result.companyName,
                     folioNo : result.folioNo,
                     qty: result.qty,

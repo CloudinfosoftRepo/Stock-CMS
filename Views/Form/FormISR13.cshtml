@@ -258,13 +258,13 @@
                     </div>
 
                     <div class="row">
-                        <!-- Nominee's Relationship -->
+                        <!-- Nominee's Relationship 
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="relationship" class="form-label">Relationship</label>
                                 <input type="text" ng-model="data.relationship" class="form-control" placeholder="Relationship">
                             </div>
-                        </div>
+                        </div>-->
                    
                         <!-- Nominee's Name of Relative -->
                         <div class="col-md-4 mb-3">
@@ -724,7 +724,7 @@
                 text-align: left;
               "
             >
-                            @* Father’s/Mother’s/Spouse’s name *@{{data.relationship}} Of: {{data.sonof}}
+                            Father’s/Mother’s/Spouse’s name@* {{data.relationship}}Of*@ : {{data.sonof}}
             </p>
           </li>
           <li data-list-text="(d)">
@@ -762,35 +762,37 @@
             >
                             Address: {{data.address}}
             </p>
+          </li> 
+          <li data-list-text="(g)">
+            <p
+              style="
+                padding-top: 11pt;
+                padding-left: 70pt;
+                text-indent: -18pt;
+                text-align: left;
+              "
+            >
+                            E-mail id: {{data.email}}
+            </p>
+          </li> 
+          <li data-list-text="(h)">
+            <p
+              style="
+                padding-top: 11pt;
+                padding-left: 70pt;
+                text-indent: -18pt;
+                text-align: left;
+              "
+            >
+                            Relationship with the security holder: {{data.relation}}
+            </p>
           </li>
         </ol>
       </li>
     </ol>
     <br>
     <ul id="l3">
-      <li data-list-text="·">
-        <p
-          class="s5"
-          style="
-            padding-top: 2pt;
-            padding-left: 28pt;
-            text-indent: -23pt;
-            text-align: left;
-          "
-        >
-                    E-mail id: {{data.email}}
-        </p>
-      </li>
-      <li data-list-text="·">
-        <p
-          class="s5"
-          style="padding-left: 28pt; text-indent: -23pt; text-align: left"
-        >
-                    Relationship with the security holder: {{data.relation}}
-        </p>
-        <p style="text-indent: 0pt; text-align: left"><br /></p>
-      </li>
-      <li data-list-text="·">
+      <li data-list-text="(3)">
         <p style="padding-left: 28pt; text-indent: -23pt; text-align: left">
           INCASENOMINEEISAMINOR--
         </p>
@@ -819,7 +821,12 @@
       </li>
     </ul>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
-        <p style="padding-left: 8pt; text-indent: 0pt; text-align: left">Name: {{data.customerName}}</p>
+        <p style="text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+            {{data.firstHolder}}, {{data.secondHolder}}, {{data.thirdHolder}}
+        </p>
+        <span style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+            {{h}}, 
+        </span>
     <p
       style="
         padding-top: 11pt;
@@ -841,23 +848,16 @@
     >
             Name of the Security Holder(s) Signature Witness with  Name and address
     </p>
-        <p style="text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-            {{data.firstHolder}},
-            {{data.secondHolder}},
-            {{data.thirdHolder}}
-        </p>
-        <p style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-            {{h}}
-        </p>
+        
     <p
       class="s5"
-      style="padding-left: 258pt; text-indent: 0pt; text-align: left"
+      style="padding-left: 0pt; text-indent: 0pt; text-align: left"
     >
             @* SHREYASH CHHAGANI *@ {{data.witnessname}}
     </p>
     <p
       class="s5"
-      style="padding-left: 260pt; text-indent: 0pt; text-align: left"
+      style="padding-left: 0pt; text-indent: 0pt; text-align: left"
     >
             @* B-204, RATNADEEP APPARTMENT VADODARA, 390025 *@ {{data.witnessaddress}}
   </p>

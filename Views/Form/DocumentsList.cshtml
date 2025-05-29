@@ -170,7 +170,7 @@
     <table class="document-table">
         <thead>
             <tr>
-                <th>Claimant's Documents</th>
+                <th>Documents</th>
                 <th>No of Documents</th>
             </tr>
         </thead>
@@ -210,6 +210,16 @@
                         <td ng-if="!subid"><input type="number" ng-model="data.naadhar" class="form-control search-orders"></td>
                         <td ng-if="subid">{{data.naadhar}}</td>
             </tr>
+                    <tr>
+                        <td>Marriage Certificate</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.marriagecerti" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.marriagecerti}}</td>
+                    </tr> 
+                    <tr>
+                        <td>Gazzete</td>
+                        <td ng-if="!subid"><input type="number" ng-model="data.gazzete" class="form-control search-orders"></td>
+                        <td ng-if="subid">{{data.gazzete}}</td>
+                    </tr>
             <tr>
                 <td class="text-center" colspan="2">Transmission</td>
             </tr>
@@ -336,6 +346,8 @@
                    witness2pan:1,
                    witness2aadhar:1,
                    witness2photo:1,
+                   marriagecerti: 1,
+                   gazzete:1,
                 };
 
                 hideLoader();
@@ -371,6 +383,8 @@
                     witness2pan: obj.witness2pan,
                     witness2aadhar: obj.witness2aadhar,
                     witness2photo: obj.witness2photo,
+                    marriagecerti: obj.marriagecerti,
+                    gazzete : obj.gazzete,
                 };
                 id= result.stockId;
                 checkData();

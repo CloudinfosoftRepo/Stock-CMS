@@ -309,21 +309,21 @@
                         </div>
                     </div>
                     <div class="row">
-                        <!-- Letter Date -->
+                        <!-- Letter Date 
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="letterdate" class="form-label">Letter Date</label>
                                 <input type="date" ng-model="data.letterdate" class="form-control" placeholder="Letter Date">
                             </div>
-                        </div>
+                        </div>-->
                     
-                        <!-- Letter No -->
+                        <!-- Letter No 
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="letterno" class="form-label">Letter No</label>
                                 <input type="text" ng-model="data.letterno" class="form-control" placeholder="Letter No">
                             </div>
-                        </div>
+                        </div>-->
                     </div>
 
                     <!-- Submit Button -->
@@ -2109,7 +2109,7 @@ border-bottom-style: solid;
       </li>
       <li data-list-text="6.">
                 <p style="padding-left: 32pt; text-indent: -18pt; text-align: justify">
-                    <s>
+                    
           Due to old age and health problems, I now find it difficult to sign as
           per my signature recorded with the Company. Dr.<u>
             @* ESEF TGRFER *@ &emsp;&emsp;  </u
@@ -2118,7 +2118,7 @@ border-bottom-style: solid;
                     </u>
           has issued a medical certificate in my favour giving the reasons for
                         my inability to sign the relevant documents
-                </s>(<u>Strike out if not applicable</u
+                (<u>Strike out if not applicable</u
           >)
         </p>
 
@@ -2147,8 +2147,8 @@ border-bottom-style: solid;
             >@* SHANTABEN&nbsp; NARENDRAGIRI&nbsp; GOSAI&nbsp; &amp;&nbsp;
             VINODGIRI *@{{data.panname}}
                     </span><span class="s13"> </span
-          ><span class="s15"
-            >(name as supporting documents-Death Certificate) is one and the
+          ><span class="s15">
+                        (name as supporting documents- <u>&emsp;&emsp;&emsp;&emsp;&emsp;</u>) is one and the
             same person.</span
           >  I /We hereby affirm that I / We shall not hold the Company or its
           agents anyway responsible for any consequences that might occur
@@ -2188,10 +2188,10 @@ border-bottom-style: solid;
           This Affidavit is executed in favour of the Company/its Agent on
           my/our own volition and is in the format as required by the
           Company/its Agent forwarded to me/us vide its letter No.  <u>
-                        @* INIFRV BFDJNFDB *@{{data.letterno}}
+                        @* INIFRV BFDJNFDB {{data.letterno}}*@ &emsp;&emsp;&emsp;&emsp;&emsp;
                     </u>dated<u>
-        @* JBKRFDJ BDFKJJNK *@{{data.letterdate | date:'dd-MM-yyyy'}}</u
-      >
+                        @* JBKRFDJ BDFKJJNK {{data.letterdate | date:'dd-MM-yyyy'}}*@&emsp;&emsp;&emsp;&emsp;&emsp;
+                    </u>
         </p>
       </li>
     </ol>
@@ -2212,10 +2212,9 @@ border-bottom-style: solid;
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify">
       Solemnly declared and affirmed on Identification at<u>
-        {{data.place}} </u>on this<u> @* 20  *@ &emsp;&emsp;&emsp;</u>day of<u> {{data.month}} </u>{{data.year}}.
+                {{data.place}}
+            </u>on this<u> @* 20  *@ &emsp;&emsp;&emsp;</u>day of<u> @* {{data.month}} *@&emsp;&emsp;&emsp; </u>@* {{data.year}} *@20<u>&emsp;&emsp;</u>.
     </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
