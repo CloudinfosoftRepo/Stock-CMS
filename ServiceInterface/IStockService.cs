@@ -15,7 +15,7 @@ namespace Stock_CMS.ServiceInterface
 
         Task<long> DeleteStockbyColumn(StockDto stock);
 
-        Task<StocksDetailsDto> GetStockByClientId(long clientid);
+        Task<StocksDetailsDto> GetStockByClientId(long clientid, string val);
         Task<StockDto> GetStockById(long id);
 
         Task<IEnumerable<DocDto>> GetHolderByStockId(long id);

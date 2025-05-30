@@ -533,9 +533,13 @@
       "
     />
     <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify" >
-        <p ng-repeat="item in doc">
-            I/We {{ $index + 1 }} <u>{{item.name}}</u>S/d/o{{data.relationship}}<u> {{item.relativesName}}</u>
+        <p ng-show="!data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="item in doc">
+            I/We {{ $index + 1 }} <u>{{item.name}}</u>S/d/o @* {{data.relationship}} *@<u> {{item.relativesName}}</u>
 			aged <u>{{calculateAge(item.dob,item.dateOfDeath)}}</u>.<br />
+		</p>
+        <p ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+            I/We {{ $index + 1 }} <u>{{h.name}}</u>S/d/o<u> {{data.sonof}}</u>
+			aged <u>{{h.age}}</u>.<br />
 		</p>
       <!--2<u>
         EVSV VEWV FSD </u
@@ -2413,7 +2417,7 @@ border-bottom-style: solid;
                         var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
                         var holder = heirs;
 
-                        populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                        populateData(holder, result, $scope.heir, currentDate, monthsOfYear,isDeceased,docs);
                     }, function (error) {
                         console.error('Error loading legal heir data:', error);
                         hideLoader();
@@ -2424,7 +2428,7 @@ border-bottom-style: solid;
     $scope.legalheirlist = isDeceased;
     document.getElementById('heirId').value = '';
                     var holder = docs;
-                    populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                    populateData(holder, result, $scope.heir,currentDate, monthsOfYear,isDeceased,docs);
                 }
 
                 
@@ -2466,6 +2470,8 @@ border-bottom-style: solid;
                     month:obj.month,
                     year: obj.year,
                     condition: obj.condition,
+                    heirs: obj.heirs,
+					sonof: obj.sonof,
                 };
                 $scope.doc = $scope.data.holders;
                 $scope.shares = JSON.parse($scope.data.jsondata);
@@ -2480,7 +2486,7 @@ border-bottom-style: solid;
             });
             }
 
-            function populateData(holder, result, currentDate, monthsOfYear,isDeceased) {
+            function populateData(holder, result, heirlist, currentDate, monthsOfYear,isDeceased,doc) {
                 $scope.data = {
                     docid: holder.id,
                    customerName : holder.name,
@@ -2488,6 +2494,7 @@ border-bottom-style: solid;
                    address: holder.addressAsPerAadhar,
                    companyName: result.companyName,
                    companyAddress: result.company.companyAddress,
+                   sonof: doc.name,
                    qty: result.qty,
                    jsondata: result.stockJson,
                    panname: holder.nameAsPerPan,
@@ -2501,6 +2508,7 @@ border-bottom-style: solid;
                    year: currentDate.getFullYear(),
                    place:'Vadodara',
                    condition: isDeceased,
+                   heirs: isDeceased ? heirlist.map(h => ({ name: h.name, pan: h.pan, address: h.addressAsPerAadhar, age: $scope.calculateAge(h.dob,h.dateOfDeath) })) : [],
                 };
               $scope.shares = JSON.parse($scope.data.jsondata);
              }

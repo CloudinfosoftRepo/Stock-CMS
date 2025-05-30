@@ -1,154 +1,169 @@
 ﻿<html lang="en" ng-app="Stock-CMS">
-  <head>
+<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Affidavit for COS New LinkinTime</title>
     <style type="text/css">
-      * {
-        margin: 0;
-        padding: 0;
-        text-indent: 0;
-      }
-      h1 {
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: normal;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 12pt;
-      }
-      .s1 {
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: italic;
-        font-weight: normal;
-        text-decoration: none;
-        font-size: 12pt;
-      }
-      .s2 {
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: normal;
-        font-weight: bold;
-        text-decoration: underline;
-        font-size: 12pt;
-      }
-      .p,
-      p {
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: none;
-        font-size: 12pt;
-        margin: 0pt;
-      }
-      .s3 {
-        color: black;
-        font-family: Arial, sans-serif;
-        font-style: normal;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 12pt;
-      }
-      .h2 {
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: normal;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 11pt;
-      }
-      .s4 {
-        color: #202024;
-        font-family: Arial, sans-serif;
-        font-style: normal;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 11pt;
-      }
-      li {
-        display: block;
-      }
-      #l1 {
-        padding-left: 0pt;
-        counter-reset: c1 1;
-      }
-      #l1 > li > *:first-child:before {
-        counter-increment: c1;
-        content: counter(c1, decimal) ". ";
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: none;
-        font-size: 12pt;
-      }
-      #l1 > li:first-child > *:first-child:before {
-        counter-increment: c1 0;
-      }
-      li {
-        display: block;
-      }
-      #l2 {
-        padding-left: 0pt;
-        counter-reset: d1 1;
-      }
-      #l2 > li > *:first-child:before {
-        counter-increment: d1;
-        content: counter(d1, decimal) ". ";
-        color: black;
-        font-family: "Times New Roman", serif;
-        font-style: normal;
-        font-weight: normal;
-        text-decoration: none;
-        font-size: 12pt;
-      }
-      #l2 > li:first-child > *:first-child:before {
-        counter-increment: d1 0;
-      }
-      /* Style the table */
-.bordered-table {
-    width: 100%;
-    border: 1px solid black;
-    border-collapse: collapse;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
 
-/* Style the table header */
-.bordered-table th {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-    background-color: #f2f2f2; /* Light gray background for header */
-}
+        h1 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
 
-/* Style the table cells */
-.bordered-table td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-/* Style the table without borders */
-.no-border-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .s1 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: italic;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
 
-/* Style the table cells */
-.no-border-table td {
-    padding: 8px;
-    text-align: justify;
-}
+        .s2 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
 
-/* Style the specific cell for text content */
-.cell-text {
-    padding-left: 5pt;
-    text-indent: 0pt;
-}
+        .p,
+        p {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+            margin: 0pt;
+        }
 
-/* Class for an empty row */
-.empty-row {
-    height: 20px; /* You can adjust the height as needed */
-}
+        .s3 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .h2 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s4 {
+            color: #202024;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        li {
+            display: block;
+        }
+
+        #l1 {
+            padding-left: 0pt;
+            counter-reset: c1 1;
+        }
+
+            #l1 > li > *:first-child:before {
+                counter-increment: c1;
+                content: counter(c1, decimal) ". ";
+                color: black;
+                font-family: "Times New Roman", serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+
+            #l1 > li:first-child > *:first-child:before {
+                counter-increment: c1 0;
+            }
+
+        li {
+            display: block;
+        }
+
+        #l2 {
+            padding-left: 0pt;
+            counter-reset: d1 1;
+        }
+
+            #l2 > li > *:first-child:before {
+                counter-increment: d1;
+                content: counter(d1, decimal) ". ";
+                color: black;
+                font-family: "Times New Roman", serif;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+                font-size: 12pt;
+            }
+
+            #l2 > li:first-child > *:first-child:before {
+                counter-increment: d1 0;
+            }
+        /* Style the table */
+        .bordered-table {
+            width: 100%;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+            /* Style the table header */
+            .bordered-table th {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+                background-color: #f2f2f2; /* Light gray background for header */
+            }
+
+            /* Style the table cells */
+            .bordered-table td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+        /* Style the table without borders */
+        .no-border-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            /* Style the table cells */
+            .no-border-table td {
+                padding: 8px;
+                text-align: justify;
+            }
+
+        /* Style the specific cell for text content */
+        .cell-text {
+            padding-left: 5pt;
+            text-indent: 0pt;
+        }
+
+        /* Class for an empty row */
+        .empty-row {
+            height: 20px; /* You can adjust the height as needed */
+        }
 
         .card {
             border-radius: 10px;
@@ -197,7 +212,7 @@
             margin-top: 25px !important;
         }
     </style>
-  </head>
+</head>
 <body style="padding: 5%;" ng-controller="FormController">
     <div class="row align-items-center">
         <!-- Arrow Icon aligned to the left -->
@@ -258,165 +273,152 @@
         </div>
     </div>
     <div id="printForm">
-    <h1 style="padding-top: 3pt; text-indent: 0pt; text-align: center">
-      FORMAT OF AFFIDAVIT/DECLARATION FOR CHANGE OF SIGNATURE
-    </h1>
-    <p class="s1" style="text-indent: 0pt; text-align: center">
-      (Please type this Affidavit after carefully reading the notes mentioned
-      below the format)
-    </p>
-    <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
-    <p
-      style="
-        padding-left: 6pt;
+        <h1 style="text-indent: 0pt; text-align: center">
+            FORMAT OF AFFIDAVIT/DECLARATION FOR CHANGE OF SIGNATURE
+        </h1>
+        <p class="s1" style="text-indent: 0pt; text-align: center">
+            (Please type this Affidavit after carefully reading the notes mentioned
+            below the format)
+        </p>
+        @* <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p> *@
+        <p style="
+        padding-left: 3pt;
         text-indent: 0pt;
         line-height: 1pt;
         text-align: left;
-      "
-    />
-    <p class="s2" style="text-indent: 0pt; text-align: center">AFFIDAVIT</p>
-    <p style="padding-top: 6pt; text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
+      " />
+        <p class="s2" style="text-indent: 0pt; text-align: center">AFFIDAVIT</p>
+        @* <p style="padding-top: 6pt; text-indent: 0pt; text-align: left"><br /></p> *@
+        <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
             I, <span class="s3">{{data.customerName}}</span>, {{data.relationship}}
-      <span class="s3">{{data.sonof}} </span>aged {{data.age}}, an Indian Inhabitant / NRI
-      presently residing at
-      <span class="s3">
-        @* 20, NANDIDHAM SOCIETY, NEAR SAINATH PARK, VASNA ROAD, VADODARA GUJARAT, 390007 *@
+            <span class="s3">{{data.sonof}} </span>aged {{data.age}}, an Indian Inhabitant / NRI
+            presently residing at
+            <span class="s3">
+                @* 20, NANDIDHAM SOCIETY, NEAR SAINATH PARK, VASNA ROAD, VADODARA GUJARAT, 390007 *@
                 {{data.address}}
-        </span
-      ><span class="p">do hereby solemnly affirm and declare as under:</span>
-    </p>
-    <br>
-    <ol id="l1">
-      <li data-list-text="1.">
-        <p style="padding-left: 41pt; text-indent: -36pt; text-align: justify">
-          That I, Shri/Smt.
+            </span><span class="p">do hereby solemnly affirm and declare as under:</span>
+        </p>
+        @* <br> *@
+        <ol id="l1">
+            <li data-list-text="1.">
+                <p style=" text-indent: -36pt; text-align: justify">
+                    That I, Shri/Smt.
                     <span class="h2">
                         {{data.firstHolder}} &amp; {{data.secondHolder}}  &amp; {{data.thirdHolder}}
                     </span>, am holding
-          <b>{{data.qty}} </b>equity shares solely / jointly in
-        </p>
-        <p
+                    <b>{{data.qty}} </b>equity shares solely / jointly in {{data.officename}}<span class="p">as mentioned below ;</span>
+                </p>
+                @*  <p
           class="s4"
           style="padding-left: 5pt; text-indent: 0pt; text-align: left"
         >
-          @* Ambuja Cements Ltd *@
-                    {{data.officename}}<span class="p">as mentioned below ;</span>
-        </p>
-        <table class="bordered-table ">
-          <thead class="text-nowrap">
-            <tr>
-              <th>Folio No.</th>
-              <th>Certificate Nos.</th>
-              <th>Distinctive Nos.</th>
-              <th>Shares covered in each certificate</th>
-            </tr>
-          </thead>
-          <tbody>
+          @* Ambuja Cements Ltd 
+                   
+        </p> *@
+                <table class="bordered-table ">
+                    <thead class="text-nowrap">
+                        <tr>
+                            <th>Folio No.</th>
+                            <th>Certificate Nos.</th>
+                            <th>Distinctive Nos.</th>
+                            <th>Shares covered in each certificate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <tr ng-repeat="tmp in shares">
                             <td>{{tmp.folioNo}}</td>
                             <td>{{tmp.certificateNo}}</td>
                             <td>{{tmp.distinctiveNosFrom}} – {{tmp.distinctiveNosTo}}</td>
                             <td>{{tmp.actualQty}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li data-list-text="2.">
-        <p
-          style="
-            padding-top: 13pt;
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+            <li data-list-text="2.">
+                <p style="
+            padding-top: 5pt;
             padding-left: 41pt;
             text-indent: -36pt;
             text-align: justify;
-          "
-        >
-          That I have changed my signature.
-        </p>
-        <p style="padding-left: 80pt; text-indent: 0pt; text-align: left">OR</p>
-        <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-          That my signature has changed/altered by passing of time. Therefore I
-          request that the specimen signature registered in the records of the
-          Company be cancelled against my new specimen signature as provided
-          herein and the same to be taken on record.
-        </p>
-      </li>
-      <li data-list-text="3.">
-        <p
-          style="
-            padding-top: 13pt;
+          ">
+                    That I have changed my signature.
+                </p>
+                <p style="padding-left: 80pt; text-indent: 0pt; text-align: left">OR</p>
+                <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
+                    That my signature has changed/altered by passing of time. Therefore I
+                    request that the specimen signature registered in the records of the
+                    Company be cancelled against my new specimen signature as provided
+                    herein and the same to be taken on record.
+                </p>
+            </li>
+            <li data-list-text="3.">
+                <p style="
+            padding-top: 5pt;
             padding-left: 5pt;
             text-indent: 0pt;
             text-align: justify;
-          "
-        >
-          On registering the new signature in the records, I do hereby covenant
-          with the Company, its successors and assigns and agree and undertake
-          at all times save, defend and to indemnify and keep indemnified the
-          Company, its successors and assigns its estate and effects, and its
-          directors, manager, secretary and shareholders and their heirs,
-          executors and assigns from and against all actions, suits,
-          proceedings, accounts, claims and demands whatsoever for or on account
-          of the said shares / debentures or dividends / interests or any part
-          thereof or otherwise in connection with the same, and from and against
-          all losses, costs, claims, actions, demands, risks, charges, expenses,
-          damages and losses arising in any manner howsoever.
+          ">
+                    On registering the new signature in the records, I do hereby covenant
+                    with the Company, its successors and assigns and agree and undertake
+                    at all times save, defend and to indemnify and keep indemnified the
+                    Company, its successors and assigns its estate and effects, and its
+                    directors, manager, secretary and shareholders and their heirs,
+                    executors and assigns from and against all actions, suits,
+                    proceedings, accounts, claims and demands whatsoever for or on account
+                    of the said shares / debentures or dividends / interests or any part
+                    thereof or otherwise in connection with the same, and from and against
+                    all losses, costs, claims, actions, demands, risks, charges, expenses,
+                    damages and losses arising in any manner howsoever.
+                </p>
+            </li>
+        </ol>
+        <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
+            I am executing this declaration to be submitted to the concerned
+            authorities for the change of signature.
         </p>
-      </li>
-    </ol>
-    <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-      I am executing this declaration to be submitted to the concerned
-      authorities for the change of signature.
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p class="s2" style="text-indent: 0pt; text-align: center">VERIFICATION</p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p
-      style="
+        @* <p style="text-indent: 0pt; text-align: left"><br /></p> *@
+        <p class="s2" style="text-indent: 0pt; text-align: center">VERIFICATION</p>
+        @* <p style="text-indent: 0pt; text-align: left"><br /></p> *@
+        <p style="
         padding-left: 5pt;
         text-indent: 0pt;
         line-height: 200%;
         text-align: left;
-      "
-    >
-      I hereby state that whatever is stated herein above are true to the best
-      of my knowledge. Solemnly affirmed at
-      <u>
-          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+      ">
+            I hereby state that whatever is stated herein above are true to the best
+            of my knowledge. Solemnly affirmed at
+            <u>
+                @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
                 {{data.place}}
-      </u>
-      ) (Photograph of Applicant)
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
-      On this <u>
-           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-          @* {{data.day}} *@
-          </u>day of
-      <u>
-          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@
-          {{data.month}}
-            </u>{{data.year}}&nbsp;&nbsp;&nbsp;
-            <u>(New Signature of the Applicant</u>)&nbsp;&nbsp;&nbsp;(<u>Old Signature of the Applicant)</u
-      >
-    </p>
-    <p style="text-indent: 0pt; text-align: left"><br /></p>
+            </u>
+            ) (Photograph of Applicant)
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
+        < <p style="padding-left: 5pt; text-indent: 0pt; text-align: justify">
+            On this <u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @* {{data.day}} *@
+            </u>day of
+            <u>
+                @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *@
+                @* {{data.month}} *@<u> &emsp;&emsp;&emsp;</u>
+            </u>@* {{data.year}} *@20<u> &emsp;&emsp;</u>&nbsp;&nbsp;&nbsp;
+            <u>(New Signature of the Applicant</u>)&nbsp;&nbsp;&nbsp;(<u>Old Signature of the Applicant)</u>
+        </p>
+        <p style="text-indent: 0pt; text-align: left"><br /></p>
 
         <table style="border: none; width:100%">
-      <tr>
+            <tr>
                 <td style="padding: 20px; vertical-align: top;">Identified by me<br><br><br>Advocate</td>
                 <td style="padding: 20px; vertical-align: top;">Before Me<br><br><br>S.E.O./ Oaths Commissioner/Notary</td>
-      </tr>
-    </table>
-    
-    <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">NOTES:</p>
+            </tr>
+        </table>
+
+        @*     <p style="padding-left: 5pt; text-indent: 0pt; text-align: left">NOTES:</p>
     <ol id="l2">
       <li data-list-text="1.">
         <p style="padding-left: 77pt; text-indent: -36pt; text-align: left">
@@ -441,290 +443,291 @@
           details and cancelled cheque leaf.
         </p>
       </li>
-    </ol>
+    </ol> *@
     </div>
     <div class="myarea">
         <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
     </div>
-  </body>
-  <script>
-    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
-        $scope.customers = [];
-        $scope.data = undefined;
-            $scope.hDiv = true;
-            var params = new URLSearchParams(window.location.search);
-            var id = params.get('id');
-            var id2 = params.get('id2');
-        var isProcessing = false;
-        $scope.processdone = false;
 
-        // showLoader();
+    <script>
+        angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http,$timeout) {
+            $scope.customers = [];
+            $scope.data = undefined;
+                $scope.hDiv = true;
+                var params = new URLSearchParams(window.location.search);
+                var id = params.get('id');
+                var id2 = params.get('id2');
+            var isProcessing = false;
+            $scope.processdone = false;
+
+            // showLoader();
 
 
-                // Load Customers
+                    // Load Customers
 
-        $scope.loadCustomers = function (sid,hid) {
+            $scope.loadCustomers = function (sid,hid) {
 
-             if(id){
-                 hideLoader();
-                 var currentDate = new Date();
-             var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                 $scope.hDiv = true;
-            $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
-                var result = response.data;
-                 $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
-                    $scope.doc = response.data;
-                    var docs = $scope.doc.find(x => x.id === sid);
+                 if(id){
+                     hideLoader();
+                     var currentDate = new Date();
+                 var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                     $scope.hDiv = true;
+                $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
+                    var result = response.data;
+                     $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
+                        $scope.doc = response.data;
+                        var docs = $scope.doc.find(x => x.id === sid);
 
-                   var isDeceased = !!docs?.dateOfDeath;
+                       var isDeceased = !!docs?.dateOfDeath;
 
-                if (isDeceased) {
-                    $scope.heirId = null;
-    $scope.legalheirlist = isDeceased;
-    document.getElementById('heirId').value = '';
-                    $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
-                        $scope.heir = response.data;
-                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
-                        var holder = heirs;
+                    if (isDeceased) {
+                        $scope.heirId = null;
+        $scope.legalheirlist = isDeceased;
+        document.getElementById('heirId').value = '';
+                        $http.get('/LegalHeir/GetClaimentLegalHeir/' + docs.id).then(function (response) {
+                            $scope.heir = response.data;
+                            var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                            var holder = heirs;
 
+                            populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                        }, function (error) {
+                            console.error('Error loading legal heir data:', error);
+                            hideLoader();
+                        });
+                    } else {
+                        $scope.heirId = null;
+        $scope.data = null;
+        $scope.legalheirlist = isDeceased;
+        document.getElementById('heirId').value = '';
+                        var holder = docs;
                         populateData(holder, result, currentDate, monthsOfYear,isDeceased);
+                    }
+
+                    hideLoader();
                     }, function (error) {
-                        console.error('Error loading legal heir data:', error);
+                        console.error('Error loading Docs:', error);
                         hideLoader();
                     });
-                } else {
-                    $scope.heirId = null;
-    $scope.data = null;
-    $scope.legalheirlist = isDeceased;
-    document.getElementById('heirId').value = '';
-                    var holder = docs;
-                    populateData(holder, result, currentDate, monthsOfYear,isDeceased);
-                }
-
-                hideLoader();
                 }, function (error) {
-                    console.error('Error loading Docs:', error);
+                    console.error('Error loading customers:', error);
                     hideLoader();
                 });
-            }, function (error) {
-                console.error('Error loading customers:', error);
-                hideLoader();
-            });
+                }
+
+                if(id2){
+                     $scope.hDiv = false;
+                $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
+                    var result = response.data;
+                    var obj = JSON.parse(result.jsonString);
+                    $scope.data = {
+                        docid: obj.docid,
+                        customerName: obj.customerName,
+                        age:obj.age,
+                        relationship: obj.relationship,
+                        sonof:obj.sonof,
+                        folioNo:obj.folioNo,
+                        address:obj.address,
+                        qty: obj.qty,
+                        officename: obj.officename,
+                        jsondata: obj.jsondata,
+                        place: obj.place,
+                        day:obj.day,
+                        month:obj.month,
+                        year: obj.year,
+                        firstHolder:obj.firstHolder,
+                        secondHolder:obj.secondHolder,
+                        thirdHolder:obj.thirdHolder,
+                        condition: obj.condition,
+                    };
+                    $scope.shares = JSON.parse($scope.data.jsondata);
+                          id = result.stockId;
+                    checkData();
+                    hideLoader();
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                    hideLoader();
+                });
+                }
+
+                function populateData(holder, result, currentDate, monthsOfYear,isDeceased) {
+                    var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
+
+
+                    $scope.data = {
+                        docid: holder.id,
+                       customerName : holder.name,
+                       age : Age,
+                       relationship: holder.relationship,
+                       sonof: holder.relativesName,
+                       folioNo : result.folioNo,
+                       address : result.addressAsPerAadhar,
+                       qty: result.qty,
+                       officename : result.companyName,
+                        jsondata: result.stockJson,
+                       place: 'Vadodara',
+                       day: currentDate.getDate(),
+                       month: monthsOfYear[currentDate.getMonth()],
+                       year: currentDate.getFullYear(),
+                  firstHolder :result.firstHolderName,
+                       secondHolder:result.secondHolderName,
+                       thirdHolder: result.thirdHolderName,
+                       condition: isDeceased,
+                    };
+
+                                    $scope.shares = JSON.parse($scope.data.jsondata);
+
+                }
+            };
+
+                            function checkData() {
+            if ($scope.data !== undefined) {
+                // Delay the printDiv execution until the next digest cycle
+                $timeout(function() {
+                    $scope.printDiv('printForm');
+                }, 0);  // 0 delay to ensure it runs after the view update
+            } else {
+                setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
             }
+        }
 
-            if(id2){
-                 $scope.hDiv = false;
-            $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
-                var result = response.data;
-                var obj = JSON.parse(result.jsonString);
-                $scope.data = {
-                    docid: obj.docid,
-                    customerName: obj.customerName,
-                    age:obj.age,
-                    relationship: obj.relationship,
-                    sonof:obj.sonof,
-                    folioNo:obj.folioNo,
-                    address:obj.address,
-                    qty: obj.qty,
-                    officename: obj.officename,
-                    jsondata: obj.jsondata,
-                    place: obj.place,
-                    day:obj.day,
-                    month:obj.month,
-                    year: obj.year,
-                    firstHolder:obj.firstHolder,
-                    secondHolder:obj.secondHolder,
-                    thirdHolder:obj.thirdHolder,
-                    condition: obj.condition,
-                };
-                $scope.shares = JSON.parse($scope.data.jsondata);
-                      id = result.stockId;
-                checkData();
-                hideLoader();
-            }, function (error) {
-                console.error('Error loading customers:', error);
-                hideLoader();
-            });
-            }
-
-            function populateData(holder, result, currentDate, monthsOfYear,isDeceased) {
-                var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
-
-
-                $scope.data = {
-                    docid: holder.id,
-                   customerName : holder.name,
-                   age : Age,
-                   relationship: holder.relationship,
-                   sonof: holder.relativesName,
-                   folioNo : result.folioNo,
-                   address : result.addressAsPerAadhar,
-                   qty: result.qty,
-                   officename : result.companyName,
-                    jsondata: result.stockJson,
-                   place: 'Vadodara',
-                   day: currentDate.getDate(),
-                   month: monthsOfYear[currentDate.getMonth()],
-                   year: currentDate.getFullYear(),
-              firstHolder :result.firstHolderName,
-                   secondHolder:result.secondHolderName,
-                   thirdHolder: result.thirdHolderName,
-                   condition: isDeceased,
-                };
-
-                                $scope.shares = JSON.parse($scope.data.jsondata);
-
-            }
+            $scope.navtogenerateform = function () {
+            window.open('/Form/GenerateForm/'+id, '_self');
         };
+              $scope.calculateAge = function(dob, deathDate) {
+            if (!dob) {
+                return '';
+            }
 
-                        function checkData() {
-        if ($scope.data !== undefined) {
-            // Delay the printDiv execution until the next digest cycle
-            $timeout(function() {
-                $scope.printDiv('printForm');
-            }, 0);  // 0 delay to ensure it runs after the view update
-        } else {
-            setTimeout(checkData, 1000); // Retry after 1000ms if data is not yet available
-        }
-    }
+            var birthDate = new Date(dob);
+            var currentDate = new Date();
+            var age = currentDate.getFullYear() - birthDate.getFullYear();
+            var m = currentDate.getMonth() - birthDate.getMonth();
 
-        $scope.navtogenerateform = function () {
-        window.open('/Form/GenerateForm/'+id, '_self');
-    };
-          $scope.calculateAge = function(dob, deathDate) {
-        if (!dob) {
-            return '';
-        }
-
-        var birthDate = new Date(dob);
-        var currentDate = new Date();
-        var age = currentDate.getFullYear() - birthDate.getFullYear();
-        var m = currentDate.getMonth() - birthDate.getMonth();
-
-        if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
-            age--;
-        }
-
-        // If deathDate is provided, calculate age at the time of death
-        if (deathDate) {
-            var deathDateObj = new Date(deathDate);
-            age = deathDateObj.getFullYear() - birthDate.getFullYear();
-            var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
-
-            if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+            if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
                 age--;
             }
+
+            // If deathDate is provided, calculate age at the time of death
+            if (deathDate) {
+                var deathDateObj = new Date(deathDate);
+                age = deathDateObj.getFullYear() - birthDate.getFullYear();
+                var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+                if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age;
+                // return age + ' (deceased)';
+            }
+
             return age;
-            // return age + ' (deceased)';
-        }
+        };
 
-        return age;
-    };
-
-        //Genrate Form
-         $scope.genrateForm = function () {
-             if(id){
-                 $scope.processdone = true;
-                 if($scope.data.jsondata == undefined){
-                     Swal.fire({
-                            title: 'Error!',
-                            text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
-                            icon: 'error',
-                            confirmButtonText: 'Try Again'
-                        });
-                        $scope.processdone = false;
-                return;
+            //Genrate Form
+             $scope.genrateForm = function () {
+                 if(id){
+                     $scope.processdone = true;
+                     if($scope.data.jsondata == undefined){
+                         Swal.fire({
+                                title: 'Error!',
+                                text:  'Please Enter Stock Qty data in Custome\'s Stock Page',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                    return;
+                     }
+                 let jsonString = JSON.stringify($scope.data, null, 2);
+                 var data ={
+                     formName : 'Affidavit for COS New LinkinTime',
+                     StockId : id,
+                     url : `/Form/AffidavitforCOSNewLinkinTime?id2=`,
+                     jsonString : jsonString,
+                     ClientName: $scope.data.customerName,
+                      ClientId: $scope.data.docid,
+                     IsActive : true
                  }
-             let jsonString = JSON.stringify($scope.data, null, 2);
-             var data ={
-                 formName : 'Affidavit for COS New LinkinTime',
-                 StockId : id,
-                 url : `/Form/AffidavitforCOSNewLinkinTime?id2=`,
-                 jsonString : jsonString,
-                 ClientName: $scope.data.customerName,
-                  ClientId: $scope.data.docid,
-                 IsActive : true
-             }
 
-             const url = '/Form/GenrateForm';
-                $http.post(url, data).then(function (response) {
-                    if (response.data.success) {
+                 const url = '/Form/GenrateForm';
+                    $http.post(url, data).then(function (response) {
+                        if (response.data.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: response.data.message || 'Operation successful!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.processdone = false;
+                            // $scope.loadCustomers();
+                                                    window.open(response.data.data.url + response.data.data.id,'_self')
+
+                        } else {
+                           Swal.fire({
+                             title: 'This Form is already Exits',
+                             text: "do you want to go to that form?",
+                             icon: 'warning',
+                             showCancelButton: true,
+                             confirmButtonText: 'Yes',
+                             cancelButtonText: 'No'
+                         }).then((result) => {
+                             if (result.isConfirmed) {
+                                 window.open(response.data.message, '_self');
+                             }
+                     });
+                     $scope.processdone = false;
+                        }
+                        isProcessing = false;
+                    }, function (error) {
                         Swal.fire({
-                            title: 'Success',
-                            text: response.data.message || 'Operation successful!',
-                            icon: 'success',
+                            title: 'Error',
+                            text: 'An error occurred.',
+                            icon: 'error',
                             confirmButtonText: 'OK'
                         });
                         $scope.processdone = false;
-                        // $scope.loadCustomers();
-                                                window.open(response.data.data.url + response.data.data.id,'_self')
-
-                    } else {
-                       Swal.fire({
-                         title: 'This Form is already Exits',
-                         text: "do you want to go to that form?",
-                         icon: 'warning',
-                         showCancelButton: true,
-                         confirmButtonText: 'Yes',
-                         cancelButtonText: 'No'
-                     }).then((result) => {
-                         if (result.isConfirmed) {
-                             window.open(response.data.message, '_self');
-                         }
-                 });
-                 $scope.processdone = false;
-                    }
-                    isProcessing = false;
-                }, function (error) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'An error occurred.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
+                        isProcessing = false;
                     });
-                    $scope.processdone = false;
-                    isProcessing = false;
-                });
-            //console.log(dataString);
-            }
-         }
+                //console.log(dataString);
+                }
+             }
 
-        // Load Customers
-        // $scope.loadCustomers = function () {
-        //     $http.get('/Master/GetCustomers').then(function (response) {
-        //         $scope.customers = response.data[0];
-        //         hideLoader();
-        //     }, function (error) {
-        //         console.error('Error loading customers:', error);
-        //         hideLoader();
-        //     });
-        // };
+            // Load Customers
+            // $scope.loadCustomers = function () {
+            //     $http.get('/Master/GetCustomers').then(function (response) {
+            //         $scope.customers = response.data[0];
+            //         hideLoader();
+            //     }, function (error) {
+            //         console.error('Error loading customers:', error);
+            //         hideLoader();
+            //     });
+            // };
 
-        // $scope.loadDocs = function () {
-        //     if (true) {
-        //         $http.get('/doc/getDocs/' + 1).then(function (response) {
-        //             $scope.docs = response.data;
-        //             hideLoader();
-        //         }, function (error) {
-        //             console.error('Error loading Docs:', error);
-        //             hideLoader();
-        //         });
-        //     }
-        // };
+            // $scope.loadDocs = function () {
+            //     if (true) {
+            //         $http.get('/doc/getDocs/' + 1).then(function (response) {
+            //             $scope.docs = response.data;
+            //             hideLoader();
+            //         }, function (error) {
+            //             console.error('Error loading Docs:', error);
+            //             hideLoader();
+            //         });
+            //     }
+            // };
 
-        //Function
-        $scope.printDiv = function (divId) {
-            var css = '<style type="text/css"> * { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s1 { color: black; font-family: "Times New Roman", serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 12pt; } .p, p { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; margin: 0pt; } .s3 { color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .h2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s4 { color: #202024; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } li { display: block; } #l1 { padding-left: 0pt; counter-reset: c1 1; } #l1 > li > *:first-child:before { counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l1 > li:first-child > *:first-child:before { counter-increment: c1 0; } #l2 { padding-left: 0pt; counter-reset: d1 1; } #l2 > li > *:first-child:before { counter-increment: d1; content: counter(d1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l2 > li:first-child > *:first-child:before { counter-increment: d1 0; } .bordered-table { width: 100%; border: 1px solid black; border-collapse: collapse; } .bordered-table th { border: 1px solid black; padding: 8px; text-align: left; background-color: #f2f2f2; } .bordered-table td { border: 1px solid black; padding: 8px; text-align: left; } .no-border-table { width: 100%; border-collapse: collapse; } .no-border-table td { padding: 8px; text-align: justify; } .cell-text { padding-left: 5pt; text-indent: 0pt; } .empty-row { height: 20px; } @@media print {.hide-print {display: none !important;}}</style>';
-            var innerContents = document.getElementById(divId).innerHTML;
-            var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
-            popupWinindow.document.open();
-            popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 0 5% 0 5%;"onload="window.print()">' + innerContents + '</html>');
-            popupWinindow.document.close();
-        };
-        //Initialize
-        $scope.loadCustomers();
-        // $scope.loadDocs();
-    });
-</script>
+            //Function
+            $scope.printDiv = function (divId) {
+                var css = '<style type="text/css"> * { margin: 0; padding: 0; text-indent: 0; } h1 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .s1 { color: black; font-family: "Times New Roman", serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 12pt; } .s2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 12pt; } .p, p { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; margin: 0pt; } .s3 { color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; } .h2 { color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } .s4 { color: #202024; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; } li { display: block; } #l1 { padding-left: 0pt; counter-reset: c1 1; } #l1 > li > *:first-child:before { counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l1 > li:first-child > *:first-child:before { counter-increment: c1 0; } #l2 { padding-left: 0pt; counter-reset: d1 1; } #l2 > li > *:first-child:before { counter-increment: d1; content: counter(d1, decimal) ". "; color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt; } #l2 > li:first-child > *:first-child:before { counter-increment: d1 0; } .bordered-table { width: 100%; border: 1px solid black; border-collapse: collapse; } .bordered-table th { border: 1px solid black; padding: 8px; text-align: left; background-color: #f2f2f2; } .bordered-table td { border: 1px solid black; padding: 8px; text-align: left; } .no-border-table { width: 100%; border-collapse: collapse; } .no-border-table td { padding: 8px; text-align: justify; } .cell-text { padding-left: 5pt; text-indent: 0pt; } .empty-row { height: 20px; } @@media print {.hide-print {display: none !important;}}</style>';
+                var innerContents = document.getElementById(divId).innerHTML;
+                var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+                popupWinindow.document.open();
+                popupWinindow.document.write('<html><head><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">' + css + '</ head > <body style="padding-left: 0 5% 0 5%;"onload="window.print()">' + innerContents + '</html>');
+                popupWinindow.document.close();
+            };
+            //Initialize
+            $scope.loadCustomers();
+            // $scope.loadDocs();
+        });
+    </script>
+</body>
 </html>
 

@@ -144,9 +144,16 @@ namespace Stock_CMS.Service
             }
         }
 
-        public async Task<StocksDetailsDto> GetStockByClientId(long  clientid)
+        public async Task<StocksDetailsDto> GetStockByClientId(long  clientid, string val)
         {
-            var data = await _StockRepository.GetStockByClientId(clientid);
+            IEnumerable<StockDto> data = new List<StockDto>();
+            if (val == null) {
+                data = await _StockRepository.GetStockByClientId(clientid);
+            }
+            else
+            {
+                data = await _StockRepository.GetStockByClientIdAndStatus(clientid, val);
+            }
 
             var stock = data.OrderBy(x => x.CompanyName).ToList();
 

@@ -40,6 +40,10 @@
             cursor: pointer;
             text-decoration: underline;
         }
+
+        .app-nav-tabs .nav-link {
+            padding: 8px;
+        }
 </style>
 <body ng-controller="StockController">
     
@@ -70,12 +74,58 @@
                                     excel-export
                                     table-id="tblstock"
                                     file-name="Stock"
-                                    sheet-name="Sheet1"
+                                    sheet-name="{{ search === '' ? 'All' : search }}"
                                     file-type="xlsx">
                                 Export
                             </button>
                         </div>
                     </div>
+        <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-1">
+            <!-- All Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === ''}" ng-click="filter('')"
+               role="tab" aria-selected="{{search === '' ? 'true' : 'false'}}">All</a>
+
+            <!-- Pending Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'Pending'}" ng-click="filter('Pending')"
+               role="tab" aria-selected="{{search === 'Pending' ? 'true' : 'false'}}">Pending</a>
+
+            <!-- Follow Up Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'Follow Up'}" ng-click="filter('Follow Up')"
+               role="tab" aria-selected="{{search === 'Follow Up' ? 'true' : 'false'}}">Follow Up</a>
+
+            <!-- IEPF Post Receipt Pending Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'IEPF Post Receipt Pending'}" ng-click="filter('IEPF Post Receipt Pending')"
+               role="tab" aria-selected="{{search === 'IEPF Post Receipt Pending' ? 'true' : 'false'}}">IEPF Post Receipt Pending</a>
+
+			<!-- IEPF Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'IEPF'}" ng-click="filter('IEPF')"
+               role="tab" aria-selected="{{search === 'IEPF' ? 'true' : 'false'}}">IEPF</a>
+
+			<!-- IEPF Rejected Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'IEPF Rejected'}" ng-click="filter('IEPF Rejected')"
+               role="tab" aria-selected="{{search === 'IEPF Rejected' ? 'true' : 'false'}}">IEPF Rejected</a>
+
+			<!-- DRF Form Submitted Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'DRF Form Submitted'}" ng-click="filter('DRF Form Submitted')"
+               role="tab" aria-selected="{{search === 'DRF Form Submitted' ? 'true' : 'false'}}">DRF Form Submitted</a>
+
+               <!-- DRF Rejected Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'DRF Rejected'}" ng-click="filter('DRF Rejected')"
+               role="tab" aria-selected="{{search === 'DRF Rejected' ? 'true' : 'false'}}">DRF Rejected</a>
+
+               <!-- Demated Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+               ng-class="{'active': search === 'Demated'}" ng-click="filter('Demated')"
+               role="tab" aria-selected="{{search === 'Demated' ? 'true' : 'false'}}">Demated</a>
+        </nav>
                 </div>
 
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -671,11 +721,24 @@
             { id: 10, facevalue: 10 },
         ];
 
+        
+             $scope.search = '';
+
+            $scope.filter = function(filter = null){
+                $scope.search = filter != null ? filter : '';
+                $scope.loadStocks();
+            }
+
             // Load Stocks
             $scope.loadStocks = function () {
                  if (id)
                  {
-                    $http.get('/Enquiry/GetStocks/'+ id).then(function (response) {
+                    $http.get('/Enquiry/GetStocks/', {
+                params: {
+                    id: id,
+                    val: $scope.search || '',
+                }
+            }).then(function (response) {
                     $scope.stocks = response.data;
                     hideLoader();
                 }, function (error) {
@@ -697,9 +760,7 @@
                     hideLoader();
                 });
                  }
-
             };
-
 
             $scope.fistholderselect = function (fid,sid,tid) {
                // var find1 = $scope.holderlist .find(x => x.id === fid);
@@ -1223,7 +1284,7 @@ $scope.calculateqty = function() {
 
             // Initial Load
             $scope.loadRta();
-            $scope.loadStocks();
+            $scope.filter();
             $scope.loadcompany();
             $scope.loadholder();
            // $scope.loadCustomers();

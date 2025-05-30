@@ -330,12 +330,26 @@ td:nth-child(5), td:nth-child(6) {
       [To be submitted in non-judicial stamp paper of appropriate value]
     </p>
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
-    <p style="padding-left: 43pt; text-indent: 0pt; text-align: left">
+        <p style="padding-left: 43pt; text-indent: 0pt; text-align: left"  >
       I/We,
-            <span class="s4">
-                {{data.customerName}}
-            </span>{{data.relationship}} <span class="s4">{{data.sonof}} </span>residing at<span class="s4">{{data.address}}</span><span class="s4"> </span> having Permanent Account No(s)<span class="s4">{{data.accountno}} </span>do hereby solemnly affirm and state on oath as follows.
-    </p>
+            <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
+                {{data.firstHolder}},
+                {{data.secondHolder}},
+                {{data.thirdHolder}}
+            </span>
+            <span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                {{h.name}},
+            </span> S/d/o
+            <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">{{docs[0].sonof}} </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}"> {{data.heirs[0].sonof}} </span>residing at<span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">{{docs[0].addressAsPerAadhar}}</span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">{{data.heirs[0].address}}</span><span class="s4"> </span> having Permanent Account No(s)
+            <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
+                {{data.firstHolderpan}},
+                {{data.secondHolderpan}},
+                {{data.thirdHolderpan}}
+            </span>
+            <span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                {{h.pan}},
+            </span>do hereby solemnly affirm and state on oath as follows.
+        </p>
   
     <p style="padding-top: 8pt; text-indent: 0pt; text-align: left"><br /></p>
     <ol id="l1">
@@ -354,7 +368,7 @@ td:nth-child(5), td:nth-child(6) {
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                        {{h}}
+                        {{h.name}}
                     </span><span class="s6"> </span>(“all the shareholders”) hold the following
           (number of) securities under Folio no.
           <span class="s4">{{data.folioNo}} </span><span class="s6"> </span>in  <span class="s4">
@@ -410,7 +424,7 @@ td:nth-child(5), td:nth-child(6) {
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                        {{h}}
+                        {{h.name}}
                     </span> further swear / solemnly declare that I/ we
           am/are applying for issue of duplicate certificate(s) to me/us on the
           ground that the original security(ies) certificate(s) has/have been
@@ -429,7 +443,7 @@ td:nth-child(5), td:nth-child(6) {
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                        {{h}}
+                        {{h.name}}
                     </span> further swear/solemnly declare that the said securities are not sold or pledged or
             deposited by way of security to any person/company.
         </p>
@@ -451,7 +465,7 @@ td:nth-child(5), td:nth-child(6) {
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                        {{h}}
+                        {{h.name}}
                     </span><span class="s6"> </span>hereby further swear / solemnly declare that
           if, after the duplicate share certificate(s) is / are issued to us as
           aforesaid, the original security(ies) certificate(s) is / are at any
@@ -482,7 +496,7 @@ td:nth-child(5), td:nth-child(6) {
                         {{data.secondHolder}},
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                        {{h}}
+                        {{h.name}}
                     </span><span class="s6"> </span>am/are making the above solemn declaration
           on oath with full knowledge of the fact that in the event the original
           security (ies) certificate(s) issued is /are found, recovered and
@@ -568,15 +582,51 @@ td:nth-child(5), td:nth-child(6) {
         line-height: 192%;
         text-align: left;
       "
-    >
+           ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
       Deponent(s) (1)<span class="s11">
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+         @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   *@
+                {{data.firstHolder}}
+               
      
         </span
       ><br>(2)<span class="s11">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+        @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+
+                {{data.secondHolder}}
+                
+        </span
       ><br>(3)<span class="s11">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+
+                {{data.thirdHolder}}
+        </span>
+    </p>
+    <p
+      class="s3"
+      style="
+        padding-left: 43pt;
+        text-indent: 0pt;
+        line-height: 192%;
+        text-align: left;
+      "
+           ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+      Deponent(s) (1)<span class="s11">
+         @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   *@
+                {{ data.heirs[0].name}}
+               
+     
+        </span
+      ><br>(2)<span class="s11">
+        @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+
+                {{ data.heirs[1].name}}
+                
+        </span
+      ><br>(3)<span class="s11">
+        @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
+
+                {{ data.heirs[2].name}}
+        </span>
     </p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
@@ -707,7 +757,7 @@ td:nth-child(5), td:nth-child(6) {
                         var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
                         var holder = heirs;
 
-                        populateData(holder, result,$scope.heir,isDeceased);
+                        populateData(holder, result,$scope.heir,isDeceased,doc);
                     }, function (error) {
                         console.error('Error loading legal heir data:', error);
                         hideLoader();
@@ -718,7 +768,7 @@ td:nth-child(5), td:nth-child(6) {
     $scope.legalheirlist = isDeceased;
     document.getElementById('heirId').value = '';
                     var holder = doc;
-                    populateData(holder, result,$scope.heir,isDeceased);
+                    populateData(holder, result,$scope.heir,isDeceased,doc);
                 }
 
                 
@@ -754,10 +804,15 @@ td:nth-child(5), td:nth-child(6) {
                        firstHolder:obj.firstHolder,
     secondHolder:obj.secondHolder,
     thirdHolder:obj.thirdHolder,
+		firstHolderpan: obj.firstHolderpan,
+		secondHolderpan: obj.secondHolderpan,
+		thirdHolderpan: obj.thirdHolderpan,
                     place: obj.place,
                     date: new Date(obj.date),
                     condition: obj.condition,
+                    heirs: obj.heirs,
                 };
+                $scope.docs = $scope.data.holders;
 				$scope.selectedShares = JSON.parse($scope.data.selectedshareslist);
                 $scope.shares = JSON.parse($scope.data.jsondata);
                       id = result.stockId;
@@ -769,7 +824,7 @@ td:nth-child(5), td:nth-child(6) {
             });
             }
 
-            function populateData(holder, result, heirlist,isDeceased) {
+            function populateData(holder, result, heirlist,isDeceased,doc) {
                  $scope.data = {
                     docid: holder.id,
                     customerName : holder.name,
@@ -781,13 +836,16 @@ td:nth-child(5), td:nth-child(6) {
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officename : result.companyName,
-                    heirs: isDeceased ? heirlist.map(h => h.name) : [],
                     firstHolder :result.firstHolderName,
                     secondHolder:result.secondHolderName,
                     thirdHolder: result.thirdHolderName,
+                    firstHolderpan: result.firstHolderData ? result.firstHolderData.pan : '',
+            secondHolderpan: result.secondHolderData ? result.secondHolderData.pan : '',
+            thirdHolderpan: result.thirdHolderData ? result.thirdHolderData.pan : '',
                     place:'Vadodara',
                     date: new Date(),
                     condition: isDeceased,
+                     heirs: isDeceased ? heirlist.map(h => ({ name: h.name, pan: h.pan, address: h.addressAsPerAadhar, sonof: doc.name})) : [],
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
             }
@@ -834,6 +892,10 @@ td:nth-child(5), td:nth-child(6) {
                         $scope.processdone = false;
                 return;
                  }
+
+                 var arr = angular.copy($scope.doc);
+                 $scope.data.holders = JSON.stringify(arr,null,2);
+
                  $scope.data.selectedshareslist= JSON.stringify($scope.selectedShares);
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={

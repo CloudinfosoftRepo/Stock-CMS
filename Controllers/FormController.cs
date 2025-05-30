@@ -202,6 +202,10 @@ namespace Stock_CMS.Controllers
 		{
 			return View();
 		}
+        public IActionResult DupReqIssuingShares()
+		{
+			return View();
+		}
         public IActionResult ChangeofAdd()
 		{
 			return View();

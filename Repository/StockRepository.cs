@@ -24,6 +24,10 @@ namespace Stock_CMS.Repository
         {
             return await GetMany(x => x.CustomerId == Id && x.IsActive == true);
         } 
+        public async Task<IEnumerable<StockDto>> GetStockByClientIdAndStatus(long Id,string val)
+        {
+            return await GetMany(x => x.CustomerId == Id && x.IsActive == true && x.ClaimStatus.ToLower() == val.ToLower());
+        } 
         public async Task<IEnumerable<StockDto>> GetStockByinfo(long Id,long componyId,string folioNo)
         {
             return await GetMany(x => x.CustomerId == Id && x.IsActive == true && x.CompanyId == componyId && x.FolioNo == folioNo);
