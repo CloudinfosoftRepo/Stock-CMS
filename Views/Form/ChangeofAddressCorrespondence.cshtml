@@ -197,11 +197,11 @@
        text-align: left;
      ">
                         <span ng-class="{'hide-print': data.condition}" ng-show="!data.condition">
-                            {{data.firstHolder}},<br />
-                            {{data.secondHolder}},<br />
+                            {{data.firstHolder}} &<br />
+                            {{data.secondHolder}} &<br />
                             {{data.thirdHolder}}<br />
 						</span>
-                        <span ng-class="{'hide-print': !data.condition}" ng-show="data.condition" ng-repeat="h in data.heirs">{{h}}<br /></span>
+                        <span ng-class="{'hide-print': !data.condition}" ng-show="data.condition" ng-repeat="h in data.heirs">{{h}} &<br /></span>
                         {{data.address}}<br />
                         {{data.mobile}}
          </p>

@@ -218,11 +218,11 @@
     <div id="printForm">
         <h1 style="padding: 0 350px 0px 5px; text-indent: 0pt; text-align: left">
             <span  ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}},
-                {{data.secondHolder}},
+                {{data.firstHolder}} & 
+                {{data.secondHolder}} &
                 {{data.thirdHolder}}
             </span><span  ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h}}
+				{{h}} &
             </span>
         </h1>
         <p class="s1"
@@ -375,8 +375,8 @@
               text-align: left;
             ">
                         <span  ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                            {{data.firstHolder}}, &emsp;
-                            {{data.secondHolder}}, &emsp;
+                            {{data.firstHolder}} & &emsp;
+                            {{data.secondHolder}} & &emsp;
                             {{data.thirdHolder}}
                         </span><span  ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                             {{h}} &emsp;

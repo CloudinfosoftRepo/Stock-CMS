@@ -413,11 +413,11 @@
     >
       I/We
             <span class="s3" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}},
-                {{data.secondHolder}},
+                {{data.firstHolder}} &
+                {{data.secondHolder}} &
                 {{data.thirdHolder}}
             </span><span class="s3" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h}}
+                {{h}} &
             </span> the holder(s) of the securities particulars of which are given hereunder
       wish to make nomination and do here by nominate the following persons in
       whom shall vest, all the rights in respect of such securities in the event
@@ -822,10 +822,10 @@
     </ul>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p style="text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-            {{data.firstHolder}}, {{data.secondHolder}}, {{data.thirdHolder}}
+            {{data.firstHolder}} & {{data.secondHolder}} & {{data.thirdHolder}}
         </p>
         <span style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-            {{h}}, 
+            {{h}} & 
         </span>
     <p
       style="

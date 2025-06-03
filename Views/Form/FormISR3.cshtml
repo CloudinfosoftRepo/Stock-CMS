@@ -217,11 +217,11 @@
         <p style="padding-top: 10pt; text-indent: 0pt; text-align: left;"><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; line-height: 108%; text-align: justify;">
             I / we <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}},
-                {{data.secondHolder}},
+                {{data.firstHolder}} &
+                {{data.secondHolder}} &
                 {{data.thirdHolder}}
             </u><u ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h.name}},
+                {{h.name}} &
             </u> the holder(s) of the securities particulars of which are given hereunder,
             <u>
                 <i><b> do not wish to nominate </b></i>

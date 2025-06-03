@@ -198,15 +198,15 @@
     </div>
     <div id="printForm">
         <h1 style="padding-left: 12pt; text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-            {{data.firstHolder}},
-            {{data.secondHolder}},
+            <span ng-style="{'color': data.firstHolderdemisedate != '' ? 'red' : 'inherit'}">{{ data.firstHolder}}</span> &
+            {{data.secondHolder}} &
             {{data.thirdHolder}}<br />
             <span class="s1">{{data.address}}</span>
         </h1>        
-        <h1 style="padding-left: 12pt; text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-            {{h}},<br />
-            <span class="s1">{{data.address}}</span>
-        </h1>
+        <h1 style="padding-left: 12pt; text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+            <span ng-repeat="h in data.heirs">{{h}} & </span>
+            <br /><span class="s1">{{data.address}}</span>
+		</h1>
         <p class="s1"
            style="padding-left: 12pt; text-indent: 0pt; text-align: left">
              @* NR. AMIT NAGAR CIRCLE, VADODARA, GUJARAT – 390018 *@
@@ -479,6 +479,10 @@ border-bottom-width: 1pt;
     secondHolder:obj.secondHolder,
     thirdHolder:obj.thirdHolder,
     condition: obj.condition,
+
+	firstHolderdemisedate: obj.firstHolderdemisedate,
+	secondHolderdemisedate: obj.secondHolderdemisedate,
+    thirdHolderdemisedate: obj.thirdHolderdemisedate,
                 };
                       id = result.stockId;
                 checkData();
@@ -510,6 +514,11 @@ border-bottom-width: 1pt;
                     firstHolder :result.firstHolderName,
                     secondHolder:result.secondHolderName,
                     thirdHolder: result.thirdHolderName,
+
+                    firstHolderdemisedate: result.firstHolderData.dateOfDeath,
+                    secondHolderdemisedate: result.secondHolderData ? result.secondHolderData.dateOfDeath : '',
+                    thirdHolderdemisedate: result.thirdHolderData ? result.thirdHolderData.dateOfDeath : '',
+
                     condition: isDeceased,
                 };
              }

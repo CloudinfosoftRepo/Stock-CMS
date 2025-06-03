@@ -333,12 +333,12 @@ td:nth-child(5), td:nth-child(6) {
         <p style="padding-left: 43pt; text-indent: 0pt; text-align: left"  >
       I/We,
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
-                {{data.firstHolder}},
-                {{data.secondHolder}},
+                {{data.firstHolder}} &
+				{{data.secondHolder}} &
                 {{data.thirdHolder}}
             </span>
             <span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h.name}},
+                {{h.name}} & 
             </span> S/d/o
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">{{docs[0].sonof}} </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}"> {{data.heirs[0].sonof}} </span>residing at<span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">{{docs[0].addressAsPerAadhar}}</span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">{{data.heirs[0].address}}</span><span class="s4"> </span> having Permanent Account No(s)
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
@@ -364,9 +364,9 @@ td:nth-child(5), td:nth-child(6) {
         >
           That I/We,
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        {{data.firstHolder}},
-                        {{data.secondHolder}},
-                        {{data.thirdHolder}}
+                        {{data.firstHolder}} &
+                        {{data.secondHolder}} &
+						{{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                         {{h.name}}
                     </span><span class="s6"> </span>(“all the shareholders”) hold the following
@@ -420,9 +420,9 @@ td:nth-child(5), td:nth-child(6) {
         >
           I/We
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        {{data.firstHolder}},
-                        {{data.secondHolder}},
-                        {{data.thirdHolder}}
+                        {{data.firstHolder}} &
+                        {{data.secondHolder}} &
+						{{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                         {{h.name}}
                     </span> further swear / solemnly declare that I/ we
@@ -439,8 +439,8 @@ td:nth-child(5), td:nth-child(6) {
         <p style="padding-left: 43pt; text-indent: -14pt; text-align: justify">
           I/We
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        {{data.firstHolder}},
-                        {{data.secondHolder}},
+                        {{data.firstHolder}} &
+                        {{data.secondHolder}} &
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                         {{h.name}}
@@ -461,8 +461,8 @@ td:nth-child(5), td:nth-child(6) {
         >
           I/We
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        {{data.firstHolder}},
-                        {{data.secondHolder}},
+                        {{data.firstHolder}} &
+                        {{data.secondHolder}} &
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                         {{h.name}}
@@ -492,8 +492,8 @@ td:nth-child(5), td:nth-child(6) {
         >
           I/We
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        {{data.firstHolder}},
-                        {{data.secondHolder}},
+                        {{data.firstHolder}} &
+                        {{data.secondHolder}} &
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                         {{h.name}}

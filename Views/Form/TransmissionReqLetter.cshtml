@@ -192,8 +192,8 @@
 
     <div id="printForm">
     <p style="padding-left: 5pt; text-align: left; margin: 0;font-size: 16px;">
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}},{{data.secondHolder}},{{data.thirdHolder}}</b>
-            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h}},</b>
+            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.customerName}},{{data.secondHolder}},{{data.thirdHolder}}</b>
+            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h}} &</b>
     </p>
     <p style="padding: 0 352px 0 5pt; text-align: left; margin: 0;font-size: 16px;">
             {{data.address}}

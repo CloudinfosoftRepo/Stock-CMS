@@ -165,11 +165,11 @@
       "
     >
             <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}},
-                {{data.secondHolder}},
+                {{data.firstHolder}} &
+                {{data.secondHolder}} &
                 {{data.thirdHolder}}
             </span><span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h}}
+                {{h}} &
             </span>
     </h1>
     <p

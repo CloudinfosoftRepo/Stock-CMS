@@ -458,12 +458,12 @@
       ">
             I/We,
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
-                {{data.firstHolder}},
-                {{data.secondHolder}},
+                {{data.firstHolder}} &
+                {{data.secondHolder}} &
                 {{data.thirdHolder}}
             </span>
             <span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h.name}},</span>s/d/o
+                {{h.name}} &</span>s/d/o
                 <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">{{docs[0].sonof}} </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}"> {{data.heirs[0].sonof}} </span>residing at<span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">{{docs[0].addressAsPerAadhar}}</span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">{{data.heirs[0].address}}</span><span class="s4"> </span> having Permanent Account No(s)<span class="s4">
                     {{data.accountno}} <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}">
                         {{data.firstHolderpan}},
@@ -489,8 +489,8 @@
                 <p style="padding-left: 48pt; text-indent: -18pt; text-align: justify">
                     That I/we,
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        {{data.firstHolder}},
-                        {{data.secondHolder}},
+                        {{data.firstHolder}} &
+						{{data.secondHolder}} &
                         {{data.thirdHolder}}
                     </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
                         {{h.name}}
