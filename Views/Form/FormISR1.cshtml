@@ -537,7 +537,7 @@
                     <tr>
                       <td class="label">Name(s) of the Security holder(s)<br><span class="small">(as per the Certificate(s))</span></td>
                       <td colspan="8">
-                            <ol class="holder-list" ng-show="!data.condition" ng-class="{'hide-print': !data.condition}" style="padding-left: 0rem;">
+                            <ol class="holder-list" ng-show="!data.condition" ng-class="{'hide-print': data.condition}" style="padding-left: 0rem;">
                                 <li>
                                     1. @* REHATREG *@{{data.firstHolder}}
                                 </li>
@@ -765,8 +765,10 @@
 							{{data.secondHolderpan}}<br />
 							{{data.thirdHolderpan}}<br />
                         </p>
-                        <p style="text-indent: 0pt; text-align: left; padding-left: 5px;" ng-show="data.condition" ng-class="{'hide-print': !data.condition}"  >
-							{{ data.legelheirpan }}
+                        <p style="text-indent: 0pt; text-align: left; padding-left: 5px;" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" >
+                            <span ng-repeat="h in data.legelheirpan">
+                                {{ h.pan }} <br />
+                            </span>
                         </p>
                     <p class="s8" style="padding-left: 5pt; text-indent: 0pt; text-align: left;">PAN shall be valid only if it is linked to Aadhaar by March 31, 2022*</p>
                     <p class="s8" style="padding-left: 5pt; padding-right: 2pt; text-indent: 0pt; text-align: left;">For Exemptions / Clarifications on PAN, please refer to Objection Memo in page 4</p>
@@ -1321,7 +1323,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                        <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolder}}
+                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</span>
                 </td>
                 <td
                     style="
@@ -1336,7 +1338,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                        <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.secondHolder}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span>
                 </td>
                 <td
                     style="
@@ -1351,7 +1353,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                        <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.thirdHolder}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span>
                 </td>
             </tr>
             <tr style="height: 56pt;">
@@ -1615,7 +1617,8 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.heirs[0].name}}
+                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.heirs[0].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[0].name}}
+                                </span>
                         </td>
                         <td style="
                         width: 163pt;
@@ -1628,7 +1631,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[1].name}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.heirs[1].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[1].name}}</span>
                         </td>
                         <td style="
                         width: 93pt;
@@ -1641,7 +1644,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[2].name}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.heirs[2].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[2].name}}</span>
                         </td>
                     </tr>
                     <tr style="height: 56pt;">
@@ -1958,7 +1961,7 @@
             firstHolderpan: result.firstHolderData ? result.firstHolderData.pan : '',
             secondHolderpan: result.secondHolderData ? result.secondHolderData.pan : '',
             thirdHolderpan: result.thirdHolderData ? result.thirdHolderData.pan : '',
-            legelheirpan: holder.pan,
+                legelheirpan: isDeceased ? heirlist.map(h => ({ pan: h.pan })) : [],
             qty: result.qty,
             rate: result.rate,
             distinctiveNosStart: $scope.data && $scope.data.distinctiveNosStart || '',

@@ -186,6 +186,35 @@ namespace Stock_CMS.Controllers
         }
 
         [HttpPost]
+        public async Task<JsonResult> UpdatePaidStockbyColumn([FromBody] StockDto stock)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                stock.UpdatedBy = int.Parse(userId);
+                stock.UpdatedAt = DateTime.Now;
+                var result = await _StockService.UpdateStockbyColumn(stock);
+                string message = result == -2 ? "No record Found." :
+                  result == -1 ? "Client already exists." :
+                  result == 0 ? "Failed to update Client." :
+                  "Payment Updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
 		public async Task<JsonResult> DeleteStock(long id)
 		{
 			// var product = await _context.TblProducts.FindAsync(id);

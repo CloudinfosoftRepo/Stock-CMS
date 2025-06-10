@@ -198,13 +198,27 @@
     </div>
     <div id="printForm">
         <h1 style="padding-left: 12pt; text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-            <span ng-style="{'color': data.firstHolderdemisedate != '' ? 'red' : 'inherit'}">{{ data.firstHolder}}</span> &
-            {{data.secondHolder}} &
-            {{data.thirdHolder}}<br />
+            <span ng-style="{'color': data.firstHolderdemisedate ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+            <span ng-if="data.secondHolder">
+                & 
+            <span ng-style="{'color': data.secondHolderdemisedate ? 'red' : 'inherit'}" >
+                 {{data.secondHolder}}
+                </span>
+            </span>
+            <span ng-if="data.thirdHolder">
+                &
+            <span ng-style="{'color': data.thirdHolderdemisedate ? 'red' : 'inherit'}" >
+                {{data.thirdHolder}}
+            </span>
+            </span><br />
             <span class="s1">{{data.address}}</span>
         </h1>        
         <h1 style="padding-left: 12pt; text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
-            <span ng-repeat="h in data.heirs">{{h}} & </span>
+            <span ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    {{h.name}}<span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
+            </span>
             <br /><span class="s1">{{data.address}}</span>
 		</h1>
         <p class="s1"
@@ -377,10 +391,10 @@ border-bottom-width: 1pt;
         </h2>
         <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
         <h3 style="padding-left: 12pt; text-indent: 0pt; text-align: left; display:flex; justify-content: space-between;">
-            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}"> {{data.firstHolder}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.secondHolder}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.thirdHolder}}</span>
+            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h?.dateOfDeath ? 'red' : 'inherit'}">{{h.name}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstHolderdemisedate ? 'red' : 'inherit'}"> {{data.firstHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondHolderdemisedate ? 'red' : 'inherit'}">{{data.secondHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdHolderdemisedate ? 'red' : 'inherit'}">{{data.thirdHolder}}</span>
         </h3>
     </div>
     <div class="myarea">
@@ -509,15 +523,15 @@ border-bottom-width: 1pt;
                    officeaddress: company.rtaAddress,
                    unit: company.companyName,
 
-                   heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                   heirs: isDeceased ? heirlist.map(h => ({name: h.name, dateOfDeath: h.dateOfDeath}) ): [],
 
                     firstHolder :result.firstHolderName,
                     secondHolder:result.secondHolderName,
                     thirdHolder: result.thirdHolderName,
 
-                    firstHolderdemisedate: result.firstHolderData.dateOfDeath,
-                    secondHolderdemisedate: result.secondHolderData ? result.secondHolderData.dateOfDeath : '',
-                    thirdHolderdemisedate: result.thirdHolderData ? result.thirdHolderData.dateOfDeath : '',
+                    firstHolderdemisedate: result.firstHolderData?.dateOfDeath,
+                    secondHolderdemisedate: result.secondHolderData ? result.secondHolderData?.dateOfDeath : '',
+                    thirdHolderdemisedate: result.thirdHolderData ? result.thirdHolderData?.dateOfDeath : '',
 
                     condition: isDeceased,
                 };

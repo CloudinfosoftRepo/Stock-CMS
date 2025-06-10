@@ -197,11 +197,25 @@
        text-align: left;
      ">
                         <span ng-class="{'hide-print': data.condition}" ng-show="!data.condition">
-                            {{data.firstHolder}} &<br />
-                            {{data.secondHolder}} &<br />
-                            {{data.thirdHolder}}<br />
-						</span>
-                        <span ng-class="{'hide-print': !data.condition}" ng-show="data.condition" ng-repeat="h in data.heirs">{{h}} &<br /></span>
+                            <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+                            <span ng-if="data.secondHolder">
+                                &
+                                                <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                                    {{data.secondHolder}}
+                                </span>
+                            </span>
+                            <span ng-if="data.thirdHolder">
+                                &
+                                <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                                    {{data.thirdHolder}}
+                                </span>
+                            </span>
+					    </span>
+                        <span ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                            <span ng-repeat="h in data.heirs track by $index">
+                                {{h.name}}<span ng-if="$index < data.heirs.length - 1"> & </span>
+                            </span>
+                        </span><br />
                         {{data.address}}<br />
                         {{data.mobile}}
          </p>
@@ -321,10 +335,10 @@
     <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
     <h3 style="padding-left: 42pt; text-indent: 0pt; text-align: left; display:flex;justify-content:space-between">
             @* JYOTSNABEN G PATEL GHANSHYAMBHAI G PATEL *@
-            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.secondHolder}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.thirdHolder}}</span>
+            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">{{h.name}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}"> {{data.firstHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span>
     </h3>
     </div>
     <div class="myarea">
@@ -415,6 +429,9 @@
                     firstHolder:obj.firstHolder,
                     secondHolder:obj.secondHolder,
                     thirdHolder:obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+    secondAlive: obj.secondAlive,
+    thirdAlive: obj.thirdAlive,
                     condition: obj.condition,
                 };
                       id = result.stockId;
@@ -441,10 +458,14 @@
                            officename : result.company.rtaName,
                            officeaddress: result.company.rtaAddress,
                            unit: result.companyName,
-                           heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                           heirs: isDeceased ? heirlist.map(h => ({name: h.name,  dateOfDeath: h.dateOfDeath}) ) : [],
                             firstHolder :result.firstHolderName,
                             secondHolder:result.secondHolderName,
                             thirdHolder: result.thirdHolderName,
+                            firstAlive: result?.firstHolderData?.dateOfDeath,
+    secondAlive: result?.secondHolderData?.dateOfDeath,
+    thirdAlive: result?.thirdHolderData?.dateOfDeath,
+
                             condition: isDeceased,
                         };
                 $scope.data.condition = isDeceased;

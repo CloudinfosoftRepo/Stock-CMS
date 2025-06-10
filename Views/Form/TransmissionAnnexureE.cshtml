@@ -345,7 +345,11 @@
         I/We,
             @* <span class="s5">@* RTADVYG CSACC {{data.customerName}} </span> *@
 
-            <span class="s5" ng-repeat="h in data.heirs">@* RTADVYG CSACC *@{{h.name + ' And '}} </span>do hereby solemnly affirm and state on oath as follows:
+            <span class="s5">
+                @* RTADVYG CSACC *@<span ng-repeat="h in data.heir track by $index">
+                    {{h.name}}<span ng-if="$index < data.heir.length - 1"> & </span>
+                </span>
+            </span>do hereby solemnly affirm and state on oath as follows:
     </p>
     <p style="
         padding-top: 5pt;
@@ -354,7 +358,11 @@
         text-align: left;
       ">
         That Mr. /Ms.
-        <span class="s5">@* VASDEDA *@{{data.sonof}} </span><span class="s6"> </span>was holding the following securities:
+            <span class="s5">
+                @* VASDEDA *@<span ng-if="data.firstAlive">{{data.firstHolder}}</span>
+                <span ng-if="data.secondAlive">& {{data.secondHolder}}</span>
+                <span ng-if="data.thirdAlive">& {{data.thirdHolder}}</span>
+            </span><span class="s6"> </span>was holding the following securities:
     </p>
     <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
     <table style="border-collapse: collapse; margin-left: 6.5pt" cellspacing="0">
@@ -904,7 +912,13 @@
                     place: obj.place,
                     today: new Date(obj.today),
 					condition: obj.condition,
-                    heirs: obj.heirs,
+                    firstHolder: obj.firstHolder,
+                    secondHolder: obj.secondHolder,
+                    thirdHolder: obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
+                    heir: obj.heir,
                 };
                 $scope.heirlist = $scope.data.heirs;
                 $scope.heir = $scope.data.claiment;
@@ -937,9 +951,13 @@
                     place: 'Vadodara',
                     today: new Date(),
                     condition: isDeceased,
-                    heirs: isDeceased ? heirlist.map(h => ({ name: h.name})) : [],
-
-
+                    heir: isDeceased ? heirlist.map(h => ({ name: h.name})) : [],
+                    firstHolder: result.firstHolderName,
+                    secondHolder: result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    firstAlive: result?.firstHolderData?.dateOfDeath,
+                    secondAlive: result?.secondHolderData?.dateOfDeath,
+                    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
             }

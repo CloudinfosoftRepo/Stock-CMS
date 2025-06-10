@@ -257,12 +257,15 @@
     </div>
     <div id="printForm">
     <h1 style="padding-top: 3pt; text-indent: 0pt; text-align: center">
-            <span  ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}} &
-                {{data.secondHolder}} &
-                {{data.thirdHolder}}
-            </span><span  ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h}} &
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                {{data.firstHolder}}<span ng-if="data.secondHolder"> & {{data.secondHolder}}</span><span ng-if="data.thirdHolder"> & {{data.thirdHolder}}</span>
+            </span>
+
+            <!-- When data.condition is true -->
+            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    {{h}}<span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
             </span>
     </h1>
     <h2 style="padding:0 150pt 0 150pt; text-indent: 0pt; text-align: center">
@@ -351,7 +354,9 @@
       "
     >
       With reference to the above captioned subject and as discussed with your
-            undersigned, I, <span class="s8">{{data.customerName}} </span>would like to
+            undersigned, I/we, @* <span class="s8">{{data.customerName}} </span> *@  <span ng-repeat="h in data.heirs track by $index">
+                {{h}}<span ng-if="$index < data.heirs.length - 1"> & </span>
+            </span>would like to
       bring into your kind attention that I am the legal heir of the deceased
             share holder <span class="s9">{{data.deceasedname}}</span><span class="h2"> </span>who expired on
             <span class="h2">{{data.dateofdemise | date:'dd-MM-yyyy'}}</span>

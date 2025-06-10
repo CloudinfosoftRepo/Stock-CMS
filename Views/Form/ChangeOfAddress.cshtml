@@ -351,10 +351,10 @@ border-bottom-width: 1pt;
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p style="padding-left: 12pt; text-indent: 0pt; text-align: left; justify-content: space-evenly;display: flex;">
-            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.secondHolder}}</span>
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.thirdHolder}}</span>
+            <span ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">{{h.name}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span>
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span>
         </p>
         <p style="
         padding-top: 2pt;
@@ -460,7 +460,9 @@ border-bottom-width: 1pt;
                 secondHolder:obj.secondHolder,
                 thirdHolder:obj.thirdHolder,
                 condition: obj.condition,
-
+                firstAlive: obj.firstAlive,
+                secondAlive: obj.secondAlive,
+                thirdAlive: obj.thirdAlive,
                 };
                       id = result.stockId;
                 checkData();
@@ -480,11 +482,14 @@ border-bottom-width: 1pt;
                    folioNo : result.folioNo,
                    address : holder.addressAsPerAadhar,
                    newAddress : '',
-                   heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                   heirs: isDeceased ? heirlist.map(h => ({name: h.name,  dateOfDeath: h.dateOfDeath}) ) : [],
                   firstHolder :result.firstHolderName,
                    secondHolder:result.secondHolderName,
                    thirdHolder: result.thirdHolderName,
                    condition: isDeceased,
+                   firstAlive: result?.firstHolderData?.dateOfDeath,
+                    secondAlive: result?.secondHolderData?.dateOfDeath,
+                    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                 };
             }
         };

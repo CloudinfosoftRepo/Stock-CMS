@@ -412,12 +412,26 @@
       "
     >
       I/We
-            <span class="s3" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}} &
-                {{data.secondHolder}} &
-                {{data.thirdHolder}}
-            </span><span class="s3" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h}} &
+            <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder">
+                    &
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder">
+                    &
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+            </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
             </span> the holder(s) of the securities particulars of which are given hereunder
       wish to make nomination and do here by nominate the following persons in
       whom shall vest, all the rights in respect of such securities in the event
@@ -822,10 +836,12 @@
     </ul>
     <p style="text-indent: 0pt; text-align: left"><br /></p>
         <p style="text-indent: 0pt; text-align: left" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-            {{data.firstHolder}} & {{data.secondHolder}} & {{data.thirdHolder}}
+            {{data.firstHolder}}<span ng-if="data.secondHolder"> & {{data.secondHolder}}</span><span ng-if="data.thirdHolder"> & {{data.thirdHolder}}</span>
         </p>
-        <span style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-            {{h}} & 
+        <span style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+            <span ng-repeat="h in data.heirs track by $index">
+                {{h}}<span ng-if="$index < data.heirs.length - 1"> & </span>
+            </span>
         </span>
     <p
       style="
@@ -953,9 +969,13 @@
                     jsondata: obj.jsondata,
                     officename: obj.officename,
                     officeaddress: obj.officeaddress,
-                        firstHolder:obj.firstHolder,
-    secondHolder:obj.secondHolder,
-    thirdHolder:obj.thirdHolder,
+                    firstHolder:obj.firstHolder,
+                    secondHolder:obj.secondHolder,
+                    thirdHolder:obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
+
                     occupation: obj.occupation,
                     nationality: obj.nationality,
                     majordate: new Date(obj.majordate),
@@ -997,13 +1017,16 @@
                        firstHolder :result.firstHolderName,
     secondHolder:result.secondHolderName,
     thirdHolder: result.thirdHolderName,
+    firstAlive: result?.firstHolderData?.dateOfDeath,
+    secondAlive: result?.secondHolderData?.dateOfDeath,
+    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                     occupation: '',
                     nationality: 'INDIAN',
                     majordate: new Date(year + 18,month,day),
                     witnessaddress:'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
                     witnessname:'Shreyash Chhagani',
                     condition: isDeceased,
-                    heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                    heirs: isDeceased ? heirlist.map(h => ({name: h.name,  dateOfDeath: h.dateOfDeath}) ) : [],
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
              }

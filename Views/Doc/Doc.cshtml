@@ -87,6 +87,7 @@
 
                             <button class="btn btn-custom " ng-show="!search" style="background-color:#51b37f;color:white" ng-click="openLegalHeirModal()">Add Legal Heir</button>
                         }
+                         <button class="btn btn-custom " style="background-color:#51b37f;color:white" ng-click="manageClient()">Go To Stocks</button>
                         <button class="btn btn-custom"
                                 ng-show="search"
                                 style="background-color:#51b37f;color:white"
@@ -1614,6 +1615,10 @@
                         });
                     }
                 });
+            };
+
+             $scope.manageClient = function () {
+                window.open('/Enquiry/Index/' + id, '_self');
             };
 
 

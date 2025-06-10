@@ -1225,7 +1225,7 @@
               text-align: left;
             "
           >
-                            1) {{data.nameofdeacesed}}
+                            1) <span ng-if="data.firstHolder">{{data.firstHolder}}</span>
           </p>
         </td>
         <td
@@ -1250,9 +1250,9 @@
               text-align: center;
             "
           >
-                            {{data.dateofdeath | date:'dd/MM/yyyy'}}
-          </p>
-        </td>
+                            <span ng-if="data.firstAlive">{{data.firstAlive | date:'dd/MM/yyyy'}}</span>
+          </p>                     
+        </td>                      
       </tr>
       <tr style="height: 18pt">
         <td
@@ -1277,7 +1277,7 @@
               text-align: left;
             "
           >
-            2)
+                            2) <span ng-if="data.secondAlive">{{data.secondHolder}}</span>
           </p>
         </td>
         <td
@@ -1302,9 +1302,9 @@
               text-align: center;
             "
           >
-            @* DD / MM / YYYY *@
-          </p>
-        </td>
+                            @* DD / MM / YYYY *@<span ng-if="data.secondAlive">{{data.secondAlive | date:'dd/MM/yyyy'}}</span>
+          </p>                         
+        </td>                          
       </tr>
       <tr style="height: 19pt">
         <td
@@ -1329,7 +1329,7 @@
               text-align: left;
             "
           >
-            3)
+                            3) <span ng-if="data.thirdAlive">{{data.thirdHolder}}</span>
           </p>
         </td>
         <td
@@ -1354,7 +1354,7 @@
               text-align: center;
             "
           >
-            @* DD / MM / YYYY *@
+                            @* DD / MM / YYYY *@ <span ng-if="data.thirdAlive">{{data.thirdAlive | date:'dd/MM/yyyy'}}</span>
           </p>
         </td>
       </tr>
@@ -1558,7 +1558,7 @@
             border-right-width: 1pt;
           "
         >
-          <p style="text-indent: 0pt; text-align: left"> &#8377; {{data.rate}}<br /></p>
+          <p style="text-indent: 0pt; text-align: left"> 100% <br /></p>
         </td>
       </tr>
       <tr style="height: 17pt">
@@ -3311,7 +3311,12 @@
                             today: new Date(),
                             nominee: $scope.data && $scope.data.nominee || '',
                             heirs: $scope.data?.relation != 'Nominee' ? $scope.heir.map(h => ({ name: h.name, pan: h.pan })) : [],
-
+                            firstHolder: result.firstHolderName,
+                            secondHolder: result.secondHolderName,
+                            thirdHolder: result.thirdHolderName,
+                            firstAlive: result?.firstHolderData?.dateOfDeath,
+                            secondAlive: result?.secondHolderData?.dateOfDeath,
+                            thirdAlive: result?.thirdHolderData?.dateOfDeath,
                         };
 
                         hideLoader();
@@ -3376,6 +3381,12 @@
                     docattach: JSON.parse(obj.docattach),
 					nominee: obj.nominee,
                     heirs: obj.heirs,
+                    firstHolder: obj.firstHolder,
+                    secondHolder: obj.secondHolder,
+                    thirdHolder: obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
                 };
                 $scope.doclist = $scope.data.docattach;
                 id = result.stockId;

@@ -68,6 +68,7 @@
                         <button class="btn btn-custom " style="background-color:#51b37f;color:white" ng-click="openimportModal()">Import</button>
                             @* <button class="btn app-btn-primary" style="background-color:#51b37f;color:white" ng-click="openRtaModal()">Add RTA</button> *@
                         <button class="btn app-btn-primary" style="background-color:#51b37f;color:white" ng-click="openCompanyModal()">Add Company</button>
+                        <button class="btn app-btn-primary" style="background-color:#51b37f;color:white" ng-click="manageDocs()">Go To Holder</button>
                         }
                             <button class="btn btn-custom"
                                     style="background-color:#51b37f;color:white"
@@ -1177,6 +1178,10 @@ $scope.calculateqty = function() {
                 });
             };
 
+             $scope.manageDocs = function () {
+                window.open('/Doc/Doc/' + id, '_self');
+            };
+
             //Company Data
             // Open Modal
             $scope.openCompanyModal = function () {
@@ -1233,7 +1238,7 @@ $scope.calculateqty = function() {
             //     }).then((result) => {
             //         if (result.isConfirmed) {
                     if(stock.claimStatus == "Demated"){
-                        $http.post('/Enquiry/UpdateStockbyColumn', stock).then(function (response) {
+                        $http.post('/Enquiry/UpdatePaidStockbyColumn', stock).then(function (response) {
                             Swal.fire({
                                 title: 'Success',
                                 text: response.data.message || 'Operation successful!',

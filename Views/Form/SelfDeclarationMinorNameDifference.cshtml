@@ -235,10 +235,10 @@ font-size:medium;
     </h2>
     <p style="padding-top: 7pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="padding-left: 6pt; text-indent: 0pt;line-height: 2; text-align: justify">
-            I/We  <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}}</u>
-            <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.secondHolder}}</u>
-            <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.thirdHolder}}</u>
-            <u ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">  {{h}}</u> Indian
+            I/We <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</u>
+            <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</u>
+            <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</u>
+            <u ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">  {{h.name}}</u> Indian
         inhabitant, residing at <u>{{data.address}}</u> do hereby solemnly affirm and say that:
     </p>
 
@@ -397,6 +397,9 @@ font-size:medium;
                 nameasperCertificate: obj.nameasperCertificate,
                 heirs: obj.heirs,
 				condition: obj.condition,
+                firstAlive: obj.firstAlive,
+                secondAlive: obj.secondAlive,
+                thirdAlive: obj.thirdAlive,
 
             };
                             id = result.stockId;
@@ -425,7 +428,10 @@ font-size:medium;
                 firstHolder: result.firstHolderName,
                 secondHolder: result.secondHolderName,
                 thirdHolder: result.thirdHolderName,
-                heirs: isDeceased ? heirlist.map(h => h.name) : [],
+                firstAlive: result?.firstHolderData?.dateOfDeath,
+                secondAlive: result?.secondHolderData?.dateOfDeath,
+                thirdAlive: result?.thirdHolderData?.dateOfDeath,
+                heirs: isDeceased ? heirlist.map(h => ({name: h.name,  dateOfDeath: h.dateOfDeath}) ) : [],
                 condition: isDeceased,
             };
         }

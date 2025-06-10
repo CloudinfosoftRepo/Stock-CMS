@@ -533,12 +533,12 @@
       "
     />
     <p style="padding-left: 14pt; text-indent: 0pt; text-align: justify" >
-        <p ng-show="!data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="item in doc">
-            I/We {{ $index + 1 }} <u ng-style="{'color': item.dateOfDeath != '' ? 'red' : 'inherit'}">{{item.name}}</u>S/d/o @* {{data.relationship}} *@<u> {{item.relativesName}}</u>
+        <p ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-repeat="item in doc">
+            I/We {{ $index + 1 }} <u ng-style="{'color': item.dateOfDeath ? 'red' : 'inherit'}">{{item.name}}</u> S/d/o @* {{data.relationship}} *@<u> {{item.relativesName}}</u>
 			aged <u>{{calculateAge(item.dob,item.dateOfDeath)}}</u>.<br />
 		</p>
         <p ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-            I/We {{ $index + 1 }} <u>{{h.name}}</u>S/d/o<u> {{data.sonof}}</u>
+            I/We {{ $index + 1 }} <u ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">{{h.name}}</u> S/d/o<u> {{data.sonof}}</u>
 			aged <u>{{h.age}}</u>.<br />
 		</p>
       <!--2<u>

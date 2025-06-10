@@ -310,7 +310,9 @@
         I / We,
             @* <span class="s5" ng-repeat="item in heirlist">{{item.name}} </span> *@
             <span class="s5">{{data.customerName}} </span><span class="s6"> </span>the legal heir(s) of late Mr. / Ms<span class="s5">
-            ,@* JHMGNFBD *@{{data.sonof}}
+                ,@* JHMGNFBD *@<span ng-if="data.firstAlive">{{data.firstHolder}}</span>
+                <span ng-if="data.secondAlive">& {{data.secondHolder}}</span>
+                <span ng-if="data.thirdAlive">& {{data.thirdHolder}}</span>
         </span><u>(</u>name of the deceased holder) declare as follows –
     </p>
 
@@ -419,9 +421,9 @@
                     <td class="relation" style="font-weight: 600;">Relation with the Deceased</td>
                 </tr>
 
-                    <tr ng-repeat="tmp in noc">
+                    <tr ng-repeat="tmp in nonClaimHeirs">
                         <td class="index-column">{{ $index + 1 }}){{tmp.name}}</td>
-                        <td class="empty-cell">{{tmp.addressAsPerAadhar}}</td>
+                        <td class="empty-cell">{{!tmp.addressAsPerAadhar ? 'Deceased' : tmp.addressAsPerAadhar}}</td>
                         <td class="empty-cell">{{calculateAge(tmp.dob,tmp.dateOfDeath)}}</td>
                         <td class="empty-cell">{{tmp.relationWithDead}}</td>
                 </tr>
@@ -490,7 +492,7 @@
                         @* BESVED6515B  5ES30 *@{{data.officename}}
                 </span><span class="s6"> </span>(Name of the Company) transmitting the
                 aforesaid securities in favour of the Claimant(s) Mr. / Ms.
-                    <span class="s5" ng-repeat="item in claimentlist">{{item.name + ' '}} </span>.
+                    <span class="s5" ng-repeat="item in claimentlist track by $index">{{item.name}}<span ng-if="$index < claimentlist.length - 1"> & </span> </span>.
             </p>
             <p style="text-indent: 0pt; text-align: left"><br /></p>
         </li>
@@ -660,6 +662,8 @@
                             populateData(holder, result,$scope.heir,isDeceased,doc);
                         }
 
+                         const claimentIds = $scope.claimentlist.map(item => item.id);
+                        $scope.nonClaimHeirs = $scope.heirlist.filter(heir => !claimentIds.includes(heir.id));
                                 hideLoader();
                                   }, function (error) {
                         console.error('Error loading Legal Heirs:', error);
@@ -698,10 +702,19 @@
                     today: new Date(obj.today),
 					condition: obj.condition,
 					noc: JSON.parse(obj.noc),
+                    firstHolder: obj.firstHolder,
+                    secondHolder: obj.secondHolder,
+                    thirdHolder: obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
                 };
                 $scope.heirlist = $scope.data.heirs;
                 $scope.claimentlist = $scope.data.claiment;
 				$scope.noc = $scope.data.noc;
+
+                 const claimentIds = $scope.claimentlist.map(item => item.id);
+                $scope.nonClaimHeirs = $scope.heirlist.filter(heir => !claimentIds.includes(heir.id));
 
                 id = result.stockId;
                 checkData();
@@ -724,6 +737,12 @@
                     place: 'Vadodara',
                     today: new Date(),
                     condition: isDeceased,
+                    firstHolder: result.firstHolderName,
+                    secondHolder: result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    firstAlive: result?.firstHolderData?.dateOfDeath,
+                    secondAlive: result?.secondHolderData?.dateOfDeath,
+                    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                 };
             }
         };

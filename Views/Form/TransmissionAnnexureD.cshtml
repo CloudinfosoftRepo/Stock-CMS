@@ -370,7 +370,11 @@ table {
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
     <p style="text-indent: 0pt; text-align: left" />
     <p style="padding-left: 38pt; text-indent: 0pt; text-align: left">
-                That Mr. /Mrs <span class="s5">@* Gema Traeg *@{{data.sonof}}</span>@@ (“the deceased holder”) held the following securities in his / her name as single holder:
+                That Mr. /Mrs <span class="s5">
+                    @* Gema Traeg *@<span ng-if="data.firstAlive">{{data.firstHolder}}</span>
+                    <span ng-if="data.secondAlive">& {{data.secondHolder}}</span>
+                    <span ng-if="data.thirdAlive">& {{data.thirdHolder}}</span>
+                </span>@@ (“the deceased holder”) held the following securities in his / her name as @* single *@ holder:
     </p>
     
     <p style="padding-top: 1pt; text-indent: 0pt; text-align: left"><br /></p>
@@ -742,6 +746,12 @@ table {
                     place: obj.place,
                     today: new Date(obj.today),
 					condition: obj.condition,
+                    firstHolder: obj.firstHolder,
+                    secondHolder: obj.secondHolder,
+                    thirdHolder: obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
                 };
                 $scope.radiochk = $scope.data.selectedoptions;
                 $scope.heirlist = $scope.data.heirs;
@@ -768,6 +778,12 @@ table {
                     place: $scope.data && $scope.data.place || 'Vadodara',
                     today: new Date(),
                     condition: isDeceased,
+                    firstHolder: result.firstHolderName,
+                    secondHolder: result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    firstAlive: result?.firstHolderData?.dateOfDeath,
+                    secondAlive: result?.secondHolderData?.dateOfDeath,
+                    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                 };
             }
         };

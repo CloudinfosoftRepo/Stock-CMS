@@ -217,11 +217,27 @@
         <p style="padding-top: 10pt; text-indent: 0pt; text-align: left;"><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; line-height: 108%; text-align: justify;">
             I / we <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                {{data.firstHolder}} &
-                {{data.secondHolder}} &
-                {{data.thirdHolder}}
-            </u><u ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
-                {{h.name}} &
+                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder">
+                    &
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder">
+                    &
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+
+            </u><u ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
+
             </u> the holder(s) of the securities particulars of which are given hereunder,
             <u>
                 <i><b> do not wish to nominate </b></i>
@@ -395,16 +411,16 @@
         <p style="text-indent: 0pt; text-align: left;"><br /></p>
         <div ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
         <p style="padding-top: 2pt; padding-left: 11pt; text-indent: 0pt; line-height: 213%; text-align: left;">Name(s) and Address of Security holders(s) ature(s)Sole / First Holder Name</p>
-        <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;">{{data.firstHolder}}<br />{{data.firstHolderaddress}}<br /><br /></p>
+            <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;"><span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</span><br />{{data.firstHolderaddress}}<br /><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Second Holder Name</p>
-        <p style="text-indent: 0pt; text-align: left;">{{data.secondHolder}}<br />{{data.secondHolderaddress}}<br /><br /></p>
+            <p style="text-indent: 0pt; text-align: left;"><span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span><br />{{data.secondHolderaddress}}<br /><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Third Holder Name</p>
-        <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;">{{data.thirdHolder}}<br />{{data.thirdHolderaddress}}<br /></p>
+            <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;"><span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span><br />{{data.thirdHolderaddress}}<br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Sign</p>
         </div>
         <div ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
             <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Claiment Name</p>
-            <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;">{{h.name}}<br />{{h.addressAsPerAadhar}}<br /><br /></p>
+            <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;"><span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">{{h.name}}</span><br />{{h.addressAsPerAadhar}}<br /><br /></p>
             <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Sign</p>
         </div>
         <p style="padding-top: 4pt; text-indent: 0pt; text-align: left;"><br /></p>
@@ -564,6 +580,9 @@
                     witnessaddress: obj.witnessaddress,
                     condition: obj.condition,
 					heirs: obj.heirs,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
                 };
                                 id = result.stockId;
                                 $scope.shares = JSON.parse($scope.data.jsondata);
@@ -592,10 +611,13 @@
                     firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
                     secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
                     thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
+                    firstAlive: result?.firstHolderData?.dateOfDeath,
+                    secondAlive: result?.secondHolderData?.dateOfDeath,
+                    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                     witnessname: 'Shreyash Chhagani',
                     witnessaddress: 'B204 Ratnadeep Greens Apartments, Nr. M M Vohra show room, Dabhoi Road Somatalav, Vadodara, Gujarat, India 390025',
                     condition: isDeceased,
-                     heirs: isDeceased ? heirlist.map(h => ({ name: h.name, address: h.addressAsPerAadhar })) : [],
+                     heirs: isDeceased ? heirlist.map(h => ({ name: h.name, address: h.addressAsPerAadhar, dateOfDeath: h.dateOfDeath })) : [],
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
             }

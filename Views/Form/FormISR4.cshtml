@@ -1280,7 +1280,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.firstHolder}}
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</span>
                         </td>
                         <td style="
                         width: 143pt;
@@ -1293,7 +1293,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.secondHolder}}
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span>
                         </td>
                         <td style="
                         width: 107pt;
@@ -1306,7 +1306,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.thirdHolder}}
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span>
                         </td>
                     </tr>
                     <tr style="height: 42pt;">
@@ -1554,7 +1554,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.heirs[0].name}}
+                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.heirs[0].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[0].name}}</span>
                         </td>
                         <td style="
                         width: 163pt;
@@ -1567,7 +1567,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[1].name}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.heirs[1].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[1].name}}</span>
                         </td>
                         <td style="
                         width: 93pt;
@@ -1580,7 +1580,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[2].name}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.heirs[2].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[2].name}}</span>
                         </td>
                     </tr>
                     <tr style="height: 56pt;">
@@ -1876,8 +1876,11 @@
                     secondHolderaddress:obj.secondHolderaddress,
                     thirdHolderaddress:obj.thirdHolderaddress,
                         firstHolderpincode: obj.firstHolderpincode,
-    secondHolderpincode: obj.secondHolderpincode,
-    thirdHolderpincode: obj.thirdHolderpincode,
+                    secondHolderpincode: obj.secondHolderpincode,
+                    thirdHolderpincode: obj.thirdHolderpincode,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
                     faceValue: obj.faceValue,
                     unclaimedqty: obj.unclaimedqty,
                     condition: obj.condition,
@@ -1929,10 +1932,13 @@
                             firstHolderpincode: result.firstHolderData ? result.firstHolderData.pinCode : '',
                             secondHolderpincode: result.secondHolderData ? result.secondHolderData.pinCode : '',
                             thirdHolderpincode: result.thirdHolderData ? result.thirdHolderData.pinCode : '',
+                            firstAlive: result?.firstHolderData?.dateOfDeath,
+                            secondAlive: result?.secondHolderData?.dateOfDeath,
+                            thirdAlive: result?.thirdHolderData?.dateOfDeath,
                             faceValue: result.faceValue,
                              jsondata: result.stockJson,
                              condition: isDeceased,
-                             heirs: isDeceased ? heirlist.map(h => ({ name: h.name, address: h.addressAsPerAadhar, pincode: h.pinCode, pan: h.pan })) : [],
+                             heirs: isDeceased ? heirlist.map(h => ({ name: h.name, address: h.addressAsPerAadhar, pincode: h.pinCode, pan: h.pan, dateOfDeath: h.dateOfDeath })) : [],
                         };
                          $scope.shares = JSON.parse($scope.data.jsondata);
             }
