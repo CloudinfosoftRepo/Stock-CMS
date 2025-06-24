@@ -801,6 +801,18 @@
 
                 $http.get(url).then(function (response) {
          var bank = response.data[0];
+          $scope.bank = bank;
+                if (!bank) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Bank details not found for the selected holder.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    hideLoader();
+                    return;
+                }
+
                 $scope.data = {
                     docid: holder.id,
                    customerName : holder.name,
@@ -864,6 +876,18 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                  if (!$scope.bank) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Bank details not found for the selected holder.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    hideLoader();
+                    return;
+                }
+
                  $scope.processdone = true;
              let jsonString = JSON.stringify($scope.data, null, 2);
              var data ={

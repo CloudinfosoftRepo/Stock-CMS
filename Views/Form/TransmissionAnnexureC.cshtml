@@ -3259,6 +3259,18 @@
                  if($scope.data.taxcountry || $scope.data.taxidnumber ||  $scope.data.identitytype){
                      $scope.data.taxresident = 'Yes ';
                  }
+
+                 if (!$scope.bank) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Bank details not found for the selected holder.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    hideLoader();
+                    return;
+                }
+
                  hideLoader();
                 $scope.hDiv = true;
                 $http.get('/Enquiry/GetStocksById/'+id).then(function (response) {
@@ -3416,6 +3428,18 @@
         //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                 if (!$scope.bank) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Bank details not found for the selected holder.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    hideLoader();
+                    return;
+                }
+
                  $scope.processdone = true;
                   var arr = angular.copy($scope.doclist);
                  $scope.data.docattach= JSON.stringify(arr,null,2);

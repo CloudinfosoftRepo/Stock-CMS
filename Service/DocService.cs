@@ -113,7 +113,7 @@ namespace Stock_CMS.Service
                     data.IsActive = existingProduct.IsActive;
                     data.Dob = data.Dob != null ? _normalizeModel.ConvertToIST(data.Dob) : existingProduct.Dob;
                     data.DateOfDeath = data.DateOfDeath != null ? _normalizeModel.ConvertToIST(data.DateOfDeath) : existingProduct.DateOfDeath;
-
+                    data.WitnessJson = existingProduct.WitnessJson;
 
                     if (data.AadharFile != null)
                     {

@@ -112,6 +112,11 @@
                ng-class="{'active': search === 'IEPF Rejected'}" ng-click="filter('IEPF Rejected')"
                role="tab" aria-selected="{{search === 'IEPF Rejected' ? 'true' : 'false'}}">IEPF Rejected</a>
 
+            <!-- Query Tab -->
+            <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+                ng-class="{'active': search === 'Query'}" ng-click="filter('Query')"
+                role="tab" aria-selected="{{search === 'Query' ? 'true' : 'false'}}">Query</a>
+
 			<!-- DRF Form Submitted Tab -->
             <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
                ng-class="{'active': search === 'DRF Form Submitted'}" ng-click="filter('DRF Form Submitted')"
@@ -172,9 +177,9 @@
                                         <td class="cell">{{ $index + 1 }}</td>
                                     <td ng-click="manageTrackingDoc(stock.id)" class="cell nav-style">{{ stock.companyName }}</td>
                                     <td class="cell">{{ stock.customerName }}</td>
-                                        <td class="cell">{{ stock.firstHolderName }}</td>
-                                        <td class="cell">{{ stock.secondHolderName }}</td>
-                                        <td class="cell">{{ stock.thirdHolderName }}</td>
+                                        <td class="cell" ng-style="{'color': stock.firstHolderData.dateOfDeath ? 'red' : 'inherit'}">{{ stock.firstHolderName }} <span ng-if="stock.firstHolderData.dateOfDeath">(D)</span></td>
+                                        <td class="cell" ng-style="{'color': stock.secondHolderData.dateOfDeath ? 'red' : 'inherit'}">{{ stock.secondHolderName }} <span ng-if="stock.secondHolderData.dateOfDeath">(D)</span></td>
+                                        <td class="cell" ng-style="{'color': stock.thirdHolderData.dateOfDeath ? 'red' : 'inherit'}">{{ stock.thirdHolderName }}  <span ng-if="stock.thirdHolderData.dateOfDeath">(D)</span></td>
                                         <td class="cell">{{ stock.folioNo }}</td>
                                         <td class="cell">{{ stock.claimStatus  }}</td>
                                     <td class="cell">{{ stock.actualQty }}</td>

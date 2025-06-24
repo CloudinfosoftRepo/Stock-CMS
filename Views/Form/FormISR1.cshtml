@@ -1949,6 +1949,18 @@
     }
 
     function populateData(holder, result, heirlist, isDeceased, bank) {
+             $scope.bank = bank;
+               if (!bank) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Bank details not found for the selected holder.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    hideLoader();
+                    return;
+                }
+
         $scope.data = {
             docid: holder.id,
             customerName: holder.nameAsPerAadhar,
@@ -2005,6 +2017,18 @@
      //Genrate Form
          $scope.genrateForm = function () {
              if(id){
+
+                          if (!$scope.bank) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Bank details not found for the selected holder.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        hideLoader();
+                        return;
+                    }
+
                  $scope.processdone = true;
                   if($scope.data.jsondata == undefined){
                      Swal.fire({

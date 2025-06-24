@@ -95,5 +95,7 @@ public static class ConfigureServices
         services.AddTransient<IPermissionRepository, PermissionRepository>();
 
         services.AddTransient<IRelationMappingRepository, RelationMappingRepository>();
+
+        services.AddTransient<IFileService, FileService>();
     }
 }

@@ -11,13 +11,16 @@ namespace Stock_CMS.Controllers
         private readonly ILogger<DashboardController> _logger;
         private readonly IStockService _stockService;
         private readonly IPermissionService _permissionService;
+        private readonly IFileService _fileService;
+        private readonly string _backupPath = @"C:\Program Files (x86)\Plesk\Databases\MSSQL\MSSQL16.MSSQLSERVER2022\MSSQL\Backup\STOCKS.bak"; // Update with your path
 
-        public DashboardController(ICustomerService customerService, ILogger<DashboardController> logger, IStockService stockService, IPermissionService permissionService)
+        public DashboardController(ICustomerService customerService, ILogger<DashboardController> logger, IStockService stockService, IPermissionService permissionService, IFileService fileService)
         {
             _customerService = customerService;
             _logger = logger;
             _stockService = stockService;
             _permissionService = permissionService;
+            _fileService = fileService;
         }
 
         public async Task<IActionResult> Dashboard()
@@ -124,6 +127,28 @@ namespace Stock_CMS.Controllers
                 {
                     Message = ex.Message
                 });
+            }
+        }
+
+        //Database BackUp and Restore methods can be added here if needed in future
+        [HttpGet]
+        public IActionResult CreateAndDownloadBackup()
+        {
+            try
+            {
+                _fileService.CreateBackup(_backupPath);
+                if (!System.IO.File.Exists(_backupPath))
+                {
+                    return NotFound();
+                }
+                byte[] fileBytes = System.IO.File.ReadAllBytes(_backupPath);
+                string fileName = Path.GetFileName(_backupPath);
+                return File(fileBytes, "application/octet-stream", fileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return Ok(ex.Message);
             }
         }
     }

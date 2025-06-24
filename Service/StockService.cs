@@ -65,6 +65,8 @@ namespace Stock_CMS.Service
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
                 data.IsActive = isExist.IsActive;
+                data.StockJson = isExist.StockJson;
+                data.NomineeJson = isExist.NomineeJson;
 
                 List<StockDto> updateList = new List<StockDto> { data };
                 var result = await _StockRepository.UpdateStock(updateList);
@@ -166,6 +168,16 @@ namespace Stock_CMS.Service
 				return x;
 			});
 
+            foreach (var item in Stocks)
+            {
+                var holder1 = await _docRepository.GetDocById(item.FirstHolderId ?? 0);
+                item.FirstHolderData = holder1.FirstOrDefault();
+                var holder2 = await _docRepository.GetDocById(item.SecondHolderId ?? 0);
+                item.SecondHolderData = holder2.FirstOrDefault();
+                var holder3 = await _docRepository.GetDocById(item.ThirdHolderId ?? 0);
+                item.ThirdHolderData = holder3.FirstOrDefault();
+            }
+
             var total = Stocks.Sum(item => item.Qty * item.Rate);
 
             var result = new StocksDetailsDto()
@@ -173,6 +185,8 @@ namespace Stock_CMS.Service
                 TotalAmount = total,
                 stocks = Stocks,
             };
+
+            
 
             //var companyid = result.Select(x => x?.CompanyId).Distinct().ToArray();
             //var company =  await _companyRepository.GetCompanyByIds(companyid);
@@ -461,6 +475,7 @@ namespace Stock_CMS.Service
                 iepf = allstocks.Where(x => x.ClaimStatus.ToLower() == "IEPF Post Receipt Pending".ToLower()).Count(),
                 iprs = allstocks.Where(x => x.ClaimStatus.ToLower() == "IEPF".ToLower()).Count(),
                 iepfrejected = allstocks.Where(x => x.ClaimStatus.ToLower() == "iepf rejected".ToLower()).Count(),
+                query = allstocks.Where(x => x.ClaimStatus.ToLower() == "query".ToLower()).Count(),
                 drf = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf form submitted".ToLower()).Count(),
                 drfreject = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf rejected".ToLower()).Count(),
                 demate = allstocks.Where(x => x.ClaimStatus.ToLower() == "demated".ToLower()).Count(),
