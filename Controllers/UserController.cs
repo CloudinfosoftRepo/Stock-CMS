@@ -213,5 +213,35 @@ namespace Stock_CMS.Controllers
                 return Json(ex.Message);
             }
         }
+
+        //lock/unlock user
+        [HttpPost]
+        public async Task<JsonResult> LockOrUnlockUserbyColumn([FromBody] UserDto user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                user.UpdatedBy = int.Parse(userId);
+                user.UpdatedAt = DateTime.Now;
+                var result = await _userService.LockOrUnlockUserbyColumn(user);
+                string message = result == -2 ? "No record Found." :
+                  result == -1 ? "User already exists." :
+                  result == 0 ? "Failed to lock/unlock User." :
+                  "User Lock/Unlock successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Delete");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

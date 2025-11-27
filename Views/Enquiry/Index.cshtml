@@ -5,6 +5,7 @@
     bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
     bool delete = list?.Any(x => x.Action.ToUpper() == "DELETE" && x.IsEnabled) ?? false;
     bool cell = list?.Any(x => x.Action.ToUpper() == "CELL" && x.IsEnabled) ?? false;
+    bool payment = list?.Any(x => x.Action.ToUpper() == "PAYMENT" && x.IsEnabled) ?? false;
 }
 <html lang="en" ng-app="Stock-CMS">
 
@@ -205,11 +206,14 @@
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openStockModal(stock)" title="Edit stock">
                                                 <i class="bi bi-pencil"></i>
                                             </span>
-
-                                            <span class="btn-sm app-btn" style="color:green;font-size:large;" ng-style="{opacity: stock.isPaid ? '1' : '0.2'}" ng-click="paymentdone(stock)" title="Payment Status">
-                                                <i class="bi bi-patch-check"></i>
-                                            </span>
-                                        
+                                        }
+                                            @if (payment)
+                                            {
+                                                <span class="btn-sm app-btn" style="color:green;font-size:large;" ng-style="{opacity: stock.isPaid ? '1' : '0.2'}" ng-click="paymentdone(stock)" title="Payment Status">
+                                                    <i class="bi bi-patch-check"></i>
+                                                </span>
+                                            }
+                                        @if(edit){
                                             <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openFormModal(stock.id,stock.folioNo,stock.qty)" title="Add stock aquisition data">
                                             <i class="bi bi-file-earmark-bar-graph"></i>
                                         </span>
@@ -416,6 +420,7 @@
                                 <th class="cell">Certificate No</th>
                                 <th class="cell">Distinctive Nos From</th>
                                 <th class="cell">Distinctive Nos To</th>
+                                <th class="cell sticky-action text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -426,6 +431,11 @@
                                 <td class="cell">{{ f.certificateNo }}</td>
                                 <td class="cell">{{ f.distinctiveNosFrom }}</td>
                                 <td class="cell">{{ f.distinctiveNosTo }}</td>
+                                <td class="sticky-action text-center">
+                                    <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteaquisition(f)" title="Delete Aquisition Data">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -938,12 +948,35 @@ $scope.calculateqty = function() {
             $('#formModal').modal('show');
         };
 
+                $scope.deleteaquisition = function (stock){
+                    const index = $scope.stockList.indexOf(stock);
+
+                    if (index !== -1) {
+                        // Subtract from the total sum
+                        $scope.Sum -= $scope.stockList[index].actualQty;
+
+                        // Remove the stock entry
+                        $scope.stockList.splice(index, 1);
+
+                        // If currently editing the same stock, reset form
+                        if ($scope.isEditing && $scope.jsonData.folioNo === stock.folioNo &&
+                            $scope.jsonData.certificateNo === stock.certificateNo &&
+                            $scope.jsonData.distinctiveNosFrom === stock.distinctiveNosFrom &&
+                            $scope.jsonData.distinctiveNosTo === stock.distinctiveNosTo) {
+                            $scope.jsonData = {};
+                            $scope.isEditing = false;
+                           
+                        }
+                        $scope.SaveStockJson(1)
+                    }
+                }
+
         $scope.editstockJson = function (stockdata,i){
              $scope.isEditing = true;
             $scope.jsonData = angular.copy(stockdata);
         }
 
-        $scope.SaveStockJson = function() {
+        $scope.SaveStockJson = function(str = null) {
             $scope.processdone = true;
             if (isProcessing) return;
             // if ($scope.stockList.length < 2) {
@@ -957,9 +990,23 @@ $scope.calculateqty = function() {
             //     return;
             // };
             isProcessing = true;
-           $scope.stockList[0].folioNo = $scope.currentStockfolioNo;
-            $scope.stockList.forEach(item => delete item["$$hashKey"]);
-            let jsonString = JSON.stringify($scope.stockList, null, 2);
+
+                   let stockListToSend = [];
+
+            if (Array.isArray($scope.stockList) && $scope.stockList.length > 0) {
+                // Set folioNo for the first record
+                $scope.stockList[0].folioNo = $scope.currentStockfolioNo;
+
+                // Remove AngularJS internal $$hashKey properties
+                stockListToSend = $scope.stockList.map(item => {
+                    const copy = angular.copy(item);
+                    delete copy["$$hashKey"];
+                    return copy;
+                });
+            }
+
+            // Convert to JSON string (even if empty)
+            const jsonString = JSON.stringify(stockListToSend, null, 2);
 
             var stockdata = {
                         id: $scope.currentStockId,
@@ -987,7 +1034,9 @@ $scope.calculateqty = function() {
                     $scope.processdone = false;
                     $scope.loadStocks();
                     $scope.stockList = [];
+                            if(str == null){
                     $('#formModal').modal('hide');
+                            }
                 } else {
                     Swal.fire({
                         title: 'Error!',

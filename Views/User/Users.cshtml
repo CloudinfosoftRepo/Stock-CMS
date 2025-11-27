@@ -4,6 +4,16 @@
     bool add = list?.Any(x => x.Action.ToUpper() == "ADD" && x.IsEnabled) ?? false;
     bool delete = list?.Any(x => x.Action.ToUpper() == "DELETE" && x.IsEnabled) ?? false;
 
+    var role = "";
+    try
+    {
+        role = Context.Request.Cookies["Role"].ToString();
+    }
+    catch
+    {
+        Context.Response.Redirect("/Home");
+    }
+
 }
 <!DOCTYPE html>
 <html lang="en" ng-app="Stock-CMS" >
@@ -113,6 +123,16 @@
                                                 <i class="bi bi-pencil"></i>
                                             </span>
                                         }
+                                        @if (role == "Admin" || role == "Super Admin")
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm app-btn text-success fs-5"
+                                                    ng-click="openLock(u)"
+                                                    title="{{ u.isLock ? 'Unlock User' : 'Lock User' }}">
+                                                <i class="bi" ng-class="u.isLock ? 'bi-lock-fill' : 'bi-unlock-fill'"></i>
+                                            </button>
+                                        }
+                                       
                                         @if (delete)
                                         {
                                             <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteUser(u)" title="Delete User">
@@ -299,6 +319,42 @@
                     }
                 });
             };
+
+             // Lock/Unlock User
+               $scope.openLock = function (user) {
+
+            // Determine the action without changing isLock yet
+            const willLock = !user.isLock;
+
+            const actionText = willLock ? 'lock' : 'unlock';
+            const confirmText = `Yes, ${actionText} the user!`;
+            const successText = `User has been ${willLock ? 'locked' : 'unlocked'}.`;
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You are about to ${actionText} this user.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: confirmText,
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Toggle only after confirmation
+                    user.isLock = willLock;
+
+                    $http.post('/User/LockOrUnlockUserbyColumn', user).then(function (response) {
+                        Swal.fire({
+                            title: response.data.success ? 'Success' : 'Error',
+                            text: response.data.success ? successText : 'An error occurred.',
+                            icon: response.data.success ? 'success' : 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.loadUsers();
+                    });
+                }
+                // else do nothing—no change to isLock
+            });
+        };
 
             // Initial load
             $scope.loadUsers();

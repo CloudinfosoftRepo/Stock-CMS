@@ -689,7 +689,28 @@
                             $scope.processdone = false;
                                return;
                            }
-                           
+
+                        if($scope.currentDoc.pan && $scope.currentDoc.pan.length !== 10 ){
+                            Swal.fire({
+                            title: 'Error!',
+                            text: 'Pan should be 10 digits long.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                        $scope.processdone = false;
+                        return;
+                    }
+
+                        if($scope.currentDoc.aadhar && $scope.currentDoc.aadhar.length !== 12 ){
+                            Swal.fire({
+                            title: 'Error!',
+                            text: 'Aadhar should be 12 digits long.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                        $scope.processdone = false;
+                        return;
+                    }
                if (id)
                     {
                         if (isProcessing) return;
@@ -706,13 +727,13 @@
                     formData.append('aadhar', $scope.currentDoc.aadhar ? $scope.currentDoc.aadhar : '');
                     formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar ? $scope.currentDoc.nameAsPerAadhar :'');
                     formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar ? $scope.currentDoc.addressAsPerAadhar : '');
-                    formData.append('dob', $scope.currentDoc.dob ? $scope.currentDoc.dob.toISOString().split('T')[0] : '');
+                    formData.append('dob', $scope.currentDoc.dob ? $scope.currentDoc.dob.toISOString() : '');
                     formData.append('email', $scope.currentDoc.email ? $scope.currentDoc.email : '');
                     formData.append('isClaiment', $scope.status == 'Claiment' ? true : false);
                     formData.append('isNoc', $scope.status == 'NOC' ? true : false);
                     formData.append('relationWithDead', $scope.currentDoc.relationWithDead ? $scope.currentDoc.relationWithDead :'');
                     formData.append('isDead', $scope.currentDoc.isDead ? true : false);
-                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString().split('T')[0] : '');
+                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString() : '');
                     formData.append('nameAsPerDeathCerti',  $scope.currentDoc.nameAsPerDeathCerti ?? '');
                     formData.append('placeOfDeath',  $scope.currentDoc.placeOfDeath ?? '');
                     formData.append('state', $scope.currentDoc.state ? $scope.currentDoc.state :'');

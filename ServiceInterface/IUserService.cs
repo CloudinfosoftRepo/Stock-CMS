@@ -18,5 +18,7 @@ namespace Stock_CMS.ServiceInterface
 
         Task<long> UpdateUserbyColumn(UserDto data);
 
+        Task<long> LockOrUnlockUserbyColumn(UserDto data);
+
     }
 }

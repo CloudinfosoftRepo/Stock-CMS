@@ -262,7 +262,7 @@ td:nth-child(5), td:nth-child(6) {
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="selected" class="form-label">Select Certificate No</label>
-                                <select class="form-select" ng-options="s.certificateNo as s.certificateNo for s in shares" ng-model="selected" ng-change="AddSelectedShare(selected)">
+                                <select class="form-select" ng-options="s as (s.certificateNo + ' - ' + s.actualQty + ' shares') for s in shares track by (s.certificateNo + '-' + s.actualQty)" ng-model="selected" ng-change="AddSelectedShare(selected)">
                                     <option selected disabled value="">Select Shares</option>
                                 </select>
                             </div>
@@ -807,21 +807,27 @@ td:nth-child(5), td:nth-child(6) {
         $scope.processdone = false;
 
     $scope.AddSelectedShare = function(shr) {
-      if (shr) {
-        var sShare = $scope.shares.find(x => x.certificateNo === shr);
+            if (shr) {
+      // Expect shr to be an object containing certificateNo and actualQty
+      var sShare = $scope.shares.find(
+        x => x.certificateNo === shr.certificateNo && x.actualQty === shr.actualQty
+      );
 
-        if (sShare) {
-          // Add the selected share to the selectedShares list
-          $scope.selectedShares.push(sShare);
+      if (sShare) {
+        // Add the selected share to the selectedShares list
+        $scope.selectedSharesQty += sShare.actualQty;
+        $scope.selectedShares.push(sShare);
 
-          // Remove the selected share from the available shares list
-          $scope.shares = $scope.shares.filter(x => x.certificateNo !== shr);
+        // Remove the selected share from the available shares list
+        $scope.shares = $scope.shares.filter(
+          x => !(x.certificateNo === shr.certificateNo && x.actualQty === shr.actualQty)
+        );
 
-          // Reset the selected model
-          $scope.selected = null;
-          $scope.message = shr + ' is Added';
-        }
+        // Reset the selected model
+        $scope.selected = null;
+        $scope.message = shr.certificateNo + ' (' + shr.actualQty + ' qty) is Added';
       }
+    }
     };
 
          // Load Customers
@@ -1075,7 +1081,7 @@ td:nth-child(5), td:nth-child(6) {
 
         //Function
         $scope.printDiv = function (divId) {
-            var css ='<style type="text/css">* {margin: 0; padding: 0; text-indent: 0;} h2 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt;} .s1 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} .s3 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} p {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt;} .s4 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt;} .s6 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt;} .s7 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 10pt;} .s8 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt;} .s10 {color: #d9d9d9; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt;} h1 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt;} .s11 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 12pt;} .s12 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} li {display: block;} #l1 {padding-left: 0pt; counter-reset: c1 1;} #l1 > li > *:first-child:before {counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt;} #l1 > li:first-child > *:first-child:before {counter-increment: c1 0;} table, tbody {vertical-align: top; overflow: visible;} table {border-collapse: collapse; margin-left: 43.5pt;} th, td {border: 1px solid #babdbf; padding: 10px;} th {width: 100pt;} td:nth-child(2) {width: 49pt;} td:nth-child(3) {width: 57pt;} td:nth-child(4) {width: 78pt;} td:nth-child(5), td:nth-child(6) {width: 70.5pt}</style >';
+            var css ='<style type="text/css">* {margin: 0; padding: 0; text-indent: 0;} h2 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt;} .s1 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} .s3 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} p {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin: 0pt;} .s4 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt;} .s6 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt;} .s7 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 10pt;} .s8 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt;} .s10 {color: #d9d9d9; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 11pt;} h1 {color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt;} .s11 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 12pt;} .s12 {color: black; font-family: "Times New Roman", serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 12pt;} li {display: block;} #l1 {padding-left: 0pt; counter-reset: c1 1;} #l1 > li > *:first-child:before {counter-increment: c1; content: counter(c1, decimal) ". "; color: black; font-family: Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt;} #l1 > li:first-child > *:first-child:before {counter-increment: c1 0;} table, tbody {vertical-align: top; overflow: visible;} table {border-collapse: collapse; margin-left: 43.5pt;} th, td {border: 1px solid #babdbf; padding: 10px;} th {width: 100pt;} td:nth-child(2) {width: 49pt;} td:nth-child(3) {width: 57pt;} td:nth-child(4) {width: 78pt;} td:nth-child(5), td:nth-child(6) {width: 70.5pt} @@media print {.hide-print {display: none !important;}}</style >';
             var innerContents = document.getElementById(divId).innerHTML;
             var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
             popupWinindow.document.open();

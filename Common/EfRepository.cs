@@ -183,7 +183,7 @@ namespace Stock_CMS.Common
                 await _dbContext.AddRangeAsync(entities);
                 await _dbContext.SaveChangesAsync();
 
-                return mapper.Map<IEnumerable<TModel>>(entities);
+                return _mapper.Map<IEnumerable<T>, IEnumerable<TModel>>(entities);
             }
             catch(Exception ex)
             {

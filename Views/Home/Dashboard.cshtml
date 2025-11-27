@@ -15,6 +15,7 @@
 @{
 	var list = Model as IEnumerable<ActionItem>;
 	bool unpaid = list?.Any(x => x.Action.ToUpper() == "UNPAID" && x.IsEnabled) ?? false;
+	bool evaluation = list?.Any(x => x.Action.ToUpper() == "EVALUATION" && x.IsEnabled) ?? false;
 	bool database = list?.Any(x => x.Action.ToUpper() == "DATABASE" && x.IsEnabled) ?? false;
 }
 <html lang="en" ng-app="Stock-CMS">
@@ -68,6 +69,16 @@
 					</div><!--//app-card-->
 				</div><!--//col-->
 				<div class="col-6 col-lg-3 nav-link">
+					<div class="app-card app-card-stat shadow-sm h-100" ng-click="openFormModal('document pending')">
+						<div class="app-card-body p-3 p-lg-4">
+							<h4 class="stats-type mb-1">Document Pending</h4>
+							<div class="stats-figure">{{data.documentpending}}</div>
+							<div class="stats-meta">New</div>
+						</div><!--//app-card-body-->
+						<a class="app-card-link-mask" href="#"></a>
+					</div><!--//app-card-->
+				</div><!--//col-->
+				<div class="col-6 col-lg-3 nav-link">
 					<div class="app-card app-card-stat shadow-sm h-100" ng-click="openFormModal('pending')">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Pending</h4>
@@ -87,19 +98,11 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf post receipt pending')">
-					<div class="app-card app-card-stat shadow-sm h-100">
-						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">IEPF Post Receipt Pending</h4>
-							<div class="stats-figure">{{data.iepf}}</div>
-							<div class="stats-meta">New</div>
-						</div><!--//app-card-body-->
-						<a class="app-card-link-mask" href="#"></a>
-					</div><!--//app-card-->
-				</div><!--//col-->
 			</div>
 
-			<div class="row g-4 mb-4" >
+			<div class="row g-4 mb-4">
+				
+
 				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
@@ -110,16 +113,18 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf rejected')">
+
+				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('iepf claim pending')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">IEPF Rejected</h4>
-							<div class="stats-figure">{{data.iepfrejected}}</div>
+							<h4 class="stats-type mb-1">IEPF Claim Pending</h4>
+							<div class="stats-figure">{{data.icp}}</div>
 							<div class="stats-meta">New</div>
 						</div><!--//app-card-body-->
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
+				
 				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('query')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
@@ -130,6 +135,7 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
+			
 				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('drf form submitted')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
@@ -152,29 +158,31 @@
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-			
+		
 				<div class="col-6 col-lg-3 nav-link" ng-click="openFormModal('demated')">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">Demated</h4>
-							<div class="stats-figure">{{data.demate}}</div>
+							<h4 class="stats-type mb-1">Demated - {{data.demate}}</h4>
+							<div class="stats-figure" format-to-crore="data.dematedevel"></div>
+							@* <div class="stats-figure">{{data.dematedevel}}</div> *@
 							<div class="stats-meta">New</div>
 						</div><!--//app-card-body-->
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
-				
-			
+				@if (evaluation)
+				{
 				<div class="col-6 col-lg-3 nav-link">
 					<div class="app-card app-card-stat shadow-sm h-100">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Total Evaluation</h4>
-							<div class="stats-figure" format-to-crore="data.totalevel"></div>
+							<div class="stats-figure" format-to-crore="data.grandtotalevel"></div>
 							<div class="stats-meta">New</div>
 						</div><!--//app-card-body-->
 						<a class="app-card-link-mask" href="#"></a>
 					</div><!--//app-card-->
 				</div><!--//col-->
+				}
 				@if (unpaid)
 				{
 					<div class="col-6 col-lg-3 nav-link" ng-click="loadUnpaidAmount()">
@@ -192,6 +200,41 @@
 			<div class="row g-4 mb-4">
 				<div class="col-24 col-lg-12">
 					<h5>IEPF</h5>
+					<nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-1">
+						@* <a ng-class="{'active': status === 'ALL'}" ng-click="filteriepf('ALL')">All</a> *@
+
+						<!-- All Tab -->
+						<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+						   ng-class="{'active': status === 'ALL'}" ng-click="filteriepf('ALL')"
+						   role="tab" aria-selected="{{status === 'ALL' ? 'true' : 'false'}}">All</a>
+
+						<!-- PEVR Tab -->
+						<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+						   ng-class="{'active': status === 'PEVR'}" ng-click="filteriepf('PEVR')"
+						   role="tab" aria-selected="{{status === 'PEVR' ? 'true' : 'false'}}">PEVR</a>
+
+						<!-- UNDER PROCESS Tab -->
+						<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+						   ng-class="{'active': status === 'UNDER PROCESS'}" ng-click="filteriepf('UNDER PROCESS')"
+						   role="tab" aria-selected="{{status === 'UNDER PROCESS' ? 'true' : 'false'}}">UNDER PROCESS</a>
+
+						<!-- APPROVED Tab -->
+						<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+						   ng-class="{'active': status === 'APPROVED'}" ng-click="filteriepf('APPROVED')"
+						   role="tab" aria-selected="{{status === 'APPROVED' ? 'true' : 'false'}}">APPROVED</a>
+
+						<!-- REJECTED Tab -->
+						<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+						   ng-class="{'active': status === 'REJECTED'}" ng-click="filteriepf('REJECTED')"
+						   role="tab" aria-selected="{{status === 'REJECTED' ? 'true' : 'false'}}">REJECTED </a>
+
+						<!-- IEPF Post Receipt Pending Tab -->
+						<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+						   ng-class="{'active': status === 'IEPF Post Receipt Pending'}" ng-click="filteriepf('IEPF Post Receipt Pending')"
+						   role="tab" aria-selected="{{status === 'IEPF Post Receipt Pending' ? 'true' : 'false'}}">IEPF Post Receipt Pending</a>
+
+						@* <a ng-class="{'active': status === 'PEVR'}" ng-click="filteriepf('PEVR')">PEVR</a> *@
+					</nav>
 					<div class="table-responsive">
 						<table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
 							<thead>
@@ -203,15 +246,19 @@
 									<th class="cell">FirstHolder Name</th>
 									<th class="cell">Folio No</th>
 									<th class="cell">Claim Status</th>
+									<th class="cell">IEPF Status</th>
 									<th class="cell">Qty</th>
 									<th class="cell">SRN Date</th>
 									<th class="cell">Process</th>
+									<th class="cell">Remark</th>
 									<th class="cell">Date</th>
+									<th class="cell">IEPF Username</th>
+									<th class="cell">IEPF Password</th>
 									<th class="cell">Action</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="tmp in stocks">
+								<tr ng-repeat="tmp in stocks | filter: iepfFilter">
 									<td class="cell">{{ $index + 1 }}</td>
 									<td class="cell">{{tmp.customerName}}</td>
 									<td class="cell">{{tmp.companyName}}</td>
@@ -219,10 +266,14 @@
 									<td class="cell">{{tmp.firstHolderName}}</td>
 									<td class="cell">{{tmp.folioNo}}</td>
 									<td class="cell">{{tmp.claimStatus}}</td>
+									<td class="cell">{{tmp.iepfStatus}}</td>
 									<td class="cell">{{tmp.qty}}</td>
 									<td class="cell">{{tmp.srndate | date:'dd-MM-yyyy'}}</td>
+									<td class="cell">{{tmp.remark}}</td>
 									<td class="cell">{{tmp.process}}</td>
 									<td class="cell">{{tmp.trackDate[0] | date:'dd-MM-yyyy'}}</td>
+									<td class="cell">{{tmp.iepfusername}}</td>
+									<td class="cell">{{tmp.iepfpassword}}</td>
 									<td class="cell">
 										<span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="gototraking(tmp.id)" title="Go To Traking">
 											<i class="bi bi-file-earmark-text"></i>
@@ -247,16 +298,54 @@
 		<div class="modal-content">
 			<div class="modal-header justify-content-between">
 				<h3 style="text-transform: uppercase;">{{header}}</h3>
+				<div class="col-4">
+					<input type="text" ng-model="searchQuery" class="form-control search-box" placeholder="Search">
+				</div>
 				<button class="btn btn-custom justify-content-end"
 						style="background-color:#51b37f;color:white"
 						excel-export
-						table-id="formdata"
+						table-id="Statusdata"
 						file-name="stock"
 						sheet-name={{header}}
 						file-type="xlsx">
 					Export
 				</button>
 			</div>
+			<nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-1"  ng-show="openIepf">
+				@* <a ng-class="{'active': status === 'ALL'}" ng-click="filteriepf('ALL')">All</a> *@
+
+				<!-- All Tab -->
+				<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+				   ng-class="{'active': status === 'ALL'}" ng-click="filteriepf('ALL')"
+				   role="tab" aria-selected="{{status === 'ALL' ? 'true' : 'false'}}">All</a>
+
+				<!-- PEVR Tab -->
+				<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+				   ng-class="{'active': status === 'PEVR'}" ng-click="filteriepf('PEVR')"
+				   role="tab" aria-selected="{{status === 'PEVR' ? 'true' : 'false'}}">PEVR</a>
+
+				<!-- UNDER PROCESS Tab -->
+				<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+				   ng-class="{'active': status === 'UNDER PROCESS'}" ng-click="filteriepf('UNDER PROCESS')"
+				   role="tab" aria-selected="{{status === 'UNDER PROCESS' ? 'true' : 'false'}}">UNDER PROCESS</a>
+
+				<!-- APPROVED Tab -->
+				<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+				   ng-class="{'active': status === 'APPROVED'}" ng-click="filteriepf('APPROVED')"
+				   role="tab" aria-selected="{{status === 'APPROVED' ? 'true' : 'false'}}">APPROVED</a>
+
+				<!-- REJECTED Tab -->
+				<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+				   ng-class="{'active': status === 'REJECTED'}" ng-click="filteriepf('REJECTED')"
+				   role="tab" aria-selected="{{status === 'REJECTED' ? 'true' : 'false'}}">REJECTED </a>
+
+				<!-- IEPF Post Receipt Pending Tab -->
+				<a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+				   ng-class="{'active': status === 'IEPF Post Receipt Pending'}" ng-click="filteriepf('IEPF Post Receipt Pending')"
+				   role="tab" aria-selected="{{status === 'IEPF Post Receipt Pending' ? 'true' : 'false'}}">IEPF Post Receipt Pending</a>
+
+				@* <a ng-class="{'active': status === 'PEVR'}" ng-click="filteriepf('PEVR')">PEVR</a> *@
+			</nav>
 			<div class="m-2">
 				<!-- Stock List Table -->
 				<div class="app-card app-card-orders-table shadow-sm mb-5">
@@ -272,17 +361,21 @@
 							<th class="cell">FirstHolder Name</th>
 							<th class="cell">Folio No</th>
 							<th class="cell">Claim Status</th>
+							<th class="cell" ng-show="openIepf">IEPF Status</th>
 							<th class="cell">Qty</th>
 							<th class="cell" ng-show="openIepf">SRN Date</th>
 							<th class="cell" ng-show="openDrf">DP Name</th>
 							<th class="cell" ng-show="openDrf">DP ID &Client ID</th>
 							<th class="cell">Process</th>
+							<th class="cell">Remark</th>
 							<th class="cell">Date</th>
+							<th class="cell" ng-show="openIepf">IEPF Username</th>
+							<th class="cell" ng-show="openIepf">IEPF Password</th>
 							<th class="cell">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="f in formList">
+									<tr ng-repeat="f in formList | filter: searchQuery | filter: iepfFilter">
 							<td class="cell">{{ $index + 1 }}</td>
 							<td class="cell">{{f.customerName}}</td>
 							<td class="cell">{{f.companyName}}</td>
@@ -290,12 +383,16 @@
 							<td class="cell">{{f.firstHolderName}}</td>
 							<td class="cell">{{f.folioNo}}</td>
 							<td class="cell">{{f.claimStatus}}</td>
+							<td class="cell" ng-show="openIepf">{{f.iepfStatus}}</td>
 							<td class="cell">{{f.qty}}</td>
 							<td class="cell" ng-show="openIepf">{{f.srndate | date:'dd-MM-yyyy'}}</td>
 							<td class="cell" ng-show="openDrf">{{f.dpname}}</td>
 							<td class="cell" ng-show="openDrf">{{f.dpidclientid}}</td>
 							<td class="cell">{{f.process}}</td>
+							<td class="cell">{{f.remark}}</td>
 							<td class="cell">{{f.trackDate | date:'dd-MM-yyyy'}}</td>
+							<td class="cell" ng-show="openIepf">{{f.iepfusername}}</td>
+							<td class="cell" ng-show="openIepf">{{f.iepfpassword}}</td>
 							<td class="cell">
 								<span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="gototraking(f.id)" title="Go To Traking">
 									<i class="bi bi-file-earmark-text"></i>
@@ -434,6 +531,17 @@
 			});
 		};
 
+		$scope.status = 'ALL';
+
+		$scope.filteriepf = function(val) {
+		  $scope.status = val;
+		};
+
+		$scope.iepfFilter = function(item) {
+		  if ($scope.status === 'ALL') return true;  // show everything
+		  return item.iepfStatus === $scope.status;
+		};
+
 		$scope.loadStockCount = function () {
 			$http.get('/Dashboard/GetStocksStatusCount').then(function (response) {
 			$scope.data = response.data;
@@ -475,6 +583,9 @@
 		}
 
 		$scope.openFormModal = function (val) {
+			if(val == 'iepf'){
+				$scope.status = 'ALL';
+			}
 			$scope.header = val;
 			$scope.openIepf = val.toLowerCase() == 'iepf'.toLowerCase() || val.toLowerCase() == 'iepf rejected'.toLowerCase() || val.toLowerCase() == 'iepf post receipt pending'.toLowerCase() ? true : false;
 			$scope.openDrf = val.toLowerCase() == 'drf form submitted'.toLowerCase() || val.toLowerCase() == 'drf rejected'.toLowerCase()  ? true : false;

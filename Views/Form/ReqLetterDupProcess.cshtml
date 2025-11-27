@@ -204,7 +204,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="selected" class="form-label">Select Certificate No</label>
-                                <select class="form-select" ng-options="s.certificateNo as s.certificateNo for s in shares" ng-model="selected" ng-change="AddSelectedShare(selected)">
+                                <select class="form-select" ng-options="s as (s.certificateNo + ' - ' + s.actualQty + ' shares') for s in shares track by (s.certificateNo + '-' + s.actualQty)" ng-model="selected" ng-change="AddSelectedShare(selected)">
                                     <option selected disabled value="">Select Shares</option>
                                 </select>
                             </div>
@@ -235,23 +235,23 @@
         text-align: left;
       "
     >
-            <span  ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                <span ng-if="data.secondHolder">
-                    &
+          <span  ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'flex'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'flex'}">
+                   <span ng-class="{'hide-print': data.firstAlive}">&</span>
                     <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                         {{data.secondHolder}}
                     </span>
                 </span>
-                <span ng-if="data.thirdHolder">
-                    &
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'flex'}">
+                    <span ng-class="{'hide-print': data.secondAlive}">&</span>
                     <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                         {{data.thirdHolder}}
                     </span>
                 </span>
-            </span><span  ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+            </span><span  ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                 <span ng-repeat="h in data.heirs track by $index">
-                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'flex'}">
                         {{h.name}}
                     </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                 </span>
@@ -280,7 +280,7 @@
         To 
       </p>
       <p class="s2" style="padding-top: 1pt; padding-left: 5pt; text-indent: 0pt; text-align: right;">
-        Date: {{data.today | date:'dd/MM/yyyy'}}
+                Date: @* {{data.today | date:'dd/MM/yyyy'}} *@<u> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
       </p>
     </div>
     
@@ -331,22 +331,22 @@
       With reference to the above captioned subject and as discussed with your
             undersigned, I/We @*<span class="h2"> SHANTABEN INDUPRASAD JOSHI  {{data.customerName}}</span>*@
             <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                <span ng-if="data.secondHolder">
-                    &
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : ''}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : ''}">
+                    <span ng-class="{'hide-print': data.firstAlive}">&</span>
                     <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                         {{data.secondHolder}}
                     </span>
                 </span>
-                <span ng-if="data.thirdHolder">
-                    &
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : ''}">
+                    <span ng-class="{'hide-print': data.secondAlive}">&</span>
                     <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                         {{data.thirdHolder}}
                     </span>
                 </span>
-            </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+            </span><span ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                 <span ng-repeat="h in data.heirs track by $index">
-                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : ''}">
                         {{h.name}}
                     </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                 </span>
@@ -431,22 +431,22 @@
         >
           <p class="s5" style="text-indent: 0pt; text-align: center">
                         <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                            <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                            <span ng-if="data.secondHolder">
-                                &
+                            <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'flex'}">{{ data.firstHolder}}</span>
+                            <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'flex'}">
+                               <span ng-class="{'hide-print': data.firstAlive}">&</span>
                                 <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                                     {{data.secondHolder}}
                                 </span>
                             </span>
-                            <span ng-if="data.thirdHolder">
-                                &
+                            <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'flex'}">
+                                <span ng-class="{'hide-print': data.secondAlive}">&</span>
                                 <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                                     {{data.thirdHolder}}
                                 </span>
                             </span>
-                        </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+                        </span><span ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                             <span ng-repeat="h in data.heirs track by $index">
-                                <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                                <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'flex'}">
                                     {{h.name}}
                                 </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                             </span>
@@ -509,11 +509,10 @@
     </p>
     <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
     <p class="s8" style="padding-left: 5pt; text-indent: 0pt; text-align: left; display:flex; justify-content:space-between">
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</b>
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</b>
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</b>
-            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">  {{h.name}}</b>
-    </p>
+            <b ng-show="!data.condition && !data.firstAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'flex'}">{{data.firstHolder}}</b>
+            <b ng-show="!data.condition && !data.secondAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit', 'display': data.secondAlive ? 'none' : 'flex'}">{{data.secondHolder}}</b>
+            <b ng-show="!data.condition && !data.thirdAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit', 'display': data.thirdAlive ? 'none' : 'flex'}">{{data.thirdHolder}}</b>
+            <b ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'flex'}">  {{h.name}}</b>
     </div>
     <div class="myarea">
         <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
@@ -533,21 +532,27 @@
 
         // showLoader();
         $scope.AddSelectedShare = function(shr) {
-      if (shr) {
-        var sShare = $scope.shares.find(x => x.certificateNo === shr);
+             if (shr) {
+      // Expect shr to be an object containing certificateNo and actualQty
+      var sShare = $scope.shares.find(
+        x => x.certificateNo === shr.certificateNo && x.actualQty === shr.actualQty
+      );
 
-        if (sShare) {
-          // Add the selected share to the selectedShares list
-          $scope.selectedSharesQty += sShare.actualQty;
+      if (sShare) {
+        // Add the selected share to the selectedShares list
+        $scope.selectedSharesQty += sShare.actualQty;
+        $scope.selectedShares.push(sShare);
 
-          // Remove the selected share from the available shares list
-          $scope.shares = $scope.shares.filter(x => x.certificateNo !== shr);
+        // Remove the selected share from the available shares list
+        $scope.shares = $scope.shares.filter(
+          x => !(x.certificateNo === shr.certificateNo && x.actualQty === shr.actualQty)
+        );
 
-          // Reset the selected model
-          $scope.selected = null;
-          $scope.message = shr + ' is Added';
-        }
+        // Reset the selected model
+        $scope.selected = null;
+        $scope.message = shr.certificateNo + ' (' + shr.actualQty + ' qty) is Added';
       }
+    }
     };
 
         // Load Customers
@@ -614,18 +619,18 @@
                     mobile: obj.mobile,
                     qty:obj.qty,
                     address:obj.address,
-                      officename: obj.officename,
-    officeaddress: obj.officeaddress,
-    unit: obj.unit,
-                      firstHolder: obj.firstHolder,
-    secondHolder: obj.secondHolder,
-    thirdHolder: obj.thirdHolder,
-    firstAlive: obj.firstAlive,
-    secondAlive: obj.secondAlive,
-    thirdAlive: obj.thirdAlive,
-    condition: obj.condition,
-		heirs: obj.heirs,
-        selectedQty: obj.selectedQty,
+                    officename: obj.officename,
+                    officeaddress: obj.officeaddress,
+                    unit: obj.unit,
+                    firstHolder: obj.firstHolder,
+                    secondHolder: obj.secondHolder,
+                    thirdHolder: obj.thirdHolder,
+                    firstAlive: obj.firstAlive,
+                    secondAlive: obj.secondAlive,
+                    thirdAlive: obj.thirdAlive,
+                    condition: obj.condition,
+		            heirs: obj.heirs,
+                    selectedQty: obj.selectedQty,
                 };
                 $scope.selectedSharesQty = $scope.data.selectedQty;
                                 id = result.stockId;

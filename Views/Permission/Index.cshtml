@@ -349,10 +349,12 @@
                 data: perm
             }).then(function (response) {
                 if (response.data.status == true) {
-                    toast(response.data.message);
+                    toastr.success(response.data.message);
+                    // toast(response.data.message);
                 }
                 else {
-                    toast(response.data.message);
+                    toastr.error(response.data.message);
+                    // toast(response.data.message);
                 }
             }, function (response) {
                 alert(response.data);

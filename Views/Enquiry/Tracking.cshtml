@@ -285,16 +285,24 @@
                                     <textarea id="remark" ng-model="currentStock.remark" class="form-control" placeholder="Remark"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'||currentStock.status == 'IEPF Rejected'|| currentStock.status == 'IEPF Post Receipt Pending'">
+                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'">
                                 <div class="form-group">
                                     <label for="srnno" class="form-label">SR No</label>
                                     <input type="text" id="srnno" ng-model="currentStock.srnno" class="form-control" placeholder="SR No" />
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'||currentStock.status == 'IEPF Rejected'|| currentStock.status == 'IEPF Post Receipt Pending'">
+                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'">
                                 <div class="form-group">
                                     <label for="srndate" class="form-label">SR Date</label>
                                     <input type="date" id="srndate" ng-model="currentStock.srndate" class="form-control"  />
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show="currentStock.status == 'IEPF'">
+                                <div class="form-group">
+                                    <label for="iepfstatus" class="form-label">IEPF Status</label>
+                                    <select class="form-select" ng-options="f.status as f.status for f in iepfsatuslist" ng-model="currentStock.iepfstatus">
+                                        <option selected disabled value="">Select IEPF Status</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-3" ng-show="currentStock.status == 'DRF Form Submitted' ||  currentStock.status == 'DRF Rejected'">
@@ -354,16 +362,24 @@
         ];
 
         $scope.statuslist = [
-            { id: 1, status: 'Pending' },
-            { id: 2, status: 'Follow Up' },
-            { id: 3, status: 'IEPF Post Receipt Pending' },
+            { id: 1, status: 'Document Pending' },
+            { id: 2, status: 'Pending' },
+            { id: 3, status: 'Follow Up' },
             { id: 4, status: 'IEPF' },
-            { id: 5, status: 'IEPF Rejected' },
+            { id: 5, status: 'IEPF Claim Pending' },
             { id: 6, status: 'Query' },
             { id: 7, status: 'DRF Form Submitted' },
             { id: 8, status: 'DRF Rejected' },
             { id: 9, status: 'Demated' },
         ];
+
+        $scope.iepfsatuslist = [
+            { id: 1, status: 'PEVR' },
+            { id: 2, status: 'UNDER PROCESS' },
+            { id: 3, status: 'APPROVED' },
+            { id: 4, status: 'REJECTED' },
+            { id: 5, status: 'IEPF Post Receipt Pending' },
+        ]
 
             // Load Tracking
             $scope.loadTracking = function () {
@@ -545,6 +561,18 @@
 
             // Save Tracking
             $scope.saveTracking = function () {
+
+                 if($scope.currentStock.process && $scope.currentStock.process === 'Others...' && !$scope.currentStock?.remark ){
+                     Swal.fire({
+                     title: 'Error!',
+                     text: 'Please Enter Remarks.',
+                     icon: 'error',
+                     confirmButtonText: 'Try Again'
+                 });
+                 $scope.processdone = false;
+                    return;
+                }
+
                 if (id) 
                 {
                     $scope.processdone = true;
@@ -565,7 +593,7 @@
                         formData.append('Tracking', JSON.stringify($scope.currentStock));
 
                     
-                    // $scope.currentStock.dateofSubmission = $scope.currentStock.dateofSubmission.toISOString().split('T')[0]
+                    // $scope.currentStock.dateofSubmission = $scope.currentStock.dateofSubmission.toISOString()
 
 
                     const url = $scope.isEditing ? '/Enquiry/UpdateTracking' : '/Enquiry/CreateTracking';

@@ -1380,11 +1380,34 @@
                             $scope.processdone = false;
                                return;
                            }
+
+                            if($scope.currentDoc.pan && $scope.currentDoc.pan.length !== 10 ){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Pan should be 10 digits long.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                               return;
+                           }
+
+                            if($scope.currentDoc.aadhar && $scope.currentDoc.aadhar.length !== 12 ){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Aadhar should be 12 digits long.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                               return;
+                           }
                if (id)
                     {
                         if (isProcessing) return;
                         isProcessing = true;
                 var formData = new FormData();
+
                     formData.append('id', $scope.isEditing ? $scope.currentDoc.id : 0);
                     formData.append('customerId', $scope.isEditing ? $scope.currentDoc.customerId : id);
                     formData.append('name', $scope.currentDoc.name);
@@ -1397,8 +1420,8 @@
                     formData.append('aadhar', $scope.currentDoc.aadhar ? $scope.currentDoc.aadhar : '' );
                     formData.append('nameAsPerAadhar', $scope.currentDoc.nameAsPerAadhar ? $scope.currentDoc.nameAsPerAadhar : '');
                     formData.append('addressAsPerAadhar', $scope.currentDoc.addressAsPerAadhar ? $scope.currentDoc.addressAsPerAadhar : '');
-                    formData.append('dob',$scope.currentDoc.dob ? $scope.currentDoc.dob.toISOString().split('T')[0] : '');
-                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString().split('T')[0] : '');
+                    formData.append('dob',$scope.currentDoc.dob ? $scope.currentDoc.dob.toISOString() : '');
+                    formData.append('dateOfDeath', $scope.currentDoc.dateOfDeath ? $scope.currentDoc.dateOfDeath.toISOString() : '');
                     formData.append('nameAsPerDeathCerti',  $scope.currentDoc.nameAsPerDeathCerti );
                     formData.append('placeOfDeath',  $scope.currentDoc.placeOfDeath );
                     formData.append('clientId', $scope.currentDoc.clientId ? $scope.currentDoc.clientId : '');
@@ -1529,6 +1552,28 @@
                                return;
                            }
 
+                            if($scope.currentLegalheir.pan && $scope.currentLegalheir.pan.length !== 10 ){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Pan should be 10 digits long.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                               return;
+                           }
+
+                            if($scope.currentLegalheir.aadhar && $scope.currentLegalheir.aadhar.length !== 12 ){
+                                Swal.fire({
+                                title: 'Error!',
+                                text: 'Aadhar should be 12 digits long.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                               return;
+                           }
+
                if (id)
                     {
                         if (isProcessing) return;
@@ -1545,13 +1590,13 @@
                     formData.append('aadhar', $scope.currentLegalheir.aadhar ? $scope.currentLegalheir.aadhar : '');
                     formData.append('nameAsPerAadhar', $scope.currentLegalheir.nameAsPerAadhar ? $scope.currentLegalheir.nameAsPerAadhar :'');
                     formData.append('addressAsPerAadhar', $scope.currentLegalheir.addressAsPerAadhar ? $scope.currentLegalheir.addressAsPerAadhar : '');
-                    formData.append('dob', $scope.currentLegalheir.dob ? $scope.currentLegalheir.dob.toISOString().split('T')[0] : '');
+                    formData.append('dob', $scope.currentLegalheir.dob ? $scope.currentLegalheir.dob.toISOString() : '');
                     formData.append('email', $scope.currentLegalheir.email ? $scope.currentLegalheir.email : '');
                     formData.append('isClaiment', $scope.status == 'Claiment' ? true : false);
                     formData.append('isNoc', $scope.status == 'NOC' ? true : false);
                     formData.append('relationWithDead', $scope.currentLegalheir.relationWithDead ? $scope.currentLegalheir.relationWithDead :'');
                     formData.append('isDead', $scope.status == 'Death' ? true : false);
-                    formData.append('dateOfDeath', $scope.currentLegalheir.dateOfDeath ? $scope.currentLegalheir.dateOfDeath.toISOString().split('T')[0] : '');
+                    formData.append('dateOfDeath', $scope.currentLegalheir.dateOfDeath ? $scope.currentLegalheir.dateOfDeath.toISOString() : '');
                     formData.append('nameAsPerDeathCerti',  $scope.currentLegalheir.nameAsPerDeathCerti ?? '');
                     formData.append('placeOfDeath',  $scope.currentLegalheir.placeOfDeath ?? '');
                     formData.append('state', $scope.currentLegalheir.state ? $scope.currentLegalheir.state :'');
@@ -1637,7 +1682,7 @@
 
                     $http.get(url+ docid).then(function (response) {
                         $scope.currentBank = response.data[0];
-                        $scope.currentBank.accountOpeningDate = $scope.currentBank ? $scope.currentBank.accountOpeningDate ? new Date($scope.currentBank.accountOpeningDate) : undefined : undefined
+                        $scope.currentBank.accountOpeningDate = $scope.currentBank ? $scope.currentBank.accountOpeningDate ? new Date($scope.currentBank.accountOpeningDate) : null : null
                     hideLoader();
                 }, function (error) {
                     console.error('Error loading Bank Deatails:', error);

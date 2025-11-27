@@ -98,6 +98,53 @@ namespace Stock_CMS.Service
 
 			return result;
 		}
+        public async Task<IEnumerable<CustomerDto>> GetCustomerByval(string val)
+        {
+			var data = await _customerRepository.GetCustomer();
+
+            var client = data.OrderBy(x => x.FileNo).ToList();
+            var dematedClients = new List<CustomerDto>();
+
+            if (val == null)
+            {
+                dematedClients = client.ToList();
+            }
+            else if ( val == "false")
+            {
+                dematedClients = client.Where(x => x.IsClient == false).ToList();
+            }
+            else if (val == "demated" )
+            {
+                var stockdata = await _stockRepository.GetStock();
+
+                 dematedClients = client.Where(c =>
+                  {
+                      var customerStocks = stockdata.Where(s => s.CustomerId == c.Id).ToList();
+
+                      // If customer has no stocks, exclude (or decide how you want to handle it)
+                      if (!customerStocks.Any())
+                          return false;
+
+                      return customerStocks.All(s => s.ClaimStatus.ToUpper() == "demated".ToUpper());
+                  })
+                  .ToList();
+            }
+            else
+            {
+                dematedClients = client.Where(x => x.IsClient == true).ToList();
+            }
+
+            var ids = dematedClients.Select(x => x.CreatedBy).Concat(dematedClients.Select(x => x.UpdatedBy)).Distinct().ToArray();
+			var users = await _userRepository.GetUsersByIds(ids);
+			var result = dematedClients.Select(x =>
+			{
+				x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+				x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
+				return x;
+			});
+
+			return result;
+		}
 
         public async Task<IEnumerable<CustomerDto>> GetCustomersById(long id)
         {

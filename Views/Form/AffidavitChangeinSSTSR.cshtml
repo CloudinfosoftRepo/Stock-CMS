@@ -2236,7 +2236,7 @@ border-bottom-style: solid;
         line-height: 214%;
         text-align: justify;
       "
-           ng-repeat="item in doc">
+           ng-repeat="item in doc" ng-style="{'color': item.dateOfDeath ? 'red' : 'inherit'}">
       Specimen signature of {{item.name}} {{ $index + 1}}. <br>
       @* Specimen signature of<u
         >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -365,7 +365,7 @@
             </span><span class="s6"> </span>was holding the following securities:
     </p>
     <p style="padding-top: 2pt; text-indent: 0pt; text-align: left"><br /></p>
-    <table style="border-collapse: collapse; margin-left: 6.5pt" cellspacing="0">
+        <table style="border-collapse: collapse; margin-left: 6.5pt" cellspacing="0" >
         <tr style="height: 32pt">
             <td class="table-cell" style="width: 104pt;">
                 <p class="table-text">Name of the Company</p>
@@ -383,17 +383,17 @@
                 <p class="table-text table-text-indent">No. of securities held</p>
             </td>
         </tr>
-
+            <tbody >
         <!-- Repeated row structure can be simplified -->
             <tr style="height: 18pt" ng-repeat="tmp in shares">
             <td class="table-cell" style="width: 104pt;">
                     <p class="table-text">{{data.officename}}</p>
             </td>
             <td class="table-cell" style="width: 107pt;">
-                    <p class="table-text">{{tmp.certificateNo}}</p>
+                        <p class="table-text" ng-show="!(tmp.certificateNo == 0)">{{tmp.certificateNo}}</p>
             </td>
             <td class="table-cell" style="width: 106pt;">
-                    <p class="table-text">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</p>
+                        <p class="table-text" ng-show="!(tmp.certificateNo == 0)">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</p>
             </td>
             <td class="table-cell" style="width: 66pt;">
                     <p class="table-text">{{tmp.folioNo}}</p>
@@ -402,6 +402,7 @@
                     <p class="table-text">{{tmp.actualQty}}</p>
             </td>
         </tr>
+            </tbody>
 
         <!-- Repeated structure for more rows can be simplified 
         <tr style="height: 18pt">

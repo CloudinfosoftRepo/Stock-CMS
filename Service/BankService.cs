@@ -26,6 +26,11 @@ namespace Stock_CMS.Service
             var users = await _userRepository.GetUsersByIds(ids);
             var result = data.Select(x =>
             {
+                if (x.AccountOpeningDate.HasValue)
+                {
+                    x.AccountOpeningDate =
+                        DateTime.SpecifyKind(x.AccountOpeningDate.Value.Date, DateTimeKind.Unspecified);
+                }
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;
@@ -41,6 +46,11 @@ namespace Stock_CMS.Service
             var users = await _userRepository.GetUsersByIds(ids);
             var result = data.Select(x =>
             {
+                if (x.AccountOpeningDate.HasValue)
+                {
+                    x.AccountOpeningDate =
+                        DateTime.SpecifyKind(x.AccountOpeningDate.Value.Date, DateTimeKind.Unspecified);
+                }
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;
@@ -109,7 +119,7 @@ namespace Stock_CMS.Service
                 data.UpdatedBy = data.UpdatedBy;
                 data.UpdatedAt = DateTime.Now;
                 data.IsActive = dataFirst.IsActive;
-                data.AccountOpeningDate = data.AccountOpeningDate != null ? _normalizeModel.ConvertToIST(data.AccountOpeningDate) : dataFirst.AccountOpeningDate;
+                data.AccountOpeningDate = _normalizeModel.ConvertToIST(data.AccountOpeningDate);
 
                 List<BankDto> updateList = new List<BankDto> { data };
                 var result = await _bankRepository.UpdateBank(updateList);
@@ -147,7 +157,7 @@ namespace Stock_CMS.Service
                 data.UpdatedBy = data.UpdatedBy;
                 data.UpdatedAt = DateTime.Now;
                 data.IsActive = dataFirst.IsActive;
-                data.AccountOpeningDate = data.AccountOpeningDate != null ? _normalizeModel.ConvertToIST(data.AccountOpeningDate) : dataFirst.AccountOpeningDate;
+                data.AccountOpeningDate = _normalizeModel.ConvertToIST(data.AccountOpeningDate);
 
                 List<BankDto> updateList = new List<BankDto> { data };
                 var result = await _bankRepository.UpdateBank(updateList);

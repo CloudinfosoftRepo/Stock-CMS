@@ -413,16 +413,16 @@
     >
       I/We
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+                <span >{{ data.firstHolder}}</span>
                 <span ng-if="data.secondHolder">
                     &
-                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                    <span >
                         {{data.secondHolder}}
                     </span>
                 </span>
                 <span ng-if="data.thirdHolder">
                     &
-                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                    <span >
                         {{data.thirdHolder}}
                     </span>
                 </span>
@@ -594,7 +594,7 @@
               </p>
             </td>
           </tr>
-                    <tr style="height: 24pt" ng-repeat="tmp in shares">
+                    <tr style="height: 24pt" ng-repeat="tmp in shares"  >
             <td
               style="
                 width: 93pt;
@@ -669,7 +669,7 @@
                 border-right-color: #231f20;
               "
             >
-                            <p style="text-indent: 0pt; text-align: left">{{tmp.certificateNo}}</p>
+                            <p style="text-indent: 0pt; text-align: left"><span ng-if="!(shares.length === 1 && shares[0].certificateNo == 0)">{{tmp.certificateNo}}</span></p>
             </td>
             <td
               style="
@@ -688,7 +688,7 @@
                 border-right-color: #231f20;
               "
             >
-                            <p style="text-indent: 0pt; text-align: left">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</p>
+                            <p style="text-indent: 0pt; text-align: left"><span ng-if="!(shares.length === 1 && shares[0].certificateNo == 0)">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</span></p>
             </td>
           </tr>
         </table>
@@ -804,7 +804,6 @@
         </ol>
       </li>
     </ol>
-    <br>
     <ul id="l3">
       <li data-list-text="(3)">
         <p style="padding-left: 28pt; text-indent: -23pt; text-align: left">
@@ -998,6 +997,25 @@
                                     var year = new Date(holder.dob).getFullYear();
                     var month = new Date(holder.dob).getMonth();
                     var day = new Date(holder.dob).getDate();
+
+                      const holderList = [
+            {
+                    name: result.firstHolderName,
+                alive: !result.firstHolderData?.dateOfDeath
+            },
+            {
+                name: result.secondHolderName,
+                alive: !result.secondHolderData?.dateOfDeath
+            },
+            {
+                name: result.thirdHolderName,
+                alive: !result.thirdHolderData?.dateOfDeath
+            }
+        ];
+
+        // STEP 2: Filter only alive holders
+        const aliveOnly = holderList.filter(h => h.alive);
+
                 $scope.data = {
                     docid: holder.id,
                     customerName : holder.name,
@@ -1014,9 +1032,9 @@
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officeaddress: result.company.companyAddress,
-                       firstHolder :result.firstHolderName,
-    secondHolder:result.secondHolderName,
-    thirdHolder: result.thirdHolderName,
+                       firstHolder: aliveOnly[0]?.name || '',
+            secondHolder: aliveOnly[1]?.name || '',
+            thirdHolder: aliveOnly[2]?.name || '',
     firstAlive: result?.firstHolderData?.dateOfDeath,
     secondAlive: result?.secondHolderData?.dateOfDeath,
     thirdAlive: result?.thirdHolderData?.dateOfDeath,

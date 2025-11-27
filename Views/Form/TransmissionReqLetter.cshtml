@@ -192,8 +192,26 @@
 
     <div id="printForm">
     <p style="padding-left: 5pt; text-align: left; margin: 0;font-size: 16px;">
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.firstHolder}}<span ng-if="data.secondHolder"> & {{data.secondHolder}}</span><span ng-if="data.thirdHolder"> & {{data.thirdHolder}}<span</b>
-            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">{{h.name}} &</b>
+            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder">
+                    &
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder">
+                    &
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+            </b>
+            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
+                <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                    {{h.name}}
+                </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+            </b>
     </p>
     <p style="padding: 0 352px 0 5pt; text-align: left; margin: 0;font-size: 16px;">
             {{data.address}}
@@ -216,7 +234,7 @@
       "
     >
       Date:<span class="s3">
-                {{data.date | date:'dd/MM/yyyy'}}
+                @* {{data.date | date:'dd/MM/yyyy'}} *@<u> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </span>
     </p>
     <p
@@ -312,9 +330,9 @@
       <!-- Empty Rows Repeated (we'll keep only 1 and reduce redundancy) -->
             <tr style="height: 20pt" ng-repeat="tmp in shares">
                 <td class="table-cell">{{tmp.folioNo}}</td>
-                <td class="table-cell">{{tmp.certificateNo}}</td>
+                <td class="table-cell"> <span ng-class="{'hide-print': tmp.certificateNo == 0}" ng-show="!(tmp.certificateNo == 0)">{{tmp.certificateNo}}</span></td>
                 <td class="table-cell">{{tmp.actualQty}}</td>
-                <td class="table-cell">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</td>
+                <td class="table-cell"> <span ng-class="{'hide-print': tmp.certificateNo == 0}" ng-show="!(tmp.certificateNo == 0)">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</span> </td>
       </tr>
       <!-- Repeat this pattern for remaining rows -->
     </table>
@@ -342,7 +360,7 @@
             <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</b>
             <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</b>
             <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</b>
-            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h?.dateOfDeath ? 'red' : 'inherit'}">  {{h.name}}</b>
+            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': (h && h.dateOfDeath) ? 'red' : 'inherit'}">  {{h.name}}</b>
     </h2>
     </div>
     <div class="myarea">

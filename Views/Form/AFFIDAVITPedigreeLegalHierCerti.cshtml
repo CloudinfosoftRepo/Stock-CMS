@@ -327,7 +327,7 @@
             </li>
             <li data-list-text="2.">
                 <p style="padding-left: 63pt; text-indent: -17pt; text-align: left">
-                    That my father @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}}
+                    That my FATHER/MOTHER/ HUSBAND/ WIFE @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}}
                 </p>
             </li>
         </ol>
@@ -341,7 +341,7 @@
       ">
             <span class="p">was expired on Date </span>@*31<span class="s4">ST</span>
         MARCH 1999 *@ {{data.dateofdeath | dateWithSuffix }}
-            <span class="p">after death of my father legal heirs of my father is as under :-</span>
+            <span class="p">after death of my FATHER/MOTHER/ HUSBAND/ WIFE legal heirs of my FATHER/MOTHER/ HUSBAND/ WIFE is as under :-</span>
         </p>
         <p style="text-indent: 0pt; text-align: left"><br /></p>
         <table class="styled-table">
@@ -407,7 +407,7 @@
       ">
             That above mentioned pedigree/legal heir’s certificate is true and correct
             and mentioned in this pedigree/legal heir’s certificate all names of legal
-            heirs of Late Father @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}} are true and correct.
+            heirs of Late FATHER/MOTHER/ HUSBAND/ WIFE @* GORDHANBHAI BECHARBHAI PATEL *@{{data.sonof}} are true and correct.
         </p>
         <p style="
         padding-top: 3pt;
@@ -539,7 +539,7 @@
     .filter('dateWithSuffix', function() {
       return function(input) {
         var day = new Date(input);
-        var dayOfMonth = day.getDay();
+        var dayOfMonth = day.getDate();
         var suffix = 'th';
 
         if (dayOfMonth === 1 || dayOfMonth === 21 || dayOfMonth === 31) {

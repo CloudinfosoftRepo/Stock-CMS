@@ -35,8 +35,18 @@ namespace Stock_CMS.Service
             //if (isExist.Any()) { return -1; }
             //else
             //{
-            data.ClaimStatus = "Enquiry";
-                List<StockDto> dataList = new List<StockDto> { data };
+
+            var chk = await _customerRepository.GetCustomerById(data.CustomerId ?? 0);
+            if (chk?.IsClient == true)
+            {
+                data.ClaimStatus = "Pending";
+            }
+            else
+            {
+                data.ClaimStatus = "Enquiry";
+            }
+
+            List<StockDto> dataList = new List<StockDto> { data };
                 var result = await _StockRepository.AddStock(dataList);
                 if (result.Any())
                 {
@@ -232,6 +242,20 @@ namespace Stock_CMS.Service
             var stock = await _StockRepository.GetStockById(id);
             long?[] holdersids = { stock.FirstHolderId, stock.SecondHolderId, stock.ThirdHolderId };
             var holders = await _docRepository.GetDocByIds(holdersids);
+            var result = holders.Select(x =>
+            {
+                if (x.Dob.HasValue)
+                {
+                    x.Dob = x.Dob.Value.Date;
+                        //DateTime.SpecifyKind(x.Dob.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.DateOfDeath.HasValue)
+                {
+                    x.DateOfDeath = x.DateOfDeath.Value.Date;
+                        //DateTime.SpecifyKind(x.DateOfDeath.Value.Date, DateTimeKind.Unspecified);
+                }
+                return x;
+            });
 
             return holders;
         }
@@ -461,25 +485,52 @@ namespace Stock_CMS.Service
         {
             var allstocks = await _StockRepository.GetStock();
 
-            var stockIds = allstocks.Where(y => y?.ClaimStatus.ToLower() == "follow up".ToLower()).Select(x => x.Id).ToArray();
+            var stockIds = allstocks
+        .Where(y => y != null &&
+            (string.Equals(y.ClaimStatus, "Follow Up", StringComparison.OrdinalIgnoreCase)))
+        .Select(x => x.Id)
+        .ToArray();
 
-            var tracing = await _trackingRepository.GetTrackingbyStockIdAndFollowUpDate(stockIds);
+            var tracing = await _trackingRepository.GetTrackingbyStockIds(stockIds);
 
-            var stockIdsList = tracing.Select(x => x.StockId).ToList();
+            var latestFollowUps = tracing
+                   .Where(x => x.DateofFollowUp.HasValue)
+                   .GroupBy(x => x.StockId)
+                   .Select(g => g.OrderByDescending(x => x.Id).First())
+                   .ToList();
+
+            // Step 2: Filter only those with DateofFollowUp <= Today
+            var validFollowUps = latestFollowUps
+                .Where(x => x.DateofFollowUp.Value.Date <= DateTime.Today)
+                .ToList();
+
+            var stockIdsList = validFollowUps.Select(x => x.StockId).ToList();
             var stocks = allstocks.Where(x => stockIdsList.Contains(x.Id));
+
+            var totalevel = allstocks
+        .Where(x => x.ClaimStatus != "Enquiry")
+        .Sum(x => x.Qty * x.Rate);
+
+            var dematedevel = allstocks
+                .Where(x => x.ClaimStatus.ToLower() == "demated".ToLower())
+                .Sum(x => x.Qty * x.Rate);
 
             var result = new
             {
+                documentpending = allstocks.Where(x => x?.ClaimStatus.ToLower() == "document pending".ToLower()).Count(),
                 pending = allstocks.Where(x => x?.ClaimStatus.ToLower() == "pending".ToLower()).Count(),
                 followup = stocks.Where(x => x.ClaimStatus.ToLower() == "follow up".ToLower()).Count(),
-                iepf = allstocks.Where(x => x.ClaimStatus.ToLower() == "IEPF Post Receipt Pending".ToLower()).Count(),
                 iprs = allstocks.Where(x => x.ClaimStatus.ToLower() == "IEPF".ToLower()).Count(),
-                iepfrejected = allstocks.Where(x => x.ClaimStatus.ToLower() == "iepf rejected".ToLower()).Count(),
+                icp = allstocks.Where(s => string.Equals(s.ClaimStatus, "IEPF Claim Pending", StringComparison.OrdinalIgnoreCase)).Count(),
                 query = allstocks.Where(x => x.ClaimStatus.ToLower() == "query".ToLower()).Count(),
                 drf = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf form submitted".ToLower()).Count(),
                 drfreject = allstocks.Where(x => x.ClaimStatus.ToLower() == "drf rejected".ToLower()).Count(),
                 demate = allstocks.Where(x => x.ClaimStatus.ToLower() == "demated".ToLower()).Count(),
-                totalevel = allstocks.Where(x => x.ClaimStatus != "Enquiry").Sum(item => item.Qty * item.Rate),
+                //totalevel = allstocks.Where(x => x.ClaimStatus != "Enquiry").Sum(item => item.Qty * item.Rate),
+                //dematedevel = allstocks.Where(x => x.ClaimStatus.ToLower() == "demated".ToLower()).Sum(item => item.Qty * item.Rate),
+                totalevel,
+                dematedevel,
+                grandtotalevel = totalevel - dematedevel,
                 unpaid = allstocks.Where(x => x.IsPaid == false || x.IsPaid == null).Sum(item => ((item.Qty * item.Rate) * item.Brokerage) / 100 ),
                 //unpaid = allstocks.Where(x => x.IsPaid == false).Sum(item => item.Qty * item.Rate),
             };
@@ -493,6 +544,8 @@ namespace Stock_CMS.Service
             var allstocks = await _StockRepository.GetStocksByStatus(status);
 
             var stockids = allstocks.Select(x => x.Id).ToArray();
+            var firstholderIds = allstocks.Select(x => x.FirstHolderId).Distinct().ToArray();
+            var holders = await _docRepository.GetDocByIds(firstholderIds);
             var tracing = await _trackingRepository.GetTrackingbyStockIds(stockids);
 
             var result = from allstock in allstocks
@@ -505,10 +558,26 @@ namespace Stock_CMS.Service
                              allstock.ClaimStatus,
                              allstock.FolioNo,
                              allstock.Qty,
+                             iepfStatus = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Iepfstatus).FirstOrDefault(),
                              process = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Process).FirstOrDefault(),
-                             trackDate = tracing.Where(x => x.StockId == allstock.Id ).OrderByDescending(x => x.Id).Take(1).Select(x=>x.DateofSubmission),
+                             trackDate = tracing.Where(x => x.StockId == allstock.Id)
+                                           .OrderByDescending(x => x.Id)
+                                           .Select(x => x.DateofSubmission.HasValue
+                                                ? x.DateofSubmission.Value.Date
+                                                : (allstock.CreatedAt.HasValue
+                                                    ? allstock.CreatedAt.Value.Date
+                                                    : (DateTime?)null))
+                                           .FirstOrDefault() ?? allstock.CreatedAt?.Date,
                              srnno = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srnno).FirstOrDefault(),
-                             srndate = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srndate).FirstOrDefault(),
+                             srndate = tracing.Where(x => x.StockId == allstock.Id)
+                                         .OrderByDescending(x => x.Id)
+                                         .Select(x => x.Srndate.HasValue
+                                              ? x.Srndate.Value.Date
+                                              : (DateTime?)null)
+                                         .FirstOrDefault(),
+                             remark = tracing.Where(x => x.StockId == allstock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Remark).FirstOrDefault(),
+                             iepfusername = holders.FirstOrDefault(u => u.Id == allstock.FirstHolderId)?.UserName,
+                             iepfpassword = holders.FirstOrDefault(u => u.Id == allstock.FirstHolderId)?.Password,
                          };
 
             return result;
@@ -516,20 +585,38 @@ namespace Stock_CMS.Service
 
         public async Task<dynamic> GetStocksByStatusName(string status)
         {
+
             IEnumerable<TrackingDto> tracing = new List<TrackingDto>();
             var allStocks = await _StockRepository.GetStocksByStatus(status);
             var result = new List<dynamic>(); 
 
             var stockIds = allStocks.Select(x => x.Id).ToArray();
+            var firstholderIds = allStocks.Select(x => x.FirstHolderId).Distinct().ToArray();
+            var holders = await _docRepository.GetDocByIds(firstholderIds);
 
             if (status == "follow up")
             {
-                tracing = await _trackingRepository.GetTrackingbyStockIdAndFollowUpDate(stockIds);
+                tracing = await _trackingRepository.GetTrackingbyStockIds(stockIds);
 
-                var stockIdsList = tracing.Select(x => x.StockId).ToList();
-                var stocks = allStocks.Where(x => stockIdsList.Contains(x.Id));
+                // Step 1: Get latest follow-up per stock
+                var latestFollowUps = tracing
+                    .Where(x => x.DateofFollowUp.HasValue)
+                    .GroupBy(x => x.StockId)
+                    .Select(g => g.OrderByDescending(x => x.Id).First())
+                    .ToList();
 
+                // Step 2: Filter only those with DateofFollowUp <= Today
+                var validFollowUps = latestFollowUps
+                    .Where(x => x.DateofFollowUp.Value.Date <= DateTime.Today)
+                    .ToList();
+
+                // Step 3: Get matching stock data
+                var stockIdsList = validFollowUps.Select(x => x.StockId).ToList();
+                var stocks = allStocks.Where(x => stockIdsList.Contains(x.Id)).ToList();
+
+                // Step 4: Build result using only valid follow-ups
                 result.AddRange(from allStock in stocks
+                                let latestTracking = validFollowUps.FirstOrDefault(x => x.StockId == allStock.Id)
                                 select new
                                 {
                                     allStock.Id,
@@ -539,14 +626,21 @@ namespace Stock_CMS.Service
                                     allStock.ClaimStatus,
                                     allStock.FolioNo,
                                     allStock.Qty,
-                                    process = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Process).FirstOrDefault(),
-                                    trackDate = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DateofFollowUp).FirstOrDefault() ?? allStock.CreatedAt,
+                                    process = latestTracking?.Process,
+                                    trackDate = latestTracking?.DateofFollowUp.HasValue == true
+                                        ? latestTracking.DateofFollowUp.Value.Date
+                                        : (allStock.CreatedAt.HasValue
+                                            ? allStock.CreatedAt.Value.Date
+                                            : (DateTime?)null),
+                                    remark = latestTracking?.Remark,
+                                    iepfusername = holders.FirstOrDefault(u => u.Id == allStock.FirstHolderId)?.UserName,
+                                    iepfpassword = holders.FirstOrDefault(u => u.Id == allStock.FirstHolderId)?.Password,
                                 });
             }
             else
             {
                 tracing = await _trackingRepository.GetTrackingbyStockIdsAndSubmissionDate(stockIds);
-
+               
                 result.AddRange(from allStock in allStocks
                                 select new
                                 {
@@ -557,16 +651,38 @@ namespace Stock_CMS.Service
                                     allStock.ClaimStatus,
                                     allStock.FolioNo,
                                     allStock.Qty,
+                                    iepfStatus = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Iepfstatus).FirstOrDefault(),
                                     process = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Process).FirstOrDefault(),
-                                    trackDate = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DateofSubmission).FirstOrDefault() ?? allStock.CreatedAt,
+
+                                    trackDate = tracing.Where(x => x.StockId == allStock.Id)
+                                           .OrderByDescending(x => x.Id)
+                                           .Select(x => x.DateofSubmission.HasValue
+                                                ? x.DateofSubmission.Value.Date
+                                                : (allStock.CreatedAt.HasValue
+                                                    ? allStock.CreatedAt.Value.Date
+                                                    : (DateTime?)null))
+                                           .FirstOrDefault() ?? allStock.CreatedAt?.Date,
+
                                     srnno = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srnno).FirstOrDefault(),
-                                    srndate = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Srndate).FirstOrDefault(),
+
+                                    srndate = tracing.Where(x => x.StockId == allStock.Id)
+                                         .OrderByDescending(x => x.Id)
+                                         .Select(x => x.Srndate.HasValue
+                                              ? x.Srndate.Value.Date
+                                              : (DateTime?)null)
+                                         .FirstOrDefault(),
+
                                     dpname = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DpName).FirstOrDefault(),
                                     dpidclientid = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.DpIdClientId).FirstOrDefault(),
+                                    remark = tracing.Where(x => x.StockId == allStock.Id).OrderByDescending(x => x.Id).Take(1).Select(x => x.Remark).FirstOrDefault(),
+                                    iepfusername = holders.FirstOrDefault(u => u.Id == allStock.FirstHolderId)?.UserName,
+                                    iepfpassword = holders.FirstOrDefault(u => u.Id == allStock.FirstHolderId)?.Password,
                                 });
             }
 
-            return result;
+            var order = result.OrderBy(x => x.CustomerName).ThenByDescending(x => x.trackDate).ToList();
+
+            return order;
         }
 
         public async Task<dynamic> GetUnpaidAmountByClient()

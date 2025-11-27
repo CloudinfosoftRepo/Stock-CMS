@@ -7,18 +7,16 @@ namespace Stock_CMS.Models
         public int Id { get; set; }
 
         public int RoleId { get; set; }
-        [NotMapped]
-        public string? RoleName { get; set; }
 
         public string Name { get; set; } = null!;
 
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; }
 
-        public string Password { get; set; } = null!;
+        public string? Password { get; set; }
 
         public long? ContactNo { get; set; }
 
-        public string Address { get; set; } = null!;
+        public string? Address { get; set; }
 
         public bool? IsActive { get; set; }
 
@@ -30,10 +28,20 @@ namespace Stock_CMS.Models
 
         public int? UpdatedBy { get; set; }
 
+        public string? CurrentOtp { get; set; }
+
+        public bool? IsLock { get; set; }
+
+        public DateTime? ExpiryTime { get; set; }
+
+        public int? FailedAttempts { get; set; }
+
         [NotMapped]
         public string? CreatedByName { get; set; }
         [NotMapped]
         public string? UpdatedByName { get; set; }
+        [NotMapped]
+        public string? RoleName { get; set; }
     }
 
     public class SignInRequest

@@ -437,7 +437,7 @@
             <p class="s1" style="padding-top: 1pt; padding-left: 42pt; text-indent: 0pt; text-align: center;">(for Securities - Shares / Debentures / Bonds, etc., held in physical form)</p>
             <p style="padding-top: 2pt; text-indent: 0pt; text-align: left;"><br /></p>
             <p class="s1" style="text-indent: 0pt; line-height: 12pt; text-align: right;">
-                <b>Date:</b><u>{{data.today | date:'dd/MM/yyyy'}}</u>
+                <b>Date:</b><u>@* {{data.today | date:'dd/MM/yyyy'}} *@ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
             <ol id="l1">
                 <li data-list-text="A.">
@@ -1280,7 +1280,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</span>
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span >{{data.firstHolder}}</span>
                         </td>
                         <td style="
                         width: 143pt;
@@ -1293,7 +1293,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span>
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span >{{data.secondHolder}}</span>
                         </td>
                         <td style="
                         width: 107pt;
@@ -1306,7 +1306,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span>
+                            <p class="s19" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span>{{data.thirdHolder}}</span>
                         </td>
                     </tr>
                     <tr style="height: 42pt;">
@@ -1554,7 +1554,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span ng-style="{'color': data.heirs[0].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[0].name}}</span>
+                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p><span >{{data.aliveHeirs[0].name}}</span>
                         </td>
                         <td style="
                         width: 163pt;
@@ -1567,7 +1567,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.heirs[1].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[1].name}}</span>
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span >{{data.aliveHeirs[1].name}}</span>
                         </td>
                         <td style="
                         width: 93pt;
@@ -1580,7 +1580,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span ng-style="{'color': data.heirs[2].dateOfDeath ? 'red' : 'inherit'}">{{data.heirs[2].name}}</span>
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p><span >{{data.aliveHeirs[2].name}}</span>
                         </td>
                     </tr>
                     <tr style="height: 56pt;">
@@ -1608,7 +1608,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.heirs[0].address}}
+                            <p class="s17" style="padding-left: 5pt; text-indent: 0pt; text-align: left;"></p>{{data.aliveHeirs[0].address}}
                         </td>
                         <td style="
                         width: 163pt;
@@ -1621,7 +1621,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[1].address}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.aliveHeirs[1].address}}
                         </td>
                         <td style="
                         width: 93pt;
@@ -1634,7 +1634,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[2].address}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.aliveHeirs[2].address}}
                         </td>
                     </tr>
                     <tr style="height: 14pt;">
@@ -1662,7 +1662,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[0].pincode}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.aliveHeirs[0].pincode}}
                         </td>
                         <td style="
                         width: 163pt;
@@ -1675,7 +1675,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[1].pincode}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.aliveHeirs[1].pincode}}
                         </td>
                         <td style="
                         width: 93pt;
@@ -1688,7 +1688,7 @@
                         border-right-style: dotted;
                         border-right-width: 1pt;
                     ">
-                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.heirs[2].pincode}}
+                            <p style="text-indent: 0pt; text-align: left;"><br /></p>{{data.aliveHeirs[2].pincode}}
                         </td>
                     </tr>
                 </table>
@@ -1848,6 +1848,30 @@
             $http.get('/Form/GetGenratedFormById/'+id2).then(function (response) {
                 var result = response.data;
                 var obj = JSON.parse(result.jsonString);
+
+                    // const holderList = [
+                    //     {
+                    //         name: obj.firstHolder,
+                    //         address: obj.firstHolderaddress,
+                    //         pincode: obj.firstHolderpincode,
+                    //         alive: !obj.firstAlive
+                    //     },
+                    //     {
+                    //         name: obj.secondHolder,
+                    //         address: obj.secondHolderaddress,
+                    //         pincode: obj.secondHolderpincode,
+                    //         alive: !obj.secondAlive
+                    //     },
+                    //     {
+                    //         name: obj.thirdHolder,
+                    //         address: obj.thirdHolderaddress,
+                    //         pincode: obj.thirdHolderpincode,
+                    //         alive: !obj.thirdAlive
+                    //     }
+                    // ];
+
+                    // const aliveOnly = holderList.filter(h => h.alive);
+
                 $scope.data = {
                     docid: obj.docid,
                     customerName: obj.customerName,
@@ -1862,9 +1886,9 @@
                     companyName: obj.companyName,
                     folioNo: obj.folioNo,
                     jsondata: obj.jsondata,
-                    firstHolder:obj.firstHolder,
-                    secondHolder:obj.secondHolder,
-                    thirdHolder:obj.thirdHolder,
+                    firstHolder: obj.firstHolder,
+                    secondHolder: obj.secondHolder,
+                    thirdHolder: obj.thirdHolder,
                     certificatenos: obj.certificatenos,
                     distinctiveNosStart: obj.distinctiveNosStart,
                     distinctiveNosEnd: obj.distinctiveNosEnd,
@@ -1872,10 +1896,10 @@
                     rate: obj.rate,
                     docattach: JSON.parse(obj.docattach),
                     qtyinwords: obj.qtyinwords,
-                    firstHolderaddress:obj.firstHolderaddress,
-                    secondHolderaddress:obj.secondHolderaddress,
-                    thirdHolderaddress:obj.thirdHolderaddress,
-                        firstHolderpincode: obj.firstHolderpincode,
+                    firstHolderaddress: obj.firstHolderaddress,
+                    secondHolderaddress: obj.secondHolderaddress,
+                    thirdHolderaddress: obj.thirdHolderaddress,
+                    firstHolderpincode: obj.firstHolderpincode,
                     secondHolderpincode: obj.secondHolderpincode,
                     thirdHolderpincode: obj.thirdHolderpincode,
                     firstAlive: obj.firstAlive,
@@ -1887,6 +1911,7 @@
                     heirs: obj.heirs,
 						suspenseqty: obj.suspenseqty,
                         qtyinwords1: obj.qtyinwords1,
+                        aliveHeirs: obj.aliveHeirs,
 
                 };
                 $scope.shares = JSON.parse($scope.data.jsondata);
@@ -1902,6 +1927,31 @@
             }
 
             function populateData(holder, result, heirlist,isDeceased) {
+
+                  const holderList = [
+            {
+                    name: result.firstHolderName,
+                address: result.firstHolderData?.addressAsPerAadhar || '',
+                pincode: result.firstHolderData?.pinCode || '',
+                alive: !result.firstHolderData?.dateOfDeath
+            },
+            {
+                name: result.secondHolderName,
+                address: result.secondHolderData?.addressAsPerAadhar || '',
+                pincode: result.secondHolderData?.pinCode || '',
+                alive: !result.secondHolderData?.dateOfDeath
+            },
+            {
+                name: result.thirdHolderName,
+                address: result.thirdHolderData?.addressAsPerAadhar || '',
+                pincode: result.thirdHolderData?.pinCode || '',
+                alive: !result.thirdHolderData?.dateOfDeath
+            }
+        ];
+
+        // STEP 2: Filter only alive holders
+        const aliveOnly = holderList.filter(h => h.alive);
+
                  $scope.data = {
                             docid: holder.id,
                             customerName : holder.nameAsPerAadhar,
@@ -1914,9 +1964,9 @@
                             legelheirpan: holder.pan,
                             companyName: result.companyName,
                             folioNo: result.folioNo,
-                            firstHolder :result.firstHolderName,
-                            secondHolder:result.secondHolderName,
-                            thirdHolder: result.thirdHolderName,
+                             firstHolder: aliveOnly[0]?.name || '',
+            secondHolder: aliveOnly[1]?.name || '',
+            thirdHolder: aliveOnly[2]?.name || '',
                             certificatenos: $scope.data && $scope.data.certificatenos || '',
                             distinctiveNosStart:  $scope.data && $scope.data.distinctiveNosStart || '',
                             distinctiveNosEnd: $scope.data && $scope.data.distinctiveNosEnd || '',
@@ -1926,12 +1976,13 @@
                             suspenseqty: $scope.data && $scope.data.suspenseqty || '',
                             qtyinwords: $scope.numberToWords($scope.data && $scope.data.unclaimedqty || ''),
                             qtyinwords1: $scope.numberToWords($scope.data && $scope.data.suspenseqty || ''),
-                            firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
-                            secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
-                            thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
-                            firstHolderpincode: result.firstHolderData ? result.firstHolderData.pinCode : '',
-                            secondHolderpincode: result.secondHolderData ? result.secondHolderData.pinCode : '',
-                            thirdHolderpincode: result.thirdHolderData ? result.thirdHolderData.pinCode : '',
+                           firstHolderaddress: aliveOnly[0]?.address || '',
+            secondHolderaddress: aliveOnly[1]?.address || '',
+            thirdHolderaddress: aliveOnly[2]?.address || '',
+
+            firstHolderpincode: aliveOnly[0]?.pincode || '',
+            secondHolderpincode: aliveOnly[1]?.pincode || '',
+            thirdHolderpincode: aliveOnly[2]?.pincode || '',
                             firstAlive: result?.firstHolderData?.dateOfDeath,
                             secondAlive: result?.secondHolderData?.dateOfDeath,
                             thirdAlive: result?.thirdHolderData?.dateOfDeath,
@@ -1939,6 +1990,7 @@
                              jsondata: result.stockJson,
                              condition: isDeceased,
                              heirs: isDeceased ? heirlist.map(h => ({ name: h.name, address: h.addressAsPerAadhar, pincode: h.pinCode, pan: h.pan, dateOfDeath: h.dateOfDeath })) : [],
+                              aliveHeirs: isDeceased ? heirlist.filter(h => !h.dateOfDeath).slice(0, 3).map(h => ({ name: h.name, address: h.addressAsPerAadhar, pincode: h.pinCode })) : [],
                         };
                          $scope.shares = JSON.parse($scope.data.jsondata);
             }

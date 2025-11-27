@@ -1,9 +1,10 @@
-﻿using System.Security;
-using Stock_CMS.Common;
+﻿using Stock_CMS.Common;
 using Stock_CMS.Models;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.ServiceInterface;
+using System.Linq;
+using System.Security;
 
 namespace Stock_CMS.Service
 {
@@ -115,6 +116,7 @@ namespace Stock_CMS.Service
                              CreatedBy = u.CreatedBy,
                              UpdatedAt = u.UpdatedAt,
                              UpdatedBy = u.UpdatedBy,
+                                IsLock = u.IsLock,
                          };
             return result;
         }
@@ -166,6 +168,8 @@ namespace Stock_CMS.Service
                              CreatedBy = u.CreatedBy,
                              UpdatedAt = u.UpdatedAt,
                              UpdatedBy = u.UpdatedBy,
+                             IsLock = u.IsLock,
+
                          };
             return result;
         }
@@ -246,56 +250,77 @@ namespace Stock_CMS.Service
                     var userId = result.FirstOrDefault().Id;
                     var roleId = result.FirstOrDefault().RoleId;
                     var updatedBy = result.FirstOrDefault().UpdatedBy;
+                    var createdBy = result.FirstOrDefault()?.CreatedBy;
 
-                    var permissions = await _permissionRepository.GetPermissionsByUser(result.FirstOrDefault().Id);
-
+                    var permissions = await _permissionRepository.GetPermissionsByUser(userId);
                     var menu = await _menuRepository.GetMenu();
-                    // check if any new menu is added
-                    if (permissions.Count() != menu.Count())
+
+                    // Compare actual MenuId values instead of just count
+                    var menuIds = menu.Select(x => x.Id).ToHashSet();
+                    var permissionIds = permissions.Select(x => x.MenuId??0).Distinct().ToHashSet();
+
+                    // Check if there are any new menus not present in permissions
+                    var newMenuIds = menuIds.Except(permissionIds).ToList();
+
+                    if (newMenuIds.Any())
                     {
-                        var menuIds = menu.Select(x => x.Id).ToArray();
-                        var permissionIds = permissions.Select(x => x.MenuId ?? 0).Distinct().ToArray();
-                        var newMenu = menu.Where(x => !permissionIds.Contains(x.Id)).ToList();
+                        // Get list of new menu items
+                        var newMenuItems = menu.Where(x => newMenuIds.Contains(x.Id)).ToList();
 
-                        var createdBy = result.FirstOrDefault().CreatedBy;
-
-                        List<PermissionDto> newperms = new List<PermissionDto>();
-                        newMenu.ToList().ForEach(x =>
+                        // Create permissions for new menus
+                        List<PermissionDto> newPermissions = new List<PermissionDto>();
+                        newMenuItems.ForEach(x =>
                         {
-                            PermissionDto item = new PermissionDto();
-                            item.MenuId = x.Id;
-                            item.UserId = userId;
-                            item.RoleId = roleId;
-                            item.IsActive = true;
-                            item.CreatedAt = DateTime.Now;
-                            item.CreatedBy = createdBy;
-                            newperms.Add(item);
+                            PermissionDto item = new PermissionDto
+                            {
+                                MenuId = x.Id,
+                                UserId = userId,
+                                RoleId = roleId,
+                                IsActive = true,
+                                CreatedAt = DateTime.Now,
+                                CreatedBy = createdBy
+                            };
+                            newPermissions.Add(item);
                         });
-                        var newpermsResult = await _permissionRepository.AddPermission(newperms);
 
+                        // Save new permissions
+                        var newpermsResult = await _permissionRepository.AddPermission(newPermissions);
                     }
-                    // update role for each page for this user
-                    else if (permissions.Count() == menu.Count() && data.RoleId != existingProduct.RoleId)
+
+                    // Else: menu-permission count matches AND role is changed => update role-specific permissions
+                    else if (menuIds.SetEquals(permissionIds) && data.RoleId != existingProduct.RoleId)
                     {
+                        // Update RoleId for user's permissions
+                        permissions.ToList().ForEach(x =>
+                        {
+                            x.RoleId = data.RoleId;
+                        });
 
-                        var roleWisePerms = await _permissionRepository.GetPermissionByRoleId(result.FirstOrDefault().RoleId);
-                        var updatedperms = from userPerms in permissions
-                                           join newperm in roleWisePerms on userPerms.MenuId equals newperm.MenuId
-                                           select new PermissionDto()
-                                           {
-                                               Id = userPerms.Id,
-                                               MenuId = userPerms.MenuId,
-                                               UserId = userPerms.UserId,
-                                               RoleId = newperm.RoleId,
-                                               IsActive = true,
-                                               Actions = newperm.Actions,
-                                               UpdatedAt = DateTime.Now,
-                                               UpdatedBy = updatedBy,
-                                           };
-                        var newpermsResult = await _permissionRepository.UpdatePermission(updatedperms);
+                        var permUpdateResult = await _permissionRepository.UpdatePermission(permissions);
+
+                        // Get permissions of new role
+                        var roleWisePerms = await _permissionRepository.GetPermissionByRoleId(data.RoleId);
+
+                        // Sync user permissions with role-level actions
+                        var updatedPermissions = from userPerm in permissions
+                                                 join rolePerm in roleWisePerms on userPerm.MenuId equals rolePerm.MenuId
+                                                 select new PermissionDto
+                                                 {
+                                                     Id = userPerm.Id,
+                                                     MenuId = userPerm.MenuId,
+                                                     UserId = userPerm.UserId,
+                                                     RoleId = rolePerm.RoleId,
+                                                     IsActive = true,
+                                                     Actions = rolePerm.Actions,
+                                                     UpdatedAt = DateTime.Now,
+                                                     UpdatedBy = updatedBy
+                                                 };
+
+                        var updatedPermsResult = await _permissionRepository.UpdatePermission(updatedPermissions);
                     }
+
                     return 1;
-                  
+
                 }
                 else
                 {
@@ -306,7 +331,6 @@ namespace Stock_CMS.Service
             {
                 return -2;
             }
-
         }
 
         public async Task<long> UpdateUserbyColumn(UserDto data)
@@ -314,6 +338,20 @@ namespace Stock_CMS.Service
             data.IsActive = false;
             List<UserDto> updatelist = new List<UserDto>() { data };
             var result = await _user.UpdateUserbyColumn(updatelist, ["IsActive", "UpdatedAt", "UpdatedBy"]);
+            if (result.Any())
+            {
+                return result.FirstOrDefault().Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public async Task<long> LockOrUnlockUserbyColumn(UserDto data)
+        {
+            List<UserDto> updatelist = new List<UserDto>() { data };
+            var result = await _user.UpdateUserbyColumn(updatelist, ["IsLock", "UpdatedAt", "UpdatedBy"]);
             if (result.Any())
             {
                 return result.FirstOrDefault().Id;

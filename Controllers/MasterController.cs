@@ -63,6 +63,24 @@ namespace Stock_CMS.Controllers
 
         }
         [HttpGet]
+        public async Task<ActionResult> GetCustomerByval(string val)
+        {
+            try
+            {
+                var customers = await _customerService.GetCustomerByval(val);
+                return Json(customers);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+
+        }
+        [HttpGet]
         public async Task<ActionResult> GetCustomersById(long id)
         {
             try

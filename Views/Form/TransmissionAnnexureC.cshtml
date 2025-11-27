@@ -773,7 +773,11 @@
               text-align: left;
             "
                            >
-                            Mr./Ms. <span ng-show="data.relation != 'Nominee'" ng-repeat="h in data.heirs">{{h.name + ' & ' }} </span>
+                            Mr./Ms. <span ng-show="data.relation != 'Nominee'" ng-repeat="h in data.heirs track by $index">
+                                <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                                    {{h.name}}
+                                </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                            </span>
                             <span ng-show="data.relation == 'Nominee'" >{{data.customerName}} </span>
           </p>
         </td>
@@ -890,7 +894,11 @@
             "
           >
             <span class="s5">[Multiple PAN may be entered] </span>PAN
-                            (Claimant(s)/Guardian): <u><span ng-show="data.relation != 'Nominee'" ng-repeat="h in data.heirs">{{h.pan + ' & '}} </span>
+                            (Claimant(s)/Guardian): <u><span ng-show="data.relation != 'Nominee'" ng-repeat="h in data.heirs track by $index">
+                                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                                        {{h.pan}}
+                                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                                    </span>
                                 <span ng-show="data.relation == 'Nominee'">{{data.pan}} </span>
                             </u> |
             Acknowledgment attached KYC form attached
@@ -2907,7 +2915,7 @@
             font-size: 12pt;
           "
           >{{data.place}} </span
-        > <br />Date {{data.today | date:'__/MM/yyyy'}}
+        > <br />Date {{data.today | date:'__/__/____'}}
       </p>
     </div>
   
@@ -3235,10 +3243,23 @@
                 }
 
              $http.get('/LegalHeir/GetClaimentLegalHeir/' + id).then(function (response) {
-                $scope.heir =response.data;
+                $scope.heir = response.data;
                 $scope.heirs = response.data.find(x => x.id === hid??0);
                 $http.get('/doc/GetLegalHeirBank/'+ $scope.heirs.id).then(function (response) {
                     $scope.bank = response.data[0];
+
+                     if (!$scope.bank) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Bank details not found for the selected holder.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    hideLoader();
+                    return;
+
+                }
+
                      $scope.loadCustomers(id);
                 }, function (error) {
                 console.error('Error loading Bank Deatails:', error);
@@ -3260,16 +3281,7 @@
                      $scope.data.taxresident = 'Yes ';
                  }
 
-                 if (!$scope.bank) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Bank details not found for the selected holder.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                    hideLoader();
-                    return;
-                }
+                 
 
                  hideLoader();
                 $scope.hDiv = true;
@@ -3279,6 +3291,7 @@
                         $scope.docs = response.data;
                         var doc = $scope.docs.find(x => x.id === sid??0);
 
+                       
                         $scope.data = {
                             docid: $scope.data.relation == 'Legal Heir' ?  $scope.heirs.id : doc.id,
                             customerName : $scope.data.relation == 'Legal Heir' ? $scope.heirs.nameAsPerAadhar : '',
@@ -3322,7 +3335,7 @@
                             place: $scope.data && $scope.data.place || 'Vadodara',
                             today: new Date(),
                             nominee: $scope.data && $scope.data.nominee || '',
-                            heirs: $scope.data?.relation != 'Nominee' ? $scope.heir.map(h => ({ name: h.name, pan: h.pan })) : [],
+                            heirs: $scope.data?.relation != 'Nominee' ? $scope.heir.map(h => ({ name: h.name, pan: h.pan, dateOfDeath: h.dateOfDeath })) : [],
                             firstHolder: result.firstHolderName,
                             secondHolder: result.secondHolderName,
                             thirdHolder: result.thirdHolderName,

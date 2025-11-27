@@ -154,6 +154,21 @@ namespace Stock_CMS.Service
             var users = await _userRepository.GetUsersByIds(ids);
             var result = data.Select(x =>
             {
+                if (x.DateofSubmission.HasValue)
+                {
+                    x.DateofSubmission =
+                        DateTime.SpecifyKind(x.DateofSubmission.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.DateofFollowUp.HasValue)
+                {
+                    x.DateofFollowUp =
+                        DateTime.SpecifyKind(x.DateofFollowUp.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.Srndate.HasValue)
+                {
+                    x.Srndate =
+                        DateTime.SpecifyKind(x.Srndate.Value.Date, DateTimeKind.Unspecified);
+                }
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;
@@ -172,6 +187,21 @@ namespace Stock_CMS.Service
             var users = await _userRepository.GetUsersByIds(ids);
             var result = track.Select(x =>
             {
+                if (x.DateofSubmission.HasValue)
+                {
+                    x.DateofSubmission =
+                        DateTime.SpecifyKind(x.DateofSubmission.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.DateofFollowUp.HasValue)
+                {
+                    x.DateofFollowUp =
+                        DateTime.SpecifyKind(x.DateofFollowUp.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.Srndate.HasValue)
+                {
+                    x.Srndate =
+                        DateTime.SpecifyKind(x.Srndate.Value.Date, DateTimeKind.Unspecified);
+                }
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;

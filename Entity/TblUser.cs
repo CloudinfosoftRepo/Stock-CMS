@@ -29,6 +29,14 @@ public partial class TblUser
 
     public int? UpdatedBy { get; set; }
 
+    public string? CurrentOtp { get; set; }
+
+    public bool? IsLock { get; set; }
+
+    public DateTime? ExpiryTime { get; set; }
+
+    public int? FailedAttempts { get; set; }
+
     public virtual TblRole Role { get; set; } = null!;
 
     public virtual ICollection<TblPermission> TblPermissions { get; set; } = new List<TblPermission>();

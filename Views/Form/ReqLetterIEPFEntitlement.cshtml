@@ -270,7 +270,7 @@
                 To,
             </p>
             <p style="padding-top: 1pt; padding-left: 5pt; text-indent: 0pt; text-align: right;">
-                Date:{{data.today | date:'dd-MM-yyyy'}}
+                Date:@* {{data.today | date:'dd-MM-yyyy'}} *@<u> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
             </p>
         </div>
         <p class="s3" style="padding-left: 5pt; text-indent: 0pt; text-align: left">
@@ -293,7 +293,7 @@
         </h3>
         <p class="s4"
            style="padding-top: 11pt; text-indent: 0pt; text-align: center">
-            Sub.: Request for Issue of Entitlement Letter for IEPF Claim
+            Sub.: Request for Issue of Entitlement Letter on Company Letter Head for IEPF Claim
         </p>
         <h3 style="
         padding-top: 10pt;
@@ -593,20 +593,42 @@
                 }
 
                 function populateData(holder, result, heirlist,isDeceased) {
+
+                    const holderList = [
+            {
+                    name: result.firstHolderName,
+                address: result.firstHolderData?.addressAsPerAadhar || '',
+                alive: !result.firstHolderData?.dateOfDeath
+            },
+            {
+                name: result.secondHolderName,
+                address: result.secondHolderData?.addressAsPerAadhar || '',
+                alive: !result.secondHolderData?.dateOfDeath
+            },
+            {
+                name: result.thirdHolderName,
+                address: result.thirdHolderData?.addressAsPerAadhar || '',
+                alive: !result.thirdHolderData?.dateOfDeath
+            }
+        ];
+
+        // STEP 2: Filter only alive holders
+        const aliveOnly = holderList.filter(h => h.alive);
+
                     $scope.data = {
                         docid: holder.id,
                         customerName : holder.name,
                         mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
-                    address : !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
+                        address : !isDeceased ? aliveOnly[0]?.address : holder.addressAsPerAadhar,
                         qty : result.qty,
                         folioNo : result.folioNo,
                         today: new Date(),
                         officename : result.company.rtaName,
                         officeaddress: result.company.rtaAddress,
                         unit: result.companyName,
-                        firstHolder: result.firstHolderName,
-                        secondHolder: result.secondHolderName,
-                        thirdHolder: result.thirdHolderName,
+                         firstHolder: aliveOnly[0]?.name || '',
+            secondHolder: aliveOnly[1]?.name || '',
+            thirdHolder: aliveOnly[2]?.name || '',
                         firstAlive: result?.firstHolderData?.dateOfDeath,
                         secondAlive: result?.secondHolderData?.dateOfDeath,
                         thirdAlive: result?.thirdHolderData?.dateOfDeath,

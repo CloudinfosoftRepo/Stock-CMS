@@ -44,6 +44,8 @@ namespace Stock_CMS.Models
 
         public string? DpIdClientId { get; set; }
 
+        public string? Iepfstatus { get; set; }
+
         [NotMapped]
         public string? CreatedByName { get; set; }
         [NotMapped]

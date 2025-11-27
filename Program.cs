@@ -1,4 +1,9 @@
+using Stock_CMS.ViewModel;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//mail settings
+builder.Services.Configure<SmtpSettingsViewModel>(builder.Configuration.GetSection("SmtpSettings"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

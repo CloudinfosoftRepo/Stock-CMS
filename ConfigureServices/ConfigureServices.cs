@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+﻿using AutoMapper;
 using log4net.Config;
+using Microsoft.EntityFrameworkCore;
 using Stock_CMS.AutoMapper;
+using Stock_CMS.Common;
 using Stock_CMS.Entity;
 using Stock_CMS.Repository;
 using Stock_CMS.RepositoryInterface;
 using Stock_CMS.Service;
 using Stock_CMS.ServiceInterface;
-using Stock_CMS.Common;
+using Stock_CMS.ViewModel;
+using System.Configuration;
 
 
 public static class ConfigureServices
@@ -97,5 +99,8 @@ public static class ConfigureServices
         services.AddTransient<IRelationMappingRepository, RelationMappingRepository>();
 
         services.AddTransient<IFileService, FileService>();
+
+        services.AddTransient<IOTPService, OTPService>();
+        
     }
 }

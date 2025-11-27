@@ -12,6 +12,15 @@
 	<meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
 	<meta name="author" content="Xiaoying Riley at 3rd Wave Media">
 	<link rel="shortcut icon" href="favicon.ico">
+	
+
+	<!-- jQuery (recommended, even if toastr doesn't strictly require it) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	
+
+	<!-- Toastr -->
+	<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
 
 	<script src="~/assets/js/angular.min.js"></script>
 	<!-- FontAwesome JS-->
@@ -23,6 +32,9 @@
 
 	<!-- App CSS -->
 	<link id="theme-style" rel="stylesheet" href="~/assets/css/portal.css">
+	<!-- Toastr CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet" />
+	
 	<style>
 		.mybtnstyle {
 			color: black !important;
@@ -41,6 +53,20 @@
 </head>
 
 <body ng-app="Stock-CMS" class="app app-login p-0">
+	<!-- Tost Js -->
+	<script>
+		function toast(message, title, divclass) {
+			document.getElementById('toastbody').innerHTML = message;
+			let ele = document.getElementById('toastMessage');
+			let classes = divclass.split(' ');
+			classes.forEach(cls => {
+				ele.classList.add(cls);
+			});
+
+			let toast = new bootstrap.Toast(ele, { delay: 2000, animation: true });
+			toast.show();
+		}
+	</script>
 	<div class="row g-0 app-auth-wrapper" ng-controller="StockLoginCtrl" ng-init="initialize()">
 		<div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
 			<div class="d-flex flex-column align-content-end">
@@ -48,7 +74,7 @@
 					<div class="app-auth-branding mb-4"><a class="app-logo" href="index.html"><img class="logo-icon me-2" src="~/assets/images/app-logo.svg" alt="logo"></a></div>
 					<h2 class="auth-heading text-center mb-5">Log in to Dear-Money</h2>
 					<div class="auth-form-container text-start">
-						<form ng-submit="submit()">
+						<form ng-submit="showOtpInput ? verifyOtp() : submit()">
 							<div class="email mb-3">
 								<label class="sr-only" for="signin-email">Email</label>
 								<input ng-model="username" name="signin-email" type="email" class="form-control signin-email" placeholder="Please enter your Username" required="required">
@@ -61,7 +87,13 @@
 										<i class="bi" ng-class="{'bi-eye': passwordFieldType === 'password', 'bi-eye-slash': passwordFieldType === 'text'}"></i>
 									</button>
 								</div>
+								
 								<div class="extra mt-3 row justify-content-between">
+									<!-- OTP input -->
+									<div class="otp mb-3" ng-show="showOtpInput">
+										<label class="sr-only" for="otp-input">OTP</label>
+										<input ng-model="otp" name="otp-input" type="text" class="form-control signin-email" placeholder="Please enter OTP">
+									</div>
 									@* <div class="col-6">
 										<div class="form-check">
 											<input class="form-check-input" type="checkbox" value="" id="RememberPassword">
@@ -79,7 +111,7 @@
 								</div><!--//extra-->
 							</div><!--//form-group-->
 							<div class="text-center">
-								<button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto">Login</button>
+								<button type="submit" class="btn app-btn-primary w-100 theme-btn mx-auto" ng-disabled="processdone">{{ showOtpInput ? 'Verify OTP' : 'Login' }}</button>
 							</div>
 						</form>
 
@@ -114,6 +146,8 @@
 
 	</div><!--//row-->
 
+	<!-- Toastr JS
+    <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script> -->
 
 </body>
 
@@ -128,6 +162,9 @@
 		//};
 
 			$scope.passwordFieldType = 'password';  
+			$scope.showOtpInput = false;
+            $scope.processdone = false;
+
 
 	$scope.togglePassword = function() {
 	  if ($scope.passwordFieldType === 'password') {
@@ -144,10 +181,11 @@
 			//var encryptedPasswordBytes = publicKeyForge.encrypt(pass, 'RSA-OAEP');
 			//var encryptedPassword = forge.util.encode64(encryptedPasswordBytes);
 			//$scope.passwordenc = encryptedPassword;
+            $scope.processdone = true;
 
 			$http({
 				method: 'POST',
-				url: '/Home/Login',
+				url: '/Home/LoginSendOtp',
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',
 					'dataType': 'json'
@@ -157,23 +195,58 @@
 					password: $scope.password
 				}
 			}).then(function (response) {
-				if (response.data.status == true) {
-
-					//alert(result.message);
-					//var url = '/Home/Dashboard';
-					var url = '/Master/Client';
-
-					$window.location.href = url;
-				}
-				else {
-					//alert(result.message);
-					$window.alert(response.data.message);
+				if (response.data.status === true) {
+					// OTP sent, show OTP input UI
+					$scope.showOtpInput = true;
+                    $scope.processdone = false; // Reset processdone for next action
+					toastr.success(response.data.message || 'Success');
+				} else {
+                    $scope.processdone = false; // Reset processdone for next action
+					toastr.error(response.data.message || 'Error');
 				}
 			}, function (response) {
-				alert(response.data);
+				toastr.error('AbstractRange Error occured');
 				console.error('Error:', response);
+                $scope.processdone = false; // Reset processdone for next action
 			});
 
 		};
+
+		$scope.verifyOtp = function () {
+            $scope.processdone = true; // Set processdone to true while verifying OTP
+		// Step 2: Verify OTP
+		$http({
+			method: 'POST',
+			url: '/Home/VerifyOtp',
+			headers: {
+				'Content-Type': 'application/json; charset=utf-8',
+				'dataType': 'json'
+			},
+			data: {
+				email: $scope.username,
+				password: $scope.password,
+				otp: $scope.otp
+			}
+		}).then(function (response) {
+			if (response.data.status === true) {
+				// OTP verified, redirect to dashboard
+                $scope.processdone = false; // Reset processdone after successful verification
+				toastr.success(response.data.message);
+				var url = '/Master/Client';
+
+					$window.location.href = url;
+			} else {
+                $scope.processdone = false; // Reset processdone for next action
+				toastr.error(response.data.message);
+			}
+		}, function (response) {
+			// Handle error response
+            $scope.processdone = false; // Reset processdone for next action
+			toastr.error('OTP verification failed.');
+			console.error('Error:', response);
+		});
+	};
+
 	});
 </script>
+

@@ -45,5 +45,7 @@ public partial class TblTracking
 
     public string? DpIdClientId { get; set; }
 
+    public string? Iepfstatus { get; set; }
+
     public virtual TblStock Stock { get; set; } = null!;
 }

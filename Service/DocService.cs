@@ -207,7 +207,17 @@ namespace Stock_CMS.Service
 			var users = await _userRepository.GetUsersByIds(ids);
 			var result = data.Select(x =>
 			{
-				x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
+                if (x.Dob.HasValue)
+                {
+                    x.Dob =
+                        DateTime.SpecifyKind(x.Dob.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.DateOfDeath.HasValue)
+                {
+                    x.DateOfDeath =
+                        DateTime.SpecifyKind(x.DateOfDeath.Value.Date, DateTimeKind.Unspecified);
+                }
+                x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
 				x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
 				return x;
 			});
@@ -223,6 +233,16 @@ namespace Stock_CMS.Service
             var users = await _userRepository.GetUsersByIds(ids);
             var result = data.Select(x =>
             {
+                if (x.Dob.HasValue)
+                {
+                    x.Dob =
+                        DateTime.SpecifyKind(x.Dob.Value.Date, DateTimeKind.Unspecified);
+                }
+                if (x.DateOfDeath.HasValue)
+                {
+                    x.DateOfDeath =
+                        DateTime.SpecifyKind(x.DateOfDeath.Value.Date, DateTimeKind.Unspecified);
+                }
                 x.CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.Name;
                 x.UpdatedByName = users.FirstOrDefault(u => u.Id == x.UpdatedBy)?.Name;
                 return x;

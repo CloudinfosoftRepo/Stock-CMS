@@ -68,6 +68,19 @@
                                     <button class="btn app-btn-primary" style="background-color:#51b37f;color:white" ng-click="openCustomerModal()">Add Client</button>
                                 </div>
                             }
+                            <div class="col-auto">
+                                <div class="modal-header justify-content-between">
+                                <button class="btn btn-custom justify-content-end"
+                                        style="background-color:#51b37f;color:white"
+                                        excel-export
+                                        table-id="Clientdata"
+                                        file-name="client"
+                                        sheet-name={{header}}
+                                        file-type="xlsx">
+                                    Export
+                                </button>
+                            </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -79,13 +92,18 @@
 
                     <!-- Enquiry Tab -->
                     <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
-                       ng-class="{'active': search === false}" ng-click="filter(false)"
+                       ng-class="{'active': search === false}" ng-click="filter('false')"
                        role="tab" aria-selected="{{search === false ? 'true' : 'false'}}">Enquiry</a>
 
                     <!-- Client Tab -->
                     <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
-                       ng-class="{'active': search === true}" ng-click="filter(true)"
+                       ng-class="{'active': search === true}" ng-click="filter('true')"
                        role="tab" aria-selected="{{search === true ? 'true' : 'false'}}">Client</a>
+
+                    <!-- Demated Tab -->
+                    <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+                       ng-class="{'active': search === demated}" ng-click="filter('demated')"
+                       role="tab" aria-selected="{{search === demated ? 'true' : 'false'}}">Demated</a>
                 </nav>
 
 
@@ -94,7 +112,7 @@
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                     <div class="app-card-body">
                         <div class="table-responsive">
-                            <table class="table app-table-hover mb-0 text-left text-nowrap">
+                        <table id="Clientdata" class="table app-table-hover mb-0 text-left text-nowrap">
                                 <thead >
                                     <tr>
                                         <th class="cell">#</th>
@@ -116,7 +134,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="customer in customers | filter: searchQuery | filter:{isClient:search}">
+                                <tr ng-repeat="customer in customers | filter: searchQuery">
                                         <td class="cell">{{ $index + 1 }}</td>
                                     <td class="cell">{{ customer.fileNo }}</td>
                                     <td ng-click="manageClient(customer.id)" class="cell nav-style">{{ customer.customerName }}</td>
@@ -264,7 +282,7 @@
 
             // Load Customers
             $scope.loadCustomers = function () {
-                $http.get('/Master/GetCustomers').then(function (response) {
+                $http.get('/Master/GetCustomerByval/?val=' + $scope.search).then(function (response) {
                     $scope.customers = response.data;
                     hideLoader();
                 }, function (error) {
@@ -276,6 +294,8 @@
             $scope.filter = function(filter){
                 $scope.search = filter;
                 localStorage.setItem("enquiry",filter);
+                $scope.header = filter === '' ? 'All Clients' : filter === 'true' ? 'Converted Clients' : filter === 'false' ? 'Enquiry Clients' : 'Demated Clients';
+                $scope.loadCustomers();
             }
 
             // Open Modal
@@ -404,6 +424,7 @@
             var storedSearch = localStorage.getItem('enquiry');
 
             $scope.search = storedSearch ? JSON.parse(storedSearch) : '';
+            $scope.header = $scope.search === '' ? 'All Clients' : $scope.search === true ? 'Converted Clients' : $scope.search === false ? 'Enquiry Clients' : 'Demated Clients';
             // $scope.filter(localStorage.getItem('enquiry'));
             $scope.loadCustomers();
              

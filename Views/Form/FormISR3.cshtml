@@ -217,16 +217,16 @@
         <p style="padding-top: 10pt; text-indent: 0pt; text-align: left;"><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; line-height: 108%; text-align: justify;">
             I / we <u ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
+                <span >{{ data.firstHolder}}</span>
                 <span ng-if="data.secondHolder">
                     &
-                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                    <span >
                         {{data.secondHolder}}
                     </span>
                 </span>
                 <span ng-if="data.thirdHolder">
                     &
-                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                    <span >
                         {{data.thirdHolder}}
                     </span>
                 </span>
@@ -411,11 +411,11 @@
         <p style="text-indent: 0pt; text-align: left;"><br /></p>
         <div ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
         <p style="padding-top: 2pt; padding-left: 11pt; text-indent: 0pt; line-height: 213%; text-align: left;">Name(s) and Address of Security holders(s) ature(s)Sole / First Holder Name</p>
-            <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;"><span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</span><br />{{data.firstHolderaddress}}<br /><br /></p>
+            <p style="padding-top: 1pt; text-indent: 0pt; text-align: left;"><span >{{data.firstHolder}}</span><br />{{data.firstHolderaddress}}<br /><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Second Holder Name</p>
-            <p style="text-indent: 0pt; text-align: left;"><span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</span><br />{{data.secondHolderaddress}}<br /><br /></p>
+            <p style="text-indent: 0pt; text-align: left;"><span >{{data.secondHolder}}</span><br />{{data.secondHolderaddress}}<br /><br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Third Holder Name</p>
-            <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;"><span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</span><br />{{data.thirdHolderaddress}}<br /></p>
+            <p style="padding-top: 3pt; text-indent: 0pt; text-align: left;"><span >{{data.thirdHolder}}</span><br />{{data.thirdHolderaddress}}<br /></p>
         <p style="padding-left: 11pt; text-indent: 0pt; text-align: left;">Sign</p>
         </div>
         <div ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs">
@@ -595,6 +595,28 @@
             }
 
             function populateData(holder, result, heirlist,isDeceased) {
+
+                const holderList = [
+            {
+                    name: result.firstHolderName,
+                address: result.firstHolderData?.addressAsPerAadhar || '',
+                alive: !result.firstHolderData?.dateOfDeath
+            },
+            {
+                name: result.secondHolderName,
+                address: result.secondHolderData?.addressAsPerAadhar || '',
+                alive: !result.secondHolderData?.dateOfDeath
+            },
+            {
+                name: result.thirdHolderName,
+                address: result.thirdHolderData?.addressAsPerAadhar || '',
+                alive: !result.thirdHolderData?.dateOfDeath
+            }
+        ];
+
+        // STEP 2: Filter only alive holders
+        const aliveOnly = holderList.filter(h => h.alive);
+
                 $scope.data = {
                     docid: holder.id,
                     customerName : holder.name,
@@ -605,12 +627,12 @@
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officeaddress: result.company.companyAddress,
-                    firstHolder :result.firstHolderName,
-                   secondHolder:result.secondHolderName,
-                   thirdHolder: result.thirdHolderName,
-                    firstHolderaddress: result.firstHolderData.addressAsPerAadhar,
-                    secondHolderaddress: result.secondHolderData ? result.secondHolderData.addressAsPerAadhar : '',
-                    thirdHolderaddress: result.thirdHolderData ? result.thirdHolderData.addressAsPerAadhar : '',
+                   firstHolder: aliveOnly[0]?.name || '',
+            secondHolder: aliveOnly[1]?.name || '',
+            thirdHolder: aliveOnly[2]?.name || '',
+                    firstHolderaddress: aliveOnly[0]?.address || '',
+            secondHolderaddress: aliveOnly[1]?.address || '',
+            thirdHolderaddress: aliveOnly[2]?.address || '',
                     firstAlive: result?.firstHolderData?.dateOfDeath,
                     secondAlive: result?.secondHolderData?.dateOfDeath,
                     thirdAlive: result?.thirdHolderData?.dateOfDeath,

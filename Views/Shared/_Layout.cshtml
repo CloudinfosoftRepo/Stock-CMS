@@ -14,7 +14,7 @@
 		Context.Response.Redirect("/Home");
 	}
 }
-<html lang="en">
+<html lang="en" >
 <head>
 	<title>Stock-CMS</title>
 
@@ -37,6 +37,10 @@
 	<link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
 	<link href="~/assets/plugins/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet" />
 	<link href="~/assets/css/sweetalert2.min.css" rel="stylesheet" />
+
+	<!-- Toastr CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet" />
+
 	<style>
 		/*spinner*/
 		#loader {
@@ -66,8 +70,8 @@
 	</style>
 </head>
 
-<body class="app">
-
+<body class="app" >
+	
 	<div class="overlay" id="loader">
 		<div class="spinner-border loder_css text-dark" role="status">
 			@*  <span class="sr-only">Loading...</span> *@
@@ -644,6 +648,87 @@
 	<script src="~/assets/js/app.js"></script>
     <script src="~/assets/js/custom-directive.js"></script>
 
+	<!-- Toastr JS -->
+	<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
+
+	<script>
+		(function () {
+			function getCookie(name) {
+				var value = "; " + document.cookie;
+				var parts = value.split("; " + name + "=");
+				if (parts.length === 2) return parts.pop().split(";").shift();
+				return null;
+			}
+
+			function checkSessionExpiry() {
+				const sessionExpiresAt = getCookie("SessionExpiresAt");
+
+				if (!sessionExpiresAt) {
+					// No session expiration cookie → logout
+					window.location.href = '@Url.Action("Logout", "Home")';
+					return;
+				}
+
+				const decoded = decodeURIComponent(sessionExpiresAt);
+				const expireTime = new Date(decoded);
+				const now = new Date();
+
+				if (isNaN(expireTime)) {
+					console.error("Invalid date in SessionExpiresAt cookie");
+					window.location.href = '@Url.Action("Logout", "Home")';
+					return;
+				}
+
+				const minutesLeft = (expireTime - now) / 60000;
+
+				if (minutesLeft <= 0) {
+					toastr.warning("⏰ Session expired. Logging out.");
+					window.location.href = '@Url.Action("Logout", "Home")';
+				}
+
+				if (minutesLeft <= 5 && !window.__renewalPromptShown) {
+					window.__renewalPromptShown = true;
+
+					Swal.fire({
+						title: '⚠️ Session Expiring Soon!',
+						text: `Your session expires in ${Math.floor(minutesLeft)} minutes. Do you want to renew it?`,
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonText: 'Renew Session',
+						cancelButtonText: 'Log me out',
+						allowOutsideClick: false
+					}).then((result) => {
+						if (result.isConfirmed) {
+							fetch('/Home/RenewSession', {
+								method: 'POST',
+								headers: { 'Content-Type': 'application/json' }
+							})
+							.then(res => res.json())
+							.then(data => {
+								if (data.status) {
+									toastr.success("✅ Session renewed.");
+									window.__renewalPromptShown = false;
+								} else {
+									toastr.error("❌ Could not renew session.");
+									window.location.href = '@Url.Action("Logout", "Home")';
+								}
+							})
+							.catch(() => {
+								toastr.error("⚠️ Error during session renewal.");
+								window.location.href = '@Url.Action("Logout", "Home")';
+							});
+						} else {
+							toastr.warning("🔒 You will be logged out soon.");
+						}
+					});
+				}
+			}
+
+			// Run every 60 seconds
+			setInterval(checkSessionExpiry, 60000);
+			checkSessionExpiry(); // Run once immediately
+		})();
+	</script>
 </body>
 </html>
 
