@@ -1,0 +1,682 @@
+﻿
+<html lang="en" ng-app="Stock-CMS">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Name Deletion Form</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .s4 {
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: Verdana, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s6 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s7 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s8 {
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .h3 {
+            color: black;
+            font-family: "Segoe UI", sans-serif;
+            font-style: italic;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 10.5pt;
+        }
+
+        .s9 {
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .s10 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        .h2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 11pt;
+        }
+
+        p {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+            margin: 0pt;
+        }
+
+        .h4 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 10pt;
+        }
+
+        .s12 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 10pt;
+        }
+
+        .s13 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s14 {
+            color: black;
+            font-family: Cambria, serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 13pt;
+        }
+
+        h1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        table,
+        tbody {
+            vertical-align: top;
+            overflow: visible;
+        }
+        .header-container {
+        width: 100%;
+        font-family: Arial, sans-serif;
+        margin-bottom: 20px;
+    }
+
+    .name {
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .details {
+        margin-top: 5px;
+        line-height: 1.4;
+        font-size: 14px;
+    }
+
+    .divider {
+        margin-top: 20px;
+        border-top: 1px solid #000;
+        width: 100%;
+    }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+
+        .mybtn {
+            background-color: #51b37f !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
+    </style>
+</head>
+
+<body style="padding: 5%; padding-top: 5%" ng-controller="FormController">
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Name Deletion Form</h3>
+        </div>
+    </div>
+
+    <div ng-if="hDiv" class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form name="gForm" ng-submit="genrateForm()">
+                    <h4 class="card-title text-center mb-4" style="color:#51b37f;">Generate Form</h4>
+                    <div class="row">
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="col-md-4 text-center m-2">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#51b37f; color:white; border-radius: 5px;">
+                            Generate Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="printForm">
+    <div class="header-container">
+    <div class="name">SHAH DEEPAK</div>
+
+    <div class="details">
+        Shah Shantilal, Shreekunj C - 13, Zaverchand Park Society,<br>
+        Behind Sterling Health Mall, Old Padra Road, Vadodara,<br>
+        Vadodara, Gujarat, 390020<br>
+        <strong>M:</strong> 9428171249
+    </div>
+
+    <div class="divider"></div>
+</div>
+    <p style="padding-top: 6pt;text-indent: 0pt;text-align: left;"><br /></p>
+    <p style="padding-left: 7pt;text-indent: 0pt;line-height: 1pt;text-align: left;" />
+    <p style="padding-top: 4pt;text-indent: 0pt;text-align: left;"><br /></p>
+    <p class="s1" style="text-indent: 0pt;text-align: right;">Date<span class="s2">: </span><span
+            class="s3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+    <p class="s1" style="padding-top: 2pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">To</p>
+    <p class="s4" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">KFin Technologies Ltd,</p>
+    <p class="s4" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">Karvy Selenium Tower B, Plot 31-32,
+        Gachibowli, Financial District, Nanakramguda,</p>
+    <p class="s4" style="padding-left: 5pt;text-indent: 0pt;line-height: 12pt;text-align: left;">Hyderabad, Telangana,
+        500032</p>
+    <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;"><br /></p>
+    <p class="s5" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">(Unit: <span class="s6">Reliance
+            Industries Ltd</span>.)</p>
+    <p class="s7" style="padding-top: 2pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">(<span class="s8">Folio
+            No</span>: <span class="h3">00000</span>)</p>
+    <p style="padding-top: 11pt;text-indent: 0pt;text-align: left;"><br /></p>
+    <p class="s10" style="text-indent: 0pt;text-align: center;"><span class="s9">Sub</span>.: <span class="h2">Deletion
+            of the name of the deceased shareholder</span>.</p>
+    <p style="padding-top: 11pt;padding-left: 11pt;text-indent: 0pt;text-align: justify;">Dear Sir,</p>
+    <p style="padding-top: 5pt;padding-left: 11pt;text-indent: 29pt;text-align: justify;">I/We, the undersigned being
+        the joint holder(s) with Mr./Mrs./Miss <span class="h4">KRISHNABEN </span>(deceased) who has expired on
+        <u><b>01/03/2004</b></u><b> </b>hereby request you to Delete his/her name from the Register of Members of the
+        Company in respect of the 24 Shares, share certificates for which are sent herewith for the purpose along with
+        the Certified copy of the Death Certificate.</p>
+    <p style="padding-top: 7pt;padding-left: 11pt;text-indent: 29pt;line-height: 150%;text-align: justify;">I/We, give
+        hereunder particulars regarding the surviving holder / joint holder(s) as would be required by you for your
+        records.</p>
+    <p style="padding-top: 8pt;text-indent: 0pt;text-align: left;"><br /></p>
+    <table style="border-collapse:collapse;margin-left:5.27499pt" cellspacing="0">
+        <tr style="height:39pt">
+            <td
+                style="width:201pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s12" style="padding-top: 9pt;text-indent: 0pt;text-align: center;">Full Name of Surviving
+                    holder(s)</p>
+            </td>
+            <td
+                style="width:181pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s12" style="padding-top: 9pt;text-indent: 0pt;text-align: center;">Deceased Holder Name</p>
+            </td>
+            <td
+                style="width:69pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s12" style="padding-top: 9pt;padding-right: 4pt;text-indent: 0pt;text-align: center;">No. of
+                    Shares</p>
+            </td>
+        </tr>
+        <tr style="height:36pt">
+            <td
+                style="width:201pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="text-indent: 0pt;line-height: 15pt;text-align: center;">SHAH DEEPAK</p>
+            </td>
+            <td
+                style="width:181pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="text-indent: 0pt;line-height: 15pt;text-align: center;">KRISHANABEN SHANTILAL SHAH
+                </p>
+            </td>
+            <td
+                style="width:69pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="text-indent: 0pt;line-height: 15pt;text-align: center;">24</p>
+            </td>
+        </tr>
+    </table>
+    <p style="text-indent: 0pt;text-align: left;"><br /></p>
+    <p class="s14" style="padding-left: 10pt;text-indent: 0pt;text-align: left;">Name&amp; Signature of Sole Survivor
+    </p>
+    <p style="padding-top: 5pt;text-indent: 0pt;text-align: left;"><br /></p>
+    <p style="padding-left: 7pt;text-indent: 0pt;line-height: 1pt;text-align: left;" />
+    <h1 style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">SHAH DEEPAK</h1>
+    </div>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
+</body>
+</html>
+
+<script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http, $timeout) {
+
+        $scope.customers = [];
+        $scope.hDiv = true;
+
+        var params = new URLSearchParams(window.location.search);
+        var id = params.get('id');
+        var id2 = params.get('id2');
+
+        var isProcessing = false;
+        $scope.processdone = false;
+
+        // Load Customers
+        $scope.loadCustomers = function (sid, hid) {
+
+            if (id) {
+                hideLoader();
+
+                var docid = $scope.seletedid === undefined ? 0 : $scope.seletedid;
+
+                $scope.hDiv = true;
+
+                $http.get('/Enquiry/GetStocksById/' + id).then(function (response) {
+
+                    var result = response.data;
+
+                    $http.get('/Form/GetHolderByStockId/' + id).then(function (response) {
+
+                        $scope.docs = response.data;
+
+                        var doc = $scope.docs.find(x => x.id === sid);
+                        var isDeceased = !!doc?.dateOfDeath;
+
+                        if (isDeceased) {
+
+                            $scope.heirId = null;
+                            $scope.legalheirlist = isDeceased;
+                            document.getElementById('heirId').value = '';
+
+                            $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
+
+                                $scope.heir = response.data;
+
+                                var heirs = response.data.find(x => x.id === hid);
+                                var holder = heirs;
+
+                                populateData(holder, result, $scope.heir, isDeceased, doc);
+
+                            }, function (error) {
+                                console.error('Error loading legal heir data:', error);
+                                hideLoader();
+                            });
+
+                        } else {
+
+                            $scope.heirId = null;
+                            $scope.data = null;
+                            $scope.legalheirlist = isDeceased;
+                            document.getElementById('heirId').value = '';
+
+                            var holder = doc;
+                            populateData(holder, result, $scope.heir, isDeceased, doc);
+                        }
+
+                        hideLoader();
+
+                    }, function (error) {
+                        console.error('Error loading Docs:', error);
+                        hideLoader();
+                    });
+
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                    hideLoader();
+                });
+            }
+
+            // Load Saved Generated Form
+            if (id2) {
+
+                $scope.hDiv = false;
+
+                $http.get('/Form/GetGenratedFormById/' + id2).then(function (response) {
+
+                    var result = response.data;
+                    var obj = JSON.parse(result.jsonString);
+
+                    $scope.data = {
+                        docid: obj.docid,
+                        customerName: obj.customerName,
+                        folioNo: obj.folioNo,
+                        qty: obj.qty,
+                        address: obj.address,
+                        mobile: obj.mobile,
+                        sonof: obj.sonof,
+                        officename: obj.officename,
+                        officeaddress: obj.officeaddress,
+                        unit: obj.unit,
+                        clientid: obj.clientid,
+                        date: new Date(obj.date),
+                        jsondata: obj.jsondata,
+                        deceasedDate: obj.deceasedDate,
+                        firstHolder: obj.firstHolder,
+                        secondHolder: obj.secondHolder,
+                        thirdHolder: obj.thirdHolder,
+                        heirs: obj.heirs,
+                        condition: obj.condition
+                    };
+
+                    id = result.stockId;
+                    $scope.shares = JSON.parse($scope.data.jsondata);
+
+                    checkData();
+                    hideLoader();
+
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                    hideLoader();
+                });
+            }
+
+            // Populate Form Data
+            function populateData(holder, result, heirlist, isDeceased, doc) {
+
+                $scope.data = {
+                    docid: holder.id,
+                    customerName: holder.name,
+                    qty: result.qty,
+                    sonof: doc.name,
+                    folioNo: result.folioNo,
+                    mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
+                    address: !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
+                    officename: result.company.rtaName,
+                    officeaddress: result.company.rtaAddress,
+                    unit: result.companyName,
+                    date: new Date(),
+                    jsondata: result.stockJson,
+                    deceasedDate: new Date(doc.dateOfDeath),
+                    firstHolder: result.firstHolderName,
+                    secondHolder: result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    heirs: isDeceased ? heirlist.map(h => ({ name: h.name })) : [],
+                    condition: isDeceased
+                };
+
+                $scope.shares = JSON.parse($scope.data.jsondata);
+            }
+        };
+
+        // Navigate to Generate Form
+        $scope.navtogenerateform = function () {
+            window.open('/Form/GenerateForm/' + id, '_self');
+        };
+
+        // Auto Print for Already Generated Form
+        function checkData() {
+            if ($scope.data !== undefined) {
+                $timeout(function () {
+                    $scope.printDiv('printForm');
+                }, 0);
+            } else {
+                setTimeout(checkData, 1000);
+            }
+        }
+
+        // Generate Form
+        $scope.genrateForm = function () {
+
+            if (id) {
+
+                if (!$scope.data.condition) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Customer is still Alive',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+
+                $scope.processdone = true;
+
+                if ($scope.data.jsondata === undefined) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: "Please Enter Stock Qty data in Customer's Stock Page",
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+
+                    $scope.processdone = false;
+                    return;
+                }
+
+                let jsonString = JSON.stringify($scope.data, null, 2);
+
+                var data = {
+                    formName: 'Name Deletion Form',
+                    StockId: id,
+                    url: `/Form/Namedeletionform?id2=`,
+                    jsonString: jsonString,
+                    ClientName: $scope.data.customerName,
+                    ClientId: $scope.data.docid,
+                    IsActive: true
+                };
+
+                const url = '/Form/GenrateForm';
+
+                $http.post(url, data).then(function (response) {
+
+                    if (response.data.success) {
+
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.data.message || 'Operation successful!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+
+                        $scope.processdone = false;
+
+                        window.open(response.data.data.url + response.data.data.id, '_self');
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'This Form already Exists',
+                            text: "Do you want to go to that form?",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'No'
+                        }).then((result) => {
+
+                            if (result.isConfirmed) {
+                                window.open(response.data.message, '_self');
+                            }
+
+                        });
+
+                        $scope.processdone = false;
+                    }
+
+                    isProcessing = false;
+
+                }, function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+
+                    $scope.processdone = false;
+                    isProcessing = false;
+                });
+            }
+        };
+
+        // Print Function
+        $scope.printDiv = function (divId) {
+
+            var css = `<style>*{margin:0;padding:0;text-indent:0}.s1{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s2{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt}.s3{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:11pt}.s4{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt}.s5{color:black;font-family:Verdana,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s6{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s7{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.s8{color:black;font-family:Cambria,serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt}.h3{color:black;font-family:"Segoe UI",sans-serif;font-style:italic;font-weight:bold;text-decoration:none;font-size:10.5pt}.s9{color:black;font-family:Cambria,serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt}.s10{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt}.h2{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt}p{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;margin:0pt}.h4{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:10pt}.s12{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:10pt}.s13{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt}.s14{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:13pt}h1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:12pt}table,tbody{vertical-align:top;overflow:visible}.header-container{width:100%;font-family:Arial,sans-serif;margin-bottom:20px}.name{font-size:22px;font-weight:bold;text-transform:uppercase}.details{margin-top:5px;line-height:1.4;font-size:14px}.divider{margin-top:20px;border-top:1px solid #000;width:100%}.card{border-radius:10px;overflow:hidden}.form-group{margin-bottom:1.5rem}.form-label{font-size:1.1rem;font-weight:600}.form-select{width:100%;padding:.75rem;border-radius:5px;border:1px solid #ddd;font-size:1rem}.btn-primary{width:100%;padding:12px 16px;text-transform:uppercase;font-weight:bold;transition:background-color .3s ease,transform .2s ease}.btn-primary:hover{background-color:#0056b3;transform:scale(1.05)}.mybtn{background-color:#51b37f!important;color:white!important;width:auto!important}.myarea{justify-content:center!important;display:flex!important;margin-top:25px!important}</style>`;
+            var innerContents = document.getElementById(divId).innerHTML;
+
+            var popup = window.open('', '_blank',
+                'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+
+            popup.document.open();
+            popup.document.write(
+                `<html>
+                    <head>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                        ${css}
+                    </head>
+                    <body style="padding: 0 5%" onload="window.print()">
+                        ${innerContents}
+                    </body>
+                </html>`
+            );
+
+            popup.document.close();
+        };
+
+        // Initialize
+        $scope.loadCustomers();
+
+    });
+</script>

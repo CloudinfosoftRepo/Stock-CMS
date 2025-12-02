@@ -1,0 +1,601 @@
+﻿
+<html lang="en" ng-app="Stock-CMS">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Affidavit COA IEPF</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        p {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+            margin: 0pt;
+        }
+
+        .h2,
+        h2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s4 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        li {
+            display: block;
+        }
+
+        #l1 {
+            padding-left: 0pt;
+            counter-reset: c1 1;
+        }
+
+            #l1 > li > *:first-child:before {
+                counter-increment: c1;
+                content: counter(c1, decimal)". ";
+                color: black;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+            }
+
+            #l1 > li:first-child > *:first-child:before {
+                counter-increment: c1 0;
+            }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+
+        .mybtn {
+            background-color: #51b37f !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
+    </style>
+</head>
+
+<body style="padding: 5%; padding-top: 5%" ng-controller="FormController">
+
+    <div class="row align-items-center">
+        <!-- Arrow Icon aligned to the left -->
+        <a class="col-md-1 text-start" style="font-size:35px;" ng-click="navtogenerateform()">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+
+        <!-- Centered Heading -->
+        <div class="col-md-10 text-center">
+            <h3>Affidavit COA IEPF</h3>
+        </div>
+    </div>
+
+    <div ng-if="hDiv" class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form name="gForm" ng-submit="genrateForm()">
+                    <h4 class="card-title text-center mb-4" style="color:#51b37f;">Generate Form</h4>
+                    <div class="row">
+                        <!-- Select Customer Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="seletedId" class="form-label">Select Customer</label>
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Select Heir Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="legalheirlist">
+                            <div class="form-group">
+                                <label for="heirId" class="form-label">Select Heir</label>
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                    <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="col-md-4 text-center m-2">
+                        <button type="submit" ng-disabled="processdone" class="btn btn-primary" style="background-color:#51b37f; color:white; border-radius: 5px;">
+                            Generate Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="printForm">
+
+        <h1 style="padding-top: 1pt;text-indent: 0pt;text-align: center;">AFFIDAVIT (FOR CHANGE OF ADDRESS)</h1>
+        <h1 style="padding-top: 9pt;text-indent: 0pt;text-align: center;">
+            (TO BE EXECUTED ON NON JUDICIAL STAMP PAPER FOR
+            Rs. 50/-)
+        </h1>
+        <p style="padding-top: 13pt;text-indent: 0pt;text-align: center;">
+            I, <span class="h2">
+                DIGANTABEN NILESHKUMAR
+                BHAVSAR
+            </span>, daughter of <span class="h2">SURESHKUMAR MULJIBHAI BHAVSAR</span>, aged
+        </p>
+        <p style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">49 years, residing at</p>
+        <p class="s1" style="padding-top: 9pt;text-indent: 0pt;text-align: center;">
+            D-3, CHUNILAL PARK, DABHOI, DABHOI,
+            DABHOI, R.S., VADODARA, GUJARAT, 391110<span class="s2">, do hereby</span>
+        </p>
+        <p style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+            solemnly affirm and state as under:
+        </p>
+        <p style="text-indent: 0pt;text-align: left;"><br /></p>
+        <ol id="l1">
+            <li data-list-text="1.">
+                <p style="padding-left: 41pt;text-indent: -18pt;line-height: 114%;text-align: left;">
+                    That I am the original
+                    shareholder, <span class="h2">DIGANTABEN NILESHKUMAR BHAVSAR </span>of <b>RELIANCE INDUSTRIES LTD</b>,
+                    holding shares under Folio No./DP ID-Client ID <b>00000</b>.
+                </p>
+                <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="2.">
+                <p style="padding-left: 41pt;text-indent: -18pt;line-height: 114%;text-align: left;">
+                    That my
+                    shares/dividend(s) related to the above folio have been transferred to the IEPF.
+                </p>
+                <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="3.">
+                <p style="padding-left: 40pt;text-indent: -17pt;text-align: left;">
+                    That my address was recorded with the
+                    company:
+                </p>
+                <h1 style="padding-top: 2pt;padding-left: 41pt;text-indent: 0pt;line-height: 114%;text-align: left;">
+                    <u>
+                        Old
+                        Address: [Old Address as per company/RTA records].
+                    </u> C/D SWASTIK TRADERS, POST BODELI PINCODE:
+                    391135
+                </h1>
+                <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="4.">
+                <p style="padding-left: 40pt;text-indent: -17pt;text-align: left;">That my present address is:</p>
+                <h1 style="padding-top: 2pt;padding-left: 41pt;text-indent: 0pt;line-height: 113%;text-align: left;">
+                    New
+                    Address: <span class="s4">
+                        D-3, CHUNILAL PARK, DABHOI, DABHOI, DABHOI, R.S., VADODARA, GUJARAT,
+                        391110
+                    </span>
+                </h1>
+                <p style="padding-top: 3pt;text-indent: 0pt;text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="5.">
+                <p style="padding-left: 41pt;text-indent: -18pt;line-height: 114%;text-align: left;">
+                    I request that the IEPF
+                    Authority and the company/RTA take note of my new address for all future correspondence and verification
+                    purposes.
+                </p>
+                <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
+            </li>
+            <li data-list-text="6.">
+                <p style="padding-left: 41pt;text-indent: -18pt;line-height: 114%;text-align: left;">
+                    I hereby declare that
+                    the statements made herein are true and correct to the best of my knowledge and belief.
+                </p>
+            </li>
+        </ol>
+        <p style="padding-top: 9pt;text-indent: 0pt;text-align: left;"><br /></p>
+        <p style="padding-left: 5pt;text-indent: 0pt;line-height: 162%;text-align: left;">
+            Place: Vadodara Date: <span class="s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </p>
+        <p style="text-indent: 0pt;text-align: left;"><br /></p>
+        <h2 style="padding-left: 5pt;text-indent: 0pt;text-align: left;">DIGANTABEN NILESHKUMAR BHAVSAR</h2>
+    </div>
+    <div class="myarea">
+        <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
+    </div>
+</body>
+</html>
+
+<script>
+    angular.module('Stock-CMS', []).controller('FormController', function ($scope, $http, $timeout) {
+
+        $scope.customers = [];
+        $scope.hDiv = true;
+
+        // Extract URL Parameters
+        const params = new URLSearchParams(window.location.search);
+        let id = params.get('id');
+        let id2 = params.get('id2');
+
+        let isProcessing = false;
+        $scope.processdone = false;
+
+        /* ============================================================
+           LOAD CUSTOMERS / MAIN DATA LOAD FUNCTION
+        ============================================================ */
+        $scope.loadCustomers = function (sid, hid) {
+
+            /* ---------------------------------------------------------
+               CASE 1: When URL contains ?id=  (Stock Details)
+            --------------------------------------------------------- */
+            if (id) {
+                hideLoader();
+
+                const docid = $scope.seletedid ?? 0;
+                $scope.hDiv = true;
+
+                $http.get(`/Enquiry/GetStocksById/${id}`).then(function (response) {
+                    const result = response.data;
+
+                    $http.get(`/Form/GetHolderByStockId/${id}`).then(function (response) {
+
+                        $scope.docs = response.data;
+                        const doc = $scope.docs.find(x => x.id === sid);
+                        const isDeceased = !!doc?.dateOfDeath;
+
+                        if (isDeceased) {
+                            // If deceased holder
+                            $scope.heirId = null;
+                            $scope.legalheirlist = true;
+                            document.getElementById('heirId').value = '';
+
+                            $http.get(`/LegalHeir/GetClaimentLegalHeir/${doc.id}`).then(function (response) {
+
+                                $scope.heir = response.data;
+                                const heirs = response.data.find(x => x.id === hid);
+                                const holder = heirs;
+
+                                populateData(holder, result, $scope.heir, isDeceased, doc);
+
+                            }, function (error) {
+                                console.error('Error loading legal heir data:', error);
+                                hideLoader();
+                            });
+
+                        } else {
+                            // If holder is alive
+                            $scope.heirId = null;
+                            $scope.data = null;
+                            $scope.legalheirlist = false;
+                            document.getElementById('heirId').value = '';
+
+                            const holder = doc;
+                            populateData(holder, result, $scope.heir, isDeceased, doc);
+                        }
+
+                        hideLoader();
+
+                    }, function (error) {
+                        console.error('Error loading Docs:', error);
+                        hideLoader();
+                    });
+
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                    hideLoader();
+                });
+            }
+
+            /* ---------------------------------------------------------
+               CASE 2: When URL contains ?id2= (Generated Form)
+            --------------------------------------------------------- */
+            if (id2) {
+
+                $scope.hDiv = false;
+
+                $http.get(`/Form/GetGenratedFormById/${id2}`).then(function (response) {
+
+                    const result = response.data;
+                    const obj = JSON.parse(result.jsonString);
+
+                    // Set form data
+                    $scope.data = {
+                        docid: obj.docid,
+                        customerName: obj.customerName,
+                        folioNo: obj.folioNo,
+                        qty: obj.qty,
+                        address: obj.address,
+                        mobile: obj.mobile,
+                        sonof: obj.sonof,
+                        officename: obj.officename,
+                        officeaddress: obj.officeaddress,
+                        unit: obj.unit,
+                        clientid: obj.clientid,
+                        date: new Date(obj.date),
+                        jsondata: obj.jsondata,
+                        deceasedDate: obj.deceasedDate,
+                        firstHolder: obj.firstHolder,
+                        secondHolder: obj.secondHolder,
+                        thirdHolder: obj.thirdHolder,
+                        heirs: obj.heirs,
+                        condition: obj.condition
+                    };
+
+                    id = result.stockId;
+                    $scope.shares = JSON.parse($scope.data.jsondata);
+
+                    checkData();
+                    hideLoader();
+
+                }, function (error) {
+                    console.error('Error loading customers:', error);
+                    hideLoader();
+                });
+            }
+
+            /* ---------------------------------------------------------
+               Helper Function: Build Main Data
+            --------------------------------------------------------- */
+            function populateData(holder, result, heirlist, isDeceased, doc) {
+
+                $scope.data = {
+                    docid: holder.id,
+                    customerName: holder.name,
+                    qty: result.qty,
+                    sonof: doc.name,
+                    folioNo: result.folioNo,
+                    mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
+                    address: !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
+                    officename: result.company.rtaName,
+                    officeaddress: result.company.rtaAddress,
+                    unit: result.companyName,
+                    date: new Date(),
+                    jsondata: result.stockJson,
+                    deceasedDate: new Date(doc.dateOfDeath),
+                    firstHolder: result.firstHolderName,
+                    secondHolder: result.secondHolderName,
+                    thirdHolder: result.thirdHolderName,
+                    heirs: isDeceased ? heirlist.map(h => ({ name: h.name })) : [],
+                    condition: isDeceased
+                };
+
+                $scope.shares = JSON.parse($scope.data.jsondata);
+            }
+        };
+
+        /* ============================================================
+           NAVIGATE TO GENERATE FORM
+        ============================================================ */
+        $scope.navtogenerateform = function () {
+            window.open(`/Form/GenerateForm/${id}`, '_self');
+        };
+
+        /* ============================================================
+           AUTO PRINT WHEN LOADING FORM DATA
+        ============================================================ */
+        function checkData() {
+            if ($scope.data) {
+                $timeout(() => {
+                    $scope.printDiv('printForm');
+                }, 0);
+            } else {
+                setTimeout(checkData, 1000);
+            }
+        }
+
+        /* ============================================================
+           GENERATE FORM
+        ============================================================ */
+        $scope.genrateForm = function () {
+
+            if (!id) return;
+
+            if (!$scope.data.condition) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Customer is still Alive',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            $scope.processdone = true;
+
+            if (!$scope.data.jsondata) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: "Please Enter Stock Qty data in Customer's Stock Page",
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+                $scope.processdone = false;
+                return;
+            }
+
+            const jsonString = JSON.stringify($scope.data, null, 2);
+
+            const data = {
+                formName: 'Affidavit COA IEPF',
+                StockId: id,
+                url: `/Form/AffidavitCOAIEPF?id2=`,
+                jsonString: jsonString,
+                ClientName: $scope.data.customerName,
+                ClientId: $scope.data.docid,
+                IsActive: true
+            };
+
+            const url = '/Form/GenrateForm';
+
+            $http.post(url, data).then(function (response) {
+
+                if (response.data.success) {
+
+                    Swal.fire({
+                        title: 'Success',
+                        text: response.data.message || 'Operation successful!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+
+                    $scope.processdone = false;
+
+                    window.open(response.data.data.url + response.data.data.id, '_self');
+
+                } else {
+
+                    Swal.fire({
+                        title: 'This Form already exists',
+                        text: "Do you want to open that form?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.open(response.data.message, '_self');
+                        }
+                    });
+
+                    $scope.processdone = false;
+                }
+
+                isProcessing = false;
+
+            }, function () {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+
+                $scope.processdone = false;
+                isProcessing = false;
+            });
+        };
+
+        /* ============================================================
+           PRINT FUNCTION
+        ============================================================ */
+        $scope.printDiv = function (divId) {
+
+            const css = `
+                <style>
+                    *{margin:0;padding:0;text-indent:0;}
+                    h1{color:black;font-family:Calibri;font-weight:bold;font-size:12pt;}
+                    p{color:black;font-family:Calibri;font-size:12pt;margin:0;}
+                    .h2,h2{font-weight:bold;font-size:11pt;}
+                    .card{border-radius:10px;}
+                    .form-group{margin-bottom:1.5rem;}
+                    .btn-primary{width:100%;padding:12px 16px;font-weight:bold;}
+                </style>`;
+
+            const content = document.getElementById(divId).innerHTML;
+            const printWindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no');
+
+            printWindow.document.open();
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                    ${css}
+                </head>
+                <body style="padding:5%" onload="window.print()">
+                    ${content}
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+        };
+
+        /* ============================================================
+           INIT
+        ============================================================ */
+        $scope.loadCustomers();
+    });
+</script>

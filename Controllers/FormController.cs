@@ -314,6 +314,18 @@ namespace Stock_CMS.Controllers
         {
             return View();
         }
+        public IActionResult AffidavitCOAIEPF()
+        {
+            return View();
+        }
+        public IActionResult EscrowSuspendedREQUESTLETTER()
+        {
+            return View();
+        }
+        public IActionResult Namedeletionform()
+        {
+            return View();
+        }
         public IActionResult GenerateForm()
         {
             return View();
