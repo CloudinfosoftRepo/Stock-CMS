@@ -503,7 +503,7 @@
             border-right-width: 1pt;
           "
         >
-                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{tmp.certificateNo}}<br /></p>
+                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center" ng-if="!(shares.length === 1 && shares[0].certificateNo == 0)">{{tmp.certificateNo}}<br /></p>
         </td>
         <td
           style="
@@ -518,7 +518,7 @@
             border-right-width: 1pt;
           "
         >
-                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}<br /></p>
+                    <p class="s10" style=" padding-left: 1pt; text-indent: 0pt; text-align: center" ng-if="!(shares.length === 1 && shares[0].certificateNo == 0)">{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}<br /></p>
         </td>
         <td
           style="

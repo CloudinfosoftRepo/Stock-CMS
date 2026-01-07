@@ -24,4 +24,6 @@ public partial class TblRelationMapping
     public string? RelationWithDead { get; set; }
 
     public long? LegalHeirParentId { get; set; }
+
+    public long? NomineeId { get; set; }
 }

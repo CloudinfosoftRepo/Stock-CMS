@@ -79,6 +79,14 @@ public partial class DocDto
     public string? Password { get; set; }
 
     public string? DpName { get; set; }
+
+    public string? PassportUrl { get; set; }
+
+    public string? PassportNo { get; set; }
+
+    public string? NameAsPerPassport { get; set; }
+
+    public string? AddressAsPerPassport { get; set; }
     [NotMapped]
 	public IFormFile? PanFile { get; set; }
 	[NotMapped]
@@ -91,5 +99,7 @@ public partial class DocDto
 	public string? CreatedByName { get; set; }
 	[NotMapped]
 	public string? UpdatedByName { get; set; }
+    [NotMapped]
+    public IFormFile? PassportFile { get; set; }
 }
 

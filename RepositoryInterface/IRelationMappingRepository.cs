@@ -12,11 +12,13 @@ namespace Stock_CMS.RepositoryInterface
         Task<IEnumerable<RelationMappingDto>> GetRelationMappingsById(long Id);
         Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByHolderId(long Id);
         Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByLegalHeirId(long Id);
+        Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByLegalHeirIdAndNominee(long Id);
 
         Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByHolderIds(long?[] Id);
         Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByLegalHeirIds(long?[] Id);
-
+        Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByNomineeIds(long?[] Id);
         Task<IEnumerable<RelationMappingDto>> GetAllRelationMappings();
+        Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByHolderIdAndNominee(long Id);
 
     }
 }

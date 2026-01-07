@@ -8,9 +8,9 @@ namespace Stock_CMS.Repository
 {
     public class FormRepository : EfRepository<TblForm, FormDto>, IFormRepository
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
-        public FormRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public FormRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

@@ -143,7 +143,7 @@
 
         <!-- Centered Heading -->
         <div class="col-md-10 text-center">
-            <h3>Escrow Suspended REQUESTLETTER</h3>
+            <h3>Escrow Suspended REQUEST LETTER</h3>
         </div>
     </div>
 
@@ -172,6 +172,13 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="accountName" class="form-label">Demat Account Name</label>
+                                <input type="text" ng-model="data.accountName" class="form-control" placeholder="Demat Account Name">
+                            </div>
+                        </div>
                     </div>
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
@@ -185,28 +192,57 @@
     </div>
 
     <div id="printForm">
-        <h1 style="padding-left: 5pt;text-indent: 0pt;line-height: 22pt;text-align: left;">Nayantara Shah</h1>
+        <h1 style="padding-left: 5pt;text-indent: 0pt;line-height: 22pt;text-align: left;">@* Nayantara Shah *@
+            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'flex'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'flex'}">
+                    &
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'flex'}">
+                    &
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+            </span><span ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'flex'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
+            </span>
+        </h1>
         <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 17pt;text-align: left;">
-            shreekunj C - 13
-            zaverchand park society
-        </p>
+           @*  shreekunj C - 13
+            zaverchand park society *@{{data.address}}
+        @* </p>
         <p class="s1" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
             behind sterling health mall old padra
-            road Vadodara Akota Padra Vadodara
+            road Vadodara Akota Padra Vadodara *@
         </p>
-        <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 17pt;text-align: left;">Gujarat 390020</p>
+        <p class="s1" style="padding-left: 5pt;text-indent: 0pt;line-height: 17pt;text-align: left;">@* Gujarat 390020 *@
+            M. No. @* 94281 71249 *@ {{data.mobile}}</p>
         <p style="padding-top: 3pt;text-indent: 0pt;text-align: left;"><br /></p>
+        <hr style="border: 1px; height: 2px; background-color: black;">
         <p style="padding-left: 5pt;text-indent: 0pt;line-height: 1pt;text-align: left;" />
-        <p class="s2" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
-            To, <span class="p">Date: </span><span class="s3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        </p>
+        <div style="display: flex; justify-content: space-between;">
+            <p class="s2" style="padding-top: 1pt; padding-left: 5pt; text-indent: 0pt; text-align: left;">
+                To
+            </p>
+            <p class="s2" style="padding-top: 1pt; padding-left: 5pt; text-indent: 0pt; text-align: right;">
+                Date: @* {{data.today | date:'dd/MM/yyyy'}} *@<u> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</u>
+            </p>
+        </div>
         <p class="s4" style="padding-left: 5pt;text-indent: 0pt;line-height: 109%;text-align: left;">
-            Integrated Registry
-            Management Services Pvt. Ltd (Integrated Enterprises (India) Ltd),
+            @* Integrated Registry
+            Management Services Pvt. Ltd (Integrated Enterprises (India) Ltd), *@ {{data.officename}}
         </p>
         <p class="s4" style="padding-left: 5pt;text-indent: 0pt;line-height: 107%;text-align: left;">
-            30, Ramana Residency,
-            4th Cross, Sampige Road, Malleswaram, Bengaluru, Karnataka,560003
+            @* 30, Ramana Residency,
+            4th Cross, Sampige Road, Malleswaram, Bengaluru, Karnataka,560003 *@ {{data.officeaddress}}
         </p>
         <p style="text-indent: 0pt;text-align: left;"><br /></p>
         <p class="s7" style="text-indent: 0pt;text-align: center;">
@@ -215,29 +251,30 @@
         <p style="text-indent: 0pt;text-align: left;"><br /></p>
         <p class="s7" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
             UNIT: <span class="s8">
-                United Spirits
-                Ltd
+               @*  United Spirits
+                Ltd *@ {{data.unit}}
             </span>
         </p>
-        <p class="s7" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
-            Folio NO: <span class="p">
-                00000
-            </span>Number of Shares: <span class="s8">200</span>
+        <p class="s7" style="padding-left: 5pt;text-indent: 0pt;text-align: left; display: flex; justify-content: space-between;">
+            <span class="p">
+                Folio NO:
+                @* 00000 *@ {{data.folioNo}}
+            </span><span class="s8">Number of Shares: @* 200 *@ {{data.qty}}</span>
         </p>
         <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
         <p class="s7" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
-            DP ID: <span class="s3">00000000</span>
+            DP ID: <span class="s3">@* 00000000 *@ {{data.dpid}}</span>
         </p>
         <p class="s7" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
-            Client ID: <span class="s3">00000000</span>
+            Client ID: <span class="s3">@* 00000000 *@ {{data.clientId}}</span>
         </p>
         <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
         <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;">Dear Sir,</p>
         <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
         <p style="padding-left: 5pt;text-indent: 0pt;line-height: 108%;text-align: justify;">
             This is to inform you that, I
-            have holding of shares in above mentioned company name <b>United Spirits Ltd </b>folio number <b>00000 </b>are
-            in your <span class="h3">Suspense Escrow Demat account</span>, I would like to request you to please credit all
+            have holding of shares in above mentioned company name <b>@* United Spirits Ltd *@ {{data.unit}} </b>folio number <b>@* 00000 *@ {{data.folioNo}} </b>are
+            in your <span class="h3">@* Suspense Escrow Demat account *@{{data.accountName}}</span>, I would like to request you to please credit all
             the shares in above mentioned folio number to direct Demat account, herewith I attached original Client Master
             for Demat reference and other documents for your ready reference.
         </p>
@@ -249,7 +286,13 @@
         <p style="text-indent: 0pt;text-align: left;"><br /></p>
         <p class="s8" style="padding-left: 5pt;text-indent: 0pt;text-align: left;">Holder(s) Signature(s)</p>
         <p style="text-indent: 0pt;text-align: left;"><br /></p>
-        <h1 style="padding-left: 5pt;text-indent: 0pt;text-align: justify;">Nayantara Shah</h1>
+        <p style="text-indent: 0pt;text-align: left;"><br /></p>
+        <h1 style="padding-left: 5pt;text-indent: 0pt;text-align: justify;">@* Nayantara Shah *@
+            <b ng-show="!data.condition && !data.firstAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'flex'}">{{data.firstHolder}}</b>
+            <b ng-show="!data.condition && !data.secondAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit', 'display': data.secondAlive ? 'none' : 'flex'}">{{data.secondHolder}}</b>
+            <b ng-show="!data.condition && !data.thirdAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit', 'display': data.thirdAlive ? 'none' : 'flex'}">{{data.thirdHolder}}</b>
+            <b ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'flex'}">  {{h.name}}</b>
+        </h1>
     </div>
     <div class="myarea">
         <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
@@ -351,27 +394,27 @@
                         $scope.data = {
                             docid: obj.docid,
                             customerName: obj.customerName,
-                            folioNo: obj.folioNo,
-                            qty: obj.qty,
-                            address: obj.address,
-                            mobile: obj.mobile,
-                            sonof: obj.sonof,
-                            officename: obj.officename,
-                            officeaddress: obj.officeaddress,
-                            unit: obj.unit,
-                            clientid: obj.clientid,
-                            date: new Date(obj.date),
-                            jsondata: obj.jsondata,
-                            deceasedDate: obj.deceasedDate,
                             firstHolder: obj.firstHolder,
                             secondHolder: obj.secondHolder,
                             thirdHolder: obj.thirdHolder,
                             heirs: obj.heirs,
+                            firstAlive: obj.firstAlive,
+                            secondAlive: obj.secondAlive,
+                            thirdAlive: obj.thirdAlive,
+                            mobile: obj.mobile,
+                            address: obj.address,
+                            officename: obj.officename,
+                            officeaddress: obj.officeaddress,
+                            unit: obj.unit,
+                            folioNo: obj.folioNo,
+                            qty: obj.qty,
+                            dpid: obj.dpid,
+                            clientId: obj.clientId,
+                            accountName: obj.accountName,
                             condition: obj.condition,
                         };
 
                         id = result.stockId;
-                        $scope.shares = JSON.parse($scope.data.jsondata);
 
                         checkData();
                         hideLoader();
@@ -390,30 +433,26 @@
                     $scope.data = {
                         docid: holder.id,
                         customerName: holder.name,
-                        qty: result.qty,
-                        sonof: doc.name,
-                        folioNo: result.folioNo,
-
-                        mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
-                        address: !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
-
-                        officename: result.company.rtaName,
-                        officeaddress: result.company.rtaAddress,
-                        unit: result.companyName,
-
-                        date: new Date(),
-                        jsondata: result.stockJson,
-                        deceasedDate: new Date(doc.dateOfDeath),
-
                         firstHolder: result.firstHolderName,
                         secondHolder: result.secondHolderName,
                         thirdHolder: result.thirdHolderName,
-
-                        heirs: isDeceased ? heirlist.map(h => ({ name: h.name })) : [],
+                        heirs: isDeceased ? heirlist.map(h => ({name: h.name,  dateOfDeath: h.dateOfDeath}) ) : [],
+                        firstAlive: result?.firstHolderData?.dateOfDeath,
+                        secondAlive: result?.secondHolderData?.dateOfDeath,
+                        thirdAlive: result?.thirdHolderData?.dateOfDeath,
+                        mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
+                        address: !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
+                        officename: result.company.rtaName,
+                        officeaddress: result.company.rtaAddress,
+                        unit: result.companyName,
+                        folioNo: result.folioNo,
+                        qty: result.qty,
+                        dpid: holder.dpid,
+                        clientId: holder.clientId,
+                        accountName: $scope.data?.accountName || 'Suspense Escrow Demat Account',
                         condition: isDeceased,
                     };
 
-                    $scope.shares = JSON.parse($scope.data.jsondata);
                 }
             };
 
@@ -444,36 +483,14 @@
 
                 if (id) {
 
-                    if (!$scope.data.condition) {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Customer is still Alive',
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                        return;
-                    }
-
                     $scope.processdone = true;
-
-                    if ($scope.data.jsondata === undefined) {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: "Please Enter Stock Qty data in Customer's Stock Page",
-                            icon: 'error',
-                            confirmButtonText: 'Try Again'
-                        });
-
-                        $scope.processdone = false;
-                        return;
-                    }
 
                     let jsonString = JSON.stringify($scope.data, null, 2);
 
                     var data = {
-                        formName: 'Name Deletion Form',
+                        formName: 'Escrow Suspended REQUEST LETTER',
                         StockId: id,
-                        url: '/Form/Namedeletionform?id2=',
+                        url: '/Form/EscrowSuspendedREQUESTLETTER?id2=',
                         jsonString: jsonString,
                         ClientName: $scope.data.customerName,
                         ClientId: $scope.data.docid,
@@ -534,7 +551,132 @@
             // ------------------------------------------------------------
             $scope.printDiv = function (divId) {
 
-                var css = `<style>*{margin:0;padding:0;text-indent:0;}h1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:18pt;}.s1{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:14pt;}.s2{color:black;font-family:"Times New Roman",serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;}.p,p{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:12pt;margin:0pt;}.s3{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:underline;font-size:12pt;}.s4{color:black;font-family:Cambria,serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:10pt;}.s5{color:black;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt;}.s7{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:bold;text-decoration:none;font-size:11pt;}.h3{color:#212121;font-family:Arial,sans-serif;font-style:normal;font-weight:bold;text-decoration:underline;font-size:11pt;}.s8{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;}.s9{color:black;font-family:Calibri,sans-serif;font-style:normal;font-weight:normal;text-decoration:none;font-size:11pt;}.card{border-radius:10px;overflow:hidden;}.form-group{margin-bottom:1.5rem;}.form-label{font-size:1.1rem;font-weight:600;}.form-select{width:100%;padding:0.75rem;border-radius:5px;border:1px solid #ddd;font-size:1rem;}.btn-primary{width:100%;padding:12px 16px;text-transform:uppercase;font-weight:bold;transition:background-color 0.3s ease,transform 0.2s ease;}.btn-primary:hover{background-color:#0056b3;transform:scale(1.05);}.mybtn{background-color:#51b37f!important;color:white!important;width:auto!important;}.myarea{justify-content:center!important;display:flex!important;margin-top:25px!important;}</style>}`;
+                var css = `<style>* {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-weight: bold;
+            font-size: 18pt;
+            text-decoration: none;
+        }
+
+        /* Text Styles */
+        .s1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-size: 14pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-size: 12pt;
+        }
+
+        .p, p {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-size: 12pt;
+            margin: 0;
+        }
+
+        .s3 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-size: 12pt;
+            text-decoration: underline;
+        }
+
+        .s4 {
+            color: black;
+            font-family: Cambria, serif;
+            font-size: 10pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            text-decoration: underline;
+        }
+
+        .s7 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+        }
+
+        .h3 {
+            color: #212121;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            text-decoration: underline;
+        }
+
+        .s8,
+        .s9 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-size: 11pt;
+        }
+
+        /* Components */
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+
+        .mybtn {
+            background-color: #51b37f !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            display: flex !important;
+            justify-content: center !important;
+            margin-top: 25px !important;
+        }
+        @@media print {.hide-print {display: none !important;}}</style>`;
                 var innerContents = document.getElementById(divId).innerHTML;
 
                 var popup = window.open('', '_blank',

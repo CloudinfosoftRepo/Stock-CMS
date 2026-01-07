@@ -517,9 +517,9 @@
             $scope.openTrackingModal = function (track = null) {
                 $scope.isEditing = !!track;
                 $scope.currentStock = track ? angular.copy(track) : {};
-                $scope.currentStock.dateofSubmission = track ?  new Date(track.dateofSubmission) : undefined
-                $scope.currentStock.dateofFollowUp = track ?  new Date(track.dateofFollowUp) : undefined
-                $scope.currentStock.srndate = track ?  new Date(track.srndate) : undefined
+                $scope.currentStock.dateofSubmission = track?.dateofSubmission ? new Date(track.dateofSubmission) : null;
+                $scope.currentStock.dateofFollowUp = track?.dateofFollowUp ? new Date(track.dateofFollowUp) : null;
+                $scope.currentStock.srndate = track?.srndate ? new Date(track.srndate) : null;
                 $scope.setdpId($scope.isEditing,track)
                   document.getElementById('sendFile').value = '';
                 document.getElementById('responseFile').value = '';

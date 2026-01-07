@@ -75,7 +75,16 @@ namespace Stock_CMS.Models
         public long? ParentId { get; set; }
 
         public long? CustomerId { get; set; }
+
         public string? DpName { get; set; }
+
+        public string? PassportUrl { get; set; }
+
+        public string? PassportNo { get; set; }
+
+        public string? NameAsPerPassport { get; set; }
+
+        public string? AddressAsPerPassport { get; set; }
 
         [NotMapped]
         public IFormFile? PanFile { get; set; }
@@ -87,6 +96,8 @@ namespace Stock_CMS.Models
         public string? CreatedByName { get; set; }
         [NotMapped]
         public string? UpdatedByName { get; set; }
+        [NotMapped]
+        public IFormFile? PassportFile { get; set; }
 
     }
 }

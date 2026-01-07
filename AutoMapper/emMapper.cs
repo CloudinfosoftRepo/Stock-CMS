@@ -48,6 +48,8 @@ namespace Stock_CMS.AutoMapper
 
             CreateMap<TblRelationMapping, RelationMappingDto>().ReverseMap();
 
+            CreateMap<TblNominee, NomineeDto>().ReverseMap();
+
 
         }
     }

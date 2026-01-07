@@ -186,6 +186,22 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Address Textarea -->
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea id="address" ng-model="data.newAddress"
+                                          class="form-control" style="height: 100px;" placeholder="Old Address" rows="5" cols="5" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="place" class="form-label">Place of Form Submission</label>
+                                <input type="text" ng-model="data.place" class="form-control" placeholder="Place of Form Submission">
+                            </div>
+                        </div>
                     </div>
                     <!-- Submit Button -->
                     <div class="col-md-4 text-center m-2">
@@ -205,16 +221,16 @@
             (TO BE EXECUTED ON NON JUDICIAL STAMP PAPER FOR
             Rs. 50/-)
         </h1>
-        <p style="padding-top: 13pt;text-indent: 0pt;text-align: center;">
+        <p style="padding-top: 13pt;text-indent: 0pt;text-align: left;">
             I, <span class="h2">
-                DIGANTABEN NILESHKUMAR
-                BHAVSAR
-            </span>, daughter of <span class="h2">SURESHKUMAR MULJIBHAI BHAVSAR</span>, aged
-        </p>
-        <p style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">49 years, residing at</p>
-        <p class="s1" style="padding-top: 9pt;text-indent: 0pt;text-align: center;">
-            D-3, CHUNILAL PARK, DABHOI, DABHOI,
-            DABHOI, R.S., VADODARA, GUJARAT, 391110<span class="s2">, do hereby</span>
+               @*  DIGANTABEN NILESHKUMAR
+                BHAVSAR *@{{data.customerName}}
+            </span>, SON/DA/HUS/WIFE OF <span class="h2">@* SURESHKUMAR MULJIBHAI BHAVSAR *@{{data.sonof}}</span>, aged
+        @* </p> *@
+        @* <p style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;"> *@@* 49 *@ {{data.age}} years, residing at@* </p>
+        <p class="s1" style="padding-top: 9pt;text-indent: 0pt;text-align: center;"> *@
+            @* D-3, CHUNILAL PARK, DABHOI, DABHOI,
+            DABHOI, R.S., VADODARA, GUJARAT, 391110 *@ {{data.address}}<span class="s2">, do hereby</span>
         </p>
         <p style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
             solemnly affirm and state as under:
@@ -224,8 +240,8 @@
             <li data-list-text="1.">
                 <p style="padding-left: 41pt;text-indent: -18pt;line-height: 114%;text-align: left;">
                     That I am the original
-                    shareholder, <span class="h2">DIGANTABEN NILESHKUMAR BHAVSAR </span>of <b>RELIANCE INDUSTRIES LTD</b>,
-                    holding shares under Folio No./DP ID-Client ID <b>00000</b>.
+                    shareholder, <span class="h2">@* DIGANTABEN NILESHKUMAR BHAVSAR *@{{data.customerName}} </span>of <b>@* RELIANCE INDUSTRIES LTD *@{{data.officename}}</b>,
+                    holding shares under Folio No./DP ID-Client ID <b>@* 00000 *@{{data.folioNo + '/' + data.dpid + data.clientId}}</b>.
                 </p>
                 <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
             </li>
@@ -245,8 +261,8 @@
                     <u>
                         Old
                         Address: [Old Address as per company/RTA records].
-                    </u> C/D SWASTIK TRADERS, POST BODELI PINCODE:
-                    391135
+                    </u> @* C/D SWASTIK TRADERS, POST BODELI PINCODE:
+                    391135 *@ <br />{{data.newAddress}}
                 </h1>
                 <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br /></p>
             </li>
@@ -255,8 +271,8 @@
                 <h1 style="padding-top: 2pt;padding-left: 41pt;text-indent: 0pt;line-height: 113%;text-align: left;">
                     New
                     Address: <span class="s4">
-                        D-3, CHUNILAL PARK, DABHOI, DABHOI, DABHOI, R.S., VADODARA, GUJARAT,
-                        391110
+                       @*  D-3, CHUNILAL PARK, DABHOI, DABHOI, DABHOI, R.S., VADODARA, GUJARAT,
+                        391110 *@ {{data.address}}
                     </span>
                 </h1>
                 <p style="padding-top: 3pt;text-indent: 0pt;text-align: left;"><br /></p>
@@ -278,10 +294,11 @@
         </ol>
         <p style="padding-top: 9pt;text-indent: 0pt;text-align: left;"><br /></p>
         <p style="padding-left: 5pt;text-indent: 0pt;line-height: 162%;text-align: left;">
-            Place: Vadodara Date: <span class="s5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            Place: @* Vadodara *@{{data.place}} <br /> Date: <span class="s5">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
         </p>
         <p style="text-indent: 0pt;text-align: left;"><br /></p>
-        <h2 style="padding-left: 5pt;text-indent: 0pt;text-align: left;">DIGANTABEN NILESHKUMAR BHAVSAR</h2>
+        <p style="text-indent: 0pt;text-align: left;"><br /></p>
+        <h2 style="padding-left: 5pt;text-indent: 0pt;text-align: left;">@* DIGANTABEN NILESHKUMAR BHAVSAR *@{{data.customerName}}</h2>
     </div>
     <div class="myarea">
         <button class="btn btn-store mybtn" ng-click="printDiv('printForm')">PRINT</button>
@@ -302,6 +319,39 @@
 
         let isProcessing = false;
         $scope.processdone = false;
+
+
+
+        $scope.calculateAge = function(dob, deathDate) {
+            if (!dob) {
+                return '';
+            }
+
+            var birthDate = new Date(dob);
+            var currentDate = new Date();
+            var age = currentDate.getFullYear() - birthDate.getFullYear();
+            var m = currentDate.getMonth() - birthDate.getMonth();
+
+            if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            // If deathDate is provided, calculate age at the time of death
+            if (deathDate) {
+                var deathDateObj = new Date(deathDate);
+                age = deathDateObj.getFullYear() - birthDate.getFullYear();
+                var mDeath = deathDateObj.getMonth() - birthDate.getMonth();
+
+                if (mDeath < 0 || (mDeath === 0 && deathDateObj.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                return age;
+                // return age + ' (deceased)';
+            }
+
+            return age;
+        };
+
 
         /* ============================================================
            LOAD CUSTOMERS / MAIN DATA LOAD FUNCTION
@@ -385,27 +435,19 @@
                     $scope.data = {
                         docid: obj.docid,
                         customerName: obj.customerName,
-                        folioNo: obj.folioNo,
-                        qty: obj.qty,
-                        address: obj.address,
-                        mobile: obj.mobile,
                         sonof: obj.sonof,
+                        age: obj.age,
+                        address: obj.address,
                         officename: obj.officename,
-                        officeaddress: obj.officeaddress,
-                        unit: obj.unit,
-                        clientid: obj.clientid,
-                        date: new Date(obj.date),
-                        jsondata: obj.jsondata,
-                        deceasedDate: obj.deceasedDate,
-                        firstHolder: obj.firstHolder,
-                        secondHolder: obj.secondHolder,
-                        thirdHolder: obj.thirdHolder,
-                        heirs: obj.heirs,
-                        condition: obj.condition
+                        folioNo: obj.folioNo,
+                        dpid: obj.dpid,
+                        clientId: obj.clientId,
+                        place: obj.place,
+                        newAddress: obj.newAddress,
+                        condition: obj.condition,
                     };
 
                     id = result.stockId;
-                    $scope.shares = JSON.parse($scope.data.jsondata);
 
                     checkData();
                     hideLoader();
@@ -420,31 +462,26 @@
                Helper Function: Build Main Data
             --------------------------------------------------------- */
             function populateData(holder, result, heirlist, isDeceased, doc) {
-
+                 var Age = $scope.calculateAge(holder.dob,holder.dateOfDeath);
                 $scope.data = {
                     docid: holder.id,
                     customerName: holder.name,
-                    qty: result.qty,
                     sonof: doc.name,
-                    folioNo: result.folioNo,
-                    mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
+                    age: Age,
                     address: !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
-                    officename: result.company.rtaName,
-                    officeaddress: result.company.rtaAddress,
-                    unit: result.companyName,
-                    date: new Date(),
-                    jsondata: result.stockJson,
-                    deceasedDate: new Date(doc.dateOfDeath),
-                    firstHolder: result.firstHolderName,
-                    secondHolder: result.secondHolderName,
-                    thirdHolder: result.thirdHolderName,
-                    heirs: isDeceased ? heirlist.map(h => ({ name: h.name })) : [],
+                    officename: result.companyName,
+                    folioNo: result.folioNo,
+                    dpid: holder.dpid,
+                    clientId: holder.clientId,
+                    place:'Vadodara',
+                    // mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
+                    // heirs: isDeceased ? heirlist.map(h => ({ name: h.name })) : [],
                     condition: isDeceased
                 };
 
-                $scope.shares = JSON.parse($scope.data.jsondata);
             }
         };
+
 
         /* ============================================================
            NAVIGATE TO GENERATE FORM
@@ -452,6 +489,8 @@
         $scope.navtogenerateform = function () {
             window.open(`/Form/GenerateForm/${id}`, '_self');
         };
+
+
 
         /* ============================================================
            AUTO PRINT WHEN LOADING FORM DATA
@@ -466,6 +505,8 @@
             }
         }
 
+
+
         /* ============================================================
            GENERATE FORM
         ============================================================ */
@@ -473,28 +514,7 @@
 
             if (!id) return;
 
-            if (!$scope.data.condition) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Customer is still Alive',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-                return;
-            }
-
             $scope.processdone = true;
-
-            if (!$scope.data.jsondata) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: "Please Enter Stock Qty data in Customer's Stock Page",
-                    icon: 'error',
-                    confirmButtonText: 'Try Again'
-                });
-                $scope.processdone = false;
-                return;
-            }
 
             const jsonString = JSON.stringify($scope.data, null, 2);
 
@@ -558,6 +578,8 @@
             });
         };
 
+
+
         /* ============================================================
            PRINT FUNCTION
         ============================================================ */
@@ -565,14 +587,146 @@
 
             const css = `
                 <style>
-                    *{margin:0;padding:0;text-indent:0;}
-                    h1{color:black;font-family:Calibri;font-weight:bold;font-size:12pt;}
-                    p{color:black;font-family:Calibri;font-size:12pt;margin:0;}
-                    .h2,h2{font-weight:bold;font-size:11pt;}
-                    .card{border-radius:10px;}
-                    .form-group{margin-bottom:1.5rem;}
-                    .btn-primary{width:100%;padding:12px 16px;font-weight:bold;}
-                </style>`;
+                    * {
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+        }
+
+        h1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        p {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+            margin: 0pt;
+        }
+
+        .h2,
+        h2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s1 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s2 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 12pt;
+        }
+
+        .s4 {
+            color: black;
+            font-family: Calibri, sans-serif;
+            font-style: normal;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 11pt;
+        }
+
+        .s5 {
+            color: black;
+            font-family: "Times New Roman", serif;
+            font-style: normal;
+            font-weight: normal;
+            text-decoration: underline;
+            font-size: 12pt;
+        }
+
+        li {
+            display: block;
+        }
+
+        #l1 {
+            padding-left: 0pt;
+            counter-reset: c1 1;
+        }
+
+            #l1 > li > *:first-child:before {
+                counter-increment: c1;
+                content: counter(c1, decimal)". ";
+                color: black;
+                font-style: normal;
+                font-weight: normal;
+                text-decoration: none;
+            }
+
+            #l1 > li:first-child > *:first-child:before {
+                counter-increment: c1 0;
+            }
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+
+        .mybtn {
+            background-color: #51b37f !important;
+            color: white !important;
+            width: auto !important;
+        }
+
+        .myarea {
+            justify-content: center !important;
+            display: flex !important;
+            margin-top: 25px !important;
+        }
+                @@media print {.hide-print {display: none !important;}}</style>`;
 
             const content = document.getElementById(divId).innerHTML;
             const printWindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no');
@@ -592,6 +746,8 @@
 
             printWindow.document.close();
         };
+
+
 
         /* ============================================================
            INIT

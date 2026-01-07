@@ -18,14 +18,14 @@ namespace Stock_CMS.Common
         where T : class
         where TModel : class
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
         private readonly int _bulkInsertorUpdateLimit = 1000;
         private static readonly ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         //private readonly ILogger<EfRepository<T, TModel>>  _logger;
 
 
-        public EfRepository(StockCmsContext dbContext, IMapper mapper)
+        public EfRepository(DmCmsContext dbContext, IMapper mapper)
         {
            
             _dbContext = dbContext;

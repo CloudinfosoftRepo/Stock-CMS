@@ -324,7 +324,7 @@
                     <p class="s3" style="padding-left: 8pt; text-indent: 0pt; text-align: left;">Distinctive No.</p>
                 </td>
             </tr>
-            <tr style="height: 15pt;" ng-repeat="tmp in shares">
+            <tr style="height: 15pt;" ng-repeat="tmp in shares" ng-hide="tmp.certificateNo == 0" ng-class="{'hide-print': tmp.certificateNo == 0}">
                 <td
                     style="
                         width: 90pt;
@@ -353,7 +353,7 @@
                         border-right-width: 1pt;
                     "
                 >
-                    <p style="text-indent: 0pt; text-align: left;">{{tmp.folioNo}}</p>
+                    <p style="text-indent: 0pt; text-align: left;">{{data.folioNo}}</p>
                 </td>
                 <td
                     style="

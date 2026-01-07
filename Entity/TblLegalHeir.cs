@@ -78,4 +78,12 @@ public partial class TblLegalHeir
     public long? CustomerId { get; set; }
 
     public string? DpName { get; set; }
+
+    public string? PassportUrl { get; set; }
+
+    public string? PassportNo { get; set; }
+
+    public string? NameAsPerPassport { get; set; }
+
+    public string? AddressAsPerPassport { get; set; }
 }

@@ -96,8 +96,8 @@ namespace Stock_CMS.Service
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
                     data.IsActive = existingProduct.IsActive;
-                    data.DateofFollowUp = data.DateofFollowUp != null ? _normalizeModel.ConvertToIST(data.DateofFollowUp) : existingProduct.DateofFollowUp;
-                    data.DateofSubmission = data.DateofSubmission != null ? _normalizeModel.ConvertToIST(data.DateofSubmission) : existingProduct.DateofSubmission;
+                    data.DateofFollowUp = _normalizeModel.ConvertToIST(data.DateofFollowUp);
+                    data.DateofSubmission = _normalizeModel.ConvertToIST(data.DateofSubmission);
 
                     if (data != null)
                     {

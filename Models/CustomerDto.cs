@@ -24,6 +24,8 @@ public partial class CustomerDto
 
     public int? UpdatedBy { get; set; }
 
+    public bool IsClient { get; set; }
+
     public string? Reference { get; set; }
 
     public string? ContactPersonName { get; set; }
@@ -38,10 +40,10 @@ public partial class CustomerDto
 
     public string? DocumentJson { get; set; }
 
+    public string? Password { get; set; }
     [NotMapped]
 	public string? CreatedByName { get; set; }
 	[NotMapped]
 	public string? UpdatedByName { get; set; }
 
-	public bool IsClient { get; set; }
 }

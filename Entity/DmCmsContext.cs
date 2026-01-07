@@ -33,6 +33,8 @@ public partial class DmCmsContext : DbContext
 
     public virtual DbSet<TblMenu> TblMenus { get; set; }
 
+    public virtual DbSet<TblNominee> TblNominees { get; set; }
+
     public virtual DbSet<TblPermission> TblPermissions { get; set; }
 
     public virtual DbSet<TblRelationMapping> TblRelationMappings { get; set; }
@@ -49,7 +51,6 @@ public partial class DmCmsContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DBConnection");
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -89,7 +90,7 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Branch)
-                .HasMaxLength(25)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.EmployeeCode)
@@ -167,6 +168,9 @@ public partial class DmCmsContext : DbContext
             entity.Property(e => e.Mobile)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Reference)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -184,6 +188,7 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.AddressAsPerAadhar).IsUnicode(false);
+            entity.Property(e => e.AddressAsPerPassport).IsUnicode(false);
             entity.Property(e => e.AddressAsPerVoterId).IsUnicode(false);
             entity.Property(e => e.City)
                 .HasMaxLength(25)
@@ -228,6 +233,9 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("NameAsPerPAN");
+            entity.Property(e => e.NameAsPerPassport)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.NameAsPerVoterId)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -239,6 +247,10 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.PassportNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.PassportUrl).IsUnicode(false);
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -333,6 +345,7 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.AddressAsPerAadhar).IsUnicode(false);
+            entity.Property(e => e.AddressAsPerPassport).IsUnicode(false);
             entity.Property(e => e.City)
                 .HasMaxLength(25)
                 .IsUnicode(false);
@@ -377,6 +390,9 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("NameAsPerPAN");
+            entity.Property(e => e.NameAsPerPassport)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Pan)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -385,6 +401,10 @@ public partial class DmCmsContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("PANUrl");
+            entity.Property(e => e.PassportNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.PassportUrl).IsUnicode(false);
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -426,6 +446,66 @@ public partial class DmCmsContext : DbContext
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<TblNominee>(entity =>
+        {
+            entity.ToTable("Tbl_Nominee");
+
+            entity.Property(e => e.AccountNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.AccountType)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.Address).IsUnicode(false);
+            entity.Property(e => e.BankCity)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.BankName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.BankPinCode)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.Branch)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.City)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Dob)
+                .HasColumnType("datetime")
+                .HasColumnName("DOB");
+            entity.Property(e => e.Email)
+                .HasMaxLength(150)
+                .IsUnicode(false);
+            entity.Property(e => e.Ifsccode)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("IFSCCode");
+            entity.Property(e => e.Micrcode)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("MICRCode");
+            entity.Property(e => e.Mobile)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Pan)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("PAN");
+            entity.Property(e => e.Pincode)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.State)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<TblPermission>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_TBL_Permission_Master");
@@ -457,7 +537,7 @@ public partial class DmCmsContext : DbContext
 
         modelBuilder.Entity<TblRelationMapping>(entity =>
         {
-            entity.ToTable("Tbl_RelationMapping", "dmcmsdbuser");
+            entity.ToTable("Tbl_RelationMapping");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.IsActive).HasDefaultValue(true);

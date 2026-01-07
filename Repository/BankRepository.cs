@@ -8,9 +8,9 @@ namespace Stock_CMS.Repository
 {
     public class BankRepository : EfRepository<TblBank, BankDto>, IBankRepository
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
-        public BankRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public BankRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

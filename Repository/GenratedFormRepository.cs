@@ -8,9 +8,9 @@ namespace Stock_CMS.Repository
 {
 	public class GenratedFormRepository : EfRepository<TblGenratedForm, GenratedFormDto>, IGenratedFormRepository
 	{
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
-        public GenratedFormRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public GenratedFormRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

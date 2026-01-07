@@ -205,18 +205,28 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="seletedId" class="form-label">Select Customer</label>
-                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" id="seletedId" ng-options="f.id as f.name for f in docs" ng-model="seletedId" ng-change="loadCustomers(seletedId, heirId, nomineeId)">
                                     <option selected disabled value="">Select customer</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Select Heir Dropdown -->
+                         <!-- Select Heir Dropdown -->
                         <div class="col-md-4 mb-3" ng-show="legalheirlist">
                             <div class="form-group">
                                 <label for="heirId" class="form-label">Select Heir</label>
-                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId)">
+                                <select class="form-select" id="heirId" ng-options="g.id as g.name for g in heir" ng-model="heirId" ng-change="loadCustomers(seletedId, heirId, nomineeId)">
                                     <option selected disabled value="">Select Heir</option>
+                                </select>
+                            </div>
+                        </div> 
+
+                        <!-- Select Nominee Dropdown -->
+                        <div class="col-md-4 mb-3" ng-show="nominee.length > 0">
+                            <div class="form-group">
+                                <label for="nomineeId" class="form-label">Select Nominee</label>
+                                <select class="form-select" id="nomineeId" ng-options="g.id as g.name for g in nominee" ng-model="nomineeId" ng-change="loadCustomers(seletedId, heirId, nomineeId)">
+                                    <option selected disabled value="">Select Nominee</option>
                                 </select>
                             </div>
                         </div>
@@ -594,7 +604,7 @@
               </p>
             </td>
           </tr>
-                    <tr style="height: 24pt" ng-repeat="tmp in shares"  >
+                    <tr style="height: 24pt" ng-repeat="tmp in shares" ng-class="{'hide-print': tmp.certificateNo == 0}" ng-hide="tmp.certificateNo == 0">
             <td
               style="
                 width: 93pt;
@@ -631,7 +641,7 @@
                 border-right-color: #231f20;
               "
             >
-                            <p style="text-indent: 0pt; text-align: left">{{tmp.folioNo}}</p>
+                            <p style="text-indent: 0pt; text-align: left">{{data.folioNo}}</p>
             </td>
             <td
               style="
@@ -839,7 +849,7 @@
         </p>
         <span style="text-indent: 0pt; text-align: left" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
             <span ng-repeat="h in data.heirs track by $index">
-                {{h}}<span ng-if="$index < data.heirs.length - 1"> & </span>
+                {{h.Name}}<span ng-if="$index < data.heirs.length - 1"> & </span>
             </span>
         </span>
     <p
@@ -895,7 +905,7 @@
         // showLoader();
 
          // Load Customers
-         $scope.loadCustomers = function (sid,hid) {
+         $scope.loadCustomers = function (sid,hid,nid) {
              if(id){
                  hideLoader();
                  $scope.hDiv = true;
@@ -910,30 +920,70 @@
                 $http.get('/Form/GetHolderByStockId/' +  id).then(function (response) {
                      $scope.docs = response.data;
                     var doc = $scope.docs.find(x => x.id === sid);
+                     var isDeceased = !!doc?.dateOfDeath;
 
-                      var isDeceased = !!doc?.dateOfDeath;
+                     if (isDeceased) {
 
-                if (isDeceased) {
                     $scope.heirId = null;
-    $scope.legalheirlist = isDeceased;
-    document.getElementById('heirId').value = '';
+                    $scope.legalheirlist = isDeceased;
+                    document.getElementById('heirId').value = '';
                     $http.get('/LegalHeir/GetClaimentLegalHeir/' + doc.id).then(function (response) {
                         $scope.heir = response.data;
-                        var heirs = response.data.find(x => x.id === hid); // `hid` needs to be in scope
+                        var heirs = response.data.find(x => x.id === hid); //`hid` needs to be in scope
                         var holder = heirs;
 
-                        populateData(holder, result,$scope.heir,isDeceased);
+                     $http.get('/Nominee/GetNomineeByLegalHeirId/' + holder.id).then(function (response) {
+                        $scope.nominee = response.data;
+
+                        if(!$scope.nominee || $scope.nominee.length === 0) {
+                             Swal.fire({
+                            title: 'Error!',
+                            text:  'There are no nomines are available for this holder.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                        return;
+                        }
+
+                        var nominees = response.data.find(x => x.id === nid); // `hid` needs to be in scope
+                        var holder = nominees;
+
+                        populateData(holder, result,$scope.nominee,isDeceased,doc);
+                    }, function (error) {
+                        console.error('Error loading Nominee data:', error);
+                        hideLoader();
+                    });
                     }, function (error) {
                         console.error('Error loading legal heir data:', error);
                         hideLoader();
                     });
                 } else {
-                    $scope.heirId = null;
-    $scope.data = null;
-    $scope.legalheirlist = isDeceased;
-    document.getElementById('heirId').value = '';
+                     $scope.heirId = null;
+                    $scope.data = null;
+                    $scope.legalheirlist = isDeceased;
+                    document.getElementById('heirId').value = '';
                     var holder = doc;
-                    populateData(holder, result,$scope.heir,isDeceased);
+                    $http.get('/Nominee/GetNomineeByClientId/' + holder.id).then(function (response) {
+                        $scope.nominee = response.data;
+
+                        if(!$scope.nominee || $scope.nominee.length === 0) {
+                             Swal.fire({
+                            title: 'Error!',
+                            text:  'There are no nomines are available for this holder.',
+                            icon: 'error',
+                            confirmButtonText: 'Try Again'
+                        });
+                        return;
+                        }
+
+                        var nominees = response.data.find(x => x.id === nid); // `hid` needs to be in scope
+                        var holder = nominees;
+
+                        populateData(holder, result,$scope.nominee,isDeceased,doc);
+                    }, function (error) {
+                        console.error('Error loading Nominee data:', error);
+                        hideLoader();
+                    });
                 }
 
                 hideLoader();
@@ -993,7 +1043,7 @@
             });
             }
 
-             function populateData(holder, result, heirlist,isDeceased) {
+             function populateData(holder, result, heirlist,isDeceased,doc) {
                                     var year = new Date(holder.dob).getFullYear();
                     var month = new Date(holder.dob).getMonth();
                     var day = new Date(holder.dob).getDate();
@@ -1017,27 +1067,27 @@
         const aliveOnly = holderList.filter(h => h.alive);
 
                 $scope.data = {
-                    docid: holder.id,
-                    customerName : holder.name,
+                    docid: doc.id,
+                    customerName : doc.name,
                     officename : result.companyName,
-                    nomineename: '',
-                    address : '',
-                    dob: '',
-                    sonof: '',
-                    relationship: '',
-                    email: '',
-                    relation:'',
+                    nomineename: holder.name,
+                    address : holder.address,
+                    dob: new Date(holder.dob),
+                    sonof: doc.name,
+                    relationship: holder.relationWithDead,
+                    email: holder.email,
+                    relation: holder.relationWithDead,
                     natureofsecurity: 'Equity',
                     jsondata: result.stockJson,
                     qty: result.qty,
                     folioNo : result.folioNo,
                     officeaddress: result.company.companyAddress,
-                       firstHolder: aliveOnly[0]?.name || '',
-            secondHolder: aliveOnly[1]?.name || '',
-            thirdHolder: aliveOnly[2]?.name || '',
-    firstAlive: result?.firstHolderData?.dateOfDeath,
-    secondAlive: result?.secondHolderData?.dateOfDeath,
-    thirdAlive: result?.thirdHolderData?.dateOfDeath,
+                    firstHolder: aliveOnly[0]?.name || '',
+                    secondHolder: aliveOnly[1]?.name || '',
+                    thirdHolder: aliveOnly[2]?.name || '',
+                    firstAlive: result?.firstHolderData?.dateOfDeath,
+                    secondAlive: result?.secondHolderData?.dateOfDeath,
+                    thirdAlive: result?.thirdHolderData?.dateOfDeath,
                     occupation: '',
                     nationality: 'INDIAN',
                     majordate: new Date(year + 18,month,day),

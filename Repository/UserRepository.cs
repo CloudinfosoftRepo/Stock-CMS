@@ -9,10 +9,10 @@ namespace Stock_CMS.Repository
 {
 	public class UserRepository : EfRepository<TblUser, UserDto>, IUserRepository
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UserRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public UserRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

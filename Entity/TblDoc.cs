@@ -79,6 +79,14 @@ public partial class TblDoc
 
     public string? DpName { get; set; }
 
+    public string? PassportUrl { get; set; }
+
+    public string? PassportNo { get; set; }
+
+    public string? NameAsPerPassport { get; set; }
+
+    public string? AddressAsPerPassport { get; set; }
+
     public virtual TblCustomer? Customer { get; set; }
 
     public virtual ICollection<TblStock> TblStockFirstHolders { get; set; } = new List<TblStock>();

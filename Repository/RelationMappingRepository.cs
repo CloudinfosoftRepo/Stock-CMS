@@ -8,10 +8,10 @@ namespace Stock_CMS.Repository
 {
     public class RelationMappingRepository : EfRepository<TblRelationMapping, RelationMappingDto>, IRelationMappingRepository
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<RelationMappingRepository> _logger;
-        public RelationMappingRepository(StockCmsContext dbContext, IMapper mapper, ILogger<RelationMappingRepository> logger) : base(dbContext, mapper)
+        public RelationMappingRepository(DmCmsContext dbContext, IMapper mapper, ILogger<RelationMappingRepository> logger) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -45,12 +45,22 @@ namespace Stock_CMS.Repository
 
         public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByHolderId(long Id)
         {
-            return await GetMany(x => x.HolderId == Id && x.IsActive == true);
+            return await GetMany(x => x.HolderId == Id && x.IsActive == true && (x.NomineeId == null || x.NomineeId == 0));
+        }
+
+        public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByHolderIdAndNominee(long Id)
+        {
+            return await GetMany(x => x.HolderId == Id && x.IsActive == true && (x.LegalHeirId == 0 || x.LegalHeirId == null));
         }
 
         public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByLegalHeirId(long Id)
         {
-            return await GetMany(x => x.LegalHeirParentId == Id && x.IsActive == true);
+            return await GetMany(x => x.LegalHeirParentId == Id && x.IsActive == true && (x.NomineeId == null || x.NomineeId == 0));
+        }
+
+        public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByLegalHeirIdAndNominee(long Id)
+        {
+            return await GetMany(x => x.LegalHeirParentId == Id && x.IsActive == true && (x.LegalHeirId == 0 || x.LegalHeirId == null));
         }
 
         public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByHolderIds(long?[] Id)
@@ -61,6 +71,11 @@ namespace Stock_CMS.Repository
         public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByLegalHeirIds(long?[] Id)
         {
             return await GetMany(x => Id.Contains(x.LegalHeirParentId) && x.IsActive == true);
+        }
+
+        public async Task<IEnumerable<RelationMappingDto>> GetRelationMappingsByNomineeIds(long?[] Id)
+        {
+            return await GetMany(x => Id.Contains(x.NomineeId) && x.IsActive == true);
         }
 
         public async Task<IEnumerable<RelationMappingDto>> GetAllRelationMappings()

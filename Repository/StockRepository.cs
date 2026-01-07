@@ -8,9 +8,9 @@ namespace Stock_CMS.Repository
 {
 	public class StockRepository : EfRepository<TblStock, StockDto>, IStockRepository
 	{
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
-        public StockRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public StockRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

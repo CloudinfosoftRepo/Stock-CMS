@@ -83,13 +83,15 @@
                             <input type="text" ng-model="searchQuery" class="form-control search-orders" placeholder="Search">
                         </form>
                         @if (add) { 
-                            <button class="btn btn-custom " ng-show="search" style="background-color:#51b37f;color:white" ng-click="openDocModal()">Add Holder</button>
+                            <button class="btn btn-custom " ng-show="search === 'holder'" style="background-color:#51b37f;color:white" ng-click="openDocModal()">Add Holder</button>
 
-                            <button class="btn btn-custom " ng-show="!search" style="background-color:#51b37f;color:white" ng-click="openLegalHeirModal()">Add Legal Heir</button>
+                            <button class="btn btn-custom " ng-show="search === 'legalHeir'" style="background-color:#51b37f;color:white" ng-click="openLegalHeirModal()">Add Legal Heir</button>
+
+                            <button class="btn btn-custom " ng-show="search === 'nominee'" style="background-color:#51b37f;color:white" ng-click="openNomineeModal()">Add Nominee</button>
                         }
                          <button class="btn btn-custom " style="background-color:#51b37f;color:white" ng-click="manageClient()">Go To Stocks</button>
                         <button class="btn btn-custom"
-                                ng-show="search"
+                                ng-show="search === 'holder'"
                                 style="background-color:#51b37f;color:white"
                                 excel-export
                                 table-id="tbldoc"
@@ -99,11 +101,21 @@
                             Export
                         </button>
                         <button class="btn btn-custom"
-                                ng-show="!search"
+                                ng-show="search === 'legalHeir'"
                                 style="background-color:#51b37f;color:white"
                                 excel-export
                                 table-id="tbllegalheir"
                                 file-name="LegalHeir"
+                                sheet-name="Sheet1"
+                                file-type="xlsx">
+                            Export
+                        </button>
+                        <button class="btn btn-custom"
+                                ng-show="search === 'nominee'"
+                                style="background-color:#51b37f;color:white"
+                                excel-export
+                                table-id="tblnominee"
+                                file-name="Nominee"
                                 sheet-name="Sheet1"
                                 file-type="xlsx">
                             Export
@@ -114,19 +126,24 @@
                 <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-1">
                     <!-- Holder Tab -->
                     <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
-                       ng-class="{'active': search === true}" ng-click="filter(true)"
-                       role="tab" aria-selected="{{search === true ? 'true' : 'false'}}">Holder</a>
+                       ng-class="{'active': search === 'holder'}" ng-click="filter('holder')"
+                       role="tab" aria-selected="{{search === 'holder'}}">Holder</a>
 
                     <!-- LegalHeir Tab -->
                     <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
-                       ng-class="{'active': search === false}" ng-click="filter(false)"
-                       role="tab" aria-selected="{{search === false ? 'true' : 'false'}}">LegalHeir</a>
+                       ng-class="{'active': search === 'legalHeir'}" ng-click="filter('legalHeir')"
+                       role="tab" aria-selected="{{search === 'legalHeir' }}">LegalHeir</a>
+
+                    <!-- Nominee Tab -->
+                    <a class="flex-sm-fill text-sm-center nav-link" data-bs-toggle="tab"
+                       ng-class="{'active': search === 'nominee'}" ng-click="filter('nominee')"
+                       role="tab" aria-selected="{{search === 'nominee'}}">Nominee</a>
 
                     
                 </nav>
             </div>
 
-            <div class="app-card  app-card-orders-table shadow-sm mb-5" ng-show="search">
+            <div class="app-card  app-card-orders-table shadow-sm mb-5" ng-show="search === 'holder'">
                 <div class="app-card-body">
                     <div class="table-responsive">
                         <table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
@@ -148,9 +165,13 @@
                                     <th class="cell">Relationship</th>
                                     <th class="cell">RelativesName</th>
                                     <th class="cell">Email</th>
-                                    <th class="cell">Voter Id</th>
+                                    @* <th class="cell">Voter Id</th>
                                     <th class="cell">Name As Per VoterId</th>
-                                    <th class="cell">Address As Per VoterId</th>
+                                    <th class="cell">Address As Per VoterId</th> *@
+                                    <th class="cell">Passport </th>
+                                    <th class="cell">Passport Number</th>
+                                    <th class="cell">Name As Per Passport</th>
+                                    <th class="cell">Address As Per Passport</th>
                                     <th class="cell">Death Certificate</th> 
                                     <th class="cell">Name As Per DeathCerti</th>
                                     <th class="cell">Date Of Death</th>
@@ -203,7 +224,7 @@
                                     <td class="cell">{{ doc.relationship }}</td>
                                     <td class="cell">{{ doc.relativesName }}</td>
                                     <td class="cell">{{ doc.email }}</td>
-                                    <td class="cell" ng-click="openimageModal(doc.voterIdUrl)">
+                                    @* <td class="cell" ng-click="openimageModal(doc.voterIdUrl)">
                                         <div class="">
 
                                             <img ng-if="isImage(doc.voterIdUrl)" ng-src="{{doc.voterIdUrl}}" width="35" height="35" />
@@ -212,7 +233,18 @@
                                         </div>
                                     </td>
                                     <td class="cell">{{ doc.nameAsPerVoterId }}</td>
-                                    <td class="cell">{{ doc.addressAsPerVoterId }}</td>
+                                    <td class="cell">{{ doc.addressAsPerVoterId }}</td> *@
+                                    <td class="cell" ng-click="openimageModal(doc.passportUrl)">
+                                        <div class="">
+
+                                            <img ng-if="isImage(doc.passportUrl)" ng-src="{{doc.passportUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.passportUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ doc.passportNo }}</td>
+                                    <td class="cell">{{ doc.nameAsPerPassport }}</td>
+                                    <td class="cell">{{ doc.addressAsPerPassport }}</td>
                                     <td class="cell" ng-click="openimageModal(doc.deathCertiUrl)">
                                         <div class="">
 
@@ -234,6 +266,9 @@
                                     <td class="cell sticky-action text-center">
                                         <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openRelationModal(doc)" title="Legal Heir\Claiment">
                                             <i class="bi bi-person-add"></i>
+                                        </span>
+                                        <span ng class="btn-sm app-btn" ng-hide="doc.dateOfDeath" style="color:black;font-size:large" ng-click="openNomineeRelationModel(doc)" title="Nominee">
+                                            <i class="bi bi-person-plus"></i>
                                         </span>
                                         @if (edit) { 
                                         <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openFormModal(doc.id)" title="Add Witness">
@@ -278,7 +313,7 @@
                 </div>
             </div>
 
-            <div class="app-card app-card-orders-table shadow-sm mb-5" ng-show="!search">
+            <div class="app-card app-card-orders-table shadow-sm mb-5" ng-show="search === 'legalHeir'">
                 <div class="app-card-body">
                     <div class="table-responsive">
                         <table id="tbldoc" class="table app-table-hover mb-0 text-left text-nowrap">
@@ -292,6 +327,10 @@
                                     <th class="cell">Name As Per Aadhar</th>
                                     <th class="cell">Address As Per Aadhar</th>
                                     <th class="cell">Aadhar </th>
+                                    <th class="cell">Passport </th>
+                                    <th class="cell">Passport Number</th>
+                                    <th class="cell">Name As Per Passport</th>
+                                    <th class="cell">Address As Per Passport</th>
                                     <th class="cell">Date Of Birth </th>
                                     <th class="cell">Mobile</th>
                                     <th class="cell">State</th>
@@ -341,6 +380,18 @@
                                             <i ng-if="!isImage(doc.aadharUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
                                         </div>
                                     </td>
+                                    <td class="cell" ng-click="openimageModal(doc.passportUrl)">
+                                        <div class="">
+
+                                            <img ng-if="isImage(doc.passportUrl)" ng-src="{{doc.passportUrl}}" width="35" height="35" />
+
+                                            <i ng-if="!isImage(doc.passportUrl)" class="fas fa-file-pdf pdf-file" style="font-size:xx-large;color: #da2d27"></i>
+                                        </div>
+                                    </td>
+                                    <td class="cell">{{ doc.passportNo }}</td>
+                                    <td class="cell">{{ doc.nameAsPerPassport }}</td>
+                                    <td class="cell">{{ doc.addressAsPerPassport }}</td>
+                                    <td class="cell" ng-click="openimageModal(doc.deathCertiUrl)">
                                     <td class="cell">{{ doc.dob | date: 'dd-MM-yyyy' }}</td>
                                     <td class="cell">{{ doc.mobile }}</td>
                                     <td class="cell">{{ doc.state }}</td>
@@ -369,6 +420,9 @@
                                     <td class="cell sticky-action">
                                         <span class="btn-sm app-btn" style="color:black;font-size:large" ng-click="openRelationModal(doc)" title="Legal Heir\Claiment">
                                             <i class="bi bi-person-add"></i>
+                                        </span>
+                                        <span ng class="btn-sm app-btn" ng-show="doc.isClaiment" style="color:black;font-size:large" ng-click="openNomineeRelationModel(doc)" title="Nominee">
+                                            <i class="bi bi-person-plus"></i>
                                         </span>
                                         <span class="btn-sm app-btn" ng-show="doc.isClaiment" style="color:black;font-size:large" ng-click="openBankModal(doc.id,'legalheir')" title="Bank Details">
                                             <i class="bi bi-bank"></i>
@@ -409,6 +463,98 @@
                 </div>
             </div>
 
+            <div class="app-card app-card-orders-table shadow-sm mb-5" ng-show="search === 'nominee'">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table id="tblnominee" class="table app-table-hover mb-0 text-left text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th class="cell"> Name</th>
+                                    <th class="cell"> Address</th>
+                                    <th class="cell"> Dob</th>
+                                    <th class="cell"> Email</th>
+                                    <th class="cell"> Pan</th>
+                                    <th class="cell"> Mobile</th>
+                                    <th class="cell"> State</th>
+                                    <th class="cell"> City</th>
+                                    <th class="cell"> Pincode</th>
+                                    <th class="cell"> BankName</th>
+                                    <th class="cell"> Branch</th>
+                                    <th class="cell"> AccountNo</th>
+                                    <th class="cell"> AccountType</th>
+                                    <th class="cell"> Ifsccode</th>
+                                    <th class="cell"> Micrcode</th>
+                                    <th class="cell"> BankCity</th>
+                                    <th class="cell"> BankPinCode</th>
+
+                                    <th class="cell">Created At</th>
+                                    <th class="cell">Created By</th>
+                                    <th class="cell">Updated At</th>
+                                    <th class="cell">Updated By</th>
+
+                                    <th class="cell sticky-action text-center">Action</th>
+                                    @* <th class="cell">Edit</th> *@
+                                    @* <th class="cell">HolderDocs</th> *@
+                                    @* <th class="cell">Delete</th>  *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="doc in docs | filter: searchQuery" ">
+                                    <td class="cell">{{ doc.name }}</td>
+                                    <td class="cell">{{ doc.address }}</td>
+                                    <td class="cell">{{ doc.dob | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.email }}</td>
+                                    <td class="cell">{{ doc.pan }}</td>
+                                    <td class="cell">{{ doc.mobile }}</td>
+                                    <td class="cell">{{ doc.state }}</td>
+                                    <td class="cell">{{ doc.city }}</td>
+                                    <td class="cell">{{ doc.pincode }}</td>
+                                    <td class="cell">{{ doc.bankName }}</td>
+                                    <td class="cell">{{ doc.branch }}</td>
+                                    <td class="cell">{{ doc.accountNo }}</td>
+                                    <td class="cell">{{ doc.accountType }}</td>
+                                    <td class="cell">{{ doc.ifsccode }}</td>
+                                    <td class="cell">{{ doc.micrcode }}</td>
+                                    <td class="cell">{{ doc.bankCity }}</td>
+                                    <td class="cell">{{ doc.bankPinCode }}</td>
+
+                                    <td class="cell">{{ doc.createdAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.createdByName }}</td>
+                                    <td class="cell">{{ doc.updatedAt | date:'dd-MM-yyyy' }}</td>
+                                    <td class="cell">{{ doc.updatedByName }}</td>
+                                    <td class="cell sticky-action">
+                                        
+                                        @if (edit)
+                                        {
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openNomineeModal(doc)" title="Edit Legal Heir">
+                                                <i class="bi bi-pencil"></i>
+                                            </span>
+                                        }
+                                        @if (delete)
+                                        {
+                                            <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteNominee(doc)" title="Delete Legal Heir">
+                                                <i class="bi bi-trash"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                    @*    <td class="cell">
+                                            <span hidden ng-click="deleteDoc(doc.id)" class="btn-sm app-btn" style="color:green;font-size:large">
+                                                <i class="bi bi-trash"></i>
+                                            </span>
+                                        </td> *@
+                                    @* 
+                                        <td>
+                                            <span class="btn-sm app-btn" style="color:green;font-size:large" ng-click="openDocModal(doc)">
+                                                <i class="bi bi-pencil"></i>
+                                            </span>
+                                            <button hidden class="btn btn-danger" ng-click="deleteDoc(doc.id)">Delete</button>
+                                        </td> *@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -502,7 +648,7 @@
 
 
     <!-- Add/Edit Stock Modal -->
-    <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-hidden="true" ng-show="search">
+    <div class="modal fade" id="docModal" tabindex="-1" role="dialog" aria-hidden="true" ng-show="search === 'holder'">
         <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <form ng-submit="saveDoc()" class="modal-dialog-scrollable" style="overflow-y: auto">
@@ -659,7 +805,7 @@
                                 </div>
                             </div>
                         </div>
-                        <br />
+@*                         <br />
                         <div class="row">
                             <h6>VoterId Details </h6>
                             <hr class="hr-border" />
@@ -681,6 +827,38 @@
                                     <input type="file" id="voterFile" class="form-control" file-model="currentDoc.voterFile" ng-model="currentDoc.voterFile" />
                                 </div> 
                              </div> 
+                        </div> *@
+                        <br />
+                        <div class="row">
+
+                            <h6>
+                                Passport Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="passportNo">Passport Number</label>
+                                    <input type="text" id="passportNo" ng-model="currentDoc.passportNo" class="form-control" placeholder="Enter Passport Number" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerPassport">Name As Per Passport</label>
+                                    <input type="text" id="nameAsPerPassport" ng-model="currentDoc.nameAsPerPassport" class="form-control" placeholder="Enter Name As Per Passport" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addressAsPerPassport">Address As Per Passport</label>
+                                    <textarea id="addressAsPerPassport" ng-model="currentDoc.addressAsPerPassport" class="form-control" placeholder="Address As Per Passport"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="passportFile">Passport File</label>
+                                    <input type="file" id="passportFile" class="form-control" file-model="currentDoc.passportFile" ng-model="currentDoc.passportFile" />
+                                </div>
+                            </div>
                         </div>
                         <br />
                         <div class="row">
@@ -726,7 +904,7 @@
     </div>
 
     <!-- Add/Edit Legal Heir Modal -->
-    <div class="modal fade" id="legalheirModal" tabindex="-1" role="dialog" aria-hidden="true" ng-show="!search">
+    <div class="modal fade" id="legalheirModal" tabindex="-1" role="dialog" aria-hidden="true" ng-show="search === 'legalHeir'">
         <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <form ng-submit="saveLegalHeir()" class="modal-dialog-scrollable" style="overflow-y: auto">
@@ -912,6 +1090,38 @@
                         <div class="row">
 
                             <h6>
+                                Passport Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="passportNo">Passport Number</label>
+                                    <input type="text" id="passportNo" ng-model="currentDoc.passportNo" class="form-control" placeholder="Enter Passport Number" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="nameAsPerPassport">Name As Per Passport</label>
+                                    <input type="text" id="nameAsPerPassport" ng-model="currentDoc.nameAsPerPassport" class="form-control" placeholder="Enter Name As Per Passport" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addressAsPerPassport">Address As Per Passport</label>
+                                    <textarea id="addressAsPerPassport" ng-model="currentDoc.addressAsPerPassport" class="form-control" placeholder="Address As Per Passport"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="passportFile">Passport File</label>
+                                    <input type="file" id="passportFile" class="form-control" file-model="currentDoc.passportFile" ng-model="currentDoc.passportFile" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+
+                            <h6>
                                 Death Certificate Details
                             </h6>
                             <hr class="hr-border" />
@@ -937,6 +1147,138 @@
                                 <div class="form-group">
                                     <label for="deathcertiFile">Death Certificate File</label>
                                     <input type="file" id="legalheirdeathcertiFile" class="form-control" file-model="currentLegalheir.deathcertiFile" ng-model="currentLegalheir.deathcertiFile" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center m-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" ng-disabled="processdone" class="btn" style="background-color:#51b37f;color:white">{{ isEditing ? 'Update' : 'Save' }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Nominee Modal -->
+    <div class="modal fade" id="nomineeModal" tabindex="-1" role="dialog" aria-hidden="true" ng-show="search === 'nominee'">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <form ng-submit="saveNominee()" class="modal-dialog-scrollable" style="overflow-y: auto">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'EditNominee' : 'Add Nominee' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body modal-dialog-scrollable">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Nominee Name</label>
+                                    <input type="text" id="name" ng-model="currentNominee.name" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="address">Nominee Address</label>
+                                    <textarea id="address" ng-model="currentNominee.address" class="form-control" placeholder="Nominee Address"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" ng-model="currentNominee.dob" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="email">Nominee Email</label>
+                                    <input type="email" id="email" ng-model="currentNominee.email" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pan">Nominee Pan Number</label>
+                                    <input type="text" id="pan" ng-model="currentNominee.pan" class="form-control" placeholder="Enter Pan Number" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" id="mobile" ng-model="currentNominee.mobile" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" ng-model="currentNominee.state" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" ng-model="currentNominee.city" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="pinCode">PINCODE</label>
+                                    <input type="text" id="pinCode" ng-model="currentNominee.pinCode" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <h6>
+                                Nominee Bank Details
+                            </h6>
+                            <hr class="hr-border" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankName">Bank Name</label>
+                                    <input type="text" id="bankName" ng-model="currentNominee.bankName" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="branch">Branch</label>
+                                    <input type="text" id="branch" ng-model="currentNominee.branch" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="accountNo">Account No</label>
+                                    <input type="text" id="accountNo" ng-model="currentNominee.accountNo" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="accountType">Account Type</label>
+                                    <input type="text" id="accountType" ng-model="currentNominee.accountType" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="ifsccode">IFSC Code</label>
+                                    <input type="text" id="ifsccode" ng-model="currentNominee.ifsccode" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="micrcode">MICR Code</label>
+                                    <input type="text" id="micrcode" ng-model="currentNominee.micrcode" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankCity">Bank City</label>
+                                    <input type="text" id="bankCity" ng-model="currentNominee.bankCity" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="bankPinCode">Bank PINCODE</label>
+                                    <input type="text" id="bankPinCode" ng-model="currentNominee.bankPinCode" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -1164,6 +1506,7 @@
                                 <th class="cell">#</th>
                                 <th class="cell">Legal Heir</th>
                                 <th class="cell">Relationship With the Legal Heir</th>
+                                <th class="cell">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1171,6 +1514,11 @@
                                 <td class="cell">{{ $index + 1 }}</td>
                                 <td class="cell">{{ f.legalHeirName }}</td>
                                 <td class="cell">{{ f.relationWithDead }}</td>
+                                <td class="cell">
+                                    <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteRelation(f,$index)" title="Delete Relation">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -1179,6 +1527,98 @@
         </div>
     </div>
 
+
+    <!-- Add/Edit Nominee Relation Modal -->
+    <div class="modal fade" id="nomineerelationModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:75%" role="document">
+            <div class="modal-content">
+
+                <form name="nForm">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditing ? 'Edit Relation' : 'Add Relation with ' + headers }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <!-- parent Id -->
+                            <div class="col-md-6" hidden>
+                                <div class="form-group">
+                                    <label class="form-label">Id</label>
+                                    <label class="text-danger">*</label>
+                                    <input type="text" class="form-control" name="id" id="id" ng-model="currentNomineeRelation.id" />
+                                </div>
+                            </div>
+
+                            <!-- LegalHeir List -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label for="witnessname">Legal Heir</label>
+                                    <select class="form-select" ng-options="f.id as f.name for f in nominees" ng-model="currentNomineeRelation.nomineeId">
+                                        <option selected disabled value="">Select Nominee</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Relationship With the Dead -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="relationWithDead">Relationship With the Nominee</label>
+                                    <input type="text" id="relationWithDead" ng-model="currentNomineeRelation.relationWithDead" class="form-control" required />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <!-- Add Button -->
+                            <div class="text-center mb-3">
+                                <button ng-click="addNomineeRelationData(nForm.$valid)" class="btn" style="background-color:#51b37f; color:white;">
+                                    ADD
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button ng-click="saveNomineeRelation()" ng-disabled="processdone" class="btn" style="background-color:#51b37f; color:white">
+                            {{ isEditing ? 'Save Changes' : 'Add Relation' }}
+                        </button>
+                    </div>
+                </form>
+                <div class="m-2">
+                    <!-- Stock List Table -->
+                    <table class="table table-bordered table-striped table-hover mb-0 text-left">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th class="cell">#</th>
+                                <th class="cell">Nominee</th>
+                                <th class="cell">Relationship With the Nominee</th>
+                                <th class="cell">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="f in nomineeRelationlist">
+                                <td class="cell">{{ $index + 1 }}</td>
+                                <td class="cell">{{ f.nomineeName }}</td>
+                                <td class="cell">{{ f.relationWithDead }}</td>
+                                <td class="cell">
+                                    <span class="btn-sm app-btn" style="color:red;font-size:large" ng-click="deleteRelation(f,$index)" title="Delete Nominee Relation">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         angular.module('Stock-CMS', [])
@@ -1208,6 +1648,9 @@
             $scope.currentRelation = {};
             $scope.relationlist = [];
 
+            $scope.currentNomineeRelation = {};
+            $scope.nomineeRelationlist = [];
+
             $scope.docid2 = undefined;
             $scope.isEditing = false;
             $scope.isEditingBank = false;
@@ -1224,7 +1667,7 @@
              $scope.loadDocs = function () {
                      if (id)
                      {
-                         url = $scope.search ? '/doc/getDocs/' : '/LegalHeir/GetLegalHeirByCustomerId/';
+                         url = $scope.search === 'holder' ? '/doc/getDocs/' : $scope.search === 'legalHeir' ? '/LegalHeir/GetLegalHeirByCustomerId/' : '/Nominee/GetNomineeByCustomerId/';
 
                         $http.get(url + id).then(function (response) {
                         $scope.docs = response.data;
@@ -1329,16 +1772,18 @@
             $scope.openDocModal = function (doc = null) {
                 $scope.isEditing = !!doc;
                 $scope.currentDoc = doc ? angular.copy(doc) : { };
-                $scope.currentDoc.dob = doc ? doc.dob ?  new Date(doc.dob) : undefined : undefined;
-                $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : undefined : undefined;
+                $scope.currentDoc.dob = doc ? doc.dob ?  new Date(doc.dob) : null : null;
+                $scope.currentDoc.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : null : null;
                 $scope.currentDoc.panFile = undefined;
                 $scope.currentDoc.aadharFile= undefined;
                 $scope.currentDoc.deathcertiFile=undefined;
                 $scope.currentDoc.voterFile= undefined;
+                $scope.currentDoc.passportFile= undefined;
                 document.getElementById('aadharFile').value = '';
                 document.getElementById('panFile').value = '';
                 document.getElementById('deathcertiFile').value = '';
-                document.getElementById('voterFile').value = '';
+                document.getElementById('passportFile').value = '';
+                // document.getElementById('voterFile').value = '';
                 $('#docModal').modal('show');
             };
 
@@ -1435,12 +1880,16 @@
                     formData.append('userName', $scope.currentDoc.userName ? $scope.currentDoc.userName : '');
                     formData.append('password', $scope.currentDoc.password ? $scope.currentDoc.password : '');
                     formData.append('dpName', $scope.currentDoc.dpName ? $scope.currentDoc.dpName : '');
+                    formData.append('PassportNo', $scope.currentDoc.passportNo ? $scope.currentDoc.passportNo : '');
+                    formData.append('NameAsPerPassport', $scope.currentDoc.nameAsPerPassport ? $scope.currentDoc.nameAsPerPassport : '');
+                    formData.append('AddressAsPerPassport', $scope.currentDoc.addressAsPerPassport ? $scope.currentDoc.addressAsPerPassport : '');
 
 
                 if ($scope.currentDoc.panFile) formData.append('panFile', $scope.currentDoc.panFile);
                 if ($scope.currentDoc.aadharFile) formData.append('aadharFile', $scope.currentDoc.aadharFile);
                 if ($scope.currentDoc.deathcertiFile) formData.append('deathcertiFile', $scope.currentDoc.deathcertiFile);
                 if ($scope.currentDoc.voterFile) formData.append('voterFile', $scope.currentDoc.voterFile);
+                if ($scope.currentDoc.passportFile) formData.append('passportFile', $scope.currentDoc.passportFile);
 
                 var url = $scope.isEditing
                     ? '/doc/update/' + $scope.currentDoc.id
@@ -1462,6 +1911,7 @@
                     $scope.currentDoc.aadharFile= '';
                     $scope.currentDoc.deathcertiFile= '';
                     $scope.currentDoc.voterFile= '';
+                    $scope.currentDoc.passportFile= '';
                     $scope.currentDoc.dob = undefined;
                     $scope.currentDoc.dateOfDeath = undefined;
 
@@ -1504,14 +1954,16 @@
                 $scope.isEditing = !!doc;
                 $scope.currentLegalheir = doc ? angular.copy(doc) : {};
                 $scope.status = doc ? doc.isDead ? 'Death' : doc.isClaiment ? 'Claiment' : doc.isNoc ? 'NOC' : 'Claiment': 'Claiment';
-                        $scope.currentLegalheir.dob = doc ? doc.dob ? new Date(doc.dob) : undefined : undefined;
-                        $scope.currentLegalheir.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : undefined : undefined;
+                        $scope.currentLegalheir.dob = doc ? doc.dob ? new Date(doc.dob) : null : null;
+                        $scope.currentLegalheir.dateOfDeath = doc ? doc.dateOfDeath ?  new Date(doc.dateOfDeath) : null : null;
                         $scope.currentLegalheir.panFile = undefined;
                         $scope.currentLegalheir.aadharFile= undefined;
                         $scope.currentLegalheir.deathcertiFile=undefined;
+                        $scope.currentLegalheir.passportFile=undefined;
                         document.getElementById('aadharFile').value = '';
                         document.getElementById('panFile').value = '';
                         document.getElementById('deathcertiFile').value = '';
+                        document.getElementById('passportFile').value = '';
                 $('#legalheirModal').modal('show');
             };
 
@@ -1607,10 +2059,14 @@
                     formData.append('clientId', $scope.currentLegalheir.clientId ? $scope.currentLegalheir.clientId : '');
                     formData.append('dpid', $scope.currentLegalheir.dpid ? $scope.currentLegalheir.dpid : '');
                     formData.append('dpName', $scope.currentLegalheir.dpName ? $scope.currentLegalheir.dpName : '');
+                    formData.append('PassportNo', $scope.currentDoc.passportNo ? $scope.currentDoc.passportNo : '');
+                    formData.append('NameAsPerPassport', $scope.currentDoc.nameAsPerPassport ? $scope.currentDoc.nameAsPerPassport : '');
+                    formData.append('AddressAsPerPassport', $scope.currentDoc.addressAsPerPassport ? $scope.currentDoc.addressAsPerPassport : '');
 
                 if ($scope.currentLegalheir.panFile) formData.append('panFile', $scope.currentLegalheir.panFile);
                 if ($scope.currentLegalheir.aadharFile) formData.append('aadharFile', $scope.currentLegalheir.aadharFile);
                  if ($scope.currentLegalheir.deathcertiFile) formData.append('deathcertiFile', $scope.currentLegalheir.deathcertiFile);
+                 if ($scope.currentDoc.passportFile) formData.append('passportFile', $scope.currentDoc.passportFile);
 
 
                 var url = $scope.isEditing
@@ -1632,6 +2088,7 @@
                             $scope.currentLegalheir.panFile ='';
         $scope.currentLegalheir.aadharFile ='';
         $scope.currentLegalheir.deathcertiFile ='';
+        $scope.currentLegalheir.passportFile ='';
          $scope.currentLegalheir.dob = undefined;
         $scope.currentLegalheir.dateOfDeath = undefined;
                     $('#legalheirModal').modal('hide');
@@ -1661,6 +2118,80 @@
                     }
                 });
             };
+
+            //Nominee Part
+             $scope.openNomineeModal = function (doc = null) {
+                $scope.isEditing = !!doc;
+                $scope.currentNominee = doc ? angular.copy(doc) : {};
+                $scope.currentNominee.dob = doc ? doc.dob ? new Date(doc.dob) : null : null;
+                      
+                $('#nomineeModal').modal('show');
+            };
+
+             $scope.saveNominee = function () {
+                $scope.processdone = true;
+       
+                if($scope.currentNominee.pan && $scope.currentNominee.pan.length !== 10 ){
+                        Swal.fire({
+                        title: 'Error!',
+                        text: 'Pan should be 10 digits long.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                    $scope.processdone = false;
+                        return;
+                }
+
+               if (id)
+                    {
+                        $scope.currentNominee.customerId = id;
+
+                    if (isProcessing) return;
+                    isProcessing = true;
+               
+                    var url = $scope.isEditing
+                        ? '/Nominee/updateNominee/' + $scope.currentNominee.id
+                        : '/Nominee/createNominee';
+
+               $http.post(url, $scope.currentNominee).then(function (response) {
+                    Swal.fire({
+                        title: response.data.success ? 'Success' : 'Error',
+                        text: response.data.success ? 'Operation successful!' : (response.data.message || 'An error occurred'),
+                        icon: response.data.success ? 'success' : 'error',
+                        confirmButtonText: 'OK'
+                    });
+                        $scope.processdone = false;
+                        isProcessing = false;
+                         $scope.loadDocs();
+                           
+                    $('#nomineeModal').modal('hide');
+               });
+                    }
+            };
+
+            $scope.deleteNominee = function (doc) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $http.post('/Nominee/UpdateNomineebyColumn', doc).then(function (response) {
+                            Swal.fire({
+                                title: response.data.success ? 'Deleted!' : 'Error',
+                                text: response.data.success ? 'Nominee has been deleted.' : 'An error occurred.',
+                                icon: response.data.success ? 'success' : 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.loadDocs();
+                        });
+                    }
+                });
+            };
+
 
              $scope.manageClient = function () {
                 window.open('/Enquiry/Index/' + id, '_self');
@@ -1763,12 +2294,13 @@
             $scope.filter = function(filter){
                 $scope.search = filter;
                 localStorage.setItem("holder",filter);
+                $scope.docs = [];
                 $scope.loadDocs();
             }
 
              var storedSearch = localStorage.getItem('holder');
 
-            $scope.search = storedSearch ? JSON.parse(storedSearch) : true;
+            $scope.search = storedSearch ? storedSearch : 'holder';
 
 
             //relation Part
@@ -1779,7 +2311,7 @@
 
                         $http.get(url, {
                         params: {
-                            legalheirId: $scope.search ? 0 : legalheirid,
+                            legalheirId: $scope.search === 'holder' ? 0 : legalheirid,
                         }
                     }).then(function (response) {
                         $scope.legalheirs = response.data;
@@ -1791,13 +2323,15 @@
                     }
                 };
 
+
+
 				$scope.saveRelation = function () {
                      $scope.processdone = true;
                     if (isProcessing) return;
                     isProcessing = true;
 
                     var  data = {
-                            holdertype: $scope.search ? 'holder' : 'legalheir',
+                            holdertype: $scope.search === 'holder' ? 'holder' : 'legalheir',
                             relationdata: $scope.relationlist,
                         };
 
@@ -1839,23 +2373,24 @@
         $scope.addRelationData = function(isv) {
             if (isv) {
 
-        const exists = $scope.relationlist.some(relation =>
-            relation.legalHeirId === $scope.currentRelation.legalHeirId
-        );
+                const exists = $scope.relationlist.some(relation =>
+                    relation.legalHeirId === $scope.currentRelation.legalHeirId
+                );
 
-        if (exists) {
-           Swal.fire({
-                title: 'Error',
-                text: 'Same legal heir can not be added.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            $scope.currentRelation = {};
-            return;
-        }
+                if (exists) {
+                   Swal.fire({
+                        title: 'Error',
+                        text: 'Same legal heir can not be added.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    $scope.currentRelation = {};
+                    return;
+                }
 
-                $scope.currentRelation.holderId = $scope.search ? $scope.headersId : 0;
-                $scope.currentRelation.legalHeirParentId = $scope.search ? 0 : $scope.headersId ;
+                $scope.currentRelation.holderId = $scope.search === 'holder' ? $scope.headersId : 0;
+                $scope.currentRelation.legalHeirParentId = $scope.search === 'holder' ? 0 : $scope.headersId ;
+                $scope.currentRelation.nomineeId = 0;
                 $scope.currentRelation.legalHeirName = $scope.legalheirs ? $scope.legalheirs.find(x => x.id == $scope.currentRelation.legalHeirId).name : '';
                 $scope.relationlist.push($scope.currentRelation);
 
@@ -1886,11 +2421,159 @@
 				$scope.headers = doc ? doc.name : '';
 				$scope.headersId = doc ? doc.id : '';
 				$scope.loadLegalHeir(doc.id);
-                $scope.loadRelationdata(doc.id,$scope.search ? 'holder' : 'legalheir');
+                $scope.loadRelationdata(doc.id,$scope.search === 'holder' ? 'holder' : 'legalheir');
                  $scope.currentRelation = { };
                 $('#relationModal').modal('show');
             };
 
+            //Nominee Relation
+            $scope.openNomineeRelationModel = function (doc = null){
+                $scope.headers = doc ? doc.name : '';
+                $scope.headersId = doc ? doc.id : '';
+                $scope.loadNominee();
+                $scope.loadNomineeRelationdata(doc.id,$scope.search === 'holder' ? 'holder' : 'legalheir');
+                 $scope.currentNomineeRelation = { };
+                $('#nomineerelationModal').modal('show');
+            }
+
+             $scope.loadNomineeRelationdata = function (id,string) {
+                $http.get('/Doc/GetNomineeRelationMapping/'+ id, {
+                        params: {
+                            holdertype: string,
+                        }
+                    }).then(function (response) {
+                        $scope.nomineeRelationlist = response.data;
+                        $scope.datalistcount = response.data.length;
+                        hideLoader();
+                    }, function (error) {
+                        console.error('Error loading Docs:', error);
+                        hideLoader();
+                    });
+            }
+
+                $scope.loadNominee = function (){
+
+                        var url = '/Nominee/GetNomineeByCustomerId/' + id;
+
+                        $http.get(url).then(function (response) {
+                        $scope.nominees = response.data;
+                        hideLoader();
+                    }, function (error) {
+                        console.error('Error loading Docs:', error);
+                        hideLoader();
+                    });
+                }
+
+                $scope.addNomineeRelationData = function(isv) {
+                    if (isv) {
+
+                        const exists = $scope.nomineerelationlist?.some(relation =>
+                            relation.nomineeId === $scope.currentRelation.nomineeId
+                        );
+
+                        if (exists) {
+                           Swal.fire({
+                                title: 'Error',
+                                text: 'Same Nominee can not be added.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.currentNomineeRelation = {};
+                            return;
+                        }
+
+                         $scope.currentNomineeRelation.holderId = $scope.search === 'holder' ? $scope.headersId : 0;
+                        $scope.currentNomineeRelation.legalHeirParentId = $scope.search === 'holder' ? 0 : $scope.headersId ;
+                        $scope.currentNomineeRelation.nomineeName = $scope.nominees ? $scope.nominees.find(x => x.id == $scope.currentNomineeRelation.nomineeId)?.name : '';
+                        $scope.nomineeRelationlist.push($scope.currentNomineeRelation);
+
+                        $scope.currentNomineeRelation = {};
+
+                        console.log('relation data added:', $scope.nomineeRelationlist);
+                    } else {
+                        alert('Please fill in the required fields');
+                    }
+                }
+
+                $scope.saveNomineeRelation = function () {
+                     $scope.processdone = true;
+                    if (isProcessing) return;
+                    isProcessing = true;
+
+                    var  data = {
+                            holdertype: 'Nominee',
+                            relationdata: $scope.nomineeRelationlist,
+                        };
+
+                    const url = $scope.datalistcount > 0 ? '/Doc/UpdateRelationMapping' : '/Doc/AddRelationMapping' ;
+                    $http.post(url, data
+                    ).then(function (response) {
+                        if (response.data.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: response.data.message || 'Operation successful!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            $scope.processdone = false;
+                            $scope.loadDocs();
+                            $('#nomineerelationModal').modal('hide');
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.data.message || 'There was an issue with the operation.',
+                                icon: 'error',
+                                confirmButtonText: 'Try Again'
+                            });
+                            $scope.processdone = false;
+                        }
+                        isProcessing = false;
+                    }, function (error) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        $scope.processdone = false;
+                        isProcessing = false;
+                    });
+                }
+
+                $scope.deleteRelation = function (doc,i) {
+                     Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, keep it'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $http.post('/Doc/UpdateRelationMappingbyColumn', doc).then(function (response) {
+                                    Swal.fire({
+                                        title: response.data.success ? 'Deleted!' : 'Error',
+                                        text: response.data.success ? 'Nominee has been deleted.' : 'An error occurred.',
+                                        icon: response.data.success ? 'success' : 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    if (response.data.success) {
+                                        $scope.loadNomineeRelationdata(doc.holderId);
+                                        const nomineeindex = $scope.nomineeRelationlist.indexOf(doc);
+                                            if (index !== -1) {
+                                                $scope.nomineeRelationlist.splice(nomineeindex, 1);
+                                            }
+                                           
+                                        $scope.loadRelationdata(doc.holderId, doc.holderId > 0 ? 'holder' : 'legalheir');
+                                         const holderindex = $scope.relationlist.indexOf(doc);
+                                            if (index !== -1) {
+                                                $scope.relationlist.splice(holderindex, 1);
+                                            }
+                                    }
+                                });
+                            }
+                        });
+                }
 
             //initalization
              $scope.loadDocs();

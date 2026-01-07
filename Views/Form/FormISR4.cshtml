@@ -995,7 +995,7 @@
                                 <p class="bold">securities held</p>
                             </td>
                         </tr>
-                        <tr ng-repeat="tmp in shares">
+                        <tr ng-repeat="tmp in shares" ng-hide="tmp.certificateNo == 0" ng-class="{'hide-print': tmp.certificateNo == 0}">
                             <td>{{tmp.certificateNo}}</td>
                             <td>{{tmp.distinctiveNosFrom}} - {{tmp.distinctiveNosTo}}</td>
                             <td>{{tmp.actualQty}} shares, FV:  {{data.faceValue}}</td>

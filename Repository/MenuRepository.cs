@@ -8,10 +8,10 @@ namespace Stock_CMS.Repository
 {
     public class MenuRepository : EfRepository<TblMenu, MenuDto>, IMenuRepository
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
 
-        public MenuRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public MenuRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

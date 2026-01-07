@@ -8,9 +8,9 @@ namespace Stock_CMS.Repository
 {
 	public class RtaRepository : EfRepository<TblRtaCompany, RtaDto>, IRtaRepository
     {
-        private readonly StockCmsContext _dbContext;
+        private readonly DmCmsContext _dbContext;
         private readonly IMapper _mapper;
-        public RtaRepository(StockCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public RtaRepository(DmCmsContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

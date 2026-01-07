@@ -331,26 +331,26 @@ td:nth-child(5), td:nth-child(6) {
     </p>
     <p style="padding-top: 9pt; text-indent: 0pt; text-align: left"><br /></p>
         <p style="padding-left: 43pt; text-indent: 0pt; text-align: left"  >
-      I/We,
+      I/We, 
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                <span ng-if="data.secondHolder">
-                    &
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
                     <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                         {{data.secondHolder}}
                     </span>
                 </span>
-                <span ng-if="data.thirdHolder">
-                    &
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
                     <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                         {{data.thirdHolder}}
                     </span>
                 </span>
-            </span>
-            <span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+            </span><span class="s4" ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                 <span ng-repeat="h in data.heirs track by $index">
-                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
-                        {{h.name}}</span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                 </span>
             </span> SON/DA/HUS OF
             <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.sonof}} </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}"> {{data.heirs[0].sonof}} </span>residing at<span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">{{data.address}}</span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">{{data.heirs[0].address}}</span><span class="s4"> </span> having Permanent Account No(s)
@@ -375,28 +375,27 @@ td:nth-child(5), td:nth-child(6) {
             text-align: justify;
           "
         >
-          That I/We,
-                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                        <span ng-if="data.secondHolder">
-                            &
-                            <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
-                                {{data.secondHolder}}
-                            </span>
-                        </span>
-                        <span ng-if="data.thirdHolder">
-                            &
-                            <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
-                                {{data.thirdHolder}}
-                            </span>
-                        </span>
-                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
-                        <span ng-repeat="h in data.heirs track by $index">
-                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
-                                {{h.name}}
-                            </span><span ng-if="$index < data.heirs.length - 1"> & </span>
-                        </span>
-                    </span><span class="s6"> </span>(“all the shareholders”) hold the following
+          That I/We,<span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+            </span><span class="s4" ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
+            </span><span class="s6"> </span>(“all the shareholders”) hold the following
           (number of) securities under Folio no.
           <span class="s4">{{data.folioNo}} </span><span class="s6"> </span>in  <span class="s4">
                         {{data.officename}}
@@ -425,7 +424,7 @@ td:nth-child(5), td:nth-child(6) {
           </tr>
                     <tr ng-repeat="tmp in selectedShares">
                         <td>@* 1) *@ {{data.officename}}</td>
-                        <td>{{tmp.folioNo}}</td>
+                        <td>{{data.folioNo}}</td>
                         <td>{{tmp.actualQty}}</td>
                         <td>{{tmp.certificateNo}}</td>
                         <td>{{tmp.distinctiveNosFrom}}</td>
@@ -447,26 +446,26 @@ td:nth-child(5), td:nth-child(6) {
         >
           I/We
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                        <span ng-if="data.secondHolder">
-                            &
+                        <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                        <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                            <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
                             <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                                 {{data.secondHolder}}
                             </span>
                         </span>
-                        <span ng-if="data.thirdHolder">
-                            &
+                        <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                            <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
                             <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                                 {{data.thirdHolder}}
                             </span>
                         </span>
-                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+                    </span><span class="s4" ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                         <span ng-repeat="h in data.heirs track by $index">
-                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
                                 {{h.name}}
                             </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                         </span>
-                    </span> further swear / solemnly declare that I/ we
+                    </span>further swear / solemnly declare that I/ we
           am/are applying for issue of duplicate certificate(s) to me/us on the
           ground that the original security(ies) certificate(s) has/have been
           misplaced / not found by me/us, despite a diligent search made by
@@ -480,26 +479,26 @@ td:nth-child(5), td:nth-child(6) {
         <p style="padding-left: 43pt; text-indent: -14pt; text-align: justify">
           I/We
                     <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                        <span ng-if="data.secondHolder">
-                            &
+                        <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                        <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                            <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
                             <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                                 {{data.secondHolder}}
                             </span>
                         </span>
-                        <span ng-if="data.thirdHolder">
-                            &
+                        <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                            <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
                             <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                                 {{data.thirdHolder}}
                             </span>
                         </span>
-                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+                    </span><span class="s4" ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                         <span ng-repeat="h in data.heirs track by $index">
-                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
                                 {{h.name}}
                             </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                         </span>
-                    </span> further swear/solemnly declare that the said securities are not sold or pledged or
+                    </span>further swear/solemnly declare that the said securities are not sold or pledged or
             deposited by way of security to any person/company.
         </p>
        
@@ -514,28 +513,27 @@ td:nth-child(5), td:nth-child(6) {
             text-align: justify;
           "
         >
-          I/We
-                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                        <span ng-if="data.secondHolder">
-                            &
-                            <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
-                                {{data.secondHolder}}
-                            </span>
-                        </span>
-                        <span ng-if="data.thirdHolder">
-                            &
-                            <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
-                                {{data.thirdHolder}}
-                            </span>
-                        </span>
-                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
-                        <span ng-repeat="h in data.heirs track by $index">
-                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
-                                {{h.name}}
-                            </span><span ng-if="$index < data.heirs.length - 1"> & </span>
-                        </span>
-                    </span><span class="s6"> </span>hereby further swear / solemnly declare that
+          I/We<span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+            </span><span class="s4" ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
+            </span><span class="s6"> </span>hereby further swear / solemnly declare that
           if, after the duplicate share certificate(s) is / are issued to us as
           aforesaid, the original security(ies) certificate(s) is / are at any
           time subsequently, found, recovered or traced by us or by anyone on
@@ -559,28 +557,27 @@ td:nth-child(5), td:nth-child(6) {
             text-align: justify;
           "
         >
-          I/We
-                    <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                        <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                        <span ng-if="data.secondHolder">
-                            &
-                            <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
-                                {{data.secondHolder}}
-                            </span>
-                        </span>
-                        <span ng-if="data.thirdHolder">
-                            &
-                            <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
-                                {{data.thirdHolder}}
-                            </span>
-                        </span>
-                    </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
-                        <span ng-repeat="h in data.heirs track by $index">
-                            <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
-                                {{h.name}}
-                            </span><span ng-if="$index < data.heirs.length - 1"> & </span>
-                        </span>
-                    </span><span class="s6"> </span>am/are making the above solemn declaration
+          I/We <span class="s4" ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
+                    <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                        {{data.secondHolder}}
+                    </span>
+                </span>
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
+                    <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+                        {{data.thirdHolder}}
+                    </span>
+                </span>
+            </span><span class="s4" ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
+                <span ng-repeat="h in data.heirs track by $index">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
+                        {{h.name}}
+                    </span><span ng-if="$index < data.heirs.length - 1"> & </span>
+                </span>
+            </span><span class="s6"> </span>am/are making the above solemn declaration
           on oath with full knowledge of the fact that in the event the original
           security (ies) certificate(s) issued is /are found, recovered and
           traced by me/us and instead of surrendering the same is / are dealt
@@ -668,24 +665,42 @@ td:nth-child(5), td:nth-child(6) {
            ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
       Deponent(s) (1)<span class="s11">
          @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   *@
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">
+               @*  <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">
                     {{data.firstHolder}}
-               </span>
-     
+               </span> *@
+                <span ng-if="!data.firstAlive">
+                    {{data.firstHolder}}
+                </span>
+                <span ng-if="data.firstAlive && !data.secondAlive">
+                    {{data.secondHolder}}
+                </span>
+                <span ng-if="data.firstAlive && data.secondAlive && !data.thirdAlive">
+                    {{data.thirdHolder}}
+                </span>
         </span
       ><br>(2)<span class="s11">
         @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
 
-                <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
+                @* <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                     {{data.secondHolder}}
+                </span> *@
+                <span ng-if="!data.firstAlive && !data.secondAlive">
+                    {{data.secondHolder}}
+                </span>
+                <span ng-if="(!data.firstAlive && data.secondAlive && !data.thirdAlive) ||
+                 (data.firstAlive && !data.secondAlive)">
+                    {{data.thirdHolder}}
                 </span>
         </span
       ><br>(3)<span class="s11">
         @* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *@
 
-                <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
+              @*   <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                     {{data.thirdHolder}}
-                    </span>
+                    </span> *@
+                <span ng-if="!data.firstAlive && !data.secondAlive && !data.thirdAlive">
+                    {{data.thirdHolder}}
+                </span>
         </span>
     </p>
     <p

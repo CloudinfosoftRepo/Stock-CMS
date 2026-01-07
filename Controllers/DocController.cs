@@ -475,6 +475,24 @@ namespace Stock_CMS.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetNomineeRelationMapping(long id, string holdertype)
+        {
+            try
+            {
+                var relation = await _docService.GetNomineeRelationMapping(id, holdertype);
+                return Json(relation);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during fetch");
+                return StatusCode(500, new
+                {
+                    Message = ex.Message
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<JsonResult> AddRelationMapping([FromBody] RelationViewModel data)
         {
@@ -540,6 +558,35 @@ namespace Stock_CMS.Controllers
                    result == -1 ? "RelationMapping already exists." :
                    result == 0 ? "Failed to update RelationMapping." :
                    "RelationMapping updated successfully.";
+                bool success = result > 0;
+                return Json(new { success = success, message = message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during Update");
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateRelationMappingbyColumn([FromBody] RelationMappingDto data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
+
+            try
+            {
+                var userId = HttpContext.Request.Cookies["UserId"];
+
+                data.UpdatedBy = int.Parse(userId);
+                data.UpdatedAt = DateTime.Now;
+                var result = await _docService.UpdateRelationMappingbyColumn(data);
+                string message = result == -2 ? "No record Found." :
+                  result == -1 ? "Holder already exists." :
+                  result == 0 ? "Failed to update Holder." :
+                  "Holder updated successfully.";
                 bool success = result > 0;
                 return Json(new { success = success, message = message });
             }

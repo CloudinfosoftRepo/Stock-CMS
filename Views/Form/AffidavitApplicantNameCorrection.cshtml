@@ -322,19 +322,19 @@
             <p style="padding-left: 41pt; text-indent: -18pt; text-align: justify">
                 That the following Equity {{data.qty}} Shares are registered in (name)
                     <span class="s2">
-                        {{data.firstHolder}}
+                        {{data.firstHoldercertiName}}
                     </span><span class="s1"> </span>
                     @* <span class="s2">PRABHULAL THAKKER </span> *@
                     jointly with (name)
                     <span class="s2">
-                        {{data.secondHolder}}
+                        {{data.secondHoldercertiName}}
                     </span><span class="s1">
-                        {{data.thirdHolder}}
+                        {{data.thirdHoldercertiName}}
                     </span>under LF No <u>{{data.lfno}} </u>in the books of
                     <span class="s2">{{data.officename}}</span><span class="s1"> </span>having its Registered Office at
                 <span class="s2">
                         {{data.officeaddress}}
-                @* </span><span class="s1"> </span><span class="s2">Mumbai, Maharashtra, 400051</span><span class="s4">.</span> *@
+               </span> @* <span class="s1"> </span><span class="s2">Mumbai, Maharashtra, 400051</span><span class="s4">.</span> *@
             </p>
         </li>
         <li data-list-text="2.">
@@ -550,6 +550,9 @@
                     firstHolder:obj.firstHolder,
                 secondHolder:obj.secondHolder,
                 thirdHolder:obj.thirdHolder,
+                firstHoldercertiName: obj.firstHoldercertiName,
+                secondHoldercertiName: obj.secondHoldercertiName,
+                thirdHoldercertiName: obj.thirdHoldercertiName,
                 qty: obj.qty,
                 condition: obj.condition,
                 };
@@ -610,6 +613,9 @@
                    firstHolder :result.firstHolderName,
                    secondHolder: result.secondHolderName,
                    thirdHolder: result.thirdHolderName,
+                   firstHoldercertiName: result.firstHolderData?.nameAsPerCertificate,
+                   secondHoldercertiName: result.secondHolderData?.nameAsPerCertificate,
+                   thirdHoldercertiName: result.thirdHolderData?.nameAsPerCertificate,
                    qty: result.qty,
                    condition: isDeceased,
                 };

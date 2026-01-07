@@ -17,9 +17,12 @@ namespace Stock_CMS.ServiceInterface
 		Task<Int32> UpdateWitnessJson(long id, string jsonString, int updatedBy);
 
 		Task<IEnumerable<RelationMappingDto>> GetRelationMapping(long id, string holdertype);
+		Task<IEnumerable<RelationMappingDto>> GetNomineeRelationMapping(long id, string holdertype);
 
-		Task<long> AddRelationMapping(IEnumerable<RelationMappingDto> data);
+        Task<long> AddRelationMapping(IEnumerable<RelationMappingDto> data);
 
 		Task<Int32> UpdateRelationMapping(string holdertype, IEnumerable<RelationMappingDto> data);
+
+		Task<long> UpdateRelationMappingbyColumn(RelationMappingDto data);
     }
 }

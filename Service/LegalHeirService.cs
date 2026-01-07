@@ -64,6 +64,14 @@ namespace Stock_CMS.Service
                             data.DeathCertiUrl = DeathcertiUpload.message;
                         }
                     }
+                    if (data.PassportFile != null)
+                    {
+                        var PassportUpload = _fileUpload.StoreFile("ClientPassport", data.PassportFile, "Passport");
+                        if (PassportUpload.status == true)
+                        {
+                            data.PassportUrl = PassportUpload.message;
+                        }
+                    }
                 }
                 var result = await _legalHeirRepository.AddLegalHeir(dataList);
                 if (result.Any())
@@ -96,8 +104,8 @@ namespace Stock_CMS.Service
                     data.CreatedAt = existingProduct.CreatedAt;
                     data.UpdatedBy = data.UpdatedBy;
                     data.UpdatedAt = DateTime.Now;
-                    data.Dob = data.Dob != null ? _normalizeModel.ConvertToIST(data.Dob) : existingProduct.Dob;
-                    data.DateOfDeath = data.DateOfDeath != null ? _normalizeModel.ConvertToIST(data.DateOfDeath) : existingProduct.DateOfDeath;
+                    data.Dob = _normalizeModel.ConvertToIST(data.Dob);
+                    data.DateOfDeath = _normalizeModel.ConvertToIST(data.DateOfDeath);
 
 
                     if (data.AadharFile != null)
@@ -135,6 +143,18 @@ namespace Stock_CMS.Service
                     else
                     {
                         data.DeathCertiUrl = existingProduct.DeathCertiUrl;
+                    }
+                    if (data.PassportFile != null)
+                    {
+                        var passportUpload = _fileUpload.StoreFile("ClientPassport", data.PassportFile, "Passport");
+                        if (passportUpload.status == true)
+                        {
+                            data.PassportUrl = passportUpload.message;
+                        }
+                    }
+                    else
+                    {
+                        data.PassportUrl = existingProduct.PassportUrl;
                     }
                 }
 

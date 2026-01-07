@@ -33,7 +33,7 @@ public static class ConfigureServices
         });
 
         // Add DbContext
-        services.AddDbContext<StockCmsContext>(options =>
+        services.AddDbContext<DmCmsContext>(options =>
         {
             options.UseSqlServer("Name=ConnectionStrings:DBConnection");
         });
@@ -101,6 +101,9 @@ public static class ConfigureServices
         services.AddTransient<IFileService, FileService>();
 
         services.AddTransient<IOTPService, OTPService>();
-        
+
+        services.AddTransient<INomineeService, NomineeService>();
+        services.AddTransient<INomineeRepository, NomineeRepository>();
+
     }
 }

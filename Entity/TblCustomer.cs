@@ -39,6 +39,8 @@ public partial class TblCustomer
 
     public string? DocumentJson { get; set; }
 
+    public string? Password { get; set; }
+
     public virtual ICollection<TblDoc> TblDocs { get; set; } = new List<TblDoc>();
 
     public virtual ICollection<TblStock> TblStocks { get; set; } = new List<TblStock>();

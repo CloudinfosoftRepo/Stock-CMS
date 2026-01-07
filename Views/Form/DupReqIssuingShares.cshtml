@@ -235,23 +235,23 @@
         text-align: left;
       "
     >
-            <span ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
-                <span ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{ data.firstHolder}}</span>
-                <span ng-if="data.secondHolder">
-                    &
+           <span  ng-show="!data.condition" ng-class="{'hide-print': data.condition}">
+                <span ng-show="!data.firstAlive" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'unset'}">{{ data.firstHolder}}</span>
+                <span ng-if="data.secondHolder" ng-show="!data.secondAlive" ng-style="{'display': data.secondAlive ? 'none' : 'unset'}">
+                    <span ng-hide="data.firstAlive" ng-class="{'hide-print': data.firstAlive}">&</span>
                     <span ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">
                         {{data.secondHolder}}
                     </span>
                 </span>
-                <span ng-if="data.thirdHolder">
-                    &
+                <span ng-if="data.thirdHolder" ng-show="!data.thirdAlive" ng-style="{'display': data.thirdAlive ? 'none' : 'unset'}">
+                    <span ng-hide="data.secondAlive" ng-class="{'hide-print': data.secondAlive}">&</span>
                     <span ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">
                         {{data.thirdHolder}}
                     </span>
                 </span>
-            </span><span class="s4" ng-show="data.condition" ng-class="{'hide-print': !data.condition}">
+            </span><span  ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}">
                 <span ng-repeat="h in data.heirs track by $index">
-                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">
+                    <span ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'unset'}">
                         {{h.name}}
                     </span><span ng-if="$index < data.heirs.length - 1"> & </span>
                 </span>
@@ -493,10 +493,10 @@
     </p>
     <p style="text-indent: 0pt; text-align: left; padding-top: 20pt;"><br /></p>
     <p class="s8" style="padding-left: 5pt; text-indent: 0pt; text-align: left; display:flex; justify-content:space-between">
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit'}">{{data.firstHolder}}</b>
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit'}">{{data.secondHolder}}</b>
-            <b ng-show="!data.condition" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit'}">{{data.thirdHolder}}</b>
-            <b ng-show="data.condition" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit'}">  {{h.name}}</b>
+            <b ng-show="!data.condition && !data.firstAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.firstAlive ? 'red' : 'inherit', 'display': data.firstAlive ? 'none' : 'flex'}">{{data.firstHolder}}</b>
+            <b ng-show="!data.condition && !data.secondAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.secondAlive ? 'red' : 'inherit', 'display': data.secondAlive ? 'none' : 'flex'}">{{data.secondHolder}}</b>
+            <b ng-show="!data.condition && !data.thirdAlive" ng-class="{'hide-print': data.condition}" ng-style="{'color': data.thirdAlive ? 'red' : 'inherit', 'display': data.thirdAlive ? 'none' : 'flex'}">{{data.thirdHolder}}</b>
+            <b ng-show="data.condition && !h.dateOfDeath" ng-class="{'hide-print': !data.condition}" ng-repeat="h in data.heirs" ng-style="{'color': h.dateOfDeath ? 'red' : 'inherit', 'display': h.dateOfDeath ? 'none' : 'flex'}">  {{h.name}}</b>
     </p>
     </div>
     <div class="myarea">
@@ -641,8 +641,8 @@
                    folioNo : result.folioNo,
                    qty : result.qty,
                    jsondata: result.stockJson,
-                    mobile: !isDeceased ? result.firstHolderData.mobile : holder.mobile,
-                    address : !isDeceased ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar,
+                    mobile: !isDeceased ? result.firstHolderData.mobile ? result.firstHolderData.mobile : holder.mobile : holder.mobile,
+                    address : !isDeceased ? result.firstHolderData.addressAsPerAadhar ? result.firstHolderData.addressAsPerAadhar : holder.addressAsPerAadhar : holder.addressAsPerAadhar,
                     officename : result.company.rtaName,
                     officeaddress: result.company.rtaAddress,
                     unit: result.companyName,
